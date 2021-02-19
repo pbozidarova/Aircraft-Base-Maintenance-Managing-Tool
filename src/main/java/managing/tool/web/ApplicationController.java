@@ -8,6 +8,10 @@ public class ApplicationController implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        this.seedData();
+    }
+
+    private void seedData() {
 
     }
 }
