@@ -1,0 +1,9 @@
+[
+  {
+    "firstName": "Petya",
+    "lastName": "Kuzmanova",
+    "email": "petya.kuzmanova@email.org",
+    "role": "user",
+    "position" : "engineer"
+  }
+]

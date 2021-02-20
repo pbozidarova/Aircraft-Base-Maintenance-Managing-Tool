@@ -1,5 +1,5 @@
 package managing.tool.model.entity.enumeration;
 
-public enum Role {
-    USER, ADMIN,
+public enum Position {
+    ENGINEER, MECHANIC
 }
