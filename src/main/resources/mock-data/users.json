@@ -2,8 +2,22 @@
   {
     "firstName": "Petya",
     "lastName": "Kuzmanova",
-    "email": "petya.kuzmanova@email.org",
-    "role": "user",
-    "position" : "engineer"
+    "companyId": "N90909",
+    "email": "petya.kuzmanova@companyEmail.org",
+    "role": "admin"
+  },
+  {
+    "firstName": "Ivan",
+    "lastName": "Ivanov",
+    "companyId": "N60606",
+    "email": "ivan.ivanov@companyEmail.org",
+    "role": "admin"
+  },
+  {
+    "firstName": "Stefan",
+    "lastName": "Ivanov",
+    "companyId": "N70707",
+    "email": "stefan.ivanov@companyEmail.org",
+    "role": "user"
   }
 ]

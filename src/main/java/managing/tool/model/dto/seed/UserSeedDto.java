@@ -2,8 +2,6 @@ package managing.tool.model.dto.seed;
 
 import com.google.gson.annotations.Expose;
 
-import javax.persistence.Column;
-
 public class UserSeedDto {
 
     @Expose
@@ -13,9 +11,10 @@ public class UserSeedDto {
     @Expose
     private String email;
     @Expose
-    private String role;
+    private String companyId;
     @Expose
-    private String position;
+    private String role;
+
 
     public UserSeedDto() {
     }
@@ -47,21 +46,21 @@ public class UserSeedDto {
         return this;
     }
 
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public UserSeedDto setCompanyId(String companyId) {
+        this.companyId = companyId;
+        return this;
+    }
+
     public String getRole() {
         return role;
     }
 
     public UserSeedDto setRole(String role) {
         this.role = role;
-        return this;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public UserSeedDto setPosition(String position) {
-        this.position = position;
         return this;
     }
 }

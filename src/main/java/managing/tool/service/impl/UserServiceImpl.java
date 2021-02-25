@@ -2,8 +2,11 @@ package managing.tool.service.impl;
 
 import com.google.gson.Gson;
 import managing.tool.model.dto.seed.UserSeedDto;
+import managing.tool.model.entity.Role;
 import managing.tool.model.entity.User;
+import managing.tool.model.entity.enumeration.RoleEnum;
 import managing.tool.repository.UserRepository;
+import managing.tool.service.RoleService;
 import managing.tool.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import static managing.tool.constants.GlobalConstants.USERS_MOCK_DATA_PATH;
 
@@ -21,16 +26,22 @@ public class UserServiceImpl implements UserService {
     private final Gson gson;
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
+    private final RoleService roleService;
 
     @Autowired
-    public UserServiceImpl(Gson gson, ModelMapper modelMapper, UserRepository userRepository) {
+    public UserServiceImpl(Gson gson, ModelMapper modelMapper, UserRepository userRepository, RoleService roleService) {
         this.gson = gson;
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
+        this.roleService = roleService;
     }
 
     @Override
     public void seedUsers() throws FileNotFoundException {
+        if(this.userAreImported()){
+            return;
+        }
+
         //TODO THROW ERROR FROM FILE READER
         UserSeedDto[] dtos = this.gson
                 .fromJson(new FileReader(USERS_MOCK_DATA_PATH), UserSeedDto[].class);
@@ -40,9 +51,17 @@ public class UserServiceImpl implements UserService {
         Arrays.stream(dtos)
                 .forEach(uDto -> {
                     User user = this.modelMapper.map(uDto, User.class);
-
+                    Role role = this.roleService.findByName(RoleEnum.valueOf(uDto.getRole().toUpperCase()));
+                    Set<Role> roleSet = new HashSet<>();
+                    roleSet.add(role);
+                    user.setRole(roleSet);
                     this.userRepository.saveAndFlush(user);
                 });
 
+    }
+
+    @Override
+    public boolean userAreImported() {
+        return this.userRepository.count() > 0;
     }
 }

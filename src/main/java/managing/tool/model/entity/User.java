@@ -1,36 +1,33 @@
 package managing.tool.model.entity;
 
-import managing.tool.model.entity.enumeration.Position;
-import managing.tool.model.entity.enumeration.Role;
 
 import javax.persistence.*;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name="users")
-public class User {
+public class User extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
     private String firstName;
     private String lastName;
-    private String username;
-    private String email;
+    private String password;
     private String companyId;
-    private Role role;
-    private Position position;
+    private String email;
+    private Set<Role> role;
+
 
     public User() {
     }
 
-    public long getId() {
-        return id;
+    public User(String firstName, String lastName, String companyId, String email, Set<Role> role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.companyId = companyId;
+        this.email = email;
+        this.role = role;
     }
 
-    public User setId(long id) {
-        this.id = id;
-        return this;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -50,12 +47,21 @@ public class User {
         return this;
     }
 
-    public String getUsername() {
-        return username;
+    public String getPassword() {
+        return password;
     }
 
-    public User setUsername(String username) {
-        this.username = username;
+    public User setPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public User setCompanyId(String username) {
+        this.companyId = username;
         return this;
     }
 
@@ -68,30 +74,39 @@ public class User {
         return this;
     }
 
-    public String getCompanyId() {
-        return companyId;
-    }
 
-    public User setCompanyId(String companyId) {
-        this.companyId = companyId;
-        return this;
-    }
-
-    public Role getRole() {
+    @ManyToMany(cascade = CascadeType.MERGE)
+    public Set<Role> getRole() {
         return role;
     }
 
-    public User setRole(Role role) {
+    public User setRole(Set<Role> role) {
         this.role = role;
         return this;
     }
 
-    public Position getPosition() {
-        return position;
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("User{");
+        sb.append("firstName='").append(firstName).append('\'');
+        sb.append(", lastName='").append(lastName).append('\'');
+        sb.append(", companyId='").append(companyId).append('\'');
+        sb.append(", email='").append(email).append('\'');
+        sb.append(", role=").append(role);
+        sb.append('}');
+        return sb.toString();
     }
 
-    public User setPosition(Position position) {
-        this.position = position;
-        return this;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return companyId.equals(user.companyId) && email.equals(user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(companyId, email);
     }
 }
