@@ -1,9 +1,6 @@
 package managing.tool.web;
 
-import managing.tool.service.AircraftService;
-import managing.tool.service.FacilityService;
-import managing.tool.service.RoleService;
-import managing.tool.service.UserService;
+import managing.tool.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Controller;
@@ -17,13 +14,15 @@ public class ApplicationController implements CommandLineRunner {
     private final RoleService roleService;
     private final AircraftService aircraftService;
     private final FacilityService facilityService;
+    private final MaintenanceEventService maintenanceEventService;
 
     @Autowired
-    public ApplicationController(UserService userService, RoleService roleService, AircraftService aircraftService, FacilityService facilityService) {
+    public ApplicationController(UserService userService, RoleService roleService, AircraftService aircraftService, FacilityService facilityService, MaintenanceEventService maintenanceEventService) {
         this.userService = userService;
         this.roleService = roleService;
         this.aircraftService = aircraftService;
         this.facilityService = facilityService;
+        this.maintenanceEventService = maintenanceEventService;
     }
 
     @Override
@@ -37,5 +36,6 @@ public class ApplicationController implements CommandLineRunner {
         this.userService.seedUsers();
         this.aircraftService.seedAircraft();
         this.facilityService.seedFacilities();
+        this.maintenanceEventService.seedEvents();
     }
 }

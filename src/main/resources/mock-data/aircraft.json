@@ -1,4 +1,5 @@
 [
+
   {"operatorName":"Airbus",	"operatorICAOCode":"AIB",	"aircraftType":"A320",	"aircraftModel":"A320-111",	"aircraftRegistration":"F-WWBA",	"serialNumber":"1",	"engineManufacturer":"CFM International",	"engineModelSeries":"CFM56-5A"},
   {"operatorName":"United Airlines",	"operatorICAOCode":"UAL",	"aircraftType":"A320",	"aircraftModel":"A320-232",	"aircraftRegistration":"N453UA",	"serialNumber":"1001",	"engineManufacturer":"International Aero Engines",	"engineModelSeries":"V2500-A5"},
   {"operatorName":"US Airways",	"operatorICAOCode":"AWE",	"aircraftType":"A320",	"aircraftModel":"A320-232",	"aircraftRegistration":"N653AW",	"serialNumber":"1003",	"engineManufacturer":"International Aero Engines",	"engineModelSeries":"V2500-A5"},

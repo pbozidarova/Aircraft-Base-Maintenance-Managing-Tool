@@ -23,19 +23,19 @@ The goal of this application if to facilitate the documentation of such a check 
    - EngineModelSeries - the engine model;
    - for simplicity only Airbus aircraft have been used;
 
-3. Task
+3. Task<br>
    A single technical job.
 
-4. Maintenance Event
+4. Maintenance Event<br>
    A huge technical event that consists of many tasks.
-   - EventNum
-     StartDate
-     Status
-     Facility
-     Aircraft
-     Engineer
-
-
+   - EventNum - identification specific for an event;
+   - StartDate - when the project begins 
+   - StartEnd - when the project ends
+   - Status - whether the project is upcoming, already opened or closed;
+   - Facility - where the project is taking place;
+   - Aircraft - which aircraft is the subject of the event;
+   - Engineer - who is responsible for the preparation of the project.
+   
 5. Ticket
    Means of communication between the users, that is happening in the context of a maintenance event.
 

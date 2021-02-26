@@ -55,5 +55,11 @@ public class AircraftServiceImpl implements AircraftService {
         return this.aircraftRepository.count() > 0;
     }
 
+    @Override
+    public Aircraft getAircraftByRegistration(String registration) {
+
+        return this.aircraftRepository.findByAircraftRegistration(registration);
+    }
+
 
 }

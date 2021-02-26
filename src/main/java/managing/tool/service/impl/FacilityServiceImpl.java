@@ -57,5 +57,11 @@ public class FacilityServiceImpl implements FacilityService {
         return this.facilityRepository.count() > 0;
     }
 
+    @Override
+    public Facility getFacilityByName(String name) {
+
+        return this.facilityRepository.findByName(name);
+    }
+
 
 }

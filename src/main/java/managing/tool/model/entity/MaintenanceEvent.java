@@ -1,7 +1,8 @@
 package managing.tool.model.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import managing.tool.model.entity.enumeration.EventStatusEnum;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -10,22 +11,22 @@ import java.util.Set;
 @Table(name = "maintenance_events")
 public class MaintenanceEvent extends BaseEntity {
 
-   private long eventNum;
+   private String eventNum;
    private LocalDate startDate;
    private LocalDate endDate;
-   private String status;
+   private EventStatusEnum status;
    private Facility facility;
-   private Set<Aircraft> aircraft;
+   private Aircraft aircraft;
    private User engineer;
 
     public MaintenanceEvent() {
     }
 
-    public long getEventNum() {
+    public String getEventNum() {
         return eventNum;
     }
 
-    public MaintenanceEvent setEventNum(long eventNum) {
+    public MaintenanceEvent setEventNum(String eventNum) {
         this.eventNum = eventNum;
         return this;
     }
@@ -48,15 +49,17 @@ public class MaintenanceEvent extends BaseEntity {
         return this;
     }
 
-    public String getStatus() {
+    @Enumerated(EnumType.STRING)
+    public EventStatusEnum getStatus() {
         return status;
     }
 
-    public MaintenanceEvent setStatus(String status) {
+    public MaintenanceEvent setStatus(EventStatusEnum status) {
         this.status = status;
         return this;
     }
 
+    @ManyToOne
     public Facility getFacility() {
         return facility;
     }
@@ -66,15 +69,17 @@ public class MaintenanceEvent extends BaseEntity {
         return this;
     }
 
-    public Set<Aircraft> getAircraft() {
+    @ManyToOne
+    public Aircraft getAircraft() {
         return aircraft;
     }
 
-    public MaintenanceEvent setAircraft(Set<Aircraft> aircraft) {
+    public MaintenanceEvent setAircraft(Aircraft aircraft) {
         this.aircraft = aircraft;
         return this;
     }
 
+    @ManyToOne
     public User getEngineer() {
         return engineer;
     }
