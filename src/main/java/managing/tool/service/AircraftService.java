@@ -1,5 +1,8 @@
 package managing.tool.service;
 
+import java.io.FileNotFoundException;
+
 public interface AircraftService {
-    void seedAircraft();
+    void seedAircraft() throws FileNotFoundException;
+    boolean aircraftAreImported();
 }

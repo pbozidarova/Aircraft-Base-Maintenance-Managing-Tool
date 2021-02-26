@@ -1,0 +1,5 @@
+[
+  {"name":"Copenhagen Proficient Maintenance",	"city":"Copenhagen",	"country":"Denmark",	"manager":"N90909",	"competences":"AIRBUS",	"capacity":"3"},
+  {"name":"Helsinki Proficient Maintenance",	"city":"Helsinki",	"country":"Finland",	"manager":"N60606",	"competences":"AIRBUS",	"capacity":"4"},
+  {"name":"Sofia Proficient Maintenance",	"city":"Sofia",	"country":"Bulgaria",	"manager":"N70707",	"competences":"AIRBUS",	"capacity":"5"}
+]

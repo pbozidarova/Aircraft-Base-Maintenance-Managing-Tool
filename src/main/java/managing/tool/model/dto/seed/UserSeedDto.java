@@ -11,7 +11,7 @@ public class UserSeedDto {
     @Expose
     private String email;
     @Expose
-    private String companyId;
+    private String companyNum;
     @Expose
     private String role;
 
@@ -46,12 +46,12 @@ public class UserSeedDto {
         return this;
     }
 
-    public String getCompanyId() {
-        return companyId;
+    public String getCompanyNum() {
+        return companyNum;
     }
 
-    public UserSeedDto setCompanyId(String companyId) {
-        this.companyId = companyId;
+    public UserSeedDto setCompanyNum(String companyNum) {
+        this.companyNum = companyNum;
         return this;
     }
 

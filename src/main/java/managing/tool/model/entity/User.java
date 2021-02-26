@@ -12,22 +12,22 @@ public class User extends BaseEntity {
     private String firstName;
     private String lastName;
     private String password;
-    private String companyId;
+    private String companyNum;
     private String email;
     private Set<Role> role;
-
+    private Facility facility;
 
     public User() {
     }
 
-    public User(String firstName, String lastName, String companyId, String email, Set<Role> role) {
+    public User(String firstName, String lastName, String password, String companyNum, String email, Set<Role> role) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.companyId = companyId;
+        this.password = password;
+        this.companyNum = companyNum;
         this.email = email;
         this.role = role;
     }
-
 
     public String getFirstName() {
         return firstName;
@@ -56,12 +56,12 @@ public class User extends BaseEntity {
         return this;
     }
 
-    public String getCompanyId() {
-        return companyId;
+    public String getCompanyNum() {
+        return companyNum;
     }
 
-    public User setCompanyId(String username) {
-        this.companyId = username;
+    public User setCompanyNum(String companyId) {
+        this.companyNum = companyId;
         return this;
     }
 
@@ -85,12 +85,22 @@ public class User extends BaseEntity {
         return this;
     }
 
+    @OneToOne(mappedBy = "manager")
+    public Facility getFacility() {
+        return facility;
+    }
+
+    public User setFacility(Facility facility) {
+        this.facility = facility;
+        return this;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("User{");
         sb.append("firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
-        sb.append(", companyId='").append(companyId).append('\'');
+        sb.append(", companyId='").append(companyNum).append('\'');
         sb.append(", email='").append(email).append('\'');
         sb.append(", role=").append(role);
         sb.append('}');
@@ -102,11 +112,11 @@ public class User extends BaseEntity {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return companyId.equals(user.companyId) && email.equals(user.email);
+        return companyNum.equals(user.companyNum) && email.equals(user.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(companyId, email);
+        return Objects.hash(companyNum, email);
     }
 }

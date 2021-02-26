@@ -2,6 +2,7 @@ package managing.tool.service.impl;
 
 import com.google.gson.Gson;
 import managing.tool.model.dto.seed.UserSeedDto;
+import managing.tool.model.dto.service.UserServiceDto;
 import managing.tool.model.entity.Role;
 import managing.tool.model.entity.User;
 import managing.tool.model.entity.enumeration.RoleEnum;
@@ -55,6 +56,7 @@ public class UserServiceImpl implements UserService {
                     Set<Role> roleSet = new HashSet<>();
                     roleSet.add(role);
                     user.setRole(roleSet);
+                    user.setCompanyNum(uDto.getCompanyNum());
                     this.userRepository.saveAndFlush(user);
                 });
 
@@ -64,4 +66,12 @@ public class UserServiceImpl implements UserService {
     public boolean userAreImported() {
         return this.userRepository.count() > 0;
     }
+
+    @Override
+    public User findByCompanyNum(String companyNum) {
+
+        return this.userRepository.findByCompanyNum(companyNum);
+    }
+
+
 }

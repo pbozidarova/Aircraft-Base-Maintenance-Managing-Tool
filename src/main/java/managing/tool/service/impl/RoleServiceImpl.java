@@ -23,6 +23,10 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void seedRoles() {
+        if(this.rolesAreImported()) {
+            return;
+        }
+
         Arrays.stream(RoleEnum.values())
         .forEach(r -> {
             this.roleRepository.save(new Role(r));
@@ -31,6 +35,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role findByName(RoleEnum role) {
+
         return this.roleRepository.findByName(role);
     }
 

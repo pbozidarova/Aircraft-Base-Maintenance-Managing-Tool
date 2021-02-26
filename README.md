@@ -22,18 +22,33 @@ The goal of this application if to facilitate the documentation of such a check 
    - EngineManufacturer - the manufacturer of the engines;
    - EngineModelSeries - the engine model;
    - for simplicity only Airbus aircraft have been used;
+
 3. Task
    A single technical job.
+
 4. Maintenance Event
    A huge technical event that consists of many tasks.
+   - EventNum
+     StartDate
+     Status
+     Facility
+     Aircraft
+     Engineer
+
+
 5. Ticket
    Means of communication between the users, that is happening in the context of a maintenance event.
-6. Base 
-   Where the whole maintenance event is physically performed
+
+6. Facility 
+   Where the whole overhaul/ maintenance event is physically performed
+   - Name - the name of the place;
+   - Country and City - the exact place where the facility is;
+   - Manager - who is responsible for the facility;
+   - Competences - which aircraft can have its periodical check here;
+   - Capacity - how many aircraft can simultaneously undergo maintenance. 
    
-### Serivce! The functionality of each entity
+### Service! The functionality of each entity
 1. User
    A user can be an admin or a simple user of this application.
    An engineer that can create a single task (technical job);
-
-a mechanic that performs it.
+   a mechanic that performs it.

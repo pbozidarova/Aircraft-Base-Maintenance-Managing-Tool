@@ -1,5 +1,7 @@
 package managing.tool.web;
 
+import managing.tool.service.AircraftService;
+import managing.tool.service.FacilityService;
 import managing.tool.service.RoleService;
 import managing.tool.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +15,15 @@ public class ApplicationController implements CommandLineRunner {
 
     private final UserService userService;
     private final RoleService roleService;
+    private final AircraftService aircraftService;
+    private final FacilityService facilityService;
 
     @Autowired
-    public ApplicationController(UserService userService, RoleService roleService) {
+    public ApplicationController(UserService userService, RoleService roleService, AircraftService aircraftService, FacilityService facilityService) {
         this.userService = userService;
         this.roleService = roleService;
+        this.aircraftService = aircraftService;
+        this.facilityService = facilityService;
     }
 
     @Override
@@ -27,12 +33,9 @@ public class ApplicationController implements CommandLineRunner {
     }
 
     private void seedData() throws FileNotFoundException {
-        if(!this.roleService.rolesAreImported()){
-            this.roleService.seedRoles();
-        }
-        if(!this.userService.userAreImported()){
-            this.userService.seedUsers();
-        }
-
+        this.roleService.seedRoles();
+        this.userService.seedUsers();
+        this.aircraftService.seedAircraft();
+        this.facilityService.seedFacilities();
     }
 }
