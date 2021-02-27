@@ -1,7 +1,5 @@
 package managing.tool.model.entity;
 
-import managing.tool.model.entity.enumeration.CompetenceEnum;
-
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
@@ -17,7 +15,6 @@ public class Facility extends BaseEntity {
     private String country;
     private int capacity;
     private User manager;
-    private Set<Competence> competences;
 
     public Facility() {
     }
@@ -68,13 +65,4 @@ public class Facility extends BaseEntity {
         return this;
     }
 
-    @ManyToMany
-    public Set<Competence> getCompetences() {
-        return competences;
-    }
-
-    public Facility setCompetences(Set<Competence> competences) {
-        this.competences = competences;
-        return this;
-    }
 }

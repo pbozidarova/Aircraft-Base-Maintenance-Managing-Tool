@@ -14,15 +14,17 @@ public class ApplicationController implements CommandLineRunner {
     private final RoleService roleService;
     private final AircraftService aircraftService;
     private final FacilityService facilityService;
-    private final MaintenanceEventService maintenanceEventService;
+    private final MaintenanceService maintenanceService;
+    private final TaskService taskService;
 
     @Autowired
-    public ApplicationController(UserService userService, RoleService roleService, AircraftService aircraftService, FacilityService facilityService, MaintenanceEventService maintenanceEventService) {
+    public ApplicationController(UserService userService, RoleService roleService, AircraftService aircraftService, FacilityService facilityService, MaintenanceService maintenanceService, TaskService taskService) {
         this.userService = userService;
         this.roleService = roleService;
         this.aircraftService = aircraftService;
         this.facilityService = facilityService;
-        this.maintenanceEventService = maintenanceEventService;
+        this.maintenanceService = maintenanceService;
+        this.taskService = taskService;
     }
 
     @Override
@@ -36,6 +38,7 @@ public class ApplicationController implements CommandLineRunner {
         this.userService.seedUsers();
         this.aircraftService.seedAircraft();
         this.facilityService.seedFacilities();
-        this.maintenanceEventService.seedEvents();
+        this.taskService.seedTasks();
+        this.maintenanceService.seedMaintenance();
     }
 }

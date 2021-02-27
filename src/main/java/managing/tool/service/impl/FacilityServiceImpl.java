@@ -3,7 +3,6 @@ package managing.tool.service.impl;
 import com.google.gson.Gson;
 import managing.tool.constants.GlobalConstants;
 import managing.tool.model.dto.seed.FacilitySeedDto;
-import managing.tool.model.entity.Competence;
 import managing.tool.model.entity.Facility;
 import managing.tool.model.entity.User;
 import managing.tool.repository.FacilityRepository;
