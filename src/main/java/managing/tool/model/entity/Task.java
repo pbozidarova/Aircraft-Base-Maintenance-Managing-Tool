@@ -17,7 +17,7 @@ public class Task extends BaseEntity {
 
     private Set<Maintenance> maintenances;
     private Set<User> preparedBy;
-    private Set<Ticket> tickets;
+    private Set<Issue> tickets;
     private Set<Aircraft> applicableAircraft;
 
     public Task() {
@@ -98,11 +98,11 @@ public class Task extends BaseEntity {
     }
 
     @ManyToMany(mappedBy = "tasks")
-    public Set<Ticket> getTickets() {
+    public Set<Issue> getTickets() {
         return tickets;
     }
 
-    public Task setTickets(Set<Ticket> tickets) {
+    public Task setTickets(Set<Issue> tickets) {
         this.tickets = tickets;
         return this;
     }
