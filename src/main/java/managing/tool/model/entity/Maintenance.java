@@ -23,6 +23,7 @@ public class Maintenance extends BaseEntity {
     public Maintenance() {
     }
 
+    @Column(name = "maintenance_num", nullable = false)
     public String getMaintenanceNum() {
         return maintenanceNum;
     }
@@ -32,6 +33,7 @@ public class Maintenance extends BaseEntity {
         return this;
     }
 
+    @Column(name = "start_date", nullable = false)
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -40,7 +42,7 @@ public class Maintenance extends BaseEntity {
         this.startDate = startDate;
         return this;
     }
-
+    @Column(name ="end_date", nullable = false)
     public LocalDate getEndDate() {
         return endDate;
     }
@@ -51,6 +53,7 @@ public class Maintenance extends BaseEntity {
     }
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
     public MaintenanceStatusEnum getStatus() {
         return status;
     }

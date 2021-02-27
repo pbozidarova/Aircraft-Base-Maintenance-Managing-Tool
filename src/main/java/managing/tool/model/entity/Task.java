@@ -18,11 +18,11 @@ public class Task extends BaseEntity {
     private Set<Maintenance> maintenances;
     private Set<User> preparedBy;
     private Set<Issue> tickets;
-    private Set<Aircraft> applicableAircraft;
 
     public Task() {
     }
 
+    @Column(name = "task_num", nullable = false, unique = true)
     public String getTaskNum() {
         return taskNum;
     }
@@ -32,6 +32,7 @@ public class Task extends BaseEntity {
         return this;
     }
 
+    @Column(name = "code", nullable = false, length = 3)
     public String getCode() {
         return code;
     }
@@ -40,7 +41,7 @@ public class Task extends BaseEntity {
         this.code = code;
         return this;
     }
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     public String getDescription() {
         return description;
     }
@@ -50,6 +51,7 @@ public class Task extends BaseEntity {
         return this;
     }
 
+    @Column(name = "is_tooling_available", nullable = false)
     public boolean isToolingAvailable() {
         return isToolingAvailable;
     }
@@ -58,8 +60,8 @@ public class Task extends BaseEntity {
         isToolingAvailable = toolingAvailable;
         return this;
     }
-
-    public boolean isAreJobCardsPrepared() {
+    @Column(name = "are_jobcards_preapred", nullable = false)
+    public boolean areJobCardsPrepared() {
         return areJobCardsPrepared;
     }
 
@@ -68,6 +70,7 @@ public class Task extends BaseEntity {
         return this;
     }
 
+    @Column(name = "is_quality_assured", nullable = false)
     public boolean isQualityAssured() {
         return isQualityAssured;
     }
@@ -107,13 +110,5 @@ public class Task extends BaseEntity {
         return this;
     }
 
-    @ManyToMany
-    public Set<Aircraft> getApplicableAircraft() {
-        return applicableAircraft;
-    }
 
-    public Task setApplicableAircraft(Set<Aircraft> applicableAircraft) {
-        this.applicableAircraft = applicableAircraft;
-        return this;
-    }
 }

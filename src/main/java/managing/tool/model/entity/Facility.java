@@ -1,9 +1,6 @@
 package managing.tool.model.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
@@ -19,6 +16,7 @@ public class Facility extends BaseEntity {
     public Facility() {
     }
 
+    @Column(name = "name", nullable = false)
     public String getName() {
         return name;
     }
@@ -28,6 +26,7 @@ public class Facility extends BaseEntity {
         return this;
     }
 
+    @Column(name = "city", nullable = false)
     public String getCity() {
         return city;
     }
@@ -37,6 +36,7 @@ public class Facility extends BaseEntity {
         return this;
     }
 
+    @Column(name = "country", nullable = false)
     public String getCountry() {
         return country;
     }
@@ -46,6 +46,7 @@ public class Facility extends BaseEntity {
         return this;
     }
 
+    @Column(name = "capacity", nullable = false)
     public int getCapacity() {
         return capacity;
     }

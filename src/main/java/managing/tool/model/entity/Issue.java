@@ -25,6 +25,7 @@ public class Issue extends BaseEntity {
     public Issue() {
     }
 
+    @Column(name = "issue_num", nullable = false)
     public String getIssueNum() {
         return issueNum;
     }
@@ -55,6 +56,7 @@ public class Issue extends BaseEntity {
     }
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
     public IssueStatus getStatus() {
         return status;
     }
@@ -65,6 +67,7 @@ public class Issue extends BaseEntity {
     }
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "classification", nullable = false)
     public IssueClassification getClassification() {
         return classification;
     }
@@ -74,6 +77,7 @@ public class Issue extends BaseEntity {
         return this;
     }
 
+    @Column(name = "date_of_entry", nullable = false)
     public LocalDateTime getDateOfEntry() {
         return dateOfEntry;
     }
@@ -83,6 +87,7 @@ public class Issue extends BaseEntity {
         return this;
     }
 
+    @Column(name = "due_date", nullable = false)
     public LocalDateTime getDueDate() {
         return dueDate;
     }
@@ -103,6 +108,10 @@ public class Issue extends BaseEntity {
     }
 
     @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "issues_tasks",
+            joinColumns = @JoinColumn(name = "issue_id"),
+            inverseJoinColumns = @JoinColumn(name = "task_id"))
     public Set<Task> getTasks() {
         return tasks;
     }

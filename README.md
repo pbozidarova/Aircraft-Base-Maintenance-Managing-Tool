@@ -8,8 +8,8 @@ D or C check, huge base maintenance that requires licenced facilities, personnel
 The goal of this application if to facilitate the documentation of such a check and to provide a great way of 
 communicating any issues between the engineering and the technical staff. 
 
-In short - We have AIRCRAFT that need to have MAINTENANCE at specific FACILITY. 
-This MAINTENANCE consists of multiple technical TASKS and while performing them different ISSUES may occur. 
+In short - We have **AIRCRAFT** that need to have **MAINTENANCE** at specific **FACILITY**. 
+This **MAINTENANCE** consists of multiple technical **TASKS** and while performing them different **ISSUES** may occur. 
 
 ---------
 ### Model - each table with its properties(columns) in the database. It will be populated with mockup data when the application is started.
@@ -64,7 +64,7 @@ This MAINTENANCE consists of multiple technical TASKS and while performing them 
 6. Issue<br>
    Means of communication between the users, that is happening in the context of a maintenance event.
    - IssueNum - identification specific for a issue;
-   - Communication - an issue may require long back and forth communication between different users; 
+   - Communication - an issue may require long back and forth communication between different users. It consists of description, author and date fields.
    - Author - the user that have created the issue;
    - Status - whether the issue has already been reviewed;
    - Classification - after closing the issue, it needs to be classified for statistics reasons;

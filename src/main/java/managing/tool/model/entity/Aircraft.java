@@ -1,5 +1,6 @@
 package managing.tool.model.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -19,6 +20,7 @@ public class Aircraft extends BaseEntity {
     public Aircraft() {
     }
 
+    @Column(name = "operator_name", nullable = false)
     public String getOperatorName() {
         return operatorName;
     }
@@ -27,7 +29,7 @@ public class Aircraft extends BaseEntity {
         this.operatorName = operatorName;
         return this;
     }
-
+    @Column(name = "operator_ICAO_Code", nullable = false)
     public String getOperatorICAOCode() {
         return operatorICAOCode;
     }
@@ -37,6 +39,7 @@ public class Aircraft extends BaseEntity {
         return this;
     }
 
+    @Column(name ="aircraft_type", nullable = false)
     public String getAircraftType() {
         return aircraftType;
     }
@@ -46,6 +49,7 @@ public class Aircraft extends BaseEntity {
         return this;
     }
 
+    @Column(name = "aircraft_model", nullable = false)
     public String getAircraftModel() {
         return aircraftModel;
     }
@@ -55,6 +59,7 @@ public class Aircraft extends BaseEntity {
         return this;
     }
 
+    @Column(name ="aircraft_registration", nullable = false)
     public String getAircraftRegistration() {
         return aircraftRegistration;
     }
@@ -64,6 +69,7 @@ public class Aircraft extends BaseEntity {
         return this;
     }
 
+    @Column(name = "serial_number", nullable = false)
     public String getSerialNumber() {
         return serialNumber;
     }
@@ -73,6 +79,7 @@ public class Aircraft extends BaseEntity {
         return this;
     }
 
+    @Column(name = "engine_manufacturer", nullable = false)
     public String getEngineManufacturer() {
         return engineManufacturer;
     }
@@ -81,7 +88,7 @@ public class Aircraft extends BaseEntity {
         this.engineManufacturer = engineManufacturer;
         return this;
     }
-
+    @Column(name = "engine_model_series", nullable = false)
     public String getEngineModelSeries() {
         return engineModelSeries;
     }
