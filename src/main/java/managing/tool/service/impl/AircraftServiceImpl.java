@@ -2,7 +2,7 @@ package managing.tool.service.impl;
 
 import com.google.gson.Gson;
 import managing.tool.model.dto.seed.AircraftSeedDto;
-import managing.tool.model.entity.Aircraft;
+import managing.tool.model.entity.AircraftEntity;
 import managing.tool.repository.AircraftRepository;
 import managing.tool.service.AircraftService;
 import org.modelmapper.ModelMapper;
@@ -42,7 +42,7 @@ public class AircraftServiceImpl implements AircraftService {
                 );
         Arrays.stream(dtos)
                 .forEach(aDto -> {
-                    Aircraft aircraft = this.modelMapper.map(aDto, Aircraft.class);
+                    AircraftEntity aircraft = this.modelMapper.map(aDto, AircraftEntity.class);
 
                     this.aircraftRepository.save(aircraft);
                 });
@@ -56,7 +56,7 @@ public class AircraftServiceImpl implements AircraftService {
     }
 
     @Override
-    public Aircraft getAircraftByRegistration(String registration) {
+    public AircraftEntity getAircraftByRegistration(String registration) {
 
         return this.aircraftRepository.findByAircraftRegistration(registration);
     }

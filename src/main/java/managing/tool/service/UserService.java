@@ -1,14 +1,19 @@
 package managing.tool.service;
 
-import managing.tool.model.dto.service.UserServiceDto;
-import managing.tool.model.entity.User;
+import managing.tool.model.dto.view.UserViewDto;
+import managing.tool.model.entity.UserEntity;
 
 import java.io.FileNotFoundException;
+import java.util.List;
 
 public interface UserService {
+
+    UserViewDto findUser(String companyNum);
+
+    List<UserViewDto> findAllUsers();
 
     void seedUsers() throws FileNotFoundException;
     boolean userAreImported();
 
-    User findByCompanyNum(String companyNum);
+    UserEntity findByCompanyNum(String companyNum);
 }

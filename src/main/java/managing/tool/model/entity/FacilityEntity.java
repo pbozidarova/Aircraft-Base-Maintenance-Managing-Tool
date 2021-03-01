@@ -1,27 +1,26 @@
 package managing.tool.model.entity;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "facilities")
-public class Facility extends BaseEntity {
+public class FacilityEntity extends BaseEntity {
 
     private String name;
     private String city;
     private String country;
     private int capacity;
-    private User manager;
+    private UserEntity manager;
 
-    public Facility() {
+    public FacilityEntity() {
     }
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     public String getName() {
         return name;
     }
 
-    public Facility setName(String name) {
+    public FacilityEntity setName(String name) {
         this.name = name;
         return this;
     }
@@ -31,7 +30,7 @@ public class Facility extends BaseEntity {
         return city;
     }
 
-    public Facility setCity(String city) {
+    public FacilityEntity setCity(String city) {
         this.city = city;
         return this;
     }
@@ -41,7 +40,7 @@ public class Facility extends BaseEntity {
         return country;
     }
 
-    public Facility setCountry(String country) {
+    public FacilityEntity setCountry(String country) {
         this.country = country;
         return this;
     }
@@ -51,17 +50,17 @@ public class Facility extends BaseEntity {
         return capacity;
     }
 
-    public Facility setCapacity(int capacity) {
+    public FacilityEntity setCapacity(int capacity) {
         this.capacity = capacity;
         return this;
     }
 
     @OneToOne
-    public User getManager() {
+    public UserEntity getManager() {
         return manager;
     }
 
-    public Facility setManager(User manager) {
+    public FacilityEntity setManager(UserEntity manager) {
         this.manager = manager;
         return this;
     }

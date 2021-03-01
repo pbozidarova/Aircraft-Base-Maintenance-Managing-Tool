@@ -1,9 +1,6 @@
 package managing.tool.model.dto.seed;
 
 import com.google.gson.annotations.Expose;
-import managing.tool.model.entity.User;
-
-import java.util.Set;
 
 public class FacilitySeedDto {
     @Expose

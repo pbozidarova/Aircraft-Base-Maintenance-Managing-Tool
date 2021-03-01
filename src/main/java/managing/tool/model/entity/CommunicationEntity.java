@@ -6,13 +6,13 @@ import java.util.Set;
 
 @Entity
 @Table
-public class Communication extends BaseEntity {
+public class CommunicationEntity extends BaseEntity {
 
     private String description;
-    private Set<User> author;
+    private Set<UserEntity> author;
     private LocalDateTime dateOfEntry;
 
-    public Communication() {
+    public CommunicationEntity() {
     }
 
     @Column(name = "description", nullable = false ,columnDefinition = "TEXT")
@@ -20,18 +20,18 @@ public class Communication extends BaseEntity {
         return description;
     }
 
-    public Communication setDescription(String description) {
+    public CommunicationEntity setDescription(String description) {
         this.description = description;
         return this;
     }
 
     @OneToMany
     @Column(name ="author", nullable = false)
-    public Set<User> getAuthor() {
+    public Set<UserEntity> getAuthor() {
         return author;
     }
 
-    public Communication setAuthor(Set<User> author) {
+    public CommunicationEntity setAuthor(Set<UserEntity> author) {
         this.author = author;
         return this;
     }
@@ -41,7 +41,7 @@ public class Communication extends BaseEntity {
         return dateOfEntry;
     }
 
-    public Communication setDateOfEntry(LocalDateTime dateOfEntry) {
+    public CommunicationEntity setDateOfEntry(LocalDateTime dateOfEntry) {
         this.dateOfEntry = dateOfEntry;
         return this;
     }

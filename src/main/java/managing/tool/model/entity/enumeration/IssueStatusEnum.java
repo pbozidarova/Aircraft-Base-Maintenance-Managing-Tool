@@ -1,5 +1,5 @@
 package managing.tool.model.entity.enumeration;
 
-public enum IssueStatus {
+public enum IssueStatusEnum {
     OPENED, PROGRESSING, CLOSED
 }

@@ -1,5 +1,5 @@
 package managing.tool.model.entity.enumeration;
 
-public enum IssueClassification {
+public enum IssueClassificationEnum {
     CLARIFICATION, IMPROVEMENT, MISTAKE, REFUSED
 }

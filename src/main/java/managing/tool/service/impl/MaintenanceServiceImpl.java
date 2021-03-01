@@ -51,17 +51,17 @@ public class MaintenanceServiceImpl implements MaintenanceService {
 
         Arrays.stream(dtos)
                 .forEach(mDto -> {
-                    Maintenance maintenance = this.modelMapper.map(
-                            mDto, Maintenance.class
+                    MaintenanceEntity maintenance = this.modelMapper.map(
+                            mDto, MaintenanceEntity.class
                     );
 
                     LocalDate startDate = LocalDate.parse(
                             mDto.getStartDate(), DateTimeFormatter.ofPattern("dd/M/yyyy"));
 
-                    Aircraft aircraft = this.aircraftService.getAircraftByRegistration(mDto.getAircraftRegistration());
-                    Facility facility = this.facilityService.getFacilityByName(mDto.getFacility());
-                    User engineer = this.userService.findByCompanyNum(mDto.getEngineer());
-                    Set<Task> randomTasks = this.taskService.getRandomTaskList();
+                    AircraftEntity aircraft = this.aircraftService.getAircraftByRegistration(mDto.getAircraftRegistration());
+                    FacilityEntity facility = this.facilityService.getFacilityByName(mDto.getFacility());
+                    UserEntity engineer = this.userService.findByCompanyNum(mDto.getEngineer());
+                    Set<TaskEntity> randomTasks = this.taskService.getRandomTaskList();
 
                     maintenance
                             .setStartDate(startDate)

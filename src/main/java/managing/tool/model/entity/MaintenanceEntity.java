@@ -9,26 +9,26 @@ import java.util.Set;
 
 @Entity
 @Table(name = "maintenance")
-public class Maintenance extends BaseEntity {
+public class MaintenanceEntity extends BaseEntity {
 
    private String maintenanceNum;
    private LocalDate startDate;
    private LocalDate endDate;
    private MaintenanceStatusEnum status;
-   private Facility facility;
-   private Aircraft aircraft;
-   private User engineer;
-   private Set<Task> tasks;
+   private FacilityEntity facility;
+   private AircraftEntity aircraft;
+   private UserEntity engineer;
+   private Set<TaskEntity> tasks;
 
-    public Maintenance() {
+    public MaintenanceEntity() {
     }
 
-    @Column(name = "maintenance_num", nullable = false)
+    @Column(name = "maintenance_num", nullable = false, unique = true)
     public String getMaintenanceNum() {
         return maintenanceNum;
     }
 
-    public Maintenance setMaintenanceNum(String maintenance) {
+    public MaintenanceEntity setMaintenanceNum(String maintenance) {
         this.maintenanceNum = maintenance;
         return this;
     }
@@ -38,7 +38,7 @@ public class Maintenance extends BaseEntity {
         return startDate;
     }
 
-    public Maintenance setStartDate(LocalDate startDate) {
+    public MaintenanceEntity setStartDate(LocalDate startDate) {
         this.startDate = startDate;
         return this;
     }
@@ -47,7 +47,7 @@ public class Maintenance extends BaseEntity {
         return endDate;
     }
 
-    public Maintenance setEndDate(LocalDate endDate) {
+    public MaintenanceEntity setEndDate(LocalDate endDate) {
         this.endDate = endDate;
         return this;
     }
@@ -58,47 +58,47 @@ public class Maintenance extends BaseEntity {
         return status;
     }
 
-    public Maintenance setStatus(MaintenanceStatusEnum status) {
+    public MaintenanceEntity setStatus(MaintenanceStatusEnum status) {
         this.status = status;
         return this;
     }
 
     @ManyToOne
-    public Facility getFacility() {
+    public FacilityEntity getFacility() {
         return facility;
     }
 
-    public Maintenance setFacility(Facility facility) {
+    public MaintenanceEntity setFacility(FacilityEntity facility) {
         this.facility = facility;
         return this;
     }
 
     @ManyToOne
-    public Aircraft getAircraft() {
+    public AircraftEntity getAircraft() {
         return aircraft;
     }
 
-    public Maintenance setAircraft(Aircraft aircraft) {
+    public MaintenanceEntity setAircraft(AircraftEntity aircraft) {
         this.aircraft = aircraft;
         return this;
     }
 
     @ManyToOne
-    public User getEngineer() {
+    public UserEntity getEngineer() {
         return engineer;
     }
 
-    public Maintenance setEngineer(User engineer) {
+    public MaintenanceEntity setEngineer(UserEntity engineer) {
         this.engineer = engineer;
         return this;
     }
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    public Set<Task> getTasks() {
+    public Set<TaskEntity> getTasks() {
         return tasks;
     }
 
-    public Maintenance setTasks(Set<Task> tasks) {
+    public MaintenanceEntity setTasks(Set<TaskEntity> tasks) {
         this.tasks = tasks;
         return this;
     }

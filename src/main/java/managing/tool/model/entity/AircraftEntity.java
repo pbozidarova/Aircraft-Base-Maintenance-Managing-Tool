@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table
-public class Aircraft extends BaseEntity {
+public class AircraftEntity extends BaseEntity {
 
     private String operatorName;
     private String operatorICAOCode ;
@@ -17,7 +17,7 @@ public class Aircraft extends BaseEntity {
     private String engineManufacturer ;
     private String engineModelSeries ;
 
-    public Aircraft() {
+    public AircraftEntity() {
     }
 
     @Column(name = "operator_name", nullable = false)
@@ -25,7 +25,7 @@ public class Aircraft extends BaseEntity {
         return operatorName;
     }
 
-    public Aircraft setOperatorName(String operatorName) {
+    public AircraftEntity setOperatorName(String operatorName) {
         this.operatorName = operatorName;
         return this;
     }
@@ -34,7 +34,7 @@ public class Aircraft extends BaseEntity {
         return operatorICAOCode;
     }
 
-    public Aircraft setOperatorICAOCode(String operatorICAOCode) {
+    public AircraftEntity setOperatorICAOCode(String operatorICAOCode) {
         this.operatorICAOCode = operatorICAOCode;
         return this;
     }
@@ -44,7 +44,7 @@ public class Aircraft extends BaseEntity {
         return aircraftType;
     }
 
-    public Aircraft setAircraftType(String aircraftType) {
+    public AircraftEntity setAircraftType(String aircraftType) {
         this.aircraftType = aircraftType;
         return this;
     }
@@ -54,7 +54,7 @@ public class Aircraft extends BaseEntity {
         return aircraftModel;
     }
 
-    public Aircraft setAircraftModel(String aircraftModel) {
+    public AircraftEntity setAircraftModel(String aircraftModel) {
         this.aircraftModel = aircraftModel;
         return this;
     }
@@ -64,17 +64,17 @@ public class Aircraft extends BaseEntity {
         return aircraftRegistration;
     }
 
-    public Aircraft setAircraftRegistration(String aircraftRegistration) {
+    public AircraftEntity setAircraftRegistration(String aircraftRegistration) {
         this.aircraftRegistration = aircraftRegistration;
         return this;
     }
 
-    @Column(name = "serial_number", nullable = false)
+    @Column(name = "serial_number", nullable = false, unique = true)
     public String getSerialNumber() {
         return serialNumber;
     }
 
-    public Aircraft setSerialNumber(String serialNumber) {
+    public AircraftEntity setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
         return this;
     }
@@ -84,7 +84,7 @@ public class Aircraft extends BaseEntity {
         return engineManufacturer;
     }
 
-    public Aircraft setEngineManufacturer(String engineManufacturer) {
+    public AircraftEntity setEngineManufacturer(String engineManufacturer) {
         this.engineManufacturer = engineManufacturer;
         return this;
     }
@@ -93,7 +93,7 @@ public class Aircraft extends BaseEntity {
         return engineModelSeries;
     }
 
-    public Aircraft setEngineModelSeries(String engineModelSeries) {
+    public AircraftEntity setEngineModelSeries(String engineModelSeries) {
         this.engineModelSeries = engineModelSeries;
         return this;
     }

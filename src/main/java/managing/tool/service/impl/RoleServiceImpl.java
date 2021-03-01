@@ -1,6 +1,6 @@
 package managing.tool.service.impl;
 
-import managing.tool.model.entity.Role;
+import managing.tool.model.entity.RoleEntity;
 import managing.tool.model.entity.enumeration.RoleEnum;
 import managing.tool.repository.RoleRepository;
 import managing.tool.service.RoleService;
@@ -29,12 +29,12 @@ public class RoleServiceImpl implements RoleService {
 
         Arrays.stream(RoleEnum.values())
         .forEach(r -> {
-            this.roleRepository.save(new Role(r));
+            this.roleRepository.save(new RoleEntity(r));
         });
     }
 
     @Override
-    public Role findByName(RoleEnum role) {
+    public RoleEntity findByName(RoleEnum role) {
 
         return this.roleRepository.findByName(role);
     }

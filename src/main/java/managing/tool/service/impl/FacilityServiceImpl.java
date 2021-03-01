@@ -3,8 +3,8 @@ package managing.tool.service.impl;
 import com.google.gson.Gson;
 import managing.tool.constants.GlobalConstants;
 import managing.tool.model.dto.seed.FacilitySeedDto;
-import managing.tool.model.entity.Facility;
-import managing.tool.model.entity.User;
+import managing.tool.model.entity.FacilityEntity;
+import managing.tool.model.entity.UserEntity;
 import managing.tool.repository.FacilityRepository;
 import managing.tool.service.FacilityService;
 import managing.tool.service.UserService;
@@ -43,8 +43,8 @@ public class FacilityServiceImpl implements FacilityService {
         System.out.println();
         Arrays.stream(dtos)
                 .forEach(fDto -> {
-                    Facility facility = this.modelMapper.map(fDto, Facility.class);
-                    User user = this.userService.findByCompanyNum(fDto.getManager());
+                    FacilityEntity facility = this.modelMapper.map(fDto, FacilityEntity.class);
+                    UserEntity user = this.userService.findByCompanyNum(fDto.getManager());
                     facility.setManager(user);
                     //TODO Competences
                     this.facilityRepository.save(facility);
@@ -57,7 +57,7 @@ public class FacilityServiceImpl implements FacilityService {
     }
 
     @Override
-    public Facility getFacilityByName(String name) {
+    public FacilityEntity getFacilityByName(String name) {
 
         return this.facilityRepository.findByName(name);
     }

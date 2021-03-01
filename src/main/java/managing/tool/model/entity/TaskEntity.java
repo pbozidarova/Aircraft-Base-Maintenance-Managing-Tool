@@ -5,7 +5,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tasks")
-public class Task extends BaseEntity {
+public class TaskEntity extends BaseEntity {
 
     private String taskNum;
     private String code;
@@ -15,11 +15,11 @@ public class Task extends BaseEntity {
     private boolean areJobCardsPrepared;
     private boolean isQualityAssured;
 
-    private Set<Maintenance> maintenances;
-    private Set<User> preparedBy;
-    private Set<Issue> tickets;
+    private Set<MaintenanceEntity> maintenances;
+    private Set<UserEntity> preparedBy;
+    private Set<IssueEntity> tickets;
 
-    public Task() {
+    public TaskEntity() {
     }
 
     @Column(name = "task_num", nullable = false, unique = true)
@@ -27,7 +27,7 @@ public class Task extends BaseEntity {
         return taskNum;
     }
 
-    public Task setTaskNum(String taskNum) {
+    public TaskEntity setTaskNum(String taskNum) {
         this.taskNum = taskNum;
         return this;
     }
@@ -37,7 +37,7 @@ public class Task extends BaseEntity {
         return code;
     }
 
-    public Task setCode(String code) {
+    public TaskEntity setCode(String code) {
         this.code = code;
         return this;
     }
@@ -46,7 +46,7 @@ public class Task extends BaseEntity {
         return description;
     }
 
-    public Task setDescription(String description) {
+    public TaskEntity setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -56,7 +56,7 @@ public class Task extends BaseEntity {
         return isToolingAvailable;
     }
 
-    public Task setToolingAvailable(boolean toolingAvailable) {
+    public TaskEntity setToolingAvailable(boolean toolingAvailable) {
         isToolingAvailable = toolingAvailable;
         return this;
     }
@@ -65,7 +65,7 @@ public class Task extends BaseEntity {
         return areJobCardsPrepared;
     }
 
-    public Task setAreJobCardsPrepared(boolean areJobCardsPrepared) {
+    public TaskEntity setAreJobCardsPrepared(boolean areJobCardsPrepared) {
         this.areJobCardsPrepared = areJobCardsPrepared;
         return this;
     }
@@ -75,37 +75,37 @@ public class Task extends BaseEntity {
         return isQualityAssured;
     }
 
-    public Task setQualityAssured(boolean qualityAssured) {
+    public TaskEntity setQualityAssured(boolean qualityAssured) {
         isQualityAssured = qualityAssured;
         return this;
     }
 
     @ManyToMany(mappedBy = "tasks", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    public Set<Maintenance> getMaintenances() {
+    public Set<MaintenanceEntity> getMaintenances() {
         return maintenances;
     }
 
-    public Task setMaintenances(Set<Maintenance> maintenances) {
+    public TaskEntity setMaintenances(Set<MaintenanceEntity> maintenances) {
         this.maintenances = maintenances;
         return this;
     }
 
     @ManyToMany
-    public Set<User> getPreparedBy() {
+    public Set<UserEntity> getPreparedBy() {
         return preparedBy;
     }
 
-    public Task setPreparedBy(Set<User> preparedBy) {
+    public TaskEntity setPreparedBy(Set<UserEntity> preparedBy) {
         this.preparedBy = preparedBy;
         return this;
     }
 
     @ManyToMany(mappedBy = "tasks")
-    public Set<Issue> getTickets() {
+    public Set<IssueEntity> getTickets() {
         return tickets;
     }
 
-    public Task setTickets(Set<Issue> tickets) {
+    public TaskEntity setTickets(Set<IssueEntity> tickets) {
         this.tickets = tickets;
         return this;
     }

@@ -6,24 +6,24 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "roles")
-public class Role extends BaseEntity {
+public class RoleEntity extends BaseEntity {
 
     private RoleEnum role;
 
-    public Role() {
+    public RoleEntity() {
     }
 
-    public Role(RoleEnum role) {
+    public RoleEntity(RoleEnum role) {
         this.role = role;
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
+    @Column(name = "role", nullable = false, unique = true)
     public RoleEnum getName() {
         return role;
     }
 
-    public Role setName(RoleEnum role) {
+    public RoleEntity setName(RoleEnum role) {
         this.role = role;
         return this;
 

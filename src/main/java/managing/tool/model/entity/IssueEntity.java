@@ -1,7 +1,7 @@
 package managing.tool.model.entity;
 
-import managing.tool.model.entity.enumeration.IssueClassification;
-import managing.tool.model.entity.enumeration.IssueStatus;
+import managing.tool.model.entity.enumeration.IssueClassificationEnum;
+import managing.tool.model.entity.enumeration.IssueStatusEnum;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,70 +9,70 @@ import java.util.Set;
 
 @Entity
 @Table(name = "issues")
-public class Issue extends BaseEntity {
+public class IssueEntity extends BaseEntity {
 
     private String issueNum;
-    private Set<Communication> communication;
-    private User author;
-    private IssueStatus status;
-    private IssueClassification classification;
+    private Set<CommunicationEntity> communication;
+    private UserEntity author;
+    private IssueStatusEnum status;
+    private IssueClassificationEnum classification;
     private LocalDateTime dateOfEntry;
     private LocalDateTime dueDate;
 
-    private Maintenance maintenance;
-    private Set<Task> tasks;
+    private MaintenanceEntity maintenance;
+    private Set<TaskEntity> tasks;
 
-    public Issue() {
+    public IssueEntity() {
     }
 
-    @Column(name = "issue_num", nullable = false)
+    @Column(name = "issue_num", nullable = false, unique = true)
     public String getIssueNum() {
         return issueNum;
     }
 
-    public Issue setIssueNum(String issueNum) {
+    public IssueEntity setIssueNum(String issueNum) {
         this.issueNum = issueNum;
         return this;
     }
 
     @OneToMany(fetch = FetchType.EAGER)
-    public Set<Communication> getCommunication() {
+    public Set<CommunicationEntity> getCommunication() {
         return communication;
     }
 
-    public Issue setCommunication(Set<Communication> replay) {
+    public IssueEntity setCommunication(Set<CommunicationEntity> replay) {
         this.communication = replay;
         return this;
     }
 
     @OneToOne
-    public User getAuthor() {
+    public UserEntity getAuthor() {
         return author;
     }
 
-    public Issue setAuthor(User createdBy) {
+    public IssueEntity setAuthor(UserEntity createdBy) {
         this.author = createdBy;
         return this;
     }
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    public IssueStatus getStatus() {
+    public IssueStatusEnum getStatus() {
         return status;
     }
 
-    public Issue setStatus(IssueStatus status) {
+    public IssueEntity setStatus(IssueStatusEnum status) {
         this.status = status;
         return this;
     }
 
     @Enumerated(EnumType.STRING)
     @Column(name = "classification", nullable = false)
-    public IssueClassification getClassification() {
+    public IssueClassificationEnum getClassification() {
         return classification;
     }
 
-    public Issue setClassification(IssueClassification classification) {
+    public IssueEntity setClassification(IssueClassificationEnum classification) {
         this.classification = classification;
         return this;
     }
@@ -82,7 +82,7 @@ public class Issue extends BaseEntity {
         return dateOfEntry;
     }
 
-    public Issue setDateOfEntry(LocalDateTime dateOfEntry) {
+    public IssueEntity setDateOfEntry(LocalDateTime dateOfEntry) {
         this.dateOfEntry = dateOfEntry;
         return this;
     }
@@ -92,17 +92,17 @@ public class Issue extends BaseEntity {
         return dueDate;
     }
 
-    public Issue setDueDate(LocalDateTime dueDate) {
+    public IssueEntity setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
         return this;
     }
 
     @OneToOne
-    public Maintenance getMaintenance() {
+    public MaintenanceEntity getMaintenance() {
         return maintenance;
     }
 
-    public Issue setMaintenance(Maintenance maintenance) {
+    public IssueEntity setMaintenance(MaintenanceEntity maintenance) {
         this.maintenance = maintenance;
         return this;
     }
@@ -112,11 +112,11 @@ public class Issue extends BaseEntity {
             name = "issues_tasks",
             joinColumns = @JoinColumn(name = "issue_id"),
             inverseJoinColumns = @JoinColumn(name = "task_id"))
-    public Set<Task> getTasks() {
+    public Set<TaskEntity> getTasks() {
         return tasks;
     }
 
-    public Issue setTasks(Set<Task> tasks) {
+    public IssueEntity setTasks(Set<TaskEntity> tasks) {
         this.tasks = tasks;
         return this;
     }
