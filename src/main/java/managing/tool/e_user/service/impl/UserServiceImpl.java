@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
                     RoleEntity role = this.roleService.findByName(RoleEnum.valueOf(uDto.getRole().toUpperCase()));
                     Set<RoleEntity> roleSet = new HashSet<>();
                     roleSet.add(role);
-                    user.setRole(roleSet);
+                    user.setRoles(roleSet);
                     user.setCompanyNum(uDto.getCompanyNum());
                     this.userRepository.saveAndFlush(user);
                 });

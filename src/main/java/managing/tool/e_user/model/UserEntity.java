@@ -17,7 +17,7 @@ public class UserEntity extends BaseEntity {
     private String password;
     private String companyNum;
     private String email;
-    private Set<RoleEntity> role;
+    private Set<RoleEntity> roles;
     private FacilityEntity facility;
 
     public UserEntity() {
@@ -29,7 +29,7 @@ public class UserEntity extends BaseEntity {
         this.password = password;
         this.companyNum = companyNum;
         this.email = email;
-        this.role = role;
+        this.roles = role;
     }
 
     @Column(name = "first_name", nullable = false)
@@ -81,12 +81,12 @@ public class UserEntity extends BaseEntity {
     }
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    public Set<RoleEntity> getRole() {
-        return role;
+    public Set<RoleEntity> getRoles() {
+        return roles;
     }
 
-    public UserEntity setRole(Set<RoleEntity> role) {
-        this.role = role;
+    public UserEntity setRoles(Set<RoleEntity> role) {
+        this.roles = role;
         return this;
     }
 
@@ -107,7 +107,7 @@ public class UserEntity extends BaseEntity {
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", companyId='").append(companyNum).append('\'');
         sb.append(", email='").append(email).append('\'');
-        sb.append(", role=").append(role);
+        sb.append(", role=").append(roles);
         sb.append('}');
         return sb.toString();
     }

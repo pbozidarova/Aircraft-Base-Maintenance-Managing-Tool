@@ -7,10 +7,13 @@
 *.docx
 *.xls
 *.xlsx
+*.xlsb
 *.zipp
 *.rar
 *.zip
 *.pptx
+*.pdf
+
 
 node_modules/
 .idea/

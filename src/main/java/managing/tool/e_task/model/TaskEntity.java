@@ -1,6 +1,8 @@
 package managing.tool.e_task.model;
 
 import managing.tool.e_base.BaseEntity;
+import managing.tool.e_issue.model.IssueEntity;
+import managing.tool.e_maintenance.model.MaintenanceEntity;
 import managing.tool.e_user.model.UserEntity;
 
 import javax.persistence.*;

@@ -1,11 +1,16 @@
 package managing.tool.e_user.model.dto;
 
+import managing.tool.e_user.model.RoleEntity;
+
+import java.util.Set;
+
 public class UserViewDto {
 
     private String firstName;
     private String lastName;
     private String companyNum;
     private String email;
+    private Set<RoleEntity> roles;
 
     public UserViewDto() {
     }
