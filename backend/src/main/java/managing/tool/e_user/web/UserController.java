@@ -2,13 +2,11 @@ package managing.tool.e_user.web;
 
 import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("http://localhost")
 @RestController
 @RequestMapping("/users")
 public class UserController {
