@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import logo from './android-chrome-192x192.png';
 import './App.css';
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         
-        Hello React!
+        Hello ABMM Tool!
 
       </header>
     </div>
