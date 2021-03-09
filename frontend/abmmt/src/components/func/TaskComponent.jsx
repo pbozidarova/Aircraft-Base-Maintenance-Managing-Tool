@@ -8,9 +8,11 @@ class TaskComponent extends Component{
     render(){
         return(
             
-            <div></div>
+            <div>TaskComponent</div>
 
         )
     }
 
 }
+
+export default TaskComponent;
