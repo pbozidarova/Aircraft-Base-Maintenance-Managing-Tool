@@ -7,12 +7,9 @@ function App() {
   return (
     <div className="App">
       
-        <p>
-          <img src={logo} className="App-logo" alt="logo" />
-        </p>
         <AbmmtComponent/>
         
-        <Button onClick={()=>alert('hello')} href="#" variant="contained">Hello</Button>
+        {/* <Button onClick={()=>alert('hello')} href="#" variant="contained">Hello</Button> */}
 
     </div>
   );
