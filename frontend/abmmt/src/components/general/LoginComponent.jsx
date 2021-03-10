@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {Button, Input } from '@material-ui/core'
 import SaveIcon from '@material-ui/icons/Save'
+import AuthenticationService from '../AuthenticationService.js'
 import{BrowserRouter as Router, Route} from 'react-router-dom'
 
 class LoginComponent extends Component{
@@ -31,6 +32,7 @@ class LoginComponent extends Component{
     loginClicked(){
         //N90909, 1234
         if(this.state.username === 'N90909' && this.state.password === '1234'){
+            AuthenticationService.registerSuccessfullLogin(this.state.username, this.state.password)
             this.setState({
                     showSuccessMsg:true, 
                     hasLoginFailed:false

@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import LoginComponent from './LoginComponent'
+import LogoutComponent from './LogoutComponent'
 import HeaderComponent from './HeaderComponent'
 import FooterComponent from './FooterComponent'
 import ErrorComponent from './ErrorComponent'
@@ -28,7 +29,7 @@ class AbmmtComponent extends Component {
                             
                             <Route path="/users" component={UserComponent}></Route>
                             <Route path="/login" component={LoginComponent}></Route>
-                            <Route path="/logout"></Route>
+                            <Route path="/logout" component={LogoutComponent}></Route>
                             <Route component={ErrorComponent}/>
                         </Switch>
                         <FooterComponent/>
