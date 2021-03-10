@@ -16,69 +16,65 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import ListIcon from '@material-ui/icons/List';
 
 class ListItems extends Component {
+    
+    redirectTo(urlParam){
+        this.props.history.push(urlParam)
+    }
 
+    
     render(){
 
         const isUserLoggedIn = AuthenticationService.isUserLoggedIn();
 
+
         return (
             <>
-                {   isUserLoggedIn &&
-        
+                {  isUserLoggedIn &&
                 <div>
                     
-                    <Link to="/home">
-                        <ListItem button>
+                    <ListItem button onClick={() => this.redirectTo("/home") }>
                         <ListItemIcon>
                             <DashboardIcon />
                         </ListItemIcon>
                         <ListItemText primary="Dashboard" />              
-                        </ListItem>
-                    </Link>
-
-                    <Link to="/mpd">
-                        <ListItem button>
+                    </ListItem>
+                    
+                    
+                    <ListItem button onClick={() => this.redirectTo("/mpd") }>
                         <ListItemIcon>
                             <AssignmentIcon />
                         </ListItemIcon>
                         <ListItemText primary="Maintenance Data" />
                         {/* {isUserLoggedIn && <Link to="/mpd"><ListItemText primary=" Maintenance Data" /></Link>} */}
-                        </ListItem>
-                    </Link>
-
-                    <Link to="/maintenance">
-                        <ListItem button>
+                    </ListItem>
+                    
+                    
+                    <ListItem button onClick={() => this.redirectTo("/maintenance") }>
                         <ListItemIcon>
                             <ListIcon />
                         </ListItemIcon>
                         <ListItemText primary="Maintenance Events" />
-                        {/* {isUserLoggedIn && <Link to="/maintenance"><ListItemText primary="Maintenance Events" /></Link>} */}      
-                        </ListItem>
-                    </Link>
+                    </ListItem>
+                    
 
-                    <Link to="/aircraft">
-                        <ListItem button>
+                    
+                    <ListItem button onClick={() => this.redirectTo("/aircraft") }>
                         <ListItemIcon>
                             <LocalAirportIcon />
                         </ListItemIcon>
                         <ListItemText primary="Aircraft" />
-
-                        {/* {isUserLoggedIn && <Link to="/aircraft"><ListItemText primary="Aircraft" /></Link>} */}
-                        </ListItem>
-                    </Link>
-
-                    <Link to="/users">
-                        <ListItem button>
+                    </ListItem>
+                    
+                    
+                    <ListItem button onClick={() => this.redirectTo("/users") }>
                         <ListItemIcon>
                             <PeopleIcon />
                         </ListItemIcon>
                         <ListItemText primary="Users" />
-                        {/* {isUserLoggedIn && <Link to="/users"><ListItemText primary="Users" /></Link>} */}
-                        </ListItem>
-                    </Link>
+                    </ListItem>
+                    
 
-                    <Link to="/Logout">
-                    <ListItem button>
+                    <ListItem button onClick={() => this.redirectTo("/logout") }>
                     <ListItemIcon>
                         <BarChartIcon />
                     </ListItemIcon>
@@ -86,21 +82,20 @@ class ListItems extends Component {
 
                     {/* {isUserLoggedIn && <Link to="/logout" onClick={AuthenticationService.logout}><ListItemText primary="Login" /></Link>} */}
                     </ListItem>
-                    </Link>
+                    
                 </div>
              }
 
              { !isUserLoggedIn &&
-             <div>
-                <Link to="/login">
-                        <ListItem button>
-                        <ListItemIcon>
-                            <BarChartIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Login" />
-                        {/* {!isUserLoggedIn && <Link to="/login"><ListItemText primary="Login" /></Link>} */}
-                        </ListItem>
-                </Link>
+                 <div>
+                    <ListItem button onClick={() => this.redirectTo("/login") }>
+                    <ListItemIcon>
+                        <BarChartIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Login" />
+                    {/* {!isUserLoggedIn && <Link to="/login"><ListItemText primary="Login" /></Link>} */}
+                    </ListItem>
+                
                 </div>
              }
         </>

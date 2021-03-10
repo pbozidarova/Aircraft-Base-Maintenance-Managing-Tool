@@ -33,6 +33,8 @@ class LoginComponent extends Component{
         //N90909, 1234
         if(this.state.username === 'N90909' && this.state.password === '1234'){
             AuthenticationService.registerSuccessfullLogin(this.state.username, this.state.password)
+            this.props.history.push(`/home`)
+
             this.setState({
                     showSuccessMsg:true, 
                     hasLoginFailed:false

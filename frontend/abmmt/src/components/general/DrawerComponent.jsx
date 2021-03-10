@@ -15,14 +15,23 @@ import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
+
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ListItems from './ListItems.jsx';
+import{BrowserRouter as Router, Route, Switch, withRouter} from 'react-router-dom'
 
 
-import RouterComponent from './Router';
+import LoginComponent from './LoginComponent'
+import LogoutComponent from './LogoutComponent'
+import AircraftComponent from '../func/AircraftComponent'
+import TaskComponent from '../func/TaskComponent'
+import MaintenanceComponent from '../func/MaintenanceComponent'
+import UserComponent from '../func/UserComponent'
+import ErrorComponent from './ErrorComponent'
+
+// import RouterComponent from './Router';
 import AuthenticationService from '../AuthenticationService.js'
 import HeaderComponent from './HeaderComponent';
 import { ListItem } from '@material-ui/core';
@@ -70,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
-  drawerPaper: {
+  drawerPaper: {  
     position: 'relative',
     whiteSpace: 'nowrap',
     width: drawerWidth,
@@ -127,80 +136,94 @@ export default function Dashboard() {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-        <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-          >
-            <MenuIcon />
-          </IconButton>
+      <Router>
+        <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+          <Toolbar className={classes.toolbar}>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+            >
+              <MenuIcon />
+            </IconButton>
+            
+            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title} 
+  > 
+                {/* <img src={logo} className="App-logo" alt="logo" /> */}
           
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-        
-              {/* <img src={logo} className="App-logo" alt="logo" /> */}
-        
-              Aicraft Base Maintenance Management Tool
-              
-          </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-        </Toolbar>
-      </AppBar>
- 
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-        }}
-        open={open}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Divider />
-        {/* <List>{items}</List> */}
-        <List><ListItems/></List>
-        <Divider />
-        {/* <List>{secondaryListItems}</List>  */}
-      </Drawer>
+                Aicraft Base Maintenance Management Tool
+                
+            </Typography>
+            <IconButton color="inherit">
+              <Badge badgeContent={4} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+  
+        <Drawer
+          variant="permanent"
+          classes={{
+            paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+          }}
+          open={open}
+        >
+          <div className={classes.toolbarIcon}>
+            <IconButton onClick={handleDrawerClose}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </div>
+          <Divider />
+          {/* <List>{items}</List> */}
+          <List><ListItems/></List>
+          <Divider />
+          {/* <List>{secondaryListItems}</List>  */}
+        </Drawer>
 
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}>
-                <RouterComponent />
-              </Paper>
+        <main className={classes.content}>
+          <div className={classes.appBarSpacer} />
+          <Container maxWidth="lg" className={classes.container}>
+            <Grid container spacing={3}>
+              {/* Chart */}
+              <Grid item xs={12} md={8} lg={9}>
+                <Paper className={fixedHeightPaper}>
+                  
+                <Switch>
+                          <Route path="/" exact component={LoginComponent}></Route>
+                          <Route path="/home"></Route>
+                          <Route path="/mpd" component={TaskComponent}></Route>
+                          <Route path="/maintenance" component={MaintenanceComponent}></Route>
+                          <Route path="/aircraft" component={AircraftComponent}></Route>
+                          
+                          <Route path="/users" component={UserComponent}></Route>
+                          <Route path="/login" component={LoginComponent}></Route>
+                          <Route path="/logout" component={LogoutComponent}></Route>
+                          <Route component={ErrorComponent}/>
+                </Switch>              
+                </Paper>
+              </Grid>
+              {/* Recent Deposits */}
+              <Grid item xs={12} md={4} lg={3}>
+                <Paper className={fixedHeightPaper}>
+                  {/* <Deposits /> */}
+                </Paper>
+              </Grid>
+              {/* Recent Orders */}
+              <Grid item xs={12}>
+                <Paper className={classes.paper}>
+                  {/* <Orders /> */}
+                </Paper>
+              </Grid>
             </Grid>
-            {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                {/* <Deposits /> */}
-              </Paper>
-            </Grid>
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                {/* <Orders /> */}
-              </Paper>
-            </Grid>
-          </Grid>
-          <Box pt={4}>
-            {/* <Copyright /> */}
-          </Box>
-        </Container>
-      </main>
+            <Box pt={4}>
+              {/* <Copyright /> */}
+            </Box>
+          </Container>
+        </main>
+      </Router>
     </div>
   );
 }
