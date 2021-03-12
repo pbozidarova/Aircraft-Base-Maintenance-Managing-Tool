@@ -74,11 +74,11 @@ class ListItems extends Component {
                     </ListItem>
                     
 
-                    <ListItem button onClick={() => this.redirectTo("/logout") }>
+                    <ListItem button onClick={  () => {this.redirectTo("/logout"); AuthenticationService.logout(); }}>
                     <ListItemIcon>
                         <BarChartIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Logout" onClick={AuthenticationService.logout}/>
+                    <ListItemText primary="Logout" />
 
                     {/* {isUserLoggedIn && <Link to="/logout" onClick={AuthenticationService.logout}><ListItemText primary="Login" /></Link>} */}
                     </ListItem>

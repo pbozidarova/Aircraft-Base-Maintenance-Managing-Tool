@@ -1,5 +1,5 @@
 import React from 'react';
-// import logo from ''
+import logo from '../../favicon-32x32.png'
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -116,7 +116,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
   },
   fixedHeight: {
-    height: 240,
+    height: 400,
   },
 }));
 
@@ -146,14 +146,16 @@ export default function Dashboard() {
               onClick={handleDrawerOpen}
               className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
             >
-              <MenuIcon />
+              {/* <MenuIcon /> */}
+              <img src={logo} className="App-logo" alt="logo" />
+
             </IconButton>
             
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title} 
   > 
+                Aicraft Base Maintenance Management Tool
                 {/* <img src={logo} className="App-logo" alt="logo" /> */}
           
-                Aicraft Base Maintenance Management Tool
                 
             </Typography>
             <IconButton color="inherit">
@@ -173,7 +175,9 @@ export default function Dashboard() {
         >
           <div className={classes.toolbarIcon}>
             <IconButton onClick={handleDrawerClose}>
-              <ChevronLeftIcon />
+              {/* <ChevronLeftIcon /> */}
+              <img src={logo} className="App-logo" alt="logo" />
+
             </IconButton>
           </div>
           <Divider />

@@ -1,14 +1,17 @@
 package managing.tool.e_user.web;
 
+import managing.tool.constants.GlobalConstants;
 import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin("http://localhost")
+import static managing.tool.constants.GlobalConstants.FRONTEND_URL;
+
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(FRONTEND_URL)
 public class UserController {
     private final UserService userService;
 
