@@ -6,7 +6,7 @@ import ErrorComponent from './ErrorComponent'
 import AircraftComponent from '../func/AircraftComponent'
 import TaskComponent from '../func/TaskComponent'
 import MaintenanceComponent from '../func/MaintenanceComponent'
-import UserComponent from '../func/UserComponent'
+import UsersComponent from '../func/UsersComponent'
 import{BrowserRouter as Route, Switch, Link, withRouter} from 'react-router-dom'
 import ListItems from './ListItems.jsx';
 
@@ -22,7 +22,7 @@ class SwitchComponent extends Component {
                 <Route path="/maintenance" component={MaintenanceComponent}></Route>
                 <Route path="/aircraft" component={AircraftComponent}></Route>
                 
-                <Route path="/users" component={UserComponent}></Route>
+                <Route path="/users" component={UsersComponent}></Route>
                 <Route path="/login" component={LoginComponent}></Route>
                 <Route path="/logout" component={LogoutComponent}></Route>
                 <Route component={ErrorComponent}/>

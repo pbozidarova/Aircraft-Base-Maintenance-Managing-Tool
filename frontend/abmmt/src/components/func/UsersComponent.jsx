@@ -25,39 +25,81 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+
+import AircraftComponent from './AircraftComponent'
 
 
-class UserComponent extends Component {
-
+class UsersComponent extends Component {
     constructor(props){
         super(props)
         // this.getAllUsers = this.getAllUsers.bind(this);
         // this.handleSuccessfulResponse = this.handleSuccessfulResponse.bind(this);
         this.state = {
-            users : []
+            users : [],
+            selected : [],
+            setSelected : []
         }
 
+        this.refreshUsers = this.refreshUsers.bind(this)
+        this.handleClick = this.handleClick.bind(this)
+        this.isSelected = this.isSelected.bind(this)
     }
 
     
     componentDidMount(){
         // let username = AuthenticationService.isUserLoggedIn();
+        this.refreshUsers();
+    }
+
+    refreshUsers(){
         UserService.allUsers()
-            .then(
-                response => {
-                    console.log(response);
-                    this.setState({users : response.data});
-                }
-            );
+        .then(
+            response => {
+                console.log(response);
+                this.setState({users : response.data});
+            }
+        );
+    }
+
+    handleClick(event, name) {
+        console.log(name);
+        const selectedIndex = this.state.selected.indexOf(name);
+        let newSelected = [];
+    
+        if (selectedIndex === -1) {
+          newSelected = newSelected.concat(this.state.selected, name);
+        } else if (selectedIndex === 0) {
+          newSelected = newSelected.concat(this.state.selected.slice(1));
+        } else if (selectedIndex === this.state.selected.length - 1) {
+          newSelected = newSelected.concat(this.state.selected.slice(0, -1));
+        } else if (selectedIndex > 0) {
+          newSelected = newSelected.concat(
+            this.state.selected.slice(0, selectedIndex),
+            this.state.selected.slice(selectedIndex + 1),
+          );
+        }
+    }
+
+    isSelected(name) {
+        return this.state.selected.indexOf(name) !== -1
     }
 
     render(){
         return(
             <div>
-                User Component<hr/>
+                {/* <h1>User Component</h1> */}
 
-                {/* <EnhancedTable/> */}
-                <TableContainer>
+        <Container maxWidth="lg" className='{classes.container}'>
+            <Grid container spacing={3}>
+              {/* Chart */}
+              <Grid item xs={12} md={8} lg={7}>
+                <Paper className='{fixedHeightPaper}'>
+                  
+           {/* <EnhancedTable/> */}
+           <TableContainer>
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -74,7 +116,14 @@ class UserComponent extends Component {
                     
                         <TableBody>
                             {   this.state.users.map(user => {
-                                return <TableRow>
+                                return <TableRow
+                                        hover
+                                        onClick={(event) => this.handleClick(event, user.companyNum)}
+                                        aria-checked={this.isSelected(user.companyNum)}
+                                        tabIndex={-1}
+                                        key={user.companyNum}
+                                        selected={this.isSelected(user.companyNum)}
+                                        >
                                     {/* <TableCell component="th" id={user.companyNum} scope="row" >
                                         {user.companyNum}
                                     </TableCell> */}
@@ -89,6 +138,26 @@ class UserComponent extends Component {
                     </TableBody>
                     </Table>
                  </TableContainer>
+                </Paper>
+              </Grid>
+              {/* Recent Deposits */}
+              <Grid item xs={12} md={4} lg={5}>
+                <Paper className='{fixedHeightPaper}'>
+                  {/* <AircraftComponent/> */}
+                </Paper>
+              </Grid>
+              {/* Recent Orders */}
+              <Grid item xs={12}>
+                <Paper className='{classes.paper}'>
+                  <AircraftComponent />
+                </Paper>
+              </Grid>
+            </Grid>
+            <Box pt={4}>
+              {/* <Copyright /> */}
+            </Box>
+          </Container>
+     
             </div>
         )
     }
@@ -97,4 +166,4 @@ class UserComponent extends Component {
 }
 
 
-export default UserComponent;
+export default UsersComponent;

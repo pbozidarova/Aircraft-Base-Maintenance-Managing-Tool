@@ -64,8 +64,7 @@ class ListItems extends Component {
                         </ListItemIcon>
                         <ListItemText primary="Aircraft" />
                     </ListItem>
-                    
-                    
+                        
                     <ListItem button onClick={() => this.redirectTo("/users") }>
                         <ListItemIcon>
                             <PeopleIcon />

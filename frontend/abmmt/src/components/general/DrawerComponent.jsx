@@ -28,7 +28,7 @@ import LogoutComponent from './LogoutComponent'
 import AircraftComponent from '../func/AircraftComponent'
 import TaskComponent from '../func/TaskComponent'
 import MaintenanceComponent from '../func/MaintenanceComponent'
-import UserComponent from '../func/UserComponent'
+import UsersComponent from '../func/UsersComponent'
 import ErrorComponent from './ErrorComponent'
 
 // import RouterComponent from './Router';
@@ -189,43 +189,20 @@ export default function Dashboard() {
 
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
-          <Container maxWidth="lg" className={classes.container}>
-            <Grid container spacing={3}>
-              {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper className={fixedHeightPaper}>
-                  
-                <Switch>
+            <Container>
+              <Switch>
                           <Route path="/" exact component={LoginComponent}></Route>
                           <Route path="/home"></Route>
                           <Route path="/mpd" component={TaskComponent}></Route>
                           <Route path="/maintenance" component={MaintenanceComponent}></Route>
                           <Route path="/aircraft" component={AircraftComponent}></Route>
                           
-                          <Route path="/users" component={UserComponent}></Route>
+                          <Route path="/users" component={UsersComponent}></Route>
                           <Route path="/login" component={LoginComponent}></Route>
                           <Route path="/logout" component={LogoutComponent}></Route>
                           <Route component={ErrorComponent}/>
                 </Switch>              
-                </Paper>
-              </Grid>
-              {/* Recent Deposits */}
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper className={fixedHeightPaper}>
-                  {/* <Deposits /> */}
-                </Paper>
-              </Grid>
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  {/* <Orders /> */}
-                </Paper>
-              </Grid>
-            </Grid>
-            <Box pt={4}>
-              {/* <Copyright /> */}
-            </Box>
-          </Container>
+              </Container>
         </main>
       </Router>
     </div>
