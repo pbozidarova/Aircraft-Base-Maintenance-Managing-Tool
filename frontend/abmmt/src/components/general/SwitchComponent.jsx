@@ -8,7 +8,7 @@ import TaskComponent from '../func/TaskComponent'
 import MaintenanceComponent from '../func/MaintenanceComponent'
 import UsersComponent from '../func/UsersComponent'
 import{BrowserRouter as Route, Switch, Link, withRouter} from 'react-router-dom'
-import ListItems from './ListItems.jsx';
+
 
 class SwitchComponent extends Component {
 

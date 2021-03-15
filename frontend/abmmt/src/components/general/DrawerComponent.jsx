@@ -191,16 +191,16 @@ export default function Dashboard() {
           <div className={classes.appBarSpacer} />
             <Container>
               <Switch>
-                          <Route path="/" exact component={LoginComponent}></Route>
-                          <Route path="/home"></Route>
-                          <Route path="/mpd" component={TaskComponent}></Route>
-                          <Route path="/maintenance" component={MaintenanceComponent}></Route>
-                          <Route path="/aircraft" component={AircraftComponent}></Route>
-                          
-                          <Route path="/users" component={UsersComponent}></Route>
-                          <Route path="/login" component={LoginComponent}></Route>
-                          <Route path="/logout" component={LogoutComponent}></Route>
-                          <Route component={ErrorComponent}/>
+                    <Route path="/" exact component={LoginComponent}></Route>
+                    <Route path="/home"></Route>
+                    <Route path="/mpd" component={TaskComponent}></Route>
+                    <Route path="/maintenance" component={MaintenanceComponent}></Route>
+                    <Route path="/aircraft" component={AircraftComponent}></Route>
+                    
+                    <Route path="/users" component={UsersComponent}></Route>
+                    <Route path="/login" component={LoginComponent}></Route>
+                    <Route path="/logout" component={LogoutComponent}></Route>
+                    <Route component={ErrorComponent}/>
                 </Switch>              
               </Container>
         </main>

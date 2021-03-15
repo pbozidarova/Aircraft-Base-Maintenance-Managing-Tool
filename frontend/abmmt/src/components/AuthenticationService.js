@@ -1,17 +1,22 @@
+import {BACKEND_URL, SESSION_ATTRIBUTE_NAME} from '../Constanst.js'
+
 class AuthenticationService {
 
     registerSuccessfullLogin(username, password){
         console.log('registerSuccessfullLogin');
-        sessionStorage.setItem('authenticatedUser', username);
+        sessionStorage.setItem(SESSION_ATTRIBUTE_NAME, username);
+    }
 
+    createToken(token){
+        return 'Bearer ' + token;
     }
 
     logout(){
-        sessionStorage.removeItem('authenticatedUser');
+        sessionStorage.removeItem(SESSION_ATTRIBUTE_NAME);
     }
 
     isUserLoggedIn(){
-        return sessionStorage.getItem('authenticatedUser');
+        return sessionStorage.getItem(SESSION_ATTRIBUTE_NAME);
     }
 
     isMechanic(){

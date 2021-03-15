@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import UserService from '../../api/UsersAPI.js'
 import EnhancedTable from '../material-ui/Table.js'
 
+import EditUserComponent from './EditUserComponent'
+
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -39,8 +41,9 @@ class UsersComponent extends Component {
         // this.handleSuccessfulResponse = this.handleSuccessfulResponse.bind(this);
         this.state = {
             users : [],
-            selected : [],
-            setSelected : []
+            selectedUser: {},
+            // selected : [],
+            // setSelected : []
         }
 
         this.refreshUsers = this.refreshUsers.bind(this)
@@ -56,35 +59,21 @@ class UsersComponent extends Component {
 
     refreshUsers(){
         UserService.allUsers()
-        .then(
-            response => {
-                console.log(response);
-                this.setState({users : response.data});
-            }
-        );
+            .then(
+                response => {
+                    console.log(response.data);
+                    this.setState({users : response.data});
+                }
+            );
+            
     }
 
-    handleClick(event, name) {
-        console.log(name);
-        const selectedIndex = this.state.selected.indexOf(name);
-        let newSelected = [];
-    
-        if (selectedIndex === -1) {
-          newSelected = newSelected.concat(this.state.selected, name);
-        } else if (selectedIndex === 0) {
-          newSelected = newSelected.concat(this.state.selected.slice(1));
-        } else if (selectedIndex === this.state.selected.length - 1) {
-          newSelected = newSelected.concat(this.state.selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-          newSelected = newSelected.concat(
-            this.state.selected.slice(0, selectedIndex),
-            this.state.selected.slice(selectedIndex + 1),
-          );
-        }
+    handleClick(event, user) {      
+        this.setState({selectedUser: user})
     }
 
-    isSelected(name) {
-        return this.state.selected.indexOf(name) !== -1
+    isSelected(companyNum) {
+        return this.state.selectedUser.companyNum == companyNum;
     }
 
     render(){
@@ -95,7 +84,7 @@ class UsersComponent extends Component {
         <Container maxWidth="lg" className='{classes.container}'>
             <Grid container spacing={3}>
               {/* Chart */}
-              <Grid item xs={12} md={8} lg={7}>
+              <Grid item xs={12} md={8} lg={8}>
                 <Paper className='{fixedHeightPaper}'>
                   
            {/* <EnhancedTable/> */}
@@ -116,23 +105,24 @@ class UsersComponent extends Component {
                     
                         <TableBody>
                             {   this.state.users.map(user => {
-                                return <TableRow
-                                        hover
-                                        onClick={(event) => this.handleClick(event, user.companyNum)}
-                                        aria-checked={this.isSelected(user.companyNum)}
-                                        tabIndex={-1}
-                                        key={user.companyNum}
-                                        selected={this.isSelected(user.companyNum)}
-                                        >
-                                    {/* <TableCell component="th" id={user.companyNum} scope="row" >
-                                        {user.companyNum}
-                                    </TableCell> */}
-                                                                   
-                                    {Object.keys(user).map(key => <TableCell id={user.companyNum} align="right">{user[key]}</TableCell>)}
-                                    
-                                    <TableCell align="right"><EditIcon/></TableCell>
-                                    <TableCell align="right"><DeleteIcon/></TableCell>
-                                </TableRow>
+                                return (
+                                    <TableRow
+                                            hover
+                                            onClick={(event) => this.handleClick(event, user)}
+                                            tabIndex={-1}
+                                            key={user.companyNum}
+                                            selected={this.isSelected(user.companyNum)}
+                                            >
+                                        {/* <TableCell component="th" id={user.companyNum} scope="row" >
+                                            {user.companyNum}
+                                        </TableCell> */}
+                                        
+                                        {Object.keys(user).map(key => <TableCell align="right">{user[key]}</TableCell>)}
+                                        
+                                        <TableCell align="right"><EditIcon/></TableCell>
+                                        <TableCell align="right"><DeleteIcon/></TableCell>
+                                    </TableRow>
+                                    )   
                                 })
                             }
                     </TableBody>
@@ -141,15 +131,24 @@ class UsersComponent extends Component {
                 </Paper>
               </Grid>
               {/* Recent Deposits */}
-              <Grid item xs={12} md={4} lg={5}>
+              <Grid item xs={12} md={4} lg={7}>
                 <Paper className='{fixedHeightPaper}'>
                   {/* <AircraftComponent/> */}
+                  <EditUserComponent selectedUser={this.state.selectedUser}/>
+
                 </Paper>
               </Grid>
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper className='{classes.paper}'>
-                  <AircraftComponent />
+                    
+                    <form className='{classes.root}' noValidate autoComplete="off">
+                        <div>
+
+                            {/* <EditUserComponent selectedUser={this.state.selectedUser}/> */}
+                            
+                        </div>
+                    </form>
                 </Paper>
               </Grid>
             </Grid>
