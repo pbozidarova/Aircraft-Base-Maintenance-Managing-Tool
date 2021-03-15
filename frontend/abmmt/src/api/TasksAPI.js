@@ -2,12 +2,12 @@ import axios from 'axios'
 import {BACKEND_URL} from '../Constanst.js'
 
 
-class UserService {
-    allUsers(){
+class TasksService {
+    allTasks(){
         // console.log('executed service');
-        return axios.get(`${BACKEND_URL}/users/all`);
+        return axios.get(`${BACKEND_URL}/tasks/all`);
     }
 
 }
 
-export default new UserService();
+export default new TasksService();

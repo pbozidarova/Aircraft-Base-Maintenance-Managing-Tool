@@ -3,6 +3,7 @@ package managing.tool.e_task.service.impl;
 import com.google.gson.Gson;
 import managing.tool.e_task.model.dto.TaskSeedDto;
 import managing.tool.e_task.model.TaskEntity;
+import managing.tool.e_task.model.dto.TaskViewDto;
 import managing.tool.e_task.repository.TaskRepository;
 import managing.tool.e_task.service.TaskService;
 import org.modelmapper.ModelMapper;
@@ -11,10 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static managing.tool.constants.GlobalConstants.TASKS_MOCK_DATA_PATH;
 
@@ -31,6 +30,15 @@ public class TaskServiceImpl implements TaskService {
         this.modelMapper = modelMapper;
         this.gson = gson;
         this.random = random;
+    }
+
+    @Override
+    public List<TaskViewDto> findAllTasks() {
+        return this.taskRepository
+                .findAll()
+                .stream()
+                .map(t -> this.modelMapper.map(t, TaskViewDto.class) )
+                .collect(Collectors.toList());
     }
 
     @Override

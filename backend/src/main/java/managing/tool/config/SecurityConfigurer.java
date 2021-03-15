@@ -3,10 +3,13 @@ package managing.tool.config;
 import managing.tool.authentication.filters.JwtRequestFilter;
 import managing.tool.e_user.service.impl.SecurityUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,6 +22,10 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     private final SecurityUserDetailsService securityUserDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JwtRequestFilter jwtRequestFilter;
+
+    @Value("authenticate")
+    private String authenticationPath;
+
 
     @Autowired
     public SecurityConfigurer(SecurityUserDetailsService securityUserDetailsService, PasswordEncoder passwordEncoder, JwtRequestFilter jwtRequestFilter) {
@@ -48,6 +55,22 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    }
 
+    @Override
+    public void configure(WebSecurity webSecurity) throws Exception {
+        webSecurity
+                .ignoring()
+                .antMatchers(
+                        HttpMethod.POST,
+                        authenticationPath
+                )
+                .antMatchers(HttpMethod.OPTIONS, "/**")
+                .and()
+                .ignoring()
+                .antMatchers(
+                        HttpMethod.GET,
+                        "/" //Other Stuff You want to Ignore
+                );
     }
 }

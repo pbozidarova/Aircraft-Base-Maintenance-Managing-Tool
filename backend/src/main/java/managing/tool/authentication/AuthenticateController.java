@@ -12,15 +12,18 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import static managing.tool.constants.GlobalConstants.FRONTEND_URL;
+
 @RestController
-class HelloWorldController {
+@CrossOrigin(FRONTEND_URL)
+class AuthenticateController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtTokenUtil;
     private final SecurityUserDetailsService securityUserDetailsService;
 
     @Autowired
-    HelloWorldController(AuthenticationManager authenticationManager, JwtUtil jwtTokenUtil, SecurityUserDetailsService securityUserDetailsService) {
+    AuthenticateController(AuthenticationManager authenticationManager, JwtUtil jwtTokenUtil, SecurityUserDetailsService securityUserDetailsService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
         this.securityUserDetailsService = securityUserDetailsService;

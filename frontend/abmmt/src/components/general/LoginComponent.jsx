@@ -30,21 +30,35 @@ class LoginComponent extends Component{
     }
 
     loginClicked(){
-        //N90909, 1234
-        if(this.state.username === 'N90909' && this.state.password === '1234'){
-            AuthenticationService.registerSuccessfullLogin(this.state.username, this.state.password)
-            this.props.history.push(`/home`)
-
-            this.setState({
-                    showSuccessMsg:true, 
-                    hasLoginFailed:false
-                })
-        }else{
-            this.setState({
-                showSuccessMsg:false, 
-                hasLoginFailed:true
+        AuthenticationService
+            .executeAuthnetication(this.state.username, this.state.password)
+            .then(response => {
+                console.log(response.data.token);
+                AuthenticationService.registerSuccessfullLogin(this.state.username, response.data.token)
+                this.props.history.push('/home')
+            }).catch((e) => {
+                console.log(e);
+                this.setState({
+                            showSuccessMsg:false, 
+                            hasLoginFailed:true
+                        })
             })
-        } 
+
+        //N90909, 1234
+        // if(this.state.username === 'N90909' && this.state.password === '1234'){
+        //     AuthenticationService.registerSuccessfullLogin(this.state.username, this.state.password)
+        //     this.props.history.push(`/home`)
+
+        //     this.setState({
+        //             showSuccessMsg:true, 
+        //             hasLoginFailed:false
+        //         })
+        // }else{
+        //     this.setState({
+        //         showSuccessMsg:false, 
+        //         hasLoginFailed:true
+        //     })
+        // } 
     }
 
     render() {
