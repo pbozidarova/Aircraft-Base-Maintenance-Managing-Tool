@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Random;
@@ -32,7 +33,9 @@ public class AppBeanConfiguration {
     }
 
     @Bean
-    public PasswordEncoder bcrypt(){
-        return new BCryptPasswordEncoder();
+    public PasswordEncoder passwordEncoder(){
+        //TODO change on production
+        return NoOpPasswordEncoder.getInstance();
+//        return new BCryptPasswordEncoder();
     }
 }

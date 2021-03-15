@@ -8,11 +8,12 @@ import managing.tool.e_user.service.RoleService;
 import managing.tool.e_user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import java.io.FileNotFoundException;
 
-@Controller
+@Component
 public class ApplicationController implements CommandLineRunner {
 
     private final UserService userService;

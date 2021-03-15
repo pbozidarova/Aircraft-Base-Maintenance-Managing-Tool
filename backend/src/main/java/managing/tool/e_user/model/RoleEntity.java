@@ -28,4 +28,12 @@ public class RoleEntity extends BaseEntity {
         return this;
 
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder(String.valueOf(role));
+//        sb.append("role=").append(role);
+//        sb.append('}');
+        return sb.toString();
+    }
 }

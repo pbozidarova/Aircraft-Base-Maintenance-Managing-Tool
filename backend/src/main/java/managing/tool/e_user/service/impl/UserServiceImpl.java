@@ -50,7 +50,17 @@ public class UserServiceImpl implements UserService {
     public List<UserViewDto> findAllUsers() {
         return this.userRepository.findAll()
                 .stream()
-                .map(u -> this.modelMapper.map(u, UserViewDto.class))
+                .map(u -> {
+                    UserViewDto userView = this.modelMapper.map(u, UserViewDto.class);
+
+                    userView.setRoles( userView
+                                            .getRoles()
+                                            .replace("[", "")
+                                            .replace("]", "")
+                    );
+
+                    return userView;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -69,6 +79,7 @@ public class UserServiceImpl implements UserService {
         Arrays.stream(dtos)
                 .forEach(uDto -> {
                     UserEntity user = this.modelMapper.map(uDto, UserEntity.class);
+                    //TODO randomly allocate ADMIN or USER and ENG or MECH
                     RoleEntity role = this.roleService.findByName(RoleEnum.valueOf(uDto.getRole().toUpperCase()));
                     Set<RoleEntity> roleSet = new HashSet<>();
                     roleSet.add(role);

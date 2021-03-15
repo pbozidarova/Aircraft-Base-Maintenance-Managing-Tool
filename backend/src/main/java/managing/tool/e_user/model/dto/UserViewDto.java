@@ -10,11 +10,10 @@ public class UserViewDto {
     private String lastName;
     private String companyNum;
     private String email;
-    private Set<RoleEntity> roles;
+    private String roles;
 
     public UserViewDto() {
     }
-
 
     public String getFirstName() {
         return firstName;
@@ -49,6 +48,15 @@ public class UserViewDto {
 
     public UserViewDto setEmail(String email) {
         this.email = email;
+        return this;
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public UserViewDto setRoles(String roles) {
+        this.roles = roles;
         return this;
     }
 }
