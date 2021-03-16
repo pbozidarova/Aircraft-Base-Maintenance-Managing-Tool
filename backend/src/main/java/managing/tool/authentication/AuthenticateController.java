@@ -2,7 +2,7 @@ package managing.tool.authentication;
 
 import managing.tool.authentication.models.AuthenticationRequest;
 import managing.tool.authentication.models.AuthenticationResponse;
-import managing.tool.e_user.service.impl.SecurityUserDetailsService;
+import managing.tool.e_user.service.impl.UserDetailsServiceImpl;
 import managing.tool.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +20,13 @@ class AuthenticateController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtTokenUtil;
-    private final SecurityUserDetailsService securityUserDetailsService;
+    private final UserDetailsServiceImpl userDetailsServiceimpl;
 
     @Autowired
-    AuthenticateController(AuthenticationManager authenticationManager, JwtUtil jwtTokenUtil, SecurityUserDetailsService securityUserDetailsService) {
+    AuthenticateController(AuthenticationManager authenticationManager, JwtUtil jwtTokenUtil, UserDetailsServiceImpl userDetailsServiceimpl) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
-        this.securityUserDetailsService = securityUserDetailsService;
+        this.userDetailsServiceimpl = userDetailsServiceimpl;
     }
 
     @PostMapping(value = "/authenticate")
@@ -44,7 +44,7 @@ class AuthenticateController {
             throw new Exception("Incorrect username or password", e);
         }
 
-        final UserDetails userDetails = securityUserDetailsService
+        final UserDetails userDetails = userDetailsServiceimpl
                 .loadUserByUsername(authenticationRequest.getUsername());
 
         final String jwt = jwtTokenUtil.generateToken(userDetails);

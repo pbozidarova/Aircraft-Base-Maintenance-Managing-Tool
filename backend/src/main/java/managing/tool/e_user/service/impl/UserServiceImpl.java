@@ -1,6 +1,8 @@
 package managing.tool.e_user.service.impl;
 
 import com.google.gson.Gson;
+import managing.tool.constants.GlobalConstants;
+import managing.tool.e_user.model.dto.UserDetailsDto;
 import managing.tool.e_user.model.dto.UserSeedDto;
 import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.model.RoleEntity;
@@ -11,14 +13,12 @@ import managing.tool.e_user.service.RoleService;
 import managing.tool.e_user.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static managing.tool.constants.GlobalConstants.USERS_MOCK_DATA_PATH;
@@ -30,13 +30,15 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
     private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(Gson gson, ModelMapper modelMapper, UserRepository userRepository, RoleService roleService) {
+    public UserServiceImpl(Gson gson, ModelMapper modelMapper, UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.gson = gson;
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
         this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -44,6 +46,20 @@ public class UserServiceImpl implements UserService {
         return this.modelMapper
                 .map(this.userRepository.findByCompanyNum(companyNum),
                         UserViewDto.class);
+    }
+
+    @Override
+    public UserDetailsDto findUserDetails(String companyNum) {
+        UserEntity userEntity = this.userRepository.findByCompanyNum(companyNum);
+        UserDetailsDto userDetailsDto = this.modelMapper.map(
+                userEntity, UserDetailsDto.class
+        );
+
+        Set<RoleEntity> roleSet = new HashSet<>();
+        userEntity.getRoles().stream().forEach(role -> roleSet.add(role));
+        userDetailsDto.setRoles(roleSet);
+
+        return userDetailsDto;
     }
 
     @Override
@@ -80,11 +96,14 @@ public class UserServiceImpl implements UserService {
                 .forEach(uDto -> {
                     UserEntity user = this.modelMapper.map(uDto, UserEntity.class);
                     //TODO randomly allocate ADMIN or USER and ENG or MECH
+
                     RoleEntity role = this.roleService.findByName(RoleEnum.valueOf(uDto.getRole().toUpperCase()));
                     Set<RoleEntity> roleSet = new HashSet<>();
                     roleSet.add(role);
                     user.setRoles(roleSet);
                     user.setCompanyNum(uDto.getCompanyNum());
+
+                    user.setPassword(passwordEncoder.encode(GlobalConstants.DUMMY_PASS));
                     this.userRepository.saveAndFlush(user);
                 });
 

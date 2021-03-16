@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table
+@Table(name="aircraft")
 public class AircraftEntity extends BaseEntity {
 
     private String operatorName;
@@ -71,7 +71,7 @@ public class AircraftEntity extends BaseEntity {
         return this;
     }
 
-    @Column(name = "serial_number", nullable = false, unique = true)
+    @Column(name = "serial_number", nullable = false)
     public String getSerialNumber() {
         return serialNumber;
     }

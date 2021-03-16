@@ -15,7 +15,7 @@ import LocalAirportIcon from '@material-ui/icons/LocalAirport';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import ListIcon from '@material-ui/icons/List';
 
-class ListItems extends Component {
+class ListItemsSecondary extends Component {
     
     redirectTo(urlParam){
         this.props.history.push(urlParam)
@@ -31,31 +31,6 @@ class ListItems extends Component {
             <>
                 {  isUserLoggedIn &&
                 <div>
-                    
-                    <ListItem button onClick={() => this.redirectTo("/home") }>
-                        <ListItemIcon>
-                            <DashboardIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Dashboard" />              
-                    </ListItem>
-                    
-                    
-                    <ListItem button onClick={() => this.redirectTo("/mpd") }>
-                        <ListItemIcon>
-                            <AssignmentIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Maintenance Data" />
-                        {/* {isUserLoggedIn && <Link to="/mpd"><ListItemText primary=" Maintenance Data" /></Link>} */}
-                    </ListItem>
-                    
-                    
-                    <ListItem button onClick={() => this.redirectTo("/maintenance") }>
-                        <ListItemIcon>
-                            <ListIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Maintenance Events" />
-                    </ListItem>
-                    
                     
                     <ListItem button onClick={() => this.redirectTo("/aircraft") }>
                         <ListItemIcon>
@@ -108,5 +83,5 @@ class ListItems extends Component {
     }
 }
 
-export default withRouter(ListItems)
+export default withRouter(ListItemsSecondary)
 

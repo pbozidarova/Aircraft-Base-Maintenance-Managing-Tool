@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
 
 import{BrowserRouter as Router, Route, Switch, withRouter} from 'react-router-dom'
 
@@ -32,7 +33,7 @@ class AbmmtComponent extends Component {
     const { classes } = this.props;
 
     return (
-      <>
+
       <div className={classes.abmmt}>
           <CssBaseline />
           <Router>
@@ -40,7 +41,7 @@ class AbmmtComponent extends Component {
     
             <main className={classes.content}>
               <div className={classes.appBarSpacer} />
-                  <Container maxWidth="lg" className={classes.container}>
+              <Container maxWidth="false" className={classes.container}>
                     <Switch>
                           <Route path="/" exact component={LoginComponent}></Route>
                           <AuthenticatedRoute path="/home" component={DashboardComponent}></AuthenticatedRoute>
@@ -55,12 +56,14 @@ class AbmmtComponent extends Component {
                           <Route component={ErrorComponent}/>
                       </Switch>              
                   </Container>
-                
+                  
+                  <Box pt={4}>
+                    <FooterComponent/>
+                  </Box> 
+          
             </main>
           </Router>
-          </div>
-          <FooterComponent/>
-        </>
+        </div>
     )}
  
 }

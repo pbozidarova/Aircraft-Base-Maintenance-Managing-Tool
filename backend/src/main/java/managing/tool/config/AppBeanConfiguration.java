@@ -35,7 +35,7 @@ public class AppBeanConfiguration {
     @Bean
     public PasswordEncoder passwordEncoder(){
         //TODO change on production
-        return NoOpPasswordEncoder.getInstance();
-//        return new BCryptPasswordEncoder();
+//        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 }

@@ -1,10 +1,11 @@
 package managing.tool.config;
 
 import managing.tool.authentication.filters.JwtRequestFilter;
-import managing.tool.e_user.service.impl.SecurityUserDetailsService;
+import managing.tool.e_user.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,10 +17,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@Configuration
 @EnableWebSecurity
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
-    private final SecurityUserDetailsService securityUserDetailsService;
+    private final UserDetailsServiceImpl securityUserDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JwtRequestFilter jwtRequestFilter;
 
@@ -28,7 +30,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
 
     @Autowired
-    public SecurityConfigurer(SecurityUserDetailsService securityUserDetailsService, PasswordEncoder passwordEncoder, JwtRequestFilter jwtRequestFilter) {
+    public SecurityConfigurer(UserDetailsServiceImpl securityUserDetailsService, PasswordEncoder passwordEncoder, JwtRequestFilter jwtRequestFilter) {
         this.securityUserDetailsService = securityUserDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.jwtRequestFilter = jwtRequestFilter;

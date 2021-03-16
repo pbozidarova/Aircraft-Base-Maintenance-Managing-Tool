@@ -17,10 +17,12 @@ import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import ListItems from './ListItems.jsx';
+import ListItemsMain from './ListItemsMain.jsx';
+import ListItemsSecondary from './ListItemsSecondary.jsx';
 
 import { styles } from '../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
+
 
 
   class AppBarDrawerComponent extends Component {
@@ -113,8 +115,9 @@ import { withStyles } from '@material-ui/core/styles';
                 </div>
                 <Divider />
                 {/* <List>{items}</List> */}
-                <List><ListItems/></List>
+                <List><ListItemsMain/></List>
                 <Divider />
+                <List><ListItemsSecondary/></List>
                 {/* <List>{secondaryListItems}</List>  */}
                 </Drawer>
               </>                 
