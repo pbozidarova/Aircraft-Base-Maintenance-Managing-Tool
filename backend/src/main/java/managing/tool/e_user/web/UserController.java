@@ -3,6 +3,7 @@ package managing.tool.e_user.web;
 import managing.tool.constants.GlobalConstants;
 import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.service.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +21,12 @@ public class UserController {
     }
 
     @GetMapping("all")
-    public List<UserViewDto> allUsers(){
-        return this.userService.findAllUsers();
+    public ResponseEntity<List<UserViewDto>> allUsers(){
+
+        return  ResponseEntity
+                    .ok()
+                    .body(this.userService.findAllUsers());
+
     }
 
     @GetMapping("/{companyNum}")

@@ -3,6 +3,7 @@ import {Button, Input } from '@material-ui/core'
 import SaveIcon from '@material-ui/icons/Save'
 import AuthenticationService from '../AuthenticationService.js'
 import{BrowserRouter as Router, Route} from 'react-router-dom'
+import Paper from '@material-ui/core/Paper';
 
 class LoginComponent extends Component{
 
@@ -63,7 +64,8 @@ class LoginComponent extends Component{
 
     render() {
         return(
-            <div>
+            
+                <Paper>    
                 {this.state.hasLoginFailed && <div>Invalid Credentials</div>}
                 {this.state.showSuccessMsg && <div>Login Successful</div>}
                 <div>
@@ -89,7 +91,8 @@ class LoginComponent extends Component{
                     onClick={this.loginClicked}>
                         Login
                 </Button>
-            </div>
+            </Paper>
+            
         )
     }
 

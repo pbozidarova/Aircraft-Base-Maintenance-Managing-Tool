@@ -1,5 +1,9 @@
 import React, {Component} from 'react'
 import UserService from '../../api/UsersAPI.js'
+
+import { styles } from '../UseStyles.js'
+import { withStyles } from '@material-ui/core/styles';
+
 import EnhancedTable from '../material-ui/Table.js'
 
 import EditUserComponent from './EditUserComponent'
@@ -30,8 +34,6 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-
-import AircraftComponent from './AircraftComponent'
 
 
 class UsersComponent extends Component {
@@ -77,62 +79,64 @@ class UsersComponent extends Component {
     }
 
     render(){
+        const { classes } = this.props;
+        const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+        const drawerWidth = 240;
         return(
             <div>
-                {/* <h1>User Component</h1> */}
-
-        <Container maxWidth="lg" className='{classes.container}'>
+          
+        <Container maxWidth="lg" className={classes.container}>
             <Grid container spacing={3}>
               {/* Chart */}
-              <Grid item xs={12} md={8} lg={8}>
-                <Paper className='{fixedHeightPaper}'>
-                  
-           {/* <EnhancedTable/> */}
-           <TableContainer>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>First Name</TableCell>
-                                <TableCell>Last Name</TableCell>
-                                <TableCell>Company Number</TableCell>
-                                <TableCell>Email</TableCell>
-                                <TableCell>Roles</TableCell>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
-                                {/* {Object.keys(this.state.users[0]).map(label => <TableCell/>)} */}
-                            </TableRow>
-                        </TableHead>
-                    
-                        <TableBody>
-                            {   this.state.users.map(user => {
-                                return (
-                                    <TableRow
-                                            hover
-                                            onClick={(event) => this.handleClick(event, user)}
-                                            tabIndex={-1}
-                                            key={user.companyNum}
-                                            selected={this.isSelected(user.companyNum)}
-                                            >
-                                        {/* <TableCell component="th" id={user.companyNum} scope="row" >
-                                            {user.companyNum}
-                                        </TableCell> */}
-                                        
-                                        {Object.keys(user).map(key => <TableCell align="right">{user[key]}</TableCell>)}
-                                        
-                                        <TableCell align="right"><EditIcon/></TableCell>
-                                        <TableCell align="right"><DeleteIcon/></TableCell>
-                                    </TableRow>
-                                    )   
-                                })
-                            }
-                    </TableBody>
-                    </Table>
-                 </TableContainer>
+              <Grid item xs={8} md={8} lg={7}>
+                <Paper className={fixedHeightPaper}>
+                            
+                    {/* <EnhancedTable/> */}
+                    <TableContainer>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>First Name</TableCell>
+                                            <TableCell>Last Name</TableCell>
+                                            <TableCell>Company Number</TableCell>
+                                            <TableCell>Email</TableCell>
+                                            <TableCell>Roles</TableCell>
+                                            <TableCell></TableCell>
+                                            <TableCell></TableCell>
+                                            {/* {Object.keys(this.state.users[0]).map(label => <TableCell/>)} */}
+                                        </TableRow>
+                                    </TableHead>
+                                
+                                    <TableBody>
+                                        {   this.state.users.map(user => {
+                                            return (
+                                                <TableRow
+                                                        hover
+                                                        onClick={(event) => this.handleClick(event, user)}
+                                                        tabIndex={-1}
+                                                        key={user.companyNum}
+                                                        selected={this.isSelected(user.companyNum)}
+                                                        >
+                                                    {/* <TableCell component="th" id={user.companyNum} scope="row" >
+                                                        {user.companyNum}
+                                                    </TableCell> */}
+                                                    
+                                                    {Object.keys(user).map(key => <TableCell align="right">{user[key]}</TableCell>)}
+                                                    
+                                                    <TableCell align="right"><EditIcon/></TableCell>
+                                                    <TableCell align="right"><DeleteIcon/></TableCell>
+                                                </TableRow>
+                                                )   
+                                            })
+                                        }
+                                </TableBody>
+                                </Table>
+                            </TableContainer>
                 </Paper>
               </Grid>
               {/* Recent Deposits */}
-              <Grid item xs={12} md={4} lg={7}>
-                <Paper className='{fixedHeightPaper}'>
+              <Grid item xs={8} md={4} lg={5}>
+                <Paper className={fixedHeightPaper}>
                   {/* <AircraftComponent/> */}
                   <EditUserComponent selectedUser={this.state.selectedUser}/>
 
@@ -140,9 +144,9 @@ class UsersComponent extends Component {
               </Grid>
               {/* Recent Orders */}
               <Grid item xs={12}>
-                <Paper className='{classes.paper}'>
+                <Paper className={classes.paper}>
                     
-                    <form className='{classes.root}' noValidate autoComplete="off">
+                    <form className={classes.root} noValidate autoComplete="off">
                         <div>
 
                             {/* <EditUserComponent selectedUser={this.state.selectedUser}/> */}
@@ -152,9 +156,9 @@ class UsersComponent extends Component {
                 </Paper>
               </Grid>
             </Grid>
-            <Box pt={4}>
+            {/* <Box pt={4}>*/}
               {/* <Copyright /> */}
-            </Box>
+            {/* </Box> */} 
           </Container>
      
             </div>
@@ -165,4 +169,9 @@ class UsersComponent extends Component {
 }
 
 
-export default UsersComponent;
+
+UsersComponent.propTypes = {
+    classes: PropTypes.object.isRequired,
+  };
+  
+  export default withStyles(styles)(UsersComponent);
