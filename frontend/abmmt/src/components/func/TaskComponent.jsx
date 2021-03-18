@@ -1,31 +1,41 @@
 import React, { Component } from 'react'
-import TasksService from '../../api/TasksAPI.js'
+import BackendService from '../../api/CommonAPI.js'
+import {TASKS_HEADER_DATA} from '../../Constanst.js'
+
+import DataComponent from './DataComponent'
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import clsx from 'clsx';
+
+import { styles } from '../UseStyles.js'
+import { withStyles } from '@material-ui/core/styles';
+
+import PropTypes from 'prop-types';
+
 
 import {Button, Input } from '@material-ui/core'
-import SaveIcon from '@material-ui/icons/Save'
-import DeleteIcon from '@material-ui/icons/Delete'
-
-import EditIcon from '@material-ui/icons/Edit';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
 
 
 class TaskComponent extends Component{
     constructor(props){
         super(props)
-        // this.getAllUsers = this.getAllUsers.bind(this);
-        // this.handleSuccessfulResponse = this.handleSuccessfulResponse.bind(this);
+
         this.state = {
             tasks : [],
-            selectedTask: {},
-            // selected : [],
-            // setSelected : []
+            selected: {},
+            loading: true,
+            page: 0,
+            rowsPerPage: 10
+            
         }
 
         this.refreshTasks = this.refreshTasks.bind(this)
-        this.handleClick = this.handleClick.bind(this)
-        this.isSelected = this.isSelected.bind(this)
+        this.selectTask = this.selectTask.bind(this)
+        
     }
+    
 
     
     componentDidMount(){
@@ -34,52 +44,72 @@ class TaskComponent extends Component{
     }
 
     refreshTasks(){
-        TasksService.allTasks()
+        BackendService.all('tasks')
             .then(
                 response => {
-                    console.log(response.data);
-                    this.setState({tasks : response.data});
+                    this.setState({
+                        loading : false, 
+                        tasks : response.data
+                    });
                 }
             );
             
     }
-    handleClick(event, task) {      
-        this.setState({selectedTask: task})
-    }
 
-    isSelected(taskNum) {
-        return this.state.selectedTask.taskNum == taskNum;
+    selectTask(event, task) {      
+        this.setState({selected: task})
     }
 
     render(){
+        const { classes } = this.props;
+        const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
         return(
-            <div>
-            <div>TaskComponent</div>
-            {   this.state.tasks.map(task => {
-                return (
-                    <TableRow
-                            hover
-                            onClick={(event) => this.handleClick(event, task)}
-                            tabIndex={-1}
-                            key={task.taskNum}
-                            selected={this.isSelected(task.taskNum)}
-                            >
-                        {/* <TableCell component="th" id={user.companyNum} scope="row" >
-                            {user.companyNum}
-                        </TableCell> */}
-                        
-                        {Object.keys(task).map(key => <TableCell align="right">{task[key]}</TableCell>)}
-                        
-                        <TableCell align="right"><EditIcon/></TableCell>
-                        <TableCell align="right"><DeleteIcon/></TableCell>
-                    </TableRow>
-                    )   
-                })
-            }
-        </div>
-        )
+                           
+            <Grid container spacing={3}>
+              {/* Chart */}
+              <Grid item xs={12} md={5} lg={5}>
+                <Paper className={fixedHeightPaper}>
+                    
+                    { this.state.loading && <CircularProgress color="secondary"/> }
+                    <DataComponent 
+                        tableRows={this.state.tasks} 
+                        tableHeader={TASKS_HEADER_DATA}
+                        selected={this.state.selected}
+                        selectRow={this.selectTask} 
+                    />
+
+                </Paper>
+              </Grid>
+
+              <Grid item xs={12} md={7} lg={7}>
+                <Paper className={fixedHeightPaper}>
+
+
+                </Paper>
+              </Grid>
+              {/* Recent Orders */}
+              <Grid item xs={12}>
+                <Paper className={classes.paper}>
+                    
+                    <form className={classes.root} noValidate autoComplete="off">
+                        <div>
+
+                            {/* <EditUserComponent selectedUser={this.state.selectedUser}/> */}
+                            
+                        </div>
+                    </form>
+                </Paper>
+              </Grid>
+            </Grid>
+    
+     )
     }
 
 }
 
-export default TaskComponent;
+TaskComponent.propTypes = {
+    classes: PropTypes.object.isRequired,
+  };
+  
+  export default withStyles(styles)(TaskComponent);

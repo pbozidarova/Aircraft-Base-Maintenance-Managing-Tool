@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import managing.tool.constants.GlobalConstants;
 import managing.tool.e_facility.model.dto.FacilitySeedDto;
 import managing.tool.e_facility.model.FacilityEntity;
+import managing.tool.e_facility.model.dto.FacilityViewDto;
 import managing.tool.e_facility.service.FacilityService;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_facility.repository.FacilityRepository;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FacilityServiceImpl implements FacilityService {
@@ -29,6 +32,16 @@ public class FacilityServiceImpl implements FacilityService {
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.gson = gson;
+    }
+
+    @Override
+    public List<FacilityViewDto> findAll() {
+
+        return this.facilityRepository
+                .findAll()
+                .stream()
+                .map(f -> this.modelMapper.map(f, FacilityViewDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override

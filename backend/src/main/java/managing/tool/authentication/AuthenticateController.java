@@ -42,6 +42,7 @@ class AuthenticateController {
         catch (BadCredentialsException e) {
             //TODO Handle Exeption
             throw new Exception("Incorrect username or password", e);
+//            return ResponseEntity.noContent().build();
         }
 
         final UserDetails userDetails = userDetailsServiceimpl

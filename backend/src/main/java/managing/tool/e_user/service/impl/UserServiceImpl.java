@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetailsDto findUserDetails(String companyNum) {
+    public Optional<UserDetailsDto> findUserDetails(String companyNum) {
         UserEntity userEntity = this.userRepository.findByCompanyNum(companyNum);
         UserDetailsDto userDetailsDto = this.modelMapper.map(
                 userEntity, UserDetailsDto.class
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         userEntity.getRoles().stream().forEach(role -> roleSet.add(role));
         userDetailsDto.setRoles(roleSet);
 
-        return userDetailsDto;
+        return Optional.of(userDetailsDto);
     }
 
     @Override

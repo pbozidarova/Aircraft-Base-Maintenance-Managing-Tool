@@ -37,8 +37,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(securityUserDetailsService);
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(securityUserDetailsService)
+            .passwordEncoder(passwordEncoder);
     }
 
     @Override

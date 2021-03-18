@@ -12,7 +12,7 @@ public interface UserService {
 
     UserViewDto findUser(String companyNum);
 
-    UserDetailsDto findUserDetails(String companyNum);
+    Optional<UserDetailsDto> findUserDetails(String companyNum);
 
     List<UserViewDto> findAllUsers();
 

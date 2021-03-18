@@ -77,6 +77,9 @@ export const styles = (theme) => ({
       flexDirection: 'column',
     },
     fixedHeight: {
-      height: 400,
+      height: 500,
+    },
+    fixedHeightDash: {
+      height: 300,
     },
   });

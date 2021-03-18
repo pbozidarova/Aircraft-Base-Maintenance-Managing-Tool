@@ -27,8 +27,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String companyNum) {
-        UserDetailsDto userDetailsDto = this.userService.findUserDetails(companyNum);
+    public UserDetails loadUserByUsername(String companyNum) throws UsernameNotFoundException {
+        UserDetailsDto userDetailsDto = this.userService.findUserDetails(companyNum)
+                .orElseThrow(() -> new UsernameNotFoundException("User with companyNum " + companyNum + " was not found!"));
 
         return mapToUserDetails(userDetailsDto);
     }

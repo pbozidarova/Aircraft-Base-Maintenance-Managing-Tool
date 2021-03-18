@@ -77,13 +77,13 @@ import { withStyles } from '@material-ui/core/styles';
                         Aicraft Base Maintenance Management Tool
                     </Typography>
 
-                    {!isUserLoggedIn && <Button 
+                    {/* {!isUserLoggedIn && <Button 
                         variant="contained"
                         className={classes.menuButton}
                         onClick={() => this.redirectTo("/login") }
                     >
                         Login
-                    </Button>}
+                    </Button>} */}
                     {isUserLoggedIn && <Button 
                         variant="contained" 
                         className={classes.menuButton}

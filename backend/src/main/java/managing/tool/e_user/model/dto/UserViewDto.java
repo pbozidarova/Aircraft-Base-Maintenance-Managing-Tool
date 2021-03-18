@@ -6,9 +6,9 @@ import java.util.Set;
 
 public class UserViewDto {
 
+    private String companyNum;
     private String firstName;
     private String lastName;
-    private String companyNum;
     private String email;
     private String roles;
 
