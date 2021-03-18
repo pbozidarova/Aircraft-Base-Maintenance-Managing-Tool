@@ -6,6 +6,8 @@ import managing.tool.e_task.model.TaskEntity;
 import managing.tool.e_task.model.dto.TaskViewDto;
 import managing.tool.e_task.repository.TaskRepository;
 import managing.tool.e_task.service.TaskService;
+import managing.tool.e_user.model.UserEntity;
+import managing.tool.e_user.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,12 +23,14 @@ import static managing.tool.constants.GlobalConstants.TASKS_MOCK_DATA_PATH;
 @Transactional
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
+    private final UserService userService;
     private final ModelMapper modelMapper;
     private final Gson gson;
     private final Random random;
 
-    public TaskServiceImpl(TaskRepository taskRepository, ModelMapper modelMapper, Gson gson, Random random) {
+    public TaskServiceImpl(TaskRepository taskRepository, UserService userService, ModelMapper modelMapper, Gson gson, Random random) {
         this.taskRepository = taskRepository;
+        this.userService = userService;
         this.modelMapper = modelMapper;
         this.gson = gson;
         this.random = random;
@@ -37,7 +41,21 @@ public class TaskServiceImpl implements TaskService {
         return this.taskRepository
                 .findAll()
                 .stream()
-                .map(t -> this.modelMapper.map(t, TaskViewDto.class) )
+                .map(t -> {
+                    TaskViewDto taskViewDto =  this.modelMapper.map(t, TaskViewDto.class);
+
+                    return  taskViewDto;
+                } )
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TaskViewDto> findByCreatedBy(String companyNum) {
+
+        return this.taskRepository
+                .findAllByPreparedByContainsOrderByUpdatedOn(this.userService.findByCompanyNum(companyNum))
+                .stream()
+                .map(t -> this.modelMapper.map(t, TaskViewDto.class))
                 .collect(Collectors.toList());
     }
 
@@ -54,6 +72,17 @@ public class TaskServiceImpl implements TaskService {
         Arrays.stream(dtos)
                 .forEach(tDto -> {
                     TaskEntity task = this.modelMapper.map(tDto, TaskEntity.class);
+
+                    UserEntity userEntity = this.userService.getRandomUser();
+
+                    task.setPreparedBy(new HashSet<>());
+                    task.getPreparedBy().add(userEntity);
+
+
+                    task.setToolingAvailable(this.random.nextBoolean());
+                    task.setAreJobCardsPrepared(this.random.nextBoolean());
+                    task.setQualityAssured(this.random.nextBoolean());
+
                     this.taskRepository.save(task);
                 });
     }

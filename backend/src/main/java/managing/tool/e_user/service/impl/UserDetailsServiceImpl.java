@@ -1,7 +1,6 @@
 package managing.tool.e_user.service.impl;
 
 import managing.tool.e_user.model.dto.UserDetailsDto;
-import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,9 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

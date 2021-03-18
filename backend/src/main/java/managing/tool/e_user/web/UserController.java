@@ -1,14 +1,21 @@
 package managing.tool.e_user.web;
 
-import managing.tool.constants.GlobalConstants;
-import managing.tool.e_user.model.dto.UserViewDto;
+import managing.tool.e_task.model.dto.TaskViewDto;
+import managing.tool.e_task.web.TaskController;
+import managing.tool.e_user.model.dto.UserAllViewDto;
+import managing.tool.e_user.model.dto.UserSingleViewDto;
 import managing.tool.e_user.service.UserService;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static managing.tool.constants.GlobalConstants.FRONTEND_URL;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/users")
@@ -21,7 +28,7 @@ public class UserController {
     }
 
     @GetMapping("all")
-    public ResponseEntity<List<UserViewDto>> allUsers(){
+    public ResponseEntity<List<UserAllViewDto>> allUsers(){
 
         return  ResponseEntity
                     .ok()
@@ -30,7 +37,28 @@ public class UserController {
     }
 
     @GetMapping("/{companyNum}")
-    public UserViewDto user(@PathVariable String companyNum){
-        return this.userService.findUser(companyNum);
+    public ResponseEntity<EntityModel<UserSingleViewDto>> findSingleUser(@PathVariable String companyNum){
+        UserSingleViewDto user = this.userService.findUser(companyNum);
+
+        return ResponseEntity
+                .ok(EntityModel.of(user, createUserHypermedia(user)));
+    }
+
+    private Link[] createUserHypermedia(UserSingleViewDto user) {
+        List<Link> result = new ArrayList<>();
+
+        Link selfLink = linkTo(methodOn(UserController.class)
+                            .findSingleUser(user.getCompanyNum())).withSelfRel();
+        result.add(selfLink);
+
+        Link tasksLink = linkTo(methodOn(TaskController.class)
+                            .tasksPreparedBy(
+                                user.getCompanyNum()))
+                            .withRel("tasks");
+
+            result.add(tasksLink);
+
+
+        return result.toArray(new Link[0]);
     }
 }

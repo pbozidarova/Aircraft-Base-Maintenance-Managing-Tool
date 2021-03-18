@@ -4,10 +4,9 @@ export const SESSION_ATTRIBUTE_NAME = 'authenticatedUser';
 
 export const USERS_HEADER_DATA = {
     companyNum: 'Company Number',
-    firstName : 'First Name',
-    lastName : 'Last Name',
+    names : 'Name',
     email : 'Email',
-    roles : 'roles',
+    roles : 'Roles',
 }
 
 export const TASKS_HEADER_DATA = {

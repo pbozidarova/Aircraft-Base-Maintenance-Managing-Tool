@@ -6,6 +6,7 @@ import managing.tool.e_maintenance.model.MaintenanceEntity;
 import managing.tool.e_user.model.UserEntity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -22,7 +23,11 @@ public class TaskEntity extends BaseEntity {
 
     private Set<MaintenanceEntity> maintenances;
     private Set<UserEntity> preparedBy;
+    private UserEntity lastModifiedBy;
     private Set<IssueEntity> tickets;
+
+    private LocalDateTime createdOn;
+    private LocalDateTime updatedOn;
 
     public TaskEntity() {
     }
@@ -115,5 +120,25 @@ public class TaskEntity extends BaseEntity {
         return this;
     }
 
+    public boolean isAreJobCardsPrepared() {
+        return areJobCardsPrepared;
+    }
 
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
+
+    public TaskEntity setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
+        return this;
+    }
+
+    public LocalDateTime getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public TaskEntity setUpdatedOn(LocalDateTime updatedOn) {
+        this.updatedOn = updatedOn;
+        return this;
+    }
 }
