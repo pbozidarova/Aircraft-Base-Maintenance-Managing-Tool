@@ -16,3 +16,24 @@ export const TASKS_HEADER_DATA = {
     code : 'Code',
     
 }
+
+export const FACILITIES_HEADER_DATA = {
+    name: 'Name',
+    city: 'City',
+    country: 'Country',
+    capacity: 'Capacity',
+    manager: 'Manager',
+    
+}
+
+export const AIRCRAFT_HEADER_DATA = {
+    serialNumber : "Serial Number",
+    operatorName: "Operator",
+    operatorICAOCode : "Operator ICAO Code",
+    aircraftType : "Type",
+    aircraftModel : "Model",
+    aircraftRegistration : "Registration",
+    engineManufacturer : "Engine Manufacturer",
+    engineModelSeries : "Engine Model Series",
+    
+}

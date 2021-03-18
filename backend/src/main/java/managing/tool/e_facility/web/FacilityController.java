@@ -25,7 +25,7 @@ public class FacilityController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<FacilityViewDto>>(){
+    public ResponseEntity<List<FacilityViewDto>> getAll(){
 
         return  ResponseEntity
                 .ok()

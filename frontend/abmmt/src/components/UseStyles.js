@@ -79,7 +79,7 @@ export const styles = (theme) => ({
     fixedHeight: {
       height: 500,
     },
-    fixedHeightDash: {
+    fixedHeightMin: {
       height: 300,
     },
   });

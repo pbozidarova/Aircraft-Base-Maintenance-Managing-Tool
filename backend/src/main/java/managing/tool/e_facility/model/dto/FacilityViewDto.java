@@ -7,7 +7,7 @@ public class FacilityViewDto {
     private String city;
     private String country;
     private int capacity;
-    private UserEntity manager;
+    private String manager;
 
     public FacilityViewDto() {
     }
@@ -48,11 +48,11 @@ public class FacilityViewDto {
         return this;
     }
 
-    public UserEntity getManager() {
+    public String getManager() {
         return manager;
     }
 
-    public FacilityViewDto setManager(UserEntity manager) {
+    public FacilityViewDto setManager(String manager) {
         this.manager = manager;
         return this;
     }
