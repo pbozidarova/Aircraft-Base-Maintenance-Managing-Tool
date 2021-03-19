@@ -78,3 +78,39 @@ This **MAINTENANCE** consists of multiple technical **TASKS** and while performi
    A user can be an admin or a simple user of this application.
    An engineer that can create a single task (technical job);
    a mechanic that performs it.
+   
+### REST API
+- User
+       
+      - localhost:3200/users/all
+      - localhost:3200/users/{companyNum}
+      - HATEOAS:
+         - localhost:3200/tasks/user/{companyNum}
+         - localhost:3200/maintenance/user/{companyNum}
+         - localhost:3200/issues/user/{companyNum}
+
+- Maintenance
+   
+      - localhost:3200/maintenance/all
+      - localhost:3200/maintenance/{maintenanceNum}
+      - HATEOAS:
+         localhost:3200/tasks/maintenance/{maintenanceNum}
+         localhost:3200/issues/maintenance/{maintenanceNum}
+
+- Tasks
+
+      localhost:3200/tasks/all
+      localhost:3200/tasks/{taskNum}
+      localhost:3200/tasks/user/{companyNum}
+      localhost:3200/tasks/maintenance/{maintenanceNum}
+
+- Issues
+      
+      localhost:3200/issues/all
+      localhost:3200/issues/user/{companyNum}
+      localhost:3200/issues/maintenance/{maintenanceNum}
+
+- Facilities
+  
+      localhost:3200/facilities/all
+      localhost:3200/aircraft/all

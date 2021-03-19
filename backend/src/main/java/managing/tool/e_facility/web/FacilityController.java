@@ -30,7 +30,6 @@ public class FacilityController {
         return  ResponseEntity
                 .ok()
                 .body(this.facilityService.findAll());
-
     }
 
 }
