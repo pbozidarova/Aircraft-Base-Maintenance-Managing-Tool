@@ -1,5 +1,7 @@
 package managing.tool.e_task.model.dto;
 
+import managing.tool.e_task.model.TaskEntity;
+
 import java.util.List;
 
 public class TaskViewDto {
@@ -78,5 +80,12 @@ public class TaskViewDto {
         this.preparedBy = preparedBy;
         return this;
     }
+
+    public static TaskViewDto asDTO(TaskEntity taskEntity) {
+        return new TaskViewDto().
+                setTaskNum(taskEntity.getTaskNum());
+
+    }
+
 
 }

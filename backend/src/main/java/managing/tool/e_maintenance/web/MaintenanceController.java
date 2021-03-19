@@ -6,6 +6,7 @@ import managing.tool.e_maintenance.service.MaintenanceService;
 import managing.tool.e_task.web.TaskController;
 import managing.tool.e_user.model.dto.UserSingleViewDto;
 import managing.tool.e_user.web.UserController;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -36,18 +39,33 @@ public class MaintenanceController {
     }
 
     @GetMapping("/{maintenanceNum}")
-    public ResponseEntity<EntityModel<MaintenanceViewModel>> findSingleMaintenanceEvent(@PathVariable String maintenanceNum){
+    public ResponseEntity<EntityModel<MaintenanceViewModel>> findMaintenanceByNum(@PathVariable String maintenanceNum){
         MaintenanceViewModel maintenance = this.maintenanceService.findMaintenanceByNum(maintenanceNum);
 
         return ResponseEntity
                 .ok(EntityModel.of(maintenance, createUserHypermedia(maintenance)));
     }
 
+    @GetMapping("/user/{companyNum}")
+    public ResponseEntity<CollectionModel<EntityModel<MaintenanceViewModel>>> findMaintenanceByResponsibleEngineer(@PathVariable String companyNum){
+        List<EntityModel<MaintenanceViewModel>> maintenance = this.maintenanceService
+                .findAllMaintenanceByResponsibleEngineer(companyNum)
+                .stream()
+                .map(m -> EntityModel.of(m, createUserHypermedia(m)))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(
+                CollectionModel.of(maintenance,
+                        linkTo(methodOn(MaintenanceController.class).
+                                getAllMaintenanceEvents()).withSelfRel())
+                );
+    }
+
     private Link[] createUserHypermedia(MaintenanceViewModel maintenance) {
         List<Link> result = new ArrayList<>();
 
         Link selfLink = linkTo(methodOn(MaintenanceController.class)
-                .findSingleMaintenanceEvent(maintenance.getMaintenanceNum())).withSelfRel();
+                .findMaintenanceByNum(maintenance.getMaintenanceNum())).withSelfRel();
         result.add(selfLink);
 
         Link tasksLink = linkTo(methodOn(TaskController.class)

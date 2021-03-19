@@ -1,5 +1,6 @@
 package managing.tool.e_user.web;
 
+import managing.tool.e_maintenance.web.MaintenanceController;
 import managing.tool.e_task.model.dto.TaskViewDto;
 import managing.tool.e_task.web.TaskController;
 import managing.tool.e_user.model.dto.UserAllViewDto;
@@ -56,10 +57,10 @@ public class UserController {
                             .withRel("tasks");
         result.add(tasksLink);
 
-        Link maintenanceLink = linkTo(methodOn(TaskController.class)
-                .tasksPreparedBy(user.getCompanyNum()))
-                .withRel("tasks");
-        result.add(tasksLink);
+        Link maintenanceLink = linkTo(methodOn(MaintenanceController.class)
+                .findMaintenanceByNum(user.getCompanyNum()))
+                .withRel("maintenance");
+        result.add(maintenanceLink);
 
 
         return result.toArray(new Link[0]);

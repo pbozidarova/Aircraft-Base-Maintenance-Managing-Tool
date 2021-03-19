@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
-        List<TaskEntity> findAllByPreparedByContainsOrderByUpdatedOn(UserEntity user);
+        List<TaskEntity> findAllByPreparedByContains(UserEntity user);
 
         List<TaskEntity> findAllByMaintenancesContains(MaintenanceEntity maintenance);
 }

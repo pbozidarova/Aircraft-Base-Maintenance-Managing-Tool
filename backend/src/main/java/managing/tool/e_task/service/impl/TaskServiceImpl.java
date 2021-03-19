@@ -56,7 +56,7 @@ public class TaskServiceImpl implements TaskService {
     public List<TaskViewDto> findByCreatedBy(String companyNum) {
 
         return this.taskRepository
-                .findAllByPreparedByContainsOrderByUpdatedOn(this.userService.findByCompanyNum(companyNum))
+                .findAllByPreparedByContains(this.userService.findByCompanyNum(companyNum))
                 .stream()
                 .map(t -> this.modelMapper.map(t, TaskViewDto.class))
                 .collect(Collectors.toList());

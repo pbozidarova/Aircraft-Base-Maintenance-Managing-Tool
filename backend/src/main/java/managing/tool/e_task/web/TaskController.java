@@ -27,7 +27,7 @@ public class TaskController {
         return this.taskService.findAllTasks();
     }
 
-    @GetMapping("/{companyNum}")
+    @GetMapping("/user/{companyNum}")
     public ResponseEntity<CollectionModel<EntityModel<TaskViewDto>>> tasksPreparedBy(@PathVariable String companyNum){
 
         List<EntityModel<TaskViewDto>> tasks = this.taskService
@@ -40,7 +40,7 @@ public class TaskController {
 
     }
 
-    @GetMapping("/{maintenanceNum}")
+    @GetMapping("/maintenance/{maintenanceNum}")
     public ResponseEntity<CollectionModel<EntityModel<TaskViewDto>>> tasksInMaintenance(@PathVariable String maintenanceNum){
 
         List<EntityModel<TaskViewDto>> tasks = this.taskService

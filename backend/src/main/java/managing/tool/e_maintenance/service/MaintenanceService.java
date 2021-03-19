@@ -10,9 +10,7 @@ public interface MaintenanceService {
 
     List<MaintenanceViewModel> findAllMaintenanceEvents();
     MaintenanceViewModel findMaintenanceByNum(String maintenanceNum );
-
-    void seedMaintenance() throws FileNotFoundException;
-    boolean areEventsImported();
+    List<MaintenanceViewModel> findAllMaintenanceByResponsibleEngineer(String companyNum );
 
     MaintenanceEntity findByMaintenanceNum(String maintenanceNum);
 }
