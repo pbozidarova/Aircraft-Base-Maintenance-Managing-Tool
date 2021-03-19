@@ -53,7 +53,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskViewDto> findByCreatedBy(String companyNum) {
+    public List<TaskViewDto> findAllByAuthor(String companyNum) {
 
         return this.taskRepository
                 .findAllByPreparedByContains(this.userService.findByCompanyNum(companyNum))
@@ -63,46 +63,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskViewDto> findByAddedInMaintenance(String maintenanceNum) {
+    public List<TaskViewDto> findAllAddedInMaintenance(String maintenanceNum) {
         return this.taskRepository
                 .findAllByMaintenancesContains(this.maintenanceService.findByMaintenanceNum(maintenanceNum))
                 .stream()
                 .map(t -> this.modelMapper.map(t, TaskViewDto.class))
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public void seedTasks() throws FileNotFoundException {
-        if(areTasksUploaded()){
-            return;
-        }
-
-        TaskSeedDto[] dtos = this.gson.fromJson(
-                new FileReader(TASKS_MOCK_DATA_PATH), TaskSeedDto[].class
-        );
-
-        Arrays.stream(dtos)
-                .forEach(tDto -> {
-                    TaskEntity task = this.modelMapper.map(tDto, TaskEntity.class);
-
-                    UserEntity userEntity = this.userService.getRandomUser();
-
-                    task.setPreparedBy(new HashSet<>());
-                    task.getPreparedBy().add(userEntity);
-
-
-                    task.setToolingAvailable(this.random.nextBoolean());
-                    task.setAreJobCardsPrepared(this.random.nextBoolean());
-                    task.setQualityAssured(this.random.nextBoolean());
-
-                    this.taskRepository.save(task);
-                });
-    }
-
-    @Override
-    public boolean areTasksUploaded() {
-
-        return this.taskRepository.count() > 0;
     }
 
     @Override
@@ -117,5 +83,15 @@ public class TaskServiceImpl implements TaskService {
             randomTaskList.add(task);
         }
         return randomTaskList;
+    }
+
+    @Override
+    public TaskViewDto findTask(String taskNum) {
+
+        return this.modelMapper.map(
+                this.taskRepository.findByTaskNum(taskNum),
+                TaskViewDto.class
+        );
+
     }
 }

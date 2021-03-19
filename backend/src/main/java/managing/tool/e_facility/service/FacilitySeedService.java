@@ -6,8 +6,9 @@ import managing.tool.e_facility.model.dto.FacilityViewDto;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-public interface FacilityService {
+public interface FacilitySeedService {
 
-    List<FacilityViewDto> findAll();
-    FacilityEntity getFacilityByName(String name);
+    void seedFacilities() throws FileNotFoundException;
+    boolean areFacilitiesImported();
+
 }

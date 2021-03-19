@@ -17,9 +17,6 @@ public interface UserService {
 
     List<UserAllViewDto> findAllUsers();
 
-    void seedUsers() throws FileNotFoundException;
-    boolean userAreImported();
-
     UserEntity findByCompanyNum(String companyNum);
     UserEntity getRandomUser();
 }

@@ -6,9 +6,8 @@ import managing.tool.e_aircraft.model.dto.AircraftViewDto;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-public interface AircraftService {
+public interface AircraftSeedService {
 
-    List<AircraftViewDto> findAll();
-
-    AircraftEntity getAircraftByRegistration(String registration);
+    void seedAircraft() throws FileNotFoundException;
+    boolean aircraftAreImported();
 }

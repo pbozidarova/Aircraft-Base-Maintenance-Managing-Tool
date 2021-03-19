@@ -1,6 +1,7 @@
 package managing.tool.e_maintenance.web;
 
 import managing.tool.constants.GlobalConstants;
+import managing.tool.e_issue.web.IssueController;
 import managing.tool.e_maintenance.model.dto.MaintenanceViewModel;
 import managing.tool.e_maintenance.service.MaintenanceService;
 import managing.tool.e_task.web.TaskController;
@@ -73,6 +74,10 @@ public class MaintenanceController {
                 .withRel("tasks");
         result.add(tasksLink);
 
+        Link issuesLink = linkTo(methodOn(IssueController.class)
+                .findAllIssuesForMaintenance(maintenance.getMaintenanceNum()))
+                .withRel("issues");
+        result.add(issuesLink);
 
         return result.toArray(new Link[0]);
     }

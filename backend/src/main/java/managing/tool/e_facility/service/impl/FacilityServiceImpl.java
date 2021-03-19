@@ -45,31 +45,6 @@ public class FacilityServiceImpl implements FacilityService {
     }
 
     @Override
-    public void seedFacilities() throws FileNotFoundException {
-        if(areFacilitiesImported()){
-            return;
-        }
-
-        FacilitySeedDto[] dtos = this.gson.fromJson(
-                new FileReader(GlobalConstants.FACILITIES_MOCK_DATA_PATH), FacilitySeedDto[].class
-        );
-        System.out.println();
-        Arrays.stream(dtos)
-                .forEach(fDto -> {
-                    FacilityEntity facility = this.modelMapper.map(fDto, FacilityEntity.class);
-                    UserEntity user = this.userService.findByCompanyNum(fDto.getManager());
-                    facility.setManager(user);
-                    //TODO Competences
-                    this.facilityRepository.save(facility);
-                });
-    }
-
-    @Override
-    public boolean areFacilitiesImported() {
-        return this.facilityRepository.count() > 0;
-    }
-
-    @Override
     public FacilityEntity getFacilityByName(String name) {
 
         return this.facilityRepository.findByName(name);

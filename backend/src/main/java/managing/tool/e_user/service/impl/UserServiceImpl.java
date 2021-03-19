@@ -97,39 +97,6 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public void seedUsers() throws FileNotFoundException {
-        if(this.userAreImported()){
-            return;
-        }
-
-        //TODO THROW ERROR FROM FILE READER
-        UserSeedDto[] dtos = this.gson
-                .fromJson(new FileReader(USERS_MOCK_DATA_PATH), UserSeedDto[].class);
-
-        System.out.println();
-
-        Arrays.stream(dtos)
-                .forEach(uDto -> {
-                    UserEntity user = this.modelMapper.map(uDto, UserEntity.class);
-                    //TODO randomly allocate ADMIN or USER and ENG or MECH
-
-                    RoleEntity role = this.roleService.findByName(RoleEnum.valueOf(uDto.getRole().toUpperCase()));
-                    Set<RoleEntity> roleSet = new HashSet<>();
-                    roleSet.add(role);
-                    user.setRoles(roleSet);
-                    user.setCompanyNum(uDto.getCompanyNum());
-
-                    user.setPassword(passwordEncoder.encode(GlobalConstants.DUMMY_PASS));
-                    this.userRepository.saveAndFlush(user);
-                });
-
-    }
-
-    @Override
-    public boolean userAreImported() {
-        return this.userRepository.count() > 0;
-    }
 
     @Override
     public UserEntity findByCompanyNum(String companyNum) {

@@ -1,36 +1,39 @@
 package managing.tool.web;
 
-import managing.tool.e_aircraft.service.AircraftService;
-import managing.tool.e_facility.service.FacilityService;
-import managing.tool.e_maintenance.service.MaintenanceService;
-import managing.tool.e_task.service.TaskService;
+import managing.tool.e_aircraft.service.AircraftSeedService;
+import managing.tool.e_facility.service.FacilitySeedService;
+import managing.tool.e_maintenance.service.MaintenanceSeedService;
+
+import managing.tool.e_task.service.TaskSeedService;
+import managing.tool.e_user.service.RoleSeedService;
 import managing.tool.e_user.service.RoleService;
-import managing.tool.e_user.service.UserService;
+import managing.tool.e_user.service.UserSeedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 import java.io.FileNotFoundException;
 
 @Component
 public class ApplicationController implements CommandLineRunner {
 
-    private final UserService userService;
-    private final RoleService roleService;
-    private final AircraftService aircraftService;
-    private final FacilityService facilityService;
-    private final MaintenanceService maintenanceService;
-    private final TaskService taskService;
+    private final UserSeedService userSeedService;
+    private final RoleSeedService roleSeedService;
+    private final AircraftSeedService aircraftSeedService;
+    private final FacilitySeedService facilitySeedService;
+    private final MaintenanceSeedService maintenanceSeedService;
+    private final TaskSeedService taskSeedService;
 
     @Autowired
-    public ApplicationController(UserService userService, RoleService roleService, AircraftService aircraftService, FacilityService facilityService, MaintenanceService maintenanceService, TaskService taskService) {
-        this.userService = userService;
-        this.roleService = roleService;
-        this.aircraftService = aircraftService;
-        this.facilityService = facilityService;
-        this.maintenanceService = maintenanceService;
-        this.taskService = taskService;
+    public ApplicationController(UserSeedService userSeedService, RoleSeedService roleSeedService, AircraftSeedService aircraftSeedService, FacilitySeedService facilitySeedService, MaintenanceSeedService maintenanceSeedService, TaskSeedService taskSeedService) {
+        this.userSeedService = userSeedService;
+        this.roleSeedService = roleSeedService;
+        this.aircraftSeedService = aircraftSeedService;
+        this.facilitySeedService = facilitySeedService;
+        this.maintenanceSeedService = maintenanceSeedService;
+
+
+        this.taskSeedService = taskSeedService;
     }
 
     @Override
@@ -40,11 +43,12 @@ public class ApplicationController implements CommandLineRunner {
     }
 
     private void seedData() throws FileNotFoundException {
-        this.roleService.seedRoles();
-        this.userService.seedUsers();
-        this.aircraftService.seedAircraft();
-        this.facilityService.seedFacilities();
-        this.taskService.seedTasks();
-        this.maintenanceService.seedMaintenance();
+        this.roleSeedService.seedRoles();
+
+        this.userSeedService.seedUsers();
+        this.aircraftSeedService.seedAircraft();
+        this.facilitySeedService.seedFacilities();
+        this.taskSeedService.seedTasks();
+        this.maintenanceSeedService.seedMaintenance();
     }
 }

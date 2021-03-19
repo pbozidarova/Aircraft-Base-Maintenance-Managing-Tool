@@ -42,31 +42,6 @@ public class AircraftServiceImpl implements AircraftService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public void seedAircraft() throws FileNotFoundException {
-        if(this.aircraftAreImported()){
-            return;
-        }
-
-        AircraftSeedDto[] dtos =
-                this.gson
-                        .fromJson(
-                            new FileReader(AIRCRAFT_MOCK_DATA_PATH), AircraftSeedDto[].class
-                );
-        Arrays.stream(dtos)
-                .forEach(aDto -> {
-                    AircraftEntity aircraft = this.modelMapper.map(aDto, AircraftEntity.class);
-
-                    this.aircraftRepository.save(aircraft);
-                });
-
-
-    }
-
-    @Override
-    public boolean aircraftAreImported() {
-        return this.aircraftRepository.count() > 0;
-    }
 
     @Override
     public AircraftEntity getAircraftByRegistration(String registration) {

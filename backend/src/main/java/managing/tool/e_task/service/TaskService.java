@@ -10,11 +10,9 @@ import java.util.Set;
 public interface TaskService {
 
     List<TaskViewDto> findAllTasks();
-    List<TaskViewDto> findByCreatedBy(String companyNum);
-    List<TaskViewDto> findByAddedInMaintenance(String maintenanceNum);
-
-    void seedTasks() throws FileNotFoundException;
-    boolean areTasksUploaded();
+    List<TaskViewDto> findAllByAuthor(String companyNum);
+    List<TaskViewDto> findAllAddedInMaintenance(String maintenanceNum);
     Set<TaskEntity> getRandomTaskList();
 
+    TaskViewDto findTask(String taskNum);
 }

@@ -10,7 +10,10 @@ import java.util.List;
 
 @Repository
 public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
+        TaskEntity findByTaskNum(String taskNum);
+
         List<TaskEntity> findAllByPreparedByContains(UserEntity user);
 
         List<TaskEntity> findAllByMaintenancesContains(MaintenanceEntity maintenance);
+
 }

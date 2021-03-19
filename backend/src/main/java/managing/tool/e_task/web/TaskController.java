@@ -31,7 +31,7 @@ public class TaskController {
     public ResponseEntity<CollectionModel<EntityModel<TaskViewDto>>> tasksPreparedBy(@PathVariable String companyNum){
 
         List<EntityModel<TaskViewDto>> tasks = this.taskService
-                .findByCreatedBy(companyNum)
+                .findAllByAuthor(companyNum)
                 .stream()
                 .map(EntityModel::of)
                 .collect(Collectors.toList());
@@ -44,7 +44,7 @@ public class TaskController {
     public ResponseEntity<CollectionModel<EntityModel<TaskViewDto>>> tasksInMaintenance(@PathVariable String maintenanceNum){
 
         List<EntityModel<TaskViewDto>> tasks = this.taskService
-                .findByAddedInMaintenance(maintenanceNum)
+                .findAllAddedInMaintenance(maintenanceNum)
                 .stream()
                 .map(EntityModel::of)
                 .collect(Collectors.toList());
@@ -53,8 +53,8 @@ public class TaskController {
 
     }
 
-//    @GetMapping("/{companyNum}")
-//    public UserViewDto user(@PathVariable String companyNum){
-//        return this.userService.findUser(companyNum);
-//    }
+    @GetMapping("/{taskNum}")
+    public ResponseEntity<TaskViewDto> findTask(@PathVariable String taskNum){
+        return ResponseEntity.ok().body(this.taskService.findTask(taskNum));
+    }
 }

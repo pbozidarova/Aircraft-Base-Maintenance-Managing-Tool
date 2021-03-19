@@ -18,7 +18,6 @@ public class IssueEntity extends BaseEntity {
     private UserEntity author;
     private IssueStatusEnum status;
     private IssueClassificationEnum classification;
-    private LocalDateTime dateOfEntry;
     private LocalDateTime dueDate;
 
     private MaintenanceEntity maintenance;
@@ -79,15 +78,6 @@ public class IssueEntity extends BaseEntity {
         return this;
     }
 
-    @Column(name = "date_of_entry", nullable = false)
-    public LocalDateTime getDateOfEntry() {
-        return dateOfEntry;
-    }
-
-    public IssueEntity setDateOfEntry(LocalDateTime dateOfEntry) {
-        this.dateOfEntry = dateOfEntry;
-        return this;
-    }
 
     @Column(name = "due_date", nullable = false)
     public LocalDateTime getDueDate() {
