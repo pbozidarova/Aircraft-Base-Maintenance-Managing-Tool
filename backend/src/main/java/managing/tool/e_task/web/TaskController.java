@@ -29,12 +29,25 @@ public class TaskController {
 
     @GetMapping("/{companyNum}")
     public ResponseEntity<CollectionModel<EntityModel<TaskViewDto>>> tasksPreparedBy(@PathVariable String companyNum){
+
         List<EntityModel<TaskViewDto>> tasks = this.taskService
                 .findByCreatedBy(companyNum)
                 .stream()
                 .map(EntityModel::of)
                 .collect(Collectors.toList());
 
+        return ResponseEntity.ok(CollectionModel.of(tasks));
+
+    }
+
+    @GetMapping("/{maintenanceNum}")
+    public ResponseEntity<CollectionModel<EntityModel<TaskViewDto>>> tasksInMaintenance(@PathVariable String maintenanceNum){
+
+        List<EntityModel<TaskViewDto>> tasks = this.taskService
+                .findByAddedInMaintenance(maintenanceNum)
+                .stream()
+                .map(EntityModel::of)
+                .collect(Collectors.toList());
 
         return ResponseEntity.ok(CollectionModel.of(tasks));
 

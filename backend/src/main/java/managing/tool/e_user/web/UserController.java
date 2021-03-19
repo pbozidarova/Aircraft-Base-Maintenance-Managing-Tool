@@ -52,11 +52,14 @@ public class UserController {
         result.add(selfLink);
 
         Link tasksLink = linkTo(methodOn(TaskController.class)
-                            .tasksPreparedBy(
-                                user.getCompanyNum()))
+                            .tasksPreparedBy(user.getCompanyNum()))
                             .withRel("tasks");
+        result.add(tasksLink);
 
-            result.add(tasksLink);
+        Link maintenanceLink = linkTo(methodOn(TaskController.class)
+                .tasksPreparedBy(user.getCompanyNum()))
+                .withRel("tasks");
+        result.add(tasksLink);
 
 
         return result.toArray(new Link[0]);

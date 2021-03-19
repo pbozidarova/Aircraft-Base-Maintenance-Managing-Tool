@@ -9,11 +9,10 @@ import managing.tool.e_facility.service.FacilityService;
 import managing.tool.e_maintenance.model.MaintenanceEntity;
 import managing.tool.e_maintenance.model.dto.MaintenanceSeedDto;
 import managing.tool.e_maintenance.model.MaintenanceStatusEnum;
+import managing.tool.e_maintenance.model.dto.MaintenanceViewModel;
 import managing.tool.e_maintenance.repository.MaintenanceRepository;
 import managing.tool.e_maintenance.service.MaintenanceService;
 import managing.tool.e_task.model.TaskEntity;
-import managing.tool.e_task.service.TaskService;
-import managing.tool.e_task.service.impl.TaskServiceImpl;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -25,6 +24,7 @@ import java.io.FileReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class MaintenanceServiceImpl implements MaintenanceService {
@@ -34,19 +34,36 @@ public class MaintenanceServiceImpl implements MaintenanceService {
     private final AircraftService aircraftService;
     private final FacilityService facilityService;
     private final UserService userService;
-    private final TaskService taskService;
+//    private final TaskService taskService;
 
     @Autowired
-    public MaintenanceServiceImpl(MaintenanceRepository maintenanceEventRepository, ModelMapper modelMapper, Gson gson, Random random, AircraftService aircraftService, FacilityService facilityService, UserService userService, TaskServiceImpl taskService) {
+    public MaintenanceServiceImpl(MaintenanceRepository maintenanceEventRepository, ModelMapper modelMapper, Gson gson, Random random, AircraftService aircraftService, FacilityService facilityService, UserService userService) {
         this.maintenanceRepository = maintenanceEventRepository;
         this.modelMapper = modelMapper;
         this.gson = gson;
         this.aircraftService = aircraftService;
         this.facilityService = facilityService;
         this.userService = userService;
-        this.taskService = taskService;
+//        this.taskService = taskService;
     }
 
+
+    @Override
+    public List<MaintenanceViewModel> findAllMaintenanceEvents() {
+
+        return this.maintenanceRepository
+                .findAll()
+                .stream()
+                .map(m -> this.modelMapper.map(m, MaintenanceViewModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public MaintenanceViewModel findMaintenanceByNum(String maintenanceNum) {
+        MaintenanceEntity maintenanceEntity = this.maintenanceRepository.findByMaintenanceNum(maintenanceNum);
+
+        return this.modelMapper.map(maintenanceEntity, MaintenanceViewModel.class);
+    }
 
     @Override
     public void seedMaintenance() throws FileNotFoundException {
@@ -70,7 +87,7 @@ public class MaintenanceServiceImpl implements MaintenanceService {
                     AircraftEntity aircraft = this.aircraftService.getAircraftByRegistration(mDto.getAircraftRegistration());
                     FacilityEntity facility = this.facilityService.getFacilityByName(mDto.getFacility());
                     UserEntity engineer = this.userService.findByCompanyNum(mDto.getEngineer());
-                    Set<TaskEntity> randomTasks = this.taskService.getRandomTaskList();
+//                    Set<TaskEntity> randomTasks = this.taskService.getRandomTaskList();
 
                     maintenance
                             .setStartDate(startDate)
@@ -78,8 +95,8 @@ public class MaintenanceServiceImpl implements MaintenanceService {
                             .setStatus(MaintenanceStatusEnum.OPENED)
                             .setAircraft(aircraft)
                             .setFacility(facility)
-                            .setEngineer(engineer)
-                            .setTasks(new HashSet<>(randomTasks));
+                            .setResponsibleEngineer(engineer);
+//                            .setTasks(new HashSet<>(randomTasks));
 
                     this.maintenanceRepository.saveAndFlush(maintenance);
                 });
@@ -89,6 +106,12 @@ public class MaintenanceServiceImpl implements MaintenanceService {
     public boolean areEventsImported() {
 
         return this.maintenanceRepository.count() > 0;
+    }
+
+    @Override
+    public MaintenanceEntity findByMaintenanceNum(String maintenanceNum) {
+
+        return this.maintenanceRepository.findByMaintenanceNum(maintenanceNum);
     }
 
 }

@@ -23,7 +23,7 @@ public class TaskEntity extends BaseEntity {
 
     private Set<MaintenanceEntity> maintenances;
     private Set<UserEntity> preparedBy;
-    private UserEntity lastModifiedBy;
+
     private Set<IssueEntity> tickets;
 
     private LocalDateTime createdOn;

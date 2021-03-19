@@ -21,7 +21,8 @@ public class MaintenanceEntity extends BaseEntity {
    private MaintenanceStatusEnum status;
    private FacilityEntity facility;
    private AircraftEntity aircraft;
-   private UserEntity engineer;
+   private UserEntity responsibleEngineer;
+
    private Set<TaskEntity> tasks;
 
     public MaintenanceEntity() {
@@ -88,12 +89,12 @@ public class MaintenanceEntity extends BaseEntity {
     }
 
     @ManyToOne
-    public UserEntity getEngineer() {
-        return engineer;
+    public UserEntity getResponsibleEngineer() {
+        return responsibleEngineer;
     }
 
-    public MaintenanceEntity setEngineer(UserEntity engineer) {
-        this.engineer = engineer;
+    public MaintenanceEntity setResponsibleEngineer(UserEntity engineer) {
+        this.responsibleEngineer = engineer;
         return this;
     }
 

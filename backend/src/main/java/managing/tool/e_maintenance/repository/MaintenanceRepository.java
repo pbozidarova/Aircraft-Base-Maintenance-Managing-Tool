@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MaintenanceRepository extends JpaRepository<MaintenanceEntity, Long> {
+    MaintenanceEntity findByMaintenanceNum(String maintenanceNum);
 }

@@ -11,6 +11,7 @@ public interface TaskService {
 
     List<TaskViewDto> findAllTasks();
     List<TaskViewDto> findByCreatedBy(String companyNum);
+    List<TaskViewDto> findByAddedInMaintenance(String maintenanceNum);
 
     void seedTasks() throws FileNotFoundException;
     boolean areTasksUploaded();

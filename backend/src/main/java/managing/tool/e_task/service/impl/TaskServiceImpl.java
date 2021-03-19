@@ -1,6 +1,7 @@
 package managing.tool.e_task.service.impl;
 
 import com.google.gson.Gson;
+import managing.tool.e_maintenance.service.MaintenanceService;
 import managing.tool.e_task.model.dto.TaskSeedDto;
 import managing.tool.e_task.model.TaskEntity;
 import managing.tool.e_task.model.dto.TaskViewDto;
@@ -24,13 +25,15 @@ import static managing.tool.constants.GlobalConstants.TASKS_MOCK_DATA_PATH;
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final UserService userService;
+    private final MaintenanceService maintenanceService;
     private final ModelMapper modelMapper;
     private final Gson gson;
     private final Random random;
 
-    public TaskServiceImpl(TaskRepository taskRepository, UserService userService, ModelMapper modelMapper, Gson gson, Random random) {
+    public TaskServiceImpl(TaskRepository taskRepository, UserService userService, MaintenanceService maintenanceService, ModelMapper modelMapper, Gson gson, Random random) {
         this.taskRepository = taskRepository;
         this.userService = userService;
+        this.maintenanceService = maintenanceService;
         this.modelMapper = modelMapper;
         this.gson = gson;
         this.random = random;
@@ -54,6 +57,15 @@ public class TaskServiceImpl implements TaskService {
 
         return this.taskRepository
                 .findAllByPreparedByContainsOrderByUpdatedOn(this.userService.findByCompanyNum(companyNum))
+                .stream()
+                .map(t -> this.modelMapper.map(t, TaskViewDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TaskViewDto> findByAddedInMaintenance(String maintenanceNum) {
+        return this.taskRepository
+                .findAllByMaintenancesContains(this.maintenanceService.findByMaintenanceNum(maintenanceNum))
                 .stream()
                 .map(t -> this.modelMapper.map(t, TaskViewDto.class))
                 .collect(Collectors.toList());
