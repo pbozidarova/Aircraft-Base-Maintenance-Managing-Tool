@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import AuthenticationService from '../AuthenticationService.js'
+import Utils from '../Utils.js'
+
 import { withRouter } from 'react-router';
 
 import ListItem from '@material-ui/core/ListItem';
@@ -10,12 +12,7 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import ListIcon from '@material-ui/icons/List';
 
 class ListItemsMain extends Component {
-    
-    redirectTo(urlParam){
-        this.props.history.push(urlParam)
-    }
-
-    
+       
     render(){
 
         const isUserLoggedIn = AuthenticationService.isUserLoggedIn();
@@ -26,7 +23,7 @@ class ListItemsMain extends Component {
                 {  isUserLoggedIn &&
                 <div>
                     
-                    <ListItem button onClick={() => this.redirectTo("/home") }>
+                    <ListItem button onClick={() => Utils.redirectTo(this.props, "/home") }>
                         <ListItemIcon>
                             <DashboardIcon />
                         </ListItemIcon>
@@ -34,7 +31,7 @@ class ListItemsMain extends Component {
                     </ListItem>
                     
                     
-                    <ListItem button onClick={() => this.redirectTo("/mpd") }>
+                    <ListItem button onClick={() => Utils.redirectTo(this.props, "/mpd") }>
                         <ListItemIcon>
                             <AssignmentIcon />
                         </ListItemIcon>
@@ -43,7 +40,7 @@ class ListItemsMain extends Component {
                     </ListItem>
                     
                     
-                    <ListItem button onClick={() => this.redirectTo("/maintenance") }>
+                    <ListItem button onClick={() => Utils.redirectTo(this.props, "/maintenance") }>
                         <ListItemIcon>
                             <ListIcon />
                         </ListItemIcon>

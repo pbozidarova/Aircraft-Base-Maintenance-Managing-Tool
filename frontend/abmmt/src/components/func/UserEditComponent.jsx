@@ -2,16 +2,16 @@ import React, { Component } from 'react'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
-import { Route , withRouter} from 'react-router-dom';
+import { withRouter} from 'react-router-dom';
+
+import Utils from '../Utils.js'
 
 import { styles } from '../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
 import { ButtonGroup } from '@material-ui/core';
 
 class EditUserComponent extends Component {
-    redirectTo(urlParam){
-        this.props.history.push(urlParam)
-    }
+    
 
     render(){
         const { classes } = this.props;
@@ -43,7 +43,7 @@ class EditUserComponent extends Component {
                     <Button 
                         variant="contained" 
                         className={classes.menuButton}
-                        onClick={  () => { console.log(this.props.selectedUser._links.tasks.href); this.redirectTo("/mpd");}}
+                        onClick={  () => { console.log(this.props.selectedUser._links.tasks.href); Utils.redirectTo(this.props, "/mpd");}}
                         >
                         Check Tasks
                     </Button>

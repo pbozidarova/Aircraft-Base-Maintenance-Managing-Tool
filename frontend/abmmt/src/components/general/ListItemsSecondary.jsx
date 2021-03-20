@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import AuthenticationService from '../AuthenticationService.js'
+import Utils from '../Utils.js'
+
 import { withRouter } from 'react-router';
 
 import ListItem from '@material-ui/core/ListItem';
@@ -26,21 +28,21 @@ class ListItemsSecondary extends Component {
                 {  isUserLoggedIn &&
                 <div>
                     
-                    <ListItem button onClick={() => this.redirectTo("/aircraft") }>
+                    <ListItem button onClick={() => Utils.redirectTo(this.props, "/aircraft") }>
                         <ListItemIcon>
                             <LocalAirportIcon />
                         </ListItemIcon>
                         <ListItemText primary="Aircraft" />
                     </ListItem>
 
-                    <ListItem button onClick={() => this.redirectTo("/facility") }>
+                    <ListItem button onClick={() => Utils.redirectTo(this.props, "/facility") }>
                         <ListItemIcon>
                             <LocationCityIcon />
                         </ListItemIcon>
                         <ListItemText primary="Faclity" />
                     </ListItem>
                         
-                    <ListItem button onClick={() => this.redirectTo("/users") }>
+                    <ListItem button onClick={() => Utils.redirectTo(this.props, "/users") }>
                         <ListItemIcon>
                             <PeopleIcon />
                         </ListItemIcon>

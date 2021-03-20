@@ -71,7 +71,7 @@ class AircraftComponent extends Component {
               <Grid item xs={12} md={12} lg={12}>
                 <Paper className={fixedHeightPaper}>
                   
-                    <EditUserComponent selectedUser={this.state.selected} />
+                    {/* <EditUserComponent selectedUser={this.state.selected} /> */}
 
                 </Paper>
               </Grid>
