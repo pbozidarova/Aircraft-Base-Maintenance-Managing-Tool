@@ -1,6 +1,7 @@
 package managing.tool.e_user.service.impl;
 
 import com.google.gson.Gson;
+import lombok.AllArgsConstructor;
 import managing.tool.e_user.model.dto.UserDetailsDto;
 import managing.tool.e_user.model.RoleEntity;
 import managing.tool.e_user.model.UserEntity;
@@ -18,24 +19,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final Gson gson;
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
-    private final RoleService roleService;
-    private final PasswordEncoder passwordEncoder;
     private final Random random;
 
-    @Autowired
-    public UserServiceImpl(Gson gson, ModelMapper modelMapper, UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder, Random random) {
-        this.gson = gson;
-        this.modelMapper = modelMapper;
-        this.userRepository = userRepository;
-        this.roleService = roleService;
-        this.passwordEncoder = passwordEncoder;
-        this.random = random;
-    }
 
     @Override
     public UserViewDto findUser(String companyNum) {

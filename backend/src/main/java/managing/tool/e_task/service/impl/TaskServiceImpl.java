@@ -1,6 +1,7 @@
 package managing.tool.e_task.service.impl;
 
 import com.google.gson.Gson;
+import lombok.AllArgsConstructor;
 import managing.tool.e_maintenance.service.MaintenanceService;
 import managing.tool.e_task.model.dto.TaskSeedDto;
 import managing.tool.e_task.model.TaskEntity;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 import static managing.tool.constants.GlobalConstants.TASKS_MOCK_DATA_PATH;
 
 @Service
+@AllArgsConstructor
 @Transactional
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
@@ -29,15 +31,6 @@ public class TaskServiceImpl implements TaskService {
     private final ModelMapper modelMapper;
     private final Gson gson;
     private final Random random;
-
-    public TaskServiceImpl(TaskRepository taskRepository, UserService userService, MaintenanceService maintenanceService, ModelMapper modelMapper, Gson gson, Random random) {
-        this.taskRepository = taskRepository;
-        this.userService = userService;
-        this.maintenanceService = maintenanceService;
-        this.modelMapper = modelMapper;
-        this.gson = gson;
-        this.random = random;
-    }
 
     @Override
     public List<TaskViewDto> findAllTasks() {

@@ -1,6 +1,7 @@
 package managing.tool.e_aircraft.service.impl;
 
 import com.google.gson.Gson;
+import lombok.AllArgsConstructor;
 import managing.tool.e_aircraft.model.AircraftEntity;
 import managing.tool.e_aircraft.model.dto.AircraftSeedDto;
 import managing.tool.e_aircraft.model.dto.AircraftViewDto;
@@ -20,18 +21,12 @@ import java.util.stream.Collectors;
 import static managing.tool.constants.GlobalConstants.AIRCRAFT_MOCK_DATA_PATH;
 
 @Service
+@AllArgsConstructor
 public class AircraftSeedServiceImpl implements AircraftSeedService {
 
     private final AircraftRepository aircraftRepository;
     private final Gson gson;
     private final ModelMapper modelMapper;
-
-    @Autowired
-    public AircraftSeedServiceImpl(AircraftRepository aircraftRepository, Gson gson, ModelMapper modelMapper) {
-        this.aircraftRepository = aircraftRepository;
-        this.gson = gson;
-        this.modelMapper = modelMapper;
-    }
 
 
     @Override

@@ -1,5 +1,6 @@
 package managing.tool.e_issue.service.impl;
 
+import lombok.AllArgsConstructor;
 import managing.tool.e_issue.model.dto.IssueViewDto;
 import managing.tool.e_issue.repository.IssueRepository;
 import managing.tool.e_issue.service.IssueService;
@@ -15,19 +16,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class IssueServiceImpl implements IssueService {
     private final IssueRepository issueRepository;
     private final UserService userService;
     private final MaintenanceService maintenanceService;
     private final ModelMapper modelMapper;
 
-    @Autowired
-    public IssueServiceImpl(IssueRepository issueRepository, UserService userService, MaintenanceService maintenanceService, ModelMapper modelMapper) {
-        this.issueRepository = issueRepository;
-        this.userService = userService;
-        this.maintenanceService = maintenanceService;
-        this.modelMapper = modelMapper;
-    }
 
     @Override
     public List<IssueViewDto> findAllIssues() {

@@ -1,6 +1,7 @@
 package managing.tool.e_user.service.impl;
 
 import com.google.gson.Gson;
+import lombok.AllArgsConstructor;
 import managing.tool.constants.GlobalConstants;
 import managing.tool.e_user.model.RoleEntity;
 import managing.tool.e_user.model.RoleEnum;
@@ -21,6 +22,7 @@ import java.util.*;
 import static managing.tool.constants.GlobalConstants.USERS_MOCK_DATA_PATH;
 
 @Service
+@AllArgsConstructor
 public class UserSeedServiceImpl implements UserSeedService {
 
     private final Gson gson;
@@ -29,16 +31,6 @@ public class UserSeedServiceImpl implements UserSeedService {
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
     private final Random random;
-
-    @Autowired
-    public UserSeedServiceImpl(Gson gson, ModelMapper modelMapper, UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder, Random random) {
-        this.gson = gson;
-        this.modelMapper = modelMapper;
-        this.userRepository = userRepository;
-        this.roleService = roleService;
-        this.passwordEncoder = passwordEncoder;
-        this.random = random;
-    }
 
 
     @Override

@@ -1,6 +1,7 @@
 package managing.tool.e_maintenance.service.impl;
 
 import com.google.gson.Gson;
+import lombok.AllArgsConstructor;
 import managing.tool.constants.GlobalConstants;
 import managing.tool.e_aircraft.model.AircraftEntity;
 import managing.tool.e_aircraft.service.AircraftService;
@@ -28,6 +29,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class MaintenanceSeedServiceImpl implements MaintenanceSeedService {
     private final MaintenanceRepository maintenanceRepository;
     private final ModelMapper modelMapper;
@@ -36,19 +38,6 @@ public class MaintenanceSeedServiceImpl implements MaintenanceSeedService {
     private final FacilityService facilityService;
     private final UserService userService;
     private final TaskService taskService;
-
-    @Autowired
-    public MaintenanceSeedServiceImpl(MaintenanceRepository maintenanceEventRepository, ModelMapper modelMapper, Gson gson, Random random, AircraftService aircraftService, FacilityService facilityService, UserService userService, TaskService taskService) {
-        this.maintenanceRepository = maintenanceEventRepository;
-        this.modelMapper = modelMapper;
-        this.gson = gson;
-        this.aircraftService = aircraftService;
-        this.facilityService = facilityService;
-        this.userService = userService;
-
-        this.taskService = taskService;
-    }
-
 
 
     @Override

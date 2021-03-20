@@ -1,6 +1,7 @@
 package managing.tool.e_facility.service.impl;
 
 import com.google.gson.Gson;
+import lombok.AllArgsConstructor;
 import managing.tool.constants.GlobalConstants;
 import managing.tool.e_facility.model.FacilityEntity;
 import managing.tool.e_facility.model.dto.FacilitySeedDto;
@@ -21,19 +22,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class FacilitySeedServiceImpl implements FacilitySeedService {
     private final FacilityRepository facilityRepository;
     private final UserService userService;
     private final ModelMapper modelMapper;
     private final Gson gson;
-
-    @Autowired
-    public FacilitySeedServiceImpl(FacilityRepository facilityRepository, UserService userService, ModelMapper modelMapper, Gson gson) {
-        this.facilityRepository = facilityRepository;
-        this.userService = userService;
-        this.modelMapper = modelMapper;
-        this.gson = gson;
-    }
 
     @Override
     public void seedFacilities() throws FileNotFoundException {
