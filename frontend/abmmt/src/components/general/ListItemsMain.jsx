@@ -1,17 +1,11 @@
 import React, {Component} from 'react'
 import AuthenticationService from '../AuthenticationService.js'
-import{Link} from 'react-router-dom'
 import { withRouter } from 'react-router';
 
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import LocationCityIcon from '@material-ui/icons/LocationCity';
-import PeopleIcon from '@material-ui/icons/People';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import LocalAirportIcon from '@material-ui/icons/LocalAirport';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import ListIcon from '@material-ui/icons/List';
 

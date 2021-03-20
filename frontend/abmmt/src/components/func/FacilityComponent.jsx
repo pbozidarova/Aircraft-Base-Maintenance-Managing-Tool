@@ -5,9 +5,6 @@ import {FACILITIES_HEADER_DATA} from '../../Constanst.js'
 import { styles } from '../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
 
-import EnhancedTable from '../material-ui/Table.js'
-
-
 import DataComponent from './DataComponent'
 
 import PropTypes from 'prop-types';

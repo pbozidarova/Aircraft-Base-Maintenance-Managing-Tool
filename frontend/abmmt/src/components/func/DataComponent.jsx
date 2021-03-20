@@ -1,9 +1,5 @@
 import React, { Component } from 'react'
 
-import {Button, Input } from '@material-ui/core'
-import SaveIcon from '@material-ui/icons/Save'
-import DeleteIcon from '@material-ui/icons/Delete'
-
 import EditIcon from '@material-ui/icons/Edit';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
@@ -75,7 +71,7 @@ class DataComponent extends Component{
                                         key={Object.entries(tableRow)[0][1]}
                                         selected={this.isSelected(tableRow)}
                                     >
-                                        {Object.keys(tableRow)
+                                        {Object.keys(this.props.tableHeader)
                                                .map(key => <TableCell key={key} align="right">{tableRow[key]}</TableCell>)}
                                         
                                     </TableRow>

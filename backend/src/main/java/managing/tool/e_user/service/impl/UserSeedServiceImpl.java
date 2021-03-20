@@ -5,14 +5,10 @@ import managing.tool.constants.GlobalConstants;
 import managing.tool.e_user.model.RoleEntity;
 import managing.tool.e_user.model.RoleEnum;
 import managing.tool.e_user.model.UserEntity;
-import managing.tool.e_user.model.dto.UserAllViewDto;
-import managing.tool.e_user.model.dto.UserDetailsDto;
 import managing.tool.e_user.model.dto.UserSeedDto;
-import managing.tool.e_user.model.dto.UserSingleViewDto;
 import managing.tool.e_user.repository.UserRepository;
 import managing.tool.e_user.service.RoleService;
 import managing.tool.e_user.service.UserSeedService;
-import managing.tool.e_user.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static managing.tool.constants.GlobalConstants.USERS_MOCK_DATA_PATH;
 

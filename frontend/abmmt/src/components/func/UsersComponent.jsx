@@ -25,10 +25,6 @@ class UsersComponent extends Component {
         this.state = {
             users : [],
             selected: {},
-            page: 0,
-            rowsPerPage: 10
-            // selected : [],
-            // setSelected : []
         }
 
         this.refreshUsers = this.refreshUsers.bind(this)
@@ -46,7 +42,8 @@ class UsersComponent extends Component {
         BackendService.all('users')
             .then(
                 response => {
-                    this.setState({users : response.data});
+                    console.log(response.data._embedded.userViewDtoList)
+                    this.setState({users : response.data._embedded.userViewDtoList});
                 }
             ); 
     }
@@ -79,7 +76,11 @@ class UsersComponent extends Component {
               <Grid item xs={12} md={7} lg={7}>
                 <Paper className={fixedHeightPaper}>
                   
-                    <EditUserComponent selectedUser={this.state.selected} />
+                    <EditUserComponent 
+                        selectedUser={this.state.selected} 
+                        labels = {USERS_HEADER_DATA} 
+                        
+                    />
 
                 </Paper>
               </Grid>

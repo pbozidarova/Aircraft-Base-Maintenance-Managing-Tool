@@ -1,14 +1,11 @@
 package managing.tool.e_user.service.impl;
 
 import com.google.gson.Gson;
-import managing.tool.constants.GlobalConstants;
 import managing.tool.e_user.model.dto.UserDetailsDto;
-import managing.tool.e_user.model.dto.UserSeedDto;
-import managing.tool.e_user.model.dto.UserAllViewDto;
 import managing.tool.e_user.model.RoleEntity;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.model.RoleEnum;
-import managing.tool.e_user.model.dto.UserSingleViewDto;
+import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.repository.UserRepository;
 import managing.tool.e_user.service.RoleService;
 import managing.tool.e_user.service.UserService;
@@ -17,12 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static managing.tool.constants.GlobalConstants.USERS_MOCK_DATA_PATH;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -45,20 +38,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserSingleViewDto findUser(String companyNum) {
+    public UserViewDto findUser(String companyNum) {
         UserEntity userEntity = this.userRepository.findByCompanyNum(companyNum);
 
-        UserSingleViewDto userView = this.modelMapper
-                .map(this.userRepository.findByCompanyNum(companyNum),
-                        UserSingleViewDto.class);
-        for (RoleEntity role : userEntity.getRoles()) {
-            if(role.getName() == RoleEnum.ADMIN ) userView.setADMIN(true) ;
-            if(role.getName() == RoleEnum.USER) userView.setUSER(true) ;
-            if(role.getName() == RoleEnum.ENGINEER ) userView.setENGINEER(true);
-            if(role.getName() == RoleEnum.MECHANIC ) userView.setMECHANIC(true);
-        }
+        UserViewDto userView = this.modelMapper
+                .map(userEntity,
+                        UserViewDto.class);
+        userView.setFacility(userEntity.getFacility().getName());
 
-
+        userView.setRoles( userView
+                .getRoles()
+                .replace("[", "")
+                .replace("]", "")
+        );
         return userView;
     }
 
@@ -77,14 +69,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserAllViewDto> findAllUsers() {
+    public List<UserViewDto> findAllUsers() {
         return this.userRepository.findAll()
                 .stream()
                 .map(u -> {
-                    UserAllViewDto userView = this.modelMapper.map(u, UserAllViewDto.class);
+                    UserViewDto userView = this.modelMapper.map(u, UserViewDto.class);
 
-                    String uName = String.format("%s %s", u.getFirstName(), u.getLastName());
-                    userView.setNames(uName);
+                    userView.setFacility(u.getFacility().getName());
 
                     userView.setRoles( userView
                                             .getRoles()

@@ -4,7 +4,9 @@ export const SESSION_ATTRIBUTE_NAME = 'authenticatedUser';
 
 export const USERS_HEADER_DATA = {
     companyNum: 'Company Number',
-    names : 'Name',
+    firstName : 'First Name',
+    lastName : 'Last Name',
+    facility: "Facility",
     email : 'Email',
     roles : 'Roles',
 }

@@ -5,8 +5,6 @@ import managing.tool.e_issue.web.IssueController;
 import managing.tool.e_maintenance.model.dto.MaintenanceViewModel;
 import managing.tool.e_maintenance.service.MaintenanceService;
 import managing.tool.e_task.web.TaskController;
-import managing.tool.e_user.model.dto.UserSingleViewDto;
-import managing.tool.e_user.web.UserController;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;

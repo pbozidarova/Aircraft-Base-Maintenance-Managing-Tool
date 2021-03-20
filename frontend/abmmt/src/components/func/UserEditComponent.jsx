@@ -2,15 +2,15 @@ import React, { Component } from 'react'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
+import { Route , withRouter} from 'react-router-dom';
 
 import { styles } from '../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
 import { ButtonGroup } from '@material-ui/core';
 
 class EditUserComponent extends Component {
-
-    constructor(props){
-        super(props)   
+    redirectTo(urlParam){
+        this.props.history.push(urlParam)
     }
 
     render(){
@@ -18,15 +18,15 @@ class EditUserComponent extends Component {
 
         return (
             <div key={this.props.selectedUser.companyNum}>
-                {Object.keys(this.props.selectedUser).map(key => {
+                {Object.keys(this.props.labels).map(key => {
                     return (
-                        
+
                             <TextField
-                            error
-                            id="standard-error-helper-text"
-                            label={key}
-                            defaultValue={this.props.selectedUser[key]}
-                            helperText="Incorrect entry."
+                                error
+                                id="standard-error-helper-text"
+                                label={key}
+                                defaultValue={this.props.selectedUser[key]}
+                                helperText="Incorrect entry."
                             />
                         
                     )    
@@ -43,7 +43,7 @@ class EditUserComponent extends Component {
                     <Button 
                         variant="contained" 
                         className={classes.menuButton}
-                        // onClick={  () => {this.redirectTo("/logout"); AuthenticationService.logout()}}
+                        onClick={  () => { console.log(this.props.selectedUser._links.tasks.href); this.redirectTo("/mpd");}}
                         >
                         Check Tasks
                     </Button>
@@ -65,4 +65,4 @@ EditUserComponent.propTypes = {
     classes: PropTypes.object.isRequired,
   };
   
-  export default withStyles(styles)(EditUserComponent);
+  export default withStyles(styles)(withRouter(EditUserComponent));

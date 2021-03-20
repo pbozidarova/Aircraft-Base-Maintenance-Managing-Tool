@@ -5,8 +5,6 @@ import {AIRCRAFT_HEADER_DATA} from '../../Constanst.js'
 import { styles } from '../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
 
-import EnhancedTable from '../material-ui/Table.js'
-
 import EditUserComponent from './UserEditComponent'
 import DataComponent from './DataComponent'
 

@@ -113,4 +113,7 @@ This **MAINTENANCE** consists of multiple technical **TASKS** and while performi
 - Facilities
   
       localhost:3200/facilities/all
+  
+- Aircraft
+      
       localhost:3200/aircraft/all
