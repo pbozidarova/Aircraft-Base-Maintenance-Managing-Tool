@@ -7,9 +7,12 @@ import { withRouter } from 'react-router';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Badge from '@material-ui/core/Badge';
+
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import ListIcon from '@material-ui/icons/List';
+import NotificationsActiveOutlinedIcon from '@material-ui/icons/NotificationsActiveOutlined';
 
 class ListItemsMain extends Component {
        
@@ -47,7 +50,16 @@ class ListItemsMain extends Component {
                         <ListItemText primary="Maintenance Events" />
                     </ListItem>
                     
+                    <ListItem button onClick={() => Utils.redirectTo(this.props, "/notifications") }>
+                        <ListItemIcon>
+                            <Badge badgeContent={4} color="secondary">
+                                <NotificationsActiveOutlinedIcon />
+                            </Badge>
+                        </ListItemIcon>
+                        <ListItemText primary="Notifications" />
+                    </ListItem>
                     
+
                     {/* <ListItem button onClick={() => this.redirectTo("/aircraft") }>
                         <ListItemIcon>
                             <LocalAirportIcon />

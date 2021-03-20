@@ -90,12 +90,12 @@ import { withStyles } from '@material-ui/core/styles';
                         onClick={  () => {this.redirectTo("/logout"); AuthenticationService.logout()}}>
                         Logout
                     </Button>}
-
+{/* 
                     <IconButton color="inherit">
                     <Badge badgeContent={4} color="secondary">
                         <NotificationsIcon />
                     </Badge>
-                    </IconButton>
+                    </IconButton> */}
                 </Toolbar>
                 </AppBar>
 

@@ -17,6 +17,8 @@ import DashboardComponent from './DashboardComponent';
 import FacilityComponent from '../func/FacilityComponent'
 import TaskComponent from '../func/TaskComponent'
 import MaintenanceComponent from '../func/MaintenanceComponent'
+import NotificationComponent from '../func/NotificationComponent'
+
 import UsersComponent from '../func/UsersComponent'
 import ErrorComponent from './ErrorComponent'
 import AuthenticatedRoute from './AuthenticatedRoute'
@@ -46,6 +48,9 @@ class AbmmtComponent extends Component {
                         <AuthenticatedRoute path="/home" component={DashboardComponent}></AuthenticatedRoute>
                         <AuthenticatedRoute path="/mpd" component={TaskComponent}></AuthenticatedRoute>
                         <AuthenticatedRoute path="/maintenance" component={MaintenanceComponent}></AuthenticatedRoute>
+                        <AuthenticatedRoute path="/notifications" component={NotificationComponent}></AuthenticatedRoute>
+
+
                         <AuthenticatedRoute path="/aircraft" component={AircraftComponent}></AuthenticatedRoute>
                         <AuthenticatedRoute path="/facility" component={FacilityComponent}></AuthenticatedRoute>
                         

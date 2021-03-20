@@ -6,10 +6,19 @@ export const USERS_HEADER_DATA = {
     companyNum: 'Company Number',
     firstName : 'First Name',
     lastName : 'Last Name',
-    facility: "Facility",
     email : 'Email',
+    facility: "Facility",
     roles : 'Roles',
 }
+export const USERS_BOOLEAN_FIELDS = {
+    
+    USER : 'User',
+    ADMIN: 'Admin',
+    MECHANIC: 'Mechanic',
+    ENGINEER: 'Engineer'
+
+}
+
 
 export const TASKS_HEADER_DATA = {
     taskNum: 'Task Number',

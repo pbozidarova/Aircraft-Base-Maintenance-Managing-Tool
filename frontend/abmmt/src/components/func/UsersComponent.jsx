@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import BackendService from '../../api/CommonAPI.js'
-import {USERS_HEADER_DATA} from '../../Constanst.js'
+import {USERS_BOOLEAN_FIELDS, USERS_HEADER_DATA} from '../../Constanst.js'
 
 import { styles } from '../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
@@ -75,13 +75,13 @@ class UsersComponent extends Component {
               </Grid>
               <Grid item xs={12} md={7} lg={7}>
                 <Paper className={fixedHeightPaper}>
-                  
+                  {this.state.selected.companyNum && 
                     <EditUserComponent 
                         selectedUser={this.state.selected} 
                         labels = {USERS_HEADER_DATA} 
-                        
+                        booleanFields = {USERS_BOOLEAN_FIELDS}
                     />
-
+                  }
                 </Paper>
               </Grid>
               {/* Recent Orders */}
