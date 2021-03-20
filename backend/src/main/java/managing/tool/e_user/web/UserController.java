@@ -1,6 +1,6 @@
 package managing.tool.e_user.web;
 
-import managing.tool.e_issue.web.IssueController;
+import managing.tool.e_notification.web.IssueController;
 import managing.tool.e_maintenance.web.MaintenanceController;
 import managing.tool.e_task.web.TaskController;
 import managing.tool.e_user.model.dto.UserViewDto;

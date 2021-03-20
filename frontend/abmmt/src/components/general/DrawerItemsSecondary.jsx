@@ -11,7 +11,7 @@ import LocationCityIcon from '@material-ui/icons/LocationCity';
 import PeopleIcon from '@material-ui/icons/People';
 import LocalAirportIcon from '@material-ui/icons/LocalAirport';
 
-class ListItemsSecondary extends Component {
+class DrawerItemsSecondary extends Component {
     
     redirectTo(urlParam){
         this.props.history.push(urlParam)
@@ -79,5 +79,5 @@ class ListItemsSecondary extends Component {
     }
 }
 
-export default withRouter(ListItemsSecondary)
+export default withRouter(DrawerItemsSecondary)
 

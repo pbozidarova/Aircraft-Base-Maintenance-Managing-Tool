@@ -1,15 +1,6 @@
-package managing.tool.e_issue.model.dto;
+package managing.tool.e_notification.model.dto;
 
-import managing.tool.e_issue.model.CommunicationEntity;
-import managing.tool.e_issue.model.IssueClassificationEnum;
-import managing.tool.e_issue.model.IssueStatusEnum;
-import managing.tool.e_maintenance.model.MaintenanceEntity;
-import managing.tool.e_user.model.UserEntity;
-
-import java.time.LocalDateTime;
-import java.util.Set;
-
-public class IssueViewDto {
+public class NotificationViewDto {
     private String issueNum;
     private String author;
     private String status;
@@ -18,14 +9,14 @@ public class IssueViewDto {
 
     private String maintenance;
 
-    public IssueViewDto() {
+    public NotificationViewDto() {
     }
 
     public String getIssueNum() {
         return issueNum;
     }
 
-    public IssueViewDto setIssueNum(String issueNum) {
+    public NotificationViewDto setIssueNum(String issueNum) {
         this.issueNum = issueNum;
         return this;
     }
@@ -34,7 +25,7 @@ public class IssueViewDto {
         return author;
     }
 
-    public IssueViewDto setAuthor(String author) {
+    public NotificationViewDto setAuthor(String author) {
         this.author = author;
         return this;
     }
@@ -43,7 +34,7 @@ public class IssueViewDto {
         return status;
     }
 
-    public IssueViewDto setStatus(String status) {
+    public NotificationViewDto setStatus(String status) {
         this.status = status;
         return this;
     }
@@ -52,7 +43,7 @@ public class IssueViewDto {
         return classification;
     }
 
-    public IssueViewDto setClassification(String classification) {
+    public NotificationViewDto setClassification(String classification) {
         this.classification = classification;
         return this;
     }
@@ -61,7 +52,7 @@ public class IssueViewDto {
         return dueDate;
     }
 
-    public IssueViewDto setDueDate(String dueDate) {
+    public NotificationViewDto setDueDate(String dueDate) {
         this.dueDate = dueDate;
         return this;
     }
@@ -70,7 +61,7 @@ public class IssueViewDto {
         return maintenance;
     }
 
-    public IssueViewDto setMaintenance(String maintenance) {
+    public NotificationViewDto setMaintenance(String maintenance) {
         this.maintenance = maintenance;
         return this;
     }

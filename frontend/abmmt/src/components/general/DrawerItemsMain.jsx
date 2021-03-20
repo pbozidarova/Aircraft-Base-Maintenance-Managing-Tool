@@ -14,7 +14,7 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import ListIcon from '@material-ui/icons/List';
 import NotificationsActiveOutlinedIcon from '@material-ui/icons/NotificationsActiveOutlined';
 
-class ListItemsMain extends Component {
+class DrawerItemsMain extends Component {
        
     render(){
 
@@ -111,5 +111,5 @@ class ListItemsMain extends Component {
     }
 }
 
-export default withRouter(ListItemsMain)
+export default withRouter(DrawerItemsMain)
 

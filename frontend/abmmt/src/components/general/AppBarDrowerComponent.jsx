@@ -17,8 +17,8 @@ import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import ListItemsMain from './ListItemsMain.jsx';
-import ListItemsSecondary from './ListItemsSecondary.jsx';
+import DrawerItemsMain from './DrawerItemsMain.jsx';
+import DrawerItemsSecondary from './DrawerItemsSecondary.jsx';
 
 import { styles } from '../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
@@ -115,9 +115,9 @@ import { withStyles } from '@material-ui/core/styles';
                 </div>
                 <Divider />
                 {/* <List>{items}</List> */}
-                <List><ListItemsMain/></List>
+                <List><DrawerItemsMain/></List>
                 <Divider />
-                <List><ListItemsSecondary/></List>
+                <List><DrawerItemsSecondary/></List>
                 {/* <List>{secondaryListItems}</List>  */}
                 </Drawer>
               </>                 

@@ -1,4 +1,4 @@
-package managing.tool.e_issue.model;
+package managing.tool.e_notification.model;
 
 import managing.tool.e_base.BaseEntity;
 import managing.tool.e_user.model.UserEntity;

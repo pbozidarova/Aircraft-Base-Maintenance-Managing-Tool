@@ -1,7 +1,7 @@
 package managing.tool.e_maintenance.web;
 
 import managing.tool.constants.GlobalConstants;
-import managing.tool.e_issue.web.IssueController;
+import managing.tool.e_notification.web.IssueController;
 import managing.tool.e_maintenance.model.dto.MaintenanceViewModel;
 import managing.tool.e_maintenance.service.MaintenanceService;
 import managing.tool.e_task.web.TaskController;

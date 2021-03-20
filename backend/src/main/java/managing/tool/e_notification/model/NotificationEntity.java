@@ -1,4 +1,4 @@
-package managing.tool.e_issue.model;
+package managing.tool.e_notification.model;
 
 import managing.tool.e_base.BaseEntity;
 import managing.tool.e_maintenance.model.MaintenanceEntity;
@@ -11,28 +11,28 @@ import java.util.Set;
 
 @Entity
 @Table(name = "issues")
-public class IssueEntity extends BaseEntity {
+public class NotificationEntity extends BaseEntity {
 
-    private String issueNum;
+    private String notificationNum;
     private Set<CommunicationEntity> communication;
     private UserEntity author;
-    private IssueStatusEnum status;
-    private IssueClassificationEnum classification;
+    private NotificationStatusEnum status;
+    private NotificationClassificationEnum classification;
     private LocalDateTime dueDate;
 
     private MaintenanceEntity maintenance;
     private Set<TaskEntity> tasks;
 
-    public IssueEntity() {
+    public NotificationEntity() {
     }
 
-    @Column(name = "issue_num", nullable = false, unique = true)
-    public String getIssueNum() {
-        return issueNum;
+    @Column(name = "notification_num", nullable = false, unique = true)
+    public String getNotificationNum() {
+        return notificationNum;
     }
 
-    public IssueEntity setIssueNum(String issueNum) {
-        this.issueNum = issueNum;
+    public NotificationEntity setNotificationNum(String notificationNum) {
+        this.notificationNum = notificationNum;
         return this;
     }
 
@@ -41,7 +41,7 @@ public class IssueEntity extends BaseEntity {
         return communication;
     }
 
-    public IssueEntity setCommunication(Set<CommunicationEntity> replay) {
+    public NotificationEntity setCommunication(Set<CommunicationEntity> replay) {
         this.communication = replay;
         return this;
     }
@@ -51,29 +51,29 @@ public class IssueEntity extends BaseEntity {
         return author;
     }
 
-    public IssueEntity setAuthor(UserEntity createdBy) {
+    public NotificationEntity setAuthor(UserEntity createdBy) {
         this.author = createdBy;
         return this;
     }
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    public IssueStatusEnum getStatus() {
+    public NotificationStatusEnum getStatus() {
         return status;
     }
 
-    public IssueEntity setStatus(IssueStatusEnum status) {
+    public NotificationEntity setStatus(NotificationStatusEnum status) {
         this.status = status;
         return this;
     }
 
     @Enumerated(EnumType.STRING)
     @Column(name = "classification", nullable = false)
-    public IssueClassificationEnum getClassification() {
+    public NotificationClassificationEnum getClassification() {
         return classification;
     }
 
-    public IssueEntity setClassification(IssueClassificationEnum classification) {
+    public NotificationEntity setClassification(NotificationClassificationEnum classification) {
         this.classification = classification;
         return this;
     }
@@ -84,7 +84,7 @@ public class IssueEntity extends BaseEntity {
         return dueDate;
     }
 
-    public IssueEntity setDueDate(LocalDateTime dueDate) {
+    public NotificationEntity setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
         return this;
     }
@@ -94,7 +94,7 @@ public class IssueEntity extends BaseEntity {
         return maintenance;
     }
 
-    public IssueEntity setMaintenance(MaintenanceEntity maintenance) {
+    public NotificationEntity setMaintenance(MaintenanceEntity maintenance) {
         this.maintenance = maintenance;
         return this;
     }
@@ -108,7 +108,7 @@ public class IssueEntity extends BaseEntity {
         return tasks;
     }
 
-    public IssueEntity setTasks(Set<TaskEntity> tasks) {
+    public NotificationEntity setTasks(Set<TaskEntity> tasks) {
         this.tasks = tasks;
         return this;
     }

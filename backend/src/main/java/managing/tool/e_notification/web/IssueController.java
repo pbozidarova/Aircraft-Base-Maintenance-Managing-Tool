@@ -1,9 +1,7 @@
-package managing.tool.e_issue.web;
+package managing.tool.e_notification.web;
 
-import managing.tool.e_issue.model.dto.IssueViewDto;
-import managing.tool.e_issue.service.IssueService;
-import managing.tool.e_user.model.UserEntity;
-import managing.tool.e_user.service.UserService;
+import managing.tool.e_notification.model.dto.NotificationViewDto;
+import managing.tool.e_notification.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -18,25 +16,25 @@ import java.util.stream.Collectors;
 @RequestMapping("/issues")
 public class IssueController {
 
-    private final IssueService issueService;
+    private final NotificationService issueService;
 
 
     @Autowired
-    public IssueController(IssueService issueService) {
+    public IssueController(NotificationService issueService) {
         this.issueService = issueService;
 
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<IssueViewDto>> findAllIssues(){
+    public ResponseEntity<List<NotificationViewDto>> findAllIssues(){
         return ResponseEntity.ok()
                 .body(this.issueService.findAllIssues());
     }
 
     @GetMapping("/user/{companyNum}")
-    public ResponseEntity<CollectionModel<EntityModel<IssueViewDto>>> findAllIssuesRaisedBy(@PathVariable String companyNum){
+    public ResponseEntity<CollectionModel<EntityModel<NotificationViewDto>>> findAllIssuesRaisedBy(@PathVariable String companyNum){
 
-        List<EntityModel<IssueViewDto>> issues = this.issueService
+        List<EntityModel<NotificationViewDto>> issues = this.issueService
                 .findAllIssuesByAuthor(companyNum)
                 .stream()
                 .map(EntityModel::of)
@@ -48,8 +46,8 @@ public class IssueController {
     }
 
     @GetMapping("/maintenance/{maintenanceNum}")
-    public ResponseEntity<CollectionModel<EntityModel<IssueViewDto>>> findAllIssuesForMaintenance(@PathVariable String maintenanceNum){
-        List<EntityModel<IssueViewDto>> issues = this.issueService
+    public ResponseEntity<CollectionModel<EntityModel<NotificationViewDto>>> findAllIssuesForMaintenance(@PathVariable String maintenanceNum){
+        List<EntityModel<NotificationViewDto>> issues = this.issueService
                 .findAllIssuesByMaintenance(maintenanceNum)
                 .stream()
                 .map(EntityModel::of)

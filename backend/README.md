@@ -61,9 +61,9 @@ This **MAINTENANCE** consists of multiple technical **TASKS** and while performi
    - issues - are there any issues that has been risen due to this task;
    - applicableAircraft - which aircraft this task can be applied to;
 
-6. Issue<br>
+6. Notification<br>
    Means of communication between the users, that is happening in the context of a maintenance event.
-   - IssueNum - identification specific for a issue;
+   - NotificationNum - identification specific for a issue;
    - Communication - an issue may require long back and forth communication between different users. It consists of description, author and date fields.
    - Author - the user that have created the issue;
    - Status - whether the issue has already been reviewed;
@@ -104,11 +104,11 @@ This **MAINTENANCE** consists of multiple technical **TASKS** and while performi
       localhost:3200/tasks/user/{companyNum}
       localhost:3200/tasks/maintenance/{maintenanceNum}
 
-- Issues
+- Notifications
       
-      localhost:3200/issues/all
-      localhost:3200/issues/user/{companyNum}
-      localhost:3200/issues/maintenance/{maintenanceNum}
+      localhost:3200/notifications/all
+      localhost:3200/notifications/user/{companyNum}
+      localhost:3200/notifications/maintenance/{maintenanceNum}
 
 - Facilities
   

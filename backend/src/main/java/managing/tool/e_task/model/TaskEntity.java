@@ -1,7 +1,7 @@
 package managing.tool.e_task.model;
 
 import managing.tool.e_base.BaseEntity;
-import managing.tool.e_issue.model.IssueEntity;
+import managing.tool.e_notification.model.NotificationEntity;
 import managing.tool.e_maintenance.model.MaintenanceEntity;
 import managing.tool.e_user.model.UserEntity;
 
@@ -24,7 +24,7 @@ public class TaskEntity extends BaseEntity {
     private Set<MaintenanceEntity> maintenances;
     private Set<UserEntity> preparedBy;
 
-    private Set<IssueEntity> tickets;
+    private Set<NotificationEntity> tickets;
 
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
@@ -111,11 +111,11 @@ public class TaskEntity extends BaseEntity {
     }
 
     @ManyToMany(mappedBy = "tasks")
-    public Set<IssueEntity> getTickets() {
+    public Set<NotificationEntity> getTickets() {
         return tickets;
     }
 
-    public TaskEntity setTickets(Set<IssueEntity> tickets) {
+    public TaskEntity setTickets(Set<NotificationEntity> tickets) {
         this.tickets = tickets;
         return this;
     }
