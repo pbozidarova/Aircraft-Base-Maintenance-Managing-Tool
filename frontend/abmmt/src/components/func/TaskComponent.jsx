@@ -56,7 +56,7 @@ class TaskComponent extends Component{
             
     }
 
-    selectTask(event, task) {      
+    selectTask(task) {      
         this.setState({selected: task})
     }
 

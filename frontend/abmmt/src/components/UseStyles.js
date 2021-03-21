@@ -1,7 +1,26 @@
+import { createMuiTheme } from '@material-ui/core/styles';
+
+
+export const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#ffffee',
+      main: '#ffccbc',
+      dark: '#cb9b8c',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#ffffff',
+      main: '#e0e0e0',
+      dark: '#aeaeae',
+      contrastText: '#000',
+    },
+  },
+});
 
 export const drawerWidth = 240;
 // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-export const styles = (theme) => ({
+export const styles = ( theme ) => ({
   abmmt: {
       display: 'flex',
     },

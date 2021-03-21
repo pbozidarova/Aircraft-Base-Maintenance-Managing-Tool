@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import BackendService from '../../api/CommonAPI.js'
 import {USERS_BOOLEAN_FIELDS, USERS_HEADER_DATA} from '../../Constanst.js'
 
-import { styles } from '../UseStyles.js'
+import { styles, theme } from '../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
 
 import EnhancedTable from '../material-ui/Table.js'
@@ -25,10 +25,12 @@ class UsersComponent extends Component {
         this.state = {
             users : [],
             selected: {},
+            // selected: {companyNum: '', firstName: '', lastName: '', email: '', facility: '', roles: ''},
         }
 
         this.refreshUsers = this.refreshUsers.bind(this)
         this.selectUser = this.selectUser.bind(this)
+        this.handleChange = this.handleChange.bind(this)
         
 
     }
@@ -42,16 +44,28 @@ class UsersComponent extends Component {
         BackendService.all('users')
             .then(
                 response => {
-                    console.log(response.data._embedded.userViewDtoList)
+                    
                     this.setState({users : response.data._embedded.userViewDtoList});
                 }
             ); 
     }
 
-    selectUser(event, user) {      
+    selectUser( user) {      
         this.setState({selected: user})
+        console.log(this.state.selected)
     }
+    
+    handleChange(event){
+        console.log({[event.target.name]
+                                    :event.target.value})
 
+        this.setState(
+            {
+                selected: {...this.state.selected, [event.target.name]
+                                    :event.target.value}
+            }
+        )
+    }
 
     render(){
         const { classes } = this.props;
@@ -78,6 +92,7 @@ class UsersComponent extends Component {
                   {this.state.selected.companyNum && 
                     <EditUserComponent 
                         selectedUser={this.state.selected} 
+                        handleChange={this.handleChange} 
                         labels = {USERS_HEADER_DATA} 
                         booleanFields = {USERS_BOOLEAN_FIELDS}
                     />

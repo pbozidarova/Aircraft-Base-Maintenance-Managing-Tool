@@ -43,7 +43,7 @@ class AircraftComponent extends Component {
             ); 
     }
 
-    selectAircraft(event, aircraft) {      
+    selectAircraft(aircraft) {      
         this.setState({selected: aircraft})
     }
 

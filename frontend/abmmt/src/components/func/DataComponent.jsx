@@ -11,7 +11,7 @@ import TableHead from '@material-ui/core/TableHead';
 
 
 import { styles } from '../UseStyles.js'
-import { withStyles } from '@material-ui/core/styles';
+import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
 
 import PropTypes from 'prop-types';
 
@@ -32,7 +32,7 @@ class DataComponent extends Component{
     }
 
     isSelected(currentRow) {
-        console.log(this.props.tableHeader);
+        
         return this.props.selected === currentRow;
     }
     handleChangePage = (event, newPage) => {
@@ -46,7 +46,8 @@ class DataComponent extends Component{
     render(){
      
         return(
-            <div>
+            <MuiThemeProvider>
+
             <TableContainer>
 
                 <Table >
@@ -66,7 +67,7 @@ class DataComponent extends Component{
                                     
                                     <TableRow
                                         hover
-                                        onClick={(event) => this.props.selectRow(event, tableRow)}
+                                        onClick={() => this.props.selectRow(tableRow)}
                                         tabIndex={-1}
                                         key={Object.entries(tableRow)[0][1]}
                                         selected={this.isSelected(tableRow)}
@@ -90,7 +91,7 @@ class DataComponent extends Component{
                 onChangePage={this.handleChangePage}
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
             />
-         </div>
+         </MuiThemeProvider>
         )
     }
 

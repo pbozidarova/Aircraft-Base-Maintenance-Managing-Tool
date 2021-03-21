@@ -45,7 +45,7 @@ class FacilityComponent extends Component {
             ); 
     }
 
-    selectFacility(event, facility) {      
+    selectFacility(facility) {      
         this.setState({selected: facility})
     }
 
