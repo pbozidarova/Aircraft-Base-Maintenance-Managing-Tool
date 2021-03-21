@@ -1,19 +1,21 @@
 import React, { Component } from 'react'
 import TextField from '@material-ui/core/TextField';
-import Checkbox from '@material-ui/core/Checkbox';
+import Radio from '@material-ui/core/Radio';
+
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import Button from '@material-ui/core/Button';
+import Utils from '../Utils.js'
 
 import PropTypes from 'prop-types';
 import { withRouter} from 'react-router-dom';
 
-import Utils from '../Utils.js'
 
 import { styles } from '../UseStyles.js'
 import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
-import { ButtonGroup } from '@material-ui/core';
+import { RadioGroup, FormControl, FormHelperText, FormLabel, FormGroup } from '@material-ui/core';
+
 
 class EditUserComponent extends Component {
 
@@ -21,132 +23,161 @@ class EditUserComponent extends Component {
         super(props)
         this.state = {
             errors: {},
-            ADMIN: false,
-            USER: false,
-            ENGINEER: false,
-            MECHANIC: false
             
         }
         this.handleChange = this.handleChange.bind(this);
         this.rolesBuilder = this.rolesBuilder.bind(this);
         this.validate = this.validate.bind(this);
+        this.formIsValid = this.formIsValid.bind(this);
+        this.submit = this.submit.bind(this);
         
     }
 
     handleChange(event){
-        console.log(this.state)
-
+        
         this.setState(
             {  ...this.state, 
-                [event.target.name]
-                    :event.target.checked
+                 roles : {
+                     ...this.state.roles, 
+                     [event.target.name]
+                     :event.target.checked
+                 }
             }
-            )
-            console.log(event.target.checked)
-            // console.log(this.state)
-
-            this.rolesBuilder()
+        )
+        // console.log(this.state)
+        
+        this.props.handleChange(event, this.rolesBuilder())
     
     }
 
     rolesBuilder(){
-        console.log(this.state)
+        
+        let roles = Object.keys(this.state.roles)
+                .reduce( (acc, val) => {
+                    acc += this.state.roles[val]  ? `${val}, ` : ''
+                    return acc
+                }, ''
+                    ).replace(/,\s*$/, "")
+                // ;
+
+            console.log(roles)
+        return roles
+    
     }
 
-    validate(){
-        console.log(this.props.selectedUser.companyNum) 
-        console.log( /^[N]\d{5}$/.test(this.props.selectedUser.companyNum))
-        console.log(this.props.selectedUser.firstName) 
+    async validate(){
+        
         this.setState({ errors: 
              { 
-                companyNum: /^[N]\d{5}$/.test(this.props.selectedUser.companyNum) ? "" : "Follow the pattern N plus 5 digits!" ,
-                firstName: this.props.selectedUser.firstName.length > 2 ? '' : "The first name must contain more than 5 digits!" ,
-                lastName: this.props.selectedUser.lastName.length > 2 ? '' : "The last name must contain more than 5 digits!",
-                email: /^\S+@\S+$/.test(this.props.selectedUser.email)  ? '' : "Please provide a valid email!",
+                companyNum: /^[N]\d{5}$/.test(this.props.selectedUser.companyNum) ? null : "Follow the pattern N plus 5 digits!" ,
+                firstName: this.props.selectedUser.firstName.length > 2 ? null : "The first name must contain more than 2 digits!" ,
+                lastName: this.props.selectedUser.lastName.length > 2 ? null : "The last name must contain more than 2 digits!",
+                email: /^\S+@\S+$/.test(this.props.selectedUser.email)  ? null : "Please provide a valid email!",
+
                 //TODO!!!
-                facility: this.props.selectedUser.facility.length > 2 ? '' : "Please select a facility!",
-                roles: this.props.selectedUser.roles.length > 0 ? '' : "This Field is required",
+                facility: this.props.selectedUser.facility.length > 2 ? null : "Please select a facility!",
+                
+                authoriry: this.props.selectedUser.roles.length > 0 ? null : "At least one authoriry must be checked!",
+                role: this.props.selectedUser.roles.length > 0 ? null : "At least one role must be checked!",
+
              }
-        });
-        console.log(this.state.errors)
-       
+        },  this.formIsValid);
+
+           
     }
+
+    formIsValid(){
+        //CHECK IF THE FORM IS VALID
+        console.log('istheretrue' +Object.values(this.state.roles).includes(true))
+        let formIsValid = true;
+        Object.keys(this.state.errors).forEach( errorField => {
+            console.log('error ' + this.state.errors[errorField])
+        
+            if(this.state.errors[errorField] ) {
+                formIsValid = false;                
+                return;
+            }
+        })
+        
+        return formIsValid;
+    }
+
+    submit(){
+        
+        if(this.formIsValid()) console.log('submit')
+        
+    }
+
 
     render(){
         const { classes } = this.props;
-        const { selectedUser, booleanFields, handleChange } = this.props;
+        const { selectedUser, booleanFields, handleChange, authoriry, role, handleAuthorityRoleChange } = this.props;
         const links = this.props.selectedUser._links;
         
 
         return (
-            <MuiThemeProvider key={selectedUser.companyNum} > 
+            <MuiThemeProvider row key={selectedUser.companyNum} > 
                 
                 {Object.keys(this.props.labels).map(key => {
-                    return (
+                      
+                        return (
+                            ( key !== "roles" && key !== "companyNum") &&
                             <TextField
-                            id={key}
-                            name={key}
-                            label={this.props.labels[key]}
-                            disabled={key === 'roles'}
-                            defaultValue={selectedUser[key]}
-                            onChange={handleChange}
-                            // helperText="Incorrect entry."
-                            error={this.state.errors[key] }
-                            helperText={this.state.errors[key]}
+                                id={key}
+                                name={key}
+                                label={this.props.labels[key]}
+                                defaultValue={selectedUser[key]}
+                                onChange={handleChange}
+                                error={this.state.errors[key]}
+                                helperText={this.state.errors[key]}
                             /> 
-                    )    
-                })}
-                
-                {  Object.keys(booleanFields).map(f => {                      
-            
-
-                    return (
-                        <FormControlLabel control={
-                                        <Checkbox name={f} 
-                                            checked={this.state[f]}
-                                            key={f} 
-                                            onChange={this.handleChange}
-
-                                        />} 
-                                        label={f}  />
                         
                     )    
                 })}
-                    
-                <ButtonGroup>
-                    <Button 
-                        variant="contained" 
-                        className={classes.menuButton}
-                        onClick={  () => { console.log(links.maintenance.href); Utils.redirectTo(this.props, "/maintenance");}}
-                        >
-                        Check Projects
-                    </Button>
-                    <Button 
-                        variant="contained" 
-                        className={classes.menuButton}
-                        onClick={  () => { console.log(links.tasks.href); Utils.redirectTo(this.props, "/mpd");}}
-                        >
-                        Check Tasks
-                    </Button>
-                    <Button 
-                        variant="contained" 
-                        className={classes.menuButton}
-                        // onClick={  () => {this.redirectTo("/logout"); AuthenticationService.logout()}}
-                        >
-                        Check Notifications
-                    </Button>
-                </ButtonGroup>
-                <ButtonGroup>
+                <FormGroup row>
+                <FormControl required error={this.state.errors.authoriry} 
+                    component="fieldset" className={classes.formControl}>
+                    <FormLabel component="legend">Pick Authority</FormLabel>
+                    <RadioGroup  value={authoriry} onChange={handleAuthorityRoleChange}>
+                    {  Object.keys(booleanFields).slice(0, 2).map(a => {                                              
+                        return (
+                            <FormControlLabel control={
+                                            <Radio box name='authoriry' value={a} key={a} />} 
+                                        label={a}  />
+                            
+                        )    
+                    })}
+                    </RadioGroup>
+                    <FormHelperText>{this.state.errors.authoriry}</FormHelperText>
+               </FormControl>
+
+               <FormControl required error={this.state.errors.role} component="fieldset">
+                    <FormLabel component="legend">Pick Role</FormLabel>
+                    <RadioGroup   value={role} onChange={handleAuthorityRoleChange}>
+                        {  Object.keys(booleanFields).slice(2, 4).map(r => {                                              
+                            return (
+                                <FormControlLabel control={
+                                                    <Radio box name='role' value={r} key={r} />} 
+
+                                                label={r}  />
+                            )    
+                        })}
+                    </RadioGroup>
+                    <FormHelperText>{this.state.errors.role}</FormHelperText>
+               </FormControl>
+               </FormGroup>
+                   
+                
                 <Button 
                         variant="contained" 
                         className={classes.menuButton}
                         color="primary"
 
-                        onClick={this.validate}
+                        onClick={() => {this.validate(); this.submit()}}
                         >
                         Update
                     </Button>
-                </ButtonGroup>
+                
                 
             </MuiThemeProvider>
             

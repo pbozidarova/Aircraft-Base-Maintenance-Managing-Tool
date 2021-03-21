@@ -9,6 +9,8 @@ import Table from '@material-ui/core/TableRow';
 import TableBody from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
 
+import {Button, ButtonGroup} from '@material-ui/core';
+import Utils from '../Utils.js'
 
 import { styles } from '../UseStyles.js'
 import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
@@ -33,7 +35,7 @@ class DataComponent extends Component{
 
     isSelected(currentRow) {
         
-        return this.props.selected === currentRow;
+        return this.props.selectedId === currentRow;
     }
     handleChangePage = (event, newPage) => {
         this.setState({page: newPage});
@@ -44,7 +46,8 @@ class DataComponent extends Component{
         this.setState({page: 0});
     }
     render(){
-     
+        const { classes } = this.props;
+
         return(
             <MuiThemeProvider>
 
@@ -70,11 +73,33 @@ class DataComponent extends Component{
                                         onClick={() => this.props.selectRow(tableRow)}
                                         tabIndex={-1}
                                         key={Object.entries(tableRow)[0][1]}
-                                        selected={this.isSelected(tableRow)}
+                                        selected={this.isSelected(Object.entries(tableRow)[0][1])}
                                     >
                                         {Object.keys(this.props.tableHeader)
                                                .map(key => <TableCell key={key} align="right">{tableRow[key]}</TableCell>)}
-                                        
+                    <ButtonGroup row>
+                    <Button 
+                        variant="contained" 
+                        className={classes.menuButton}
+                        // onClick={  () => { console.log(links.maintenance.href); Utils.redirectTo(this.props, "/maintenance");}}
+                        >
+                        Projects
+                    </Button>
+                    <Button 
+                        variant="contained" 
+                        className={classes.menuButton}
+                        // onClick={  () => { console.log(links.tasks.href); Utils.redirectTo(this.props, "/mpd");}}
+                        >
+                        Tasks
+                    </Button>
+                    <Button 
+                        variant="contained" 
+                        className={classes.menuButton}
+                        // onClick={  () => {this.redirectTo("/logout"); AuthenticationService.logout()}}
+                        >
+                        Notifications
+                    </Button>
+                    </ButtonGroup>
                                     </TableRow>
                                 )   
                             })

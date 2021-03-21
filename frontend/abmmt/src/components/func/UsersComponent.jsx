@@ -20,17 +20,18 @@ import Grid from '@material-ui/core/Grid';
 class UsersComponent extends Component {
     constructor(props){
         super(props)
-        // this.getAllUsers = this.getAllUsers.bind(this);
-        // this.handleSuccessfulResponse = this.handleSuccessfulResponse.bind(this);
+        
         this.state = {
             users : [],
             selected: {},
-            // selected: {companyNum: '', firstName: '', lastName: '', email: '', facility: '', roles: ''},
+            authoriry: {},
+            role: {}
         }
 
         this.refreshUsers = this.refreshUsers.bind(this)
         this.selectUser = this.selectUser.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.handleAuthorityRoleChange = this.handleAuthorityRoleChange.bind(this)
         
 
     }
@@ -50,21 +51,39 @@ class UsersComponent extends Component {
             ); 
     }
 
-    selectUser( user) {      
-        this.setState({selected: user})
-        console.log(this.state.selected)
+    selectUser( user) {
+        let authoriryObj = user.roles.includes('ADMIN') ? 'ADMIN' : 'USER'
+        let roleObj = user.roles.includes('ENGINEER') ? 'ENGINEER' : 'MECHANIC'
+        
+        this.setState({
+            selected: user, 
+            authoriry: authoriryObj,
+            role: roleObj
+        },console.log(this.state))
+        
     }
     
     handleChange(event){
-        console.log({[event.target.name]
-                                    :event.target.value})
-
         this.setState(
-            {
-                selected: {...this.state.selected, [event.target.name]
-                                    :event.target.value}
+            {   ...this.state,
+                selected: {...this.state.selected, [event.target.name] : event.target.value}
             }
-        )
+        , console.log(this.state))
+        
+    }
+
+    handleAuthorityRoleChange(event){
+        console.log(event.target.name)
+        let updateRolesString = event.target.value.includes('ADMIN') ? 'ADMIN' : 'USER'
+        updateRolesString += event.target.value.includes('ENGINEER') ? ', ENGINEER' : ', MECHANIC'
+        
+        this.setState({
+            ...this.state,
+            selected: {...this.state.selected, roles: updateRolesString},
+            [event.target.name] : event.target.value
+        })
+        console.log(this.state)
+        
     }
 
     render(){
@@ -75,15 +94,17 @@ class UsersComponent extends Component {
                    
             <Grid container spacing={3}>
               {/* Chart */}
-              <Grid item xs={12} md={5} lg={5}>
-                <Paper className={fixedHeightPaper}>
+              <Grid item xs={12} md={5} lg={10}>
+                <Paper className="{fixedHeightPaper}">
                             
                     <DataComponent 
                         tableRows={this.state.users}
                         tableHeader = {USERS_HEADER_DATA}
-                        selected={this.state.selected}
-                        selectRow={this.selectUser} 
+                        selectedId={this.state.selected.companyNum}
+                        selectRow={this.selectUser}
+                        
                     />
+                     
 
                 </Paper>
               </Grid>
@@ -93,8 +114,11 @@ class UsersComponent extends Component {
                     <EditUserComponent 
                         selectedUser={this.state.selected} 
                         handleChange={this.handleChange} 
+                        handleAuthorityRoleChange={this.handleAuthorityRoleChange} 
                         labels = {USERS_HEADER_DATA} 
                         booleanFields = {USERS_BOOLEAN_FIELDS}
+                        authoriry={this.state.authoriry} 
+                        role={this.state.role}
                     />
                   }
                 </Paper>
