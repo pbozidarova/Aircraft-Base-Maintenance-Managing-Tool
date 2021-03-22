@@ -9,5 +9,7 @@ import java.util.List;
 public interface FacilityService {
 
     List<FacilityViewDto> findAll();
+
+
     FacilityEntity getFacilityByName(String name);
 }

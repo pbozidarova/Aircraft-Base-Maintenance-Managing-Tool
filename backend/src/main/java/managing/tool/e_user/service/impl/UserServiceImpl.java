@@ -2,6 +2,8 @@ package managing.tool.e_user.service.impl;
 
 import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
+import managing.tool.e_facility.service.FacilitySeedService;
+import managing.tool.e_facility.service.FacilityService;
 import managing.tool.e_user.model.dto.UserDetailsDto;
 import managing.tool.e_user.model.RoleEntity;
 import managing.tool.e_user.model.UserEntity;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,6 +27,8 @@ public class UserServiceImpl implements UserService {
 
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
+    private final RoleService roleService;
+    private final FacilityService facilityService;
     private final Random random;
 
 
@@ -46,7 +51,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserViewDto updateUser(UserViewDto userViewDto) {
-        UserEntity userEntity = this.userRepository.save( this.modelMapper.map(userViewDto, UserEntity.class) );
+        UserEntity userEntity = this.modelMapper.map(userViewDto, UserEntity.class);
+
+        Long userEntityId =  this.userRepository
+                .findByCompanyNum(userViewDto.getCompanyNum())
+                .getId();
+        userEntity.setId(userEntityId);
+
+        String userEntityPass =  this.userRepository
+                .findByCompanyNum(userViewDto.getCompanyNum())
+                .getPassword();
+        userEntity.setPassword(userEntityPass);
+
+        userEntity.setFacility(
+                this.facilityService.getFacilityByName(userViewDto.getFacility())
+        );
+
+        Set<RoleEntity> roleSet = new HashSet<>();
+        Arrays.stream(userViewDto.getRoles().split(", "))
+                .forEach( r -> {
+                    RoleEntity role = this.roleService
+                            .findByName(RoleEnum.valueOf(r));
+                    roleSet.add(role);
+                });
+
+        userEntity.setRoles(roleSet);
+        userEntity.setUpdatedOn(Instant.now());
+        this.userRepository.save( userEntity) ;
 
         return this.modelMapper.map(userEntity, UserViewDto.class);
     }

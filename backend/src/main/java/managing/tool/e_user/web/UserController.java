@@ -55,11 +55,11 @@ public class UserController {
                 .ok(EntityModel.of(user, createUserHypermedia(user)));
     }
 
-    @PutMapping("/{companyNum}")
+    @PatchMapping("/{companyNum}")
     public ResponseEntity<UserViewDto> updateSingleUser(
             @PathVariable String companyNum, @RequestBody UserViewDto userViewDto ){
         UserViewDto user = this.userService.updateUser(userViewDto);
-        System.out.println("omg");
+
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 

@@ -15,6 +15,7 @@ import clsx from 'clsx';
 
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 
 
 class UsersComponent extends Component {
@@ -92,6 +93,30 @@ class UsersComponent extends Component {
         return(
                    
             <Grid container spacing={3}>
+
+            <Grid item xs={12}>
+                <Paper className={classes.paper}>
+                    <form className={classes.root} noValidate autoComplete="off">
+                        <div>
+                            Select user in order to edit it.
+                            <Button 
+                                variant="contained" 
+                                className={classes.menuButton}
+                                color="secondary"
+
+                                onClick={() => {
+                                    // let emptyObj = Object.keys(USERS_HEADER_DATA).map(key => USERS_HEADER_DATA[key] = '')    
+                                    this.selectUser(USERS_HEADER_DATA)
+                                }}
+                                >
+                                Create User
+                            </Button>
+                            
+                        </div>
+                    </form>
+                </Paper>
+              </Grid>
+
               {/* Chart */}
               <Grid item xs={12} md={6} lg={8}>
                 <Paper className={fixedHeightPaper}>
@@ -114,6 +139,7 @@ class UsersComponent extends Component {
                         selectedUser={this.state.selected} 
                         handleChange={this.handleChange} 
                         handleAuthorityRoleChange={this.handleAuthorityRoleChange} 
+                        refreshUsers={this.refreshUsers} 
                         labels = {USERS_HEADER_DATA} 
                         booleanFields = {USERS_BOOLEAN_FIELDS}
                         authoriry={this.state.authoriry} 
@@ -123,18 +149,7 @@ class UsersComponent extends Component {
                 </Paper>
               </Grid>
               {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                    
-                    <form className={classes.root} noValidate autoComplete="off">
-                        <div>
-
-                            {/* <EditUserComponent selectedUser={this.state.selectedUser}/> */}
-                            
-                        </div>
-                    </form>
-                </Paper>
-              </Grid>
+             
             </Grid>
     
      

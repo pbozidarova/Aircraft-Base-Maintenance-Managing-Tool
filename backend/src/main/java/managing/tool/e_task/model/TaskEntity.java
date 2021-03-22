@@ -26,9 +26,6 @@ public class TaskEntity extends BaseEntity {
 
     private Set<NotificationEntity> tickets;
 
-    private LocalDateTime createdOn;
-    private LocalDateTime updatedOn;
-
     public TaskEntity() {
     }
 
@@ -124,21 +121,4 @@ public class TaskEntity extends BaseEntity {
         return areJobCardsPrepared;
     }
 
-    public LocalDateTime getCreatedOn() {
-        return createdOn;
-    }
-
-    public TaskEntity setCreatedOn(LocalDateTime createdOn) {
-        this.createdOn = createdOn;
-        return this;
-    }
-
-    public LocalDateTime getUpdatedOn() {
-        return updatedOn;
-    }
-
-    public TaskEntity setUpdatedOn(LocalDateTime updatedOn) {
-        this.updatedOn = updatedOn;
-        return this;
-    }
 }

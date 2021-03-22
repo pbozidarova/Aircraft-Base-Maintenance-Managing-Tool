@@ -24,9 +24,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class FacilityServiceImpl implements FacilityService {
     private final FacilityRepository facilityRepository;
-    private final UserService userService;
     private final ModelMapper modelMapper;
-    private final Gson gson;
+
 
 
     @Override

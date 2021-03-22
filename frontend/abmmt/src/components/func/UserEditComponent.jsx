@@ -92,6 +92,11 @@ class EditUserComponent extends Component {
 
         if(this.formIsValid()) {
             BackendService.updateOne("users", companyNum, selectedUser)
+                .then(response => {
+                    this.props.refreshUsers()
+                    console.log(response)   
+                }
+                    )
 
             console.log('submit')
         }
