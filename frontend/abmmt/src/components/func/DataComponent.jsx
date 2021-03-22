@@ -49,7 +49,7 @@ class DataComponent extends Component{
         const { classes } = this.props;
 
         return(
-            <MuiThemeProvider>
+            <>
 
             <TableContainer>
 
@@ -67,7 +67,7 @@ class DataComponent extends Component{
                             .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
                             .map(tableRow => {
                                 return (
-                                    
+                                
                                     <TableRow
                                         hover
                                         onClick={() => this.props.selectRow(tableRow)}
@@ -77,30 +77,34 @@ class DataComponent extends Component{
                                     >
                                         {Object.keys(this.props.tableHeader)
                                                .map(key => <TableCell key={key} align="right">{tableRow[key]}</TableCell>)}
-                    <ButtonGroup row>
-                    <Button 
-                        variant="contained" 
-                        className={classes.menuButton}
-                        // onClick={  () => { console.log(links.maintenance.href); Utils.redirectTo(this.props, "/maintenance");}}
-                        >
-                        Projects
-                    </Button>
-                    <Button 
-                        variant="contained" 
-                        className={classes.menuButton}
-                        // onClick={  () => { console.log(links.tasks.href); Utils.redirectTo(this.props, "/mpd");}}
-                        >
-                        Tasks
-                    </Button>
-                    <Button 
-                        variant="contained" 
-                        className={classes.menuButton}
-                        // onClick={  () => {this.redirectTo("/logout"); AuthenticationService.logout()}}
-                        >
-                        Notifications
-                    </Button>
-                    </ButtonGroup>
+                                               <TableCell colSpan={6}>
+                                        <ButtonGroup>
+                                        <Button 
+                                            variant="contained" 
+                                            className={classes.menuButton}
+                                            // onClick={  () => { console.log(links.maintenance.href); Utils.redirectTo(this.props, "/maintenance");}}
+                                            >
+                                            Projects
+                                        </Button>
+                                        <Button 
+                                            variant="contained" 
+                                            className={classes.menuButton}
+                                            // onClick={  () => { console.log(links.tasks.href); Utils.redirectTo(this.props, "/mpd");}}
+                                            >
+                                            Tasks
+                                        </Button>
+                                        <Button 
+                                            variant="contained" 
+                                            className={classes.menuButton}
+                                            // onClick={  () => {this.redirectTo("/logout"); AuthenticationService.logout()}}
+                                            >
+                                            Notifications
+                                        </Button>
+                                        </ButtonGroup>
+                                        </TableCell>
                                     </TableRow>
+                                    
+                
                                 )   
                             })
                         }
@@ -116,7 +120,7 @@ class DataComponent extends Component{
                 onChangePage={this.handleChangePage}
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
             />
-         </MuiThemeProvider>
+         </>
         )
     }
 

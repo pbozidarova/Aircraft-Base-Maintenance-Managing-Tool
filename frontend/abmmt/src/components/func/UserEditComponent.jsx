@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import BackendService from '../../api/CommonAPI.js'
+import Utils from '../Utils.js'
+
 import TextField from '@material-ui/core/TextField';
 import Radio from '@material-ui/core/Radio';
 
@@ -6,7 +9,6 @@ import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import Button from '@material-ui/core/Button';
-import Utils from '../Utils.js'
 
 import PropTypes from 'prop-types';
 import { withRouter} from 'react-router-dom';
@@ -15,6 +17,7 @@ import { withRouter} from 'react-router-dom';
 import { styles } from '../UseStyles.js'
 import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
 import { RadioGroup, FormControl, FormHelperText, FormLabel, FormGroup } from '@material-ui/core';
+import { USERS_HEADER_DATA } from '../../Constanst.js';
 
 
 class EditUserComponent extends Component {
@@ -26,7 +29,6 @@ class EditUserComponent extends Component {
             
         }
         this.handleChange = this.handleChange.bind(this);
-        this.rolesBuilder = this.rolesBuilder.bind(this);
         this.validate = this.validate.bind(this);
         this.formIsValid = this.formIsValid.bind(this);
         this.submit = this.submit.bind(this);
@@ -43,27 +45,9 @@ class EditUserComponent extends Component {
                      :event.target.checked
                  }
             }
-        )
-        // console.log(this.state)
-        
-        this.props.handleChange(event, this.rolesBuilder())
-    
+        )            
     }
 
-    rolesBuilder(){
-        
-        let roles = Object.keys(this.state.roles)
-                .reduce( (acc, val) => {
-                    acc += this.state.roles[val]  ? `${val}, ` : ''
-                    return acc
-                }, ''
-                    ).replace(/,\s*$/, "")
-                // ;
-
-            console.log(roles)
-        return roles
-    
-    }
 
     async validate(){
         
@@ -81,14 +65,14 @@ class EditUserComponent extends Component {
                 role: this.props.selectedUser.roles.length > 0 ? null : "At least one role must be checked!",
 
              }
-        },  this.formIsValid);
+        });
 
+        this.formIsValid()
            
     }
 
     formIsValid(){
         //CHECK IF THE FORM IS VALID
-        console.log('istheretrue' +Object.values(this.state.roles).includes(true))
         let formIsValid = true;
         Object.keys(this.state.errors).forEach( errorField => {
             console.log('error ' + this.state.errors[errorField])
@@ -102,9 +86,15 @@ class EditUserComponent extends Component {
         return formIsValid;
     }
 
-    submit(){
+    submit(companyNum, selectedUser){
         
-        if(this.formIsValid()) console.log('submit')
+        // let updateUser = Object.keys(USERS_HEADER_DATA).map(k => k = {[k] : selectedUser[k]})
+
+        if(this.formIsValid()) {
+            BackendService.updateOne("users", companyNum, selectedUser)
+
+            console.log('submit')
+        }
         
     }
 
@@ -116,19 +106,21 @@ class EditUserComponent extends Component {
         
 
         return (
-            <MuiThemeProvider row key={selectedUser.companyNum} > 
+            <MuiThemeProvider key={selectedUser.companyNum} > 
                 
                 {Object.keys(this.props.labels).map(key => {
                       
                         return (
-                            ( key !== "roles" && key !== "companyNum") &&
+                             key !== "roles" && 
+                            //  key !== "companyNum" &&
+                            
                             <TextField
                                 id={key}
                                 name={key}
                                 label={this.props.labels[key]}
                                 defaultValue={selectedUser[key]}
                                 onChange={handleChange}
-                                error={this.state.errors[key]}
+                                error={this.state.errors[key] && this.state.errors[key].length > 0}
                                 helperText={this.state.errors[key]}
                             /> 
                         
@@ -142,9 +134,8 @@ class EditUserComponent extends Component {
                     {  Object.keys(booleanFields).slice(0, 2).map(a => {                                              
                         return (
                             <FormControlLabel control={
-                                            <Radio box name='authoriry' value={a} key={a} />} 
+                                            <Radio name='authoriry' value={a} key={a} />} 
                                         label={a}  />
-                            
                         )    
                     })}
                     </RadioGroup>
@@ -157,7 +148,7 @@ class EditUserComponent extends Component {
                         {  Object.keys(booleanFields).slice(2, 4).map(r => {                                              
                             return (
                                 <FormControlLabel control={
-                                                    <Radio box name='role' value={r} key={r} />} 
+                                                    <Radio name='role' value={r} key={r} />} 
 
                                                 label={r}  />
                             )    
@@ -173,7 +164,7 @@ class EditUserComponent extends Component {
                         className={classes.menuButton}
                         color="primary"
 
-                        onClick={() => {this.validate(); this.submit()}}
+                        onClick={() => {this.validate(); this.submit(selectedUser.companyNum, selectedUser)}}
                         >
                         Update
                     </Button>

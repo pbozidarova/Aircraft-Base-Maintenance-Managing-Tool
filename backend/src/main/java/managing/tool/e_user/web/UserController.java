@@ -8,6 +8,7 @@ import managing.tool.e_user.service.UserService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 import static managing.tool.constants.GlobalConstants.FRONTEND_URL;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping("/users")
@@ -52,6 +54,22 @@ public class UserController {
         return ResponseEntity
                 .ok(EntityModel.of(user, createUserHypermedia(user)));
     }
+
+    @PutMapping("/{companyNum}")
+    public ResponseEntity<UserViewDto> updateSingleUser(
+            @PathVariable String companyNum, @RequestBody UserViewDto userViewDto ){
+        UserViewDto user = this.userService.updateUser(userViewDto);
+        System.out.println("omg");
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+//    @PutMapping("/{companyNum}")
+//    public ResponseEntity<UserViewDto> createSingleUser(
+//            @PathVariable String companyNum, @RequestBody UserViewDto userViewDto ){
+//        UserViewDto user = this.userService.createUser(userViewDto);
+//        System.out.println("omg");
+//        return new ResponseEntity<>(user, HttpStatus.OK);
+//    }
 
     private Link[] createUserHypermedia(UserViewDto user) {
         List<Link> result = new ArrayList<>();

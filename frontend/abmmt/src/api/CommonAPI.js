@@ -3,16 +3,21 @@ import {BACKEND_URL} from '../Constanst.js'
 
 
 class BackendService {
-    all(entity){
+    getAll(entity){
         // console.log('executed service');
         return axios.get(`${BACKEND_URL}/${entity}/all`);
     }
 
-    single(entity, num){
+    getOne(entity, num){
         // console.log('executed service');
         return axios.get(`${BACKEND_URL}/${entity}/${num}`);
     }
 
+    updateOne(entity, num, updatedObj){
+        return axios.put(`${BACKEND_URL}/${entity}/${num}`, updatedObj);
+    }
+
+   
 }
 
 export default new BackendService();

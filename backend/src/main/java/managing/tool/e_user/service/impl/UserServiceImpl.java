@@ -45,6 +45,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserViewDto updateUser(UserViewDto userViewDto) {
+        UserEntity userEntity = this.userRepository.save( this.modelMapper.map(userViewDto, UserEntity.class) );
+
+        return this.modelMapper.map(userEntity, UserViewDto.class);
+    }
+
+    @Override
+    public UserViewDto createUser(UserViewDto userViewDto) {
+        UserEntity userEntity = this.userRepository.save( this.modelMapper.map(userViewDto, UserEntity.class) );
+
+        return this.modelMapper.map(userEntity, UserViewDto.class);
+
+    }
+
+    @Override
     public Optional<UserDetailsDto> findUserDetails(String companyNum) {
         UserEntity userEntity = this.userRepository.findByCompanyNum(companyNum);
         UserDetailsDto userDetailsDto = this.modelMapper.map(

@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface UserService {
 
     UserViewDto findUser(String companyNum);
+    UserViewDto updateUser(UserViewDto userViewDto);
+    UserViewDto createUser(UserViewDto userViewDto);
 
     Optional<UserDetailsDto> findUserDetails(String companyNum);
 

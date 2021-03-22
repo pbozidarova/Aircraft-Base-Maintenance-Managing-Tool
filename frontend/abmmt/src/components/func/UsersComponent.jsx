@@ -42,10 +42,9 @@ class UsersComponent extends Component {
     }
 
     refreshUsers(){
-        BackendService.all('users')
+        BackendService.getAll('users')
             .then(
                 response => {
-                    
                     this.setState({users : response.data._embedded.userViewDtoList});
                 }
             ); 
@@ -94,8 +93,8 @@ class UsersComponent extends Component {
                    
             <Grid container spacing={3}>
               {/* Chart */}
-              <Grid item xs={12} md={5} lg={10}>
-                <Paper className="{fixedHeightPaper}">
+              <Grid item xs={12} md={6} lg={8}>
+                <Paper className={fixedHeightPaper}>
                             
                     <DataComponent 
                         tableRows={this.state.users}
@@ -108,7 +107,7 @@ class UsersComponent extends Component {
 
                 </Paper>
               </Grid>
-              <Grid item xs={12} md={7} lg={7}>
+              <Grid item xs={12} md={6} lg={4}>
                 <Paper className={fixedHeightPaper}>
                   {this.state.selected.companyNum && 
                     <EditUserComponent 
