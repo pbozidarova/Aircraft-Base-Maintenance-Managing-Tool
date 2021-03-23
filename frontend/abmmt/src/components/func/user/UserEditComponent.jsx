@@ -75,12 +75,13 @@ class EditUserComponent extends Component {
     submitUpdate(companyNum, selectedUser){
         if(Utils.formIsValid(this.state.errors)) {
             BackendService.updateOne("users", companyNum, selectedUser)
-                .then(() => {                        
+                .then((r) => {                        
                     this.props.refreshUsers()
+                    console.log(r)
                     this.props.handleInfo({success : MESSAGES.successUpdated});
                 }
                 ).catch(e => {
-                    this.props.handleInfo({error : MESSAGES.errorNonExistant});
+                    this.props.handleInfo({error : e.response.data.message});
                 })
             console.log('submit Update')
         }
@@ -94,7 +95,7 @@ class EditUserComponent extends Component {
                     this.props.handleInfo({success : MESSAGES.successCreated});
                 }
                 ).catch(e => {
-                    this.props.handleInfo({error : MESSAGES.errorExist});
+                    this.props.handleInfo({error : e.response.data.message});
                 })
 
             console.log('submit Create')

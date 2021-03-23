@@ -1,6 +1,7 @@
 package managing.tool.config;
 
 import managing.tool.authentication.filters.JwtRequestFilter;
+import managing.tool.constants.GlobalConstants;
 import managing.tool.e_user.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -83,5 +84,16 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 //                .antMatchers(HttpMethod.OPTIONS, "/**");
     }
 
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurerAdapter() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedMethods("*")
+                        .allowedOrigins(GlobalConstants.FRONTEND_URL);
+            }
+        };
+    }
 
 }

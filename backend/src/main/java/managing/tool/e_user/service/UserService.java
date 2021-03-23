@@ -18,6 +18,8 @@ public interface UserService {
     List<UserViewDto> findAllUsers();
 
     UserEntity findByCompanyNum(String companyNum);
-    Boolean userExists(String companyNum);
     UserEntity getRandomUser();
+
+    Boolean userExists(String companyNum);
+    Boolean emailExists(String email);
 }

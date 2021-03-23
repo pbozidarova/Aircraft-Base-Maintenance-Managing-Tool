@@ -24,7 +24,7 @@ class DataComponent extends Component{
 
         this.state = {
             page: 0,
-            rowsPerPage: 2
+            rowsPerPage: 3
         }
 
         this.isSelected = this.isSelected.bind(this)
@@ -49,7 +49,7 @@ class DataComponent extends Component{
         const { classes } = this.props;
 
         return(
-            <>
+            <div>
 
             <TableContainer>
 
@@ -120,7 +120,7 @@ class DataComponent extends Component{
                 onChangePage={this.handleChangePage}
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
             />
-         </>
+         </div>
         )
     }
 

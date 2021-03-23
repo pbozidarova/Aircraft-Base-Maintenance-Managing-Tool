@@ -153,6 +153,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean emailExists(String email) {
+        return this.userRepository.findByEmail(email) != null;
+    }
+
+    @Override
     public UserEntity getRandomUser() {
         long maxRandomNumber =  this.userRepository.count();
 

@@ -5,23 +5,22 @@ import managing.tool.e_maintenance.web.MaintenanceController;
 import managing.tool.e_task.web.TaskController;
 import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.service.UserService;
+import managing.tool.exception.FoundInDb;
+import managing.tool.exception.NotFoundInDb;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static managing.tool.constants.GlobalConstants.FRONTEND_URL;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping("/users")
@@ -68,7 +67,9 @@ public class UserController {
             @PathVariable String companyNum, @RequestBody UserViewDto userViewDto ){
 
         if(!this.userService.userExists(companyNum)){
-            return ResponseEntity.notFound().build();
+            throw new NotFoundInDb(String.format("User with company number %s does not exist!", companyNum), "companyNum");
+
+//            return ResponseEntity.notFound().build();
         }
 
         UserViewDto user = this.userService.updateUser(userViewDto);
@@ -81,7 +82,10 @@ public class UserController {
             @PathVariable String companyNum, @RequestBody UserViewDto userViewDto ){
 
         if(this.userService.userExists(companyNum)){
-            return ResponseEntity.status(406).build();
+            throw new FoundInDb(String.format("User with company number %s already exists!", companyNum), "companyNum");
+        }
+        if(this.userService.emailExists(userViewDto.getEmail())){
+            throw new FoundInDb(String.format("Email %s already exist!", userViewDto.getEmail()), "email");
         }
 
         UserViewDto user = this.userService.createUser(userViewDto);
