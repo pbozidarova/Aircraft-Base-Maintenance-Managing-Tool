@@ -2,8 +2,10 @@ package managing.tool.e_facility.model;
 
 import managing.tool.e_base.BaseEntity;
 import managing.tool.e_user.model.UserEntity;
+import org.apache.catalina.User;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "facilities")
@@ -14,6 +16,7 @@ public class FacilityEntity extends BaseEntity {
     private String country;
     private int capacity;
     private UserEntity manager;
+    private Set<UserEntity> employees;
 
     public FacilityEntity() {
     }
@@ -68,4 +71,13 @@ public class FacilityEntity extends BaseEntity {
         return this;
     }
 
+    @OneToMany(mappedBy = "facility", fetch = FetchType.EAGER)
+    public Set<UserEntity> getEmployees() {
+        return employees;
+    }
+
+    public FacilityEntity setEmployees(Set<UserEntity> employees) {
+        this.employees = employees;
+        return this;
+    }
 }

@@ -13,9 +13,14 @@ class BackendService {
         return axios.get(`${BACKEND_URL}/${entity}/${num}`);
     }
 
-    updateOne(entity, num, updatedObj){
-        return axios.patch(`${BACKEND_URL}/${entity}/${num}`, updatedObj);
+    updateOne(entity, num, putObj){
+        return axios.put(`${BACKEND_URL}/${entity}/${num}/update`, putObj);
     }
+
+    createOne(entity, num, putObj){
+        return axios.put(`${BACKEND_URL}/${entity}/${num}/create`, putObj);
+    }
+
 
    
 }

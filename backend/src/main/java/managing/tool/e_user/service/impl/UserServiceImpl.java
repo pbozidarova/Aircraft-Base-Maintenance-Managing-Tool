@@ -1,8 +1,8 @@
 package managing.tool.e_user.service.impl;
 
-import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
-import managing.tool.e_facility.service.FacilitySeedService;
+import managing.tool.constants.GlobalConstants;
+import managing.tool.e_facility.model.FacilityEntity;
 import managing.tool.e_facility.service.FacilityService;
 import managing.tool.e_user.model.dto.UserDetailsDto;
 import managing.tool.e_user.model.RoleEntity;
@@ -13,7 +13,6 @@ import managing.tool.e_user.repository.UserRepository;
 import managing.tool.e_user.service.RoleService;
 import managing.tool.e_user.service.UserService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +29,8 @@ public class UserServiceImpl implements UserService {
     private final RoleService roleService;
     private final FacilityService facilityService;
     private final Random random;
+    private final PasswordEncoder passwordEncoder;
+
 
 
     @Override
@@ -53,40 +54,56 @@ public class UserServiceImpl implements UserService {
     public UserViewDto updateUser(UserViewDto userViewDto) {
         UserEntity userEntity = this.modelMapper.map(userViewDto, UserEntity.class);
 
-        Long userEntityId =  this.userRepository
-                .findByCompanyNum(userViewDto.getCompanyNum())
-                .getId();
-        userEntity.setId(userEntityId);
+        UserEntity existingUser =  this.userRepository
+                .findByCompanyNum(userViewDto.getCompanyNum());
 
-        String userEntityPass =  this.userRepository
-                .findByCompanyNum(userViewDto.getCompanyNum())
-                .getPassword();
-        userEntity.setPassword(userEntityPass);
+        userEntity.setId(existingUser.getId());
+        userEntity.setPassword(existingUser.getPassword());
+
+        FacilityEntity facilityEntity = this.facilityService.getFacilityByName(userViewDto.getFacility());
 
         userEntity.setFacility(
                 this.facilityService.getFacilityByName(userViewDto.getFacility())
         );
 
+        allocateRoles(userEntity, userViewDto.getRoles());
+
+        userEntity.setUpdatedOn(Instant.now());
+
+
+        return this.modelMapper.map(this.userRepository.save( userEntity) , UserViewDto.class);
+    }
+
+    private void allocateRoles(UserEntity user, String rolesString) {
         Set<RoleEntity> roleSet = new HashSet<>();
-        Arrays.stream(userViewDto.getRoles().split(", "))
+        Arrays.stream(rolesString.split(", "))
                 .forEach( r -> {
                     RoleEntity role = this.roleService
                             .findByName(RoleEnum.valueOf(r));
                     roleSet.add(role);
                 });
 
-        userEntity.setRoles(roleSet);
-        userEntity.setUpdatedOn(Instant.now());
-        this.userRepository.save( userEntity) ;
-
-        return this.modelMapper.map(userEntity, UserViewDto.class);
+        user.setRoles(roleSet);
     }
 
     @Override
     public UserViewDto createUser(UserViewDto userViewDto) {
-        UserEntity userEntity = this.userRepository.save( this.modelMapper.map(userViewDto, UserEntity.class) );
+        UserEntity user =  this.modelMapper.map(userViewDto, UserEntity.class );
 
-        return this.modelMapper.map(userEntity, UserViewDto.class);
+        user.setPassword(passwordEncoder.encode(GlobalConstants.DUMMY_PASS));
+
+        user.setFacility(
+                this.facilityService.getFacilityByName(userViewDto.getFacility())
+        );
+
+        allocateRoles(user, userViewDto.getRoles());
+
+        user.setUpdatedOn(Instant.now());
+        user.setCreatedOn(Instant.now());
+
+        this.userRepository.save(user);
+
+        return this.modelMapper.map(user, UserViewDto.class);
 
     }
 
@@ -127,8 +144,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity findByCompanyNum(String companyNum) {
-
         return this.userRepository.findByCompanyNum(companyNum);
+    }
+
+    @Override
+    public Boolean userExists(String companyNum) {
+        return this.findByCompanyNum(companyNum) != null;
     }
 
     @Override

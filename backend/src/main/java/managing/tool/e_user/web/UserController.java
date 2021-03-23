@@ -10,10 +10,12 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static managing.tool.constants.GlobalConstants.FRONTEND_URL;
@@ -49,27 +51,42 @@ public class UserController {
 
     @GetMapping("/{companyNum}")
     public ResponseEntity<EntityModel<UserViewDto>> findSingleUser(@PathVariable String companyNum){
-        UserViewDto user = this.userService.findUser(companyNum);
+
+        if(!this.userService.userExists(companyNum)){
+            return ResponseEntity.notFound().build();
+        }
+
+        UserViewDto userViewDto = userService.findUser(companyNum);
 
         return ResponseEntity
-                .ok(EntityModel.of(user, createUserHypermedia(user)));
+                .ok(EntityModel.of(userViewDto, createUserHypermedia(userViewDto)));
+
     }
 
-    @PatchMapping("/{companyNum}")
+    @PutMapping("/{companyNum}/update")
     public ResponseEntity<UserViewDto> updateSingleUser(
             @PathVariable String companyNum, @RequestBody UserViewDto userViewDto ){
+
+        if(!this.userService.userExists(companyNum)){
+            return ResponseEntity.notFound().build();
+        }
+
         UserViewDto user = this.userService.updateUser(userViewDto);
 
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-//    @PutMapping("/{companyNum}")
-//    public ResponseEntity<UserViewDto> createSingleUser(
-//            @PathVariable String companyNum, @RequestBody UserViewDto userViewDto ){
-//        UserViewDto user = this.userService.createUser(userViewDto);
-//        System.out.println("omg");
-//        return new ResponseEntity<>(user, HttpStatus.OK);
-//    }
+    @PutMapping("/{companyNum}/create")
+    public ResponseEntity<UserViewDto> createSingleUser(
+            @PathVariable String companyNum, @RequestBody UserViewDto userViewDto ){
+
+        if(this.userService.userExists(companyNum)){
+            return ResponseEntity.status(406).build();
+        }
+
+        UserViewDto user = this.userService.createUser(userViewDto);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
 
     private Link[] createUserHypermedia(UserViewDto user) {
         List<Link> result = new ArrayList<>();

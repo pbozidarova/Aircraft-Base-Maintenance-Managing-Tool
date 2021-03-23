@@ -11,12 +11,18 @@ export const USERS_HEADER_DATA = {
     roles : 'Roles',
 }
 export const USERS_BOOLEAN_FIELDS = {
-    
     USER : 'User',
     ADMIN: 'Admin',
     MECHANIC: 'Mechanic',
     ENGINEER: 'Engineer'
+}
 
+export const MESSAGES = {
+    initialLoad : "Please select a user in order to edit it!",
+    successCreated : "Successfully created!",
+    successUpdated : "Successfully updated!",
+    errorNonExistant : "Does not exist!",
+    errorExist : "Already exist such company number or email!",
 }
 
 

@@ -90,7 +90,7 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
-    @OneToOne(mappedBy = "manager", fetch = FetchType.EAGER)
+    @ManyToOne
     public FacilityEntity getFacility() {
         return facility;
     }
@@ -100,28 +100,5 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("User{");
-        sb.append("firstName='").append(firstName).append('\'');
-        sb.append(", lastName='").append(lastName).append('\'');
-        sb.append(", companyId='").append(companyNum).append('\'');
-        sb.append(", email='").append(email).append('\'');
-        sb.append(", role=").append(roles);
-        sb.append('}');
-        return sb.toString();
-    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof UserEntity)) return false;
-        UserEntity user = (UserEntity) o;
-        return companyNum.equals(user.companyNum) && email.equals(user.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(companyNum, email);
-    }
 }

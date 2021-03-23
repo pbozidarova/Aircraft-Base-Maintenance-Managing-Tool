@@ -82,12 +82,19 @@ This **MAINTENANCE** consists of multiple technical **TASKS** and while performi
 ### REST API
 - User
        
+        GET
       - localhost:3200/users/all
       - localhost:3200/users/{companyNum}
       - HATEOAS:
          - localhost:3200/tasks/user/{companyNum}
          - localhost:3200/maintenance/user/{companyNum}
          - localhost:3200/issues/user/{companyNum}
+
+        ADD
+      - localhost:3200/users/{companyNum}/create
+        UPDATE
+      - localhost:3200/users/{companyNum}/update
+
 
 - Maintenance
    

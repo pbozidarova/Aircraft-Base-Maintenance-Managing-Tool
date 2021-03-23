@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import BackendService from '../../api/CommonAPI.js'
-import {USERS_BOOLEAN_FIELDS, USERS_HEADER_DATA} from '../../Constanst.js'
+import {USERS_BOOLEAN_FIELDS, USERS_HEADER_DATA, MESSAGES} from '../../Constanst.js'
 
 import { styles, theme } from '../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
@@ -23,23 +23,30 @@ class UsersComponent extends Component {
         super(props)
         
         this.state = {
+            infoPanel : {
+                info: MESSAGES.initialLoad,
+                success: MESSAGES.initialLoad,
+                error: MESSAGES.initialLoad,
+            },
             users : [],
             selected: {},
-            authoriry: {},
-            role: {}
+            authority: {},
+            role: {},
         }
 
         this.refreshUsers = this.refreshUsers.bind(this)
+        this.createEmptySelect = this.createEmptySelect.bind(this)
         this.selectUser = this.selectUser.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleAuthorityRoleChange = this.handleAuthorityRoleChange.bind(this)
-        
+        this.handleInfo = this.handleInfo.bind(this);
 
     }
    
     componentDidMount(){
         // let username = AuthenticationService.isUserLoggedIn();
         this.refreshUsers();
+        this.createEmptySelect();
     }
 
     refreshUsers(){
@@ -51,13 +58,20 @@ class UsersComponent extends Component {
             ); 
     }
 
+    createEmptySelect(){
+        let emptyUser = Object.keys(USERS_HEADER_DATA)
+                            .reduce((acc, curr) =>  acc = {...acc, [curr] : ' '}, {} );
+    
+        this.selectUser(emptyUser);
+    }
+
     selectUser( user) {
-        let authoriryObj = user.roles.includes('ADMIN') ? 'ADMIN' : 'USER'
+        let authorityObj = user.roles.includes('ADMIN') ? 'ADMIN' : 'USER'
         let roleObj = user.roles.includes('ENGINEER') ? 'ENGINEER' : 'MECHANIC'
         
         this.setState({
             selected: user, 
-            authoriry: authoriryObj,
+            authority: authorityObj,
             role: roleObj
         },console.log(this.state))
         
@@ -73,17 +87,38 @@ class UsersComponent extends Component {
     }
 
     handleAuthorityRoleChange(event){
-        console.log(event.target.name)
-        let updateRolesString = event.target.value.includes('ADMIN') ? 'ADMIN' : 'USER'
-        updateRolesString += event.target.value.includes('ENGINEER') ? ', ENGINEER' : ', MECHANIC'
+        // console.log(event.target.name + " " + event.target.value)
+        // console.log( "event.target.value.includes('ADMIN') " + event.target.value.includes('ADMIN'))
+        let eName = event.target.name
+        let eValue = event.target.value
+        let updateAuthortyAndRoles = '';
+
+        console.log(eName + ' ' + eValue)
+        if(eName.includes('authority')) {
+            updateAuthortyAndRoles += eValue.includes('ADMIN') ? 'ADMIN' : 'USER'
+        } else {
+            updateAuthortyAndRoles += this.state.authority
+        }
+        
+        if(eName.includes('role')) {
+            updateAuthortyAndRoles += eValue.includes('ENGINEER') ? ', ENGINEER' : ', MECHANIC'
+        } else {
+            updateAuthortyAndRoles += `, ${this.state.role}`
+        }
+        
+        console.log(updateAuthortyAndRoles)
         
         this.setState({
             ...this.state,
-            selected: {...this.state.selected, roles: updateRolesString},
-            [event.target.name] : event.target.value
+            selected: {...this.state.selected, roles: updateAuthortyAndRoles},
+            [eName] : eValue
         })
         console.log(this.state)
         
+    }
+
+    handleInfo(msg){
+        this.setState({...this.state, infoPanel : msg})
     }
 
     render(){
@@ -98,8 +133,10 @@ class UsersComponent extends Component {
                 <Paper className={classes.paper}>
                     <form className={classes.root} noValidate autoComplete="off">
                         <div>
-                            Select user in order to edit it.
-                            <Button 
+                            {this.state.infoPanel.info}
+                            {this.state.infoPanel.success}
+                            {this.state.infoPanel.error}
+                            {/* <Button 
                                 variant="contained" 
                                 className={classes.menuButton}
                                 color="secondary"
@@ -110,7 +147,7 @@ class UsersComponent extends Component {
                                 }}
                                 >
                                 Create User
-                            </Button>
+                            </Button> */}
                             
                         </div>
                     </form>
@@ -139,10 +176,11 @@ class UsersComponent extends Component {
                         selectedUser={this.state.selected} 
                         handleChange={this.handleChange} 
                         handleAuthorityRoleChange={this.handleAuthorityRoleChange} 
+                        handleInfo={this.handleInfo}
                         refreshUsers={this.refreshUsers} 
                         labels = {USERS_HEADER_DATA} 
                         booleanFields = {USERS_BOOLEAN_FIELDS}
-                        authoriry={this.state.authoriry} 
+                        authority={this.state.authority} 
                         role={this.state.role}
                     />
                   }
