@@ -1,21 +1,18 @@
 import React, {Component} from 'react'
-import BackendService from '../../api/CommonAPI.js'
-import {USERS_BOOLEAN_FIELDS, USERS_HEADER_DATA, MESSAGES} from '../../Constanst.js'
+import BackendService from '../../../api/CommonAPI.js'
+import {USERS_BOOLEAN_FIELDS, USERS_HEADER_DATA, MESSAGES} from '../../../Constanst.js'
 
-import { styles, theme } from '../UseStyles.js'
+import { styles } from '../../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
 
-import EnhancedTable from '../material-ui/Table.js'
-
 import EditUserComponent from './UserEditComponent'
-import DataComponent from './DataComponent'
+import DataComponent from '../DataComponent'
 
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 
 
 class UsersComponent extends Component {
@@ -37,8 +34,8 @@ class UsersComponent extends Component {
         this.refreshUsers = this.refreshUsers.bind(this)
         this.createEmptySelect = this.createEmptySelect.bind(this)
         this.selectUser = this.selectUser.bind(this)
-        this.handleChange = this.handleChange.bind(this)
         this.handleAuthorityRoleChange = this.handleAuthorityRoleChange.bind(this)
+        this.handleChange = this.handleChange.bind(this)
         this.handleInfo = this.handleInfo.bind(this);
 
     }
@@ -166,7 +163,6 @@ class UsersComponent extends Component {
                         
                     />
                      
-
                 </Paper>
               </Grid>
               <Grid item xs={12} md={6} lg={4}>

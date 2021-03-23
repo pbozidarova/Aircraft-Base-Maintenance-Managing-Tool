@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
-import BackendService from '../../api/CommonAPI.js'
+import BackendService from '../../../api/CommonAPI.js'
+import {  MESSAGES } from '../../../Constanst.js';
+import { styles } from '../../UseStyles.js'
+import Utils from '../../Utils.js';
 
 import TextField from '@material-ui/core/TextField';
 import Radio from '@material-ui/core/Radio';
@@ -13,11 +16,8 @@ import PropTypes from 'prop-types';
 import { withRouter} from 'react-router-dom';
 
 
-import { styles } from '../UseStyles.js'
 import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
 import { RadioGroup, FormControl, FormHelperText, FormLabel, FormGroup, ButtonGroup } from '@material-ui/core';
-import { USERS_HEADER_DATA, MESSAGES } from '../../Constanst.js';
-import Utils from '../Utils.js';
 
 
 class EditUserComponent extends Component {

@@ -24,7 +24,7 @@ class DataComponent extends Component{
 
         this.state = {
             page: 0,
-            rowsPerPage: 10
+            rowsPerPage: 2
         }
 
         this.isSelected = this.isSelected.bind(this)

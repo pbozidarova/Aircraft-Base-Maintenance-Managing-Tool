@@ -18,7 +18,7 @@ export const USERS_BOOLEAN_FIELDS = {
 }
 
 export const MESSAGES = {
-    initialLoad : "Please select a user in order to edit it!",
+    initialLoad : "Please select a row in order to edit it!",
     successCreated : "Successfully created!",
     successUpdated : "Successfully updated!",
     errorNonExistant : "Does not exist!",
