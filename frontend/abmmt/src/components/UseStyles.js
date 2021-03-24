@@ -49,8 +49,13 @@ export const styles = ( theme ) => ({
         duration: theme.transitions.duration.enteringScreen,
       }),
     },
-    menuButton: {
-      marginRight: 36,
+   buttonGroup: {
+     display: 'flex'
+   },
+    menuButton: { 
+      marginRight: 0,
+      flexGrow: 1,
+      // padding: theme.spacing(1),
     },
     menuButtonHidden: {
       display: 'none',
@@ -100,5 +105,25 @@ export const styles = ( theme ) => ({
     },
     fixedHeightMin: {
       height: 300,
+    },
+    fab: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: 100
+      // justify-content: 'center',
+      // height: 50,
+      // width: 100
+      // margin: theme.spacing(2),
+    },
+    fabChild: {
+      flexGrow: 1
+    },
+   
+    tableCell: {
+      padding: 10 ,
+      // margin: 0,
+      textAlign: 'left'
     },
   });

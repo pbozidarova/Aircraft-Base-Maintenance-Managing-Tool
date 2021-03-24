@@ -67,7 +67,7 @@ import { withStyles } from '@material-ui/core/styles';
                     color="inherit"
                     aria-label="open drawer"
                     onClick={this.handleDrawerOpen}
-                    className={clsx(classes.menuButton, this.state.open && classes.menuButtonHidden)}
+                    className={clsx( this.state.open && classes.menuButtonHidden)}
                     >
                     {/* <MenuIcon /> */}
                     <img src={logo} className="App-logo" alt="logo" />
@@ -86,7 +86,7 @@ import { withStyles } from '@material-ui/core/styles';
                     </Button>} */}
                     {isUserLoggedIn && <Button 
                         variant="contained" 
-                        className={classes.menuButton}
+                        // className={classes.menuButton}
                         onClick={  () => {this.redirectTo("/logout"); AuthenticationService.logout()}}>
                         Logout
                     </Button>}

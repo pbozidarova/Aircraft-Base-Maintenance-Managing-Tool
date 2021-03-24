@@ -9,7 +9,15 @@ import Table from '@material-ui/core/TableRow';
 import TableBody from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
 
-import {Button, ButtonGroup} from '@material-ui/core';
+import NotificationsActiveOutlinedIcon from '@material-ui/icons/NotificationsActiveOutlined';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import ListIcon from '@material-ui/icons/List';
+
+import Fab from '@material-ui/core/Fab';
+import Tooltip from '@material-ui/core/Tooltip';
+
+
+import {Button, ButtonGroup, Grid} from '@material-ui/core';
 import Utils from '../Utils.js'
 
 import { styles } from '../UseStyles.js'
@@ -24,7 +32,7 @@ class DataComponent extends Component{
 
         this.state = {
             page: 0,
-            rowsPerPage: 3
+            rowsPerPage: 5
         }
 
         this.isSelected = this.isSelected.bind(this)
@@ -52,15 +60,14 @@ class DataComponent extends Component{
             <div>
 
             <TableContainer>
-
-                <Table >
-
+                <Table   className={classes.tableRow}>
                     <TableBody>
                     <TableHead>
-                        <TableRow>
+                        <TableRow   className={classes.tableRow} >
                             { this.props.tableRows[0] && Object.keys(this.props.tableRows[0])
-                                .map(key => <TableCell align='left' key={key} > {this.props.tableHeader[key]} </TableCell>)
+                                .map(key => <TableCell size="small" className={classes.tableCell}   key={key} > {this.props.tableHeader[key]} </TableCell>)
                             }
+                            
                         </TableRow>
                     </TableHead>
                         {this.props.tableRows
@@ -69,42 +76,61 @@ class DataComponent extends Component{
                                 return (
                                 
                                     <TableRow
+                                        className={classes.tableRow}
                                         hover
                                         onClick={() => this.props.selectRow(tableRow)}
                                         tabIndex={-1}
                                         key={Object.entries(tableRow)[0][1]}
                                         selected={this.isSelected(Object.entries(tableRow)[0][1])}
-                                    >
+                                    >   
+                                    
                                         {Object.keys(this.props.tableHeader)
-                                               .map(key => <TableCell key={key} align="right">{tableRow[key]}</TableCell>)}
-                                               <TableCell colSpan={6}>
-                                        <ButtonGroup>
+                                            .map(key => <TableCell  size="small" className={classes.tableCell} key={key} align="right">{tableRow[key]}</TableCell>)}
+                                    
+                                        <TableCell size="small" >
+                                           <div className={classes.fab}>
+                                            <Tooltip title="Go to notifications" aria-label="add">
+                                                <Fab size="small" color="primary" className={classes.fabChild}>
+                                                    <NotificationsActiveOutlinedIcon />
+                                                </Fab>
+                                            </Tooltip>
+                                            <Tooltip title="Go to tasks" aria-label="add">
+                                                <Fab size="small" color="primary" className={classes.fabChild}>
+                                                    <AssignmentIcon />
+                                                </Fab>
+                                            </Tooltip>
+                                            <Tooltip title="Go to maintenance" aria-label="add">
+                                                <Fab size="small" color="primary" className={classes.fabChild}>
+                                                    <ListIcon />
+                                                </Fab>
+                                            </Tooltip>
+                                            </div>
+                                            </TableCell>
+                                        {/* <ButtonGroup color="primary" size="small" 
+                                        className={classes.menuButton} 
+                                        aria-label="outlined primary button group">
+
                                         <Button 
-                                            variant="contained" 
-                                            className={classes.menuButton}
+                                            
                                             // onClick={  () => { console.log(links.maintenance.href); Utils.redirectTo(this.props, "/maintenance");}}
                                             >
-                                            Projects
+                                            Notifications
+                                            
                                         </Button>
                                         <Button 
-                                            variant="contained" 
-                                            className={classes.menuButton}
                                             // onClick={  () => { console.log(links.tasks.href); Utils.redirectTo(this.props, "/mpd");}}
+                                            >Projects
+                                            
+                                        </Button>
+                                        <Button 
+                                            // onClick={  () => {this.redirectTo("/logout"); AuthenticationService.logout()}}
                                             >
                                             Tasks
                                         </Button>
-                                        <Button 
-                                            variant="contained" 
-                                            className={classes.menuButton}
-                                            // onClick={  () => {this.redirectTo("/logout"); AuthenticationService.logout()}}
-                                            >
-                                            Notifications
-                                        </Button>
                                         </ButtonGroup>
-                                        </TableCell>
-                                    </TableRow>
-                                    
-                
+                                        */}
+                                        
+                                    </TableRow>                
                                 )   
                             })
                         }

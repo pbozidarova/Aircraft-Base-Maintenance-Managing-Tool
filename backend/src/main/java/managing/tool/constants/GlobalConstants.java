@@ -4,6 +4,8 @@ public class GlobalConstants {
 
     public static final String FRONTEND_URL = "http://localhost:3200";
     public static final String DUMMY_PASS = "1234";
+    public static final String NOTFOUNDERROR = "%s does not exist!";
+    public static final String FOUNDERROR = "%s already exists!";
 
     public static String USERS_MOCK_DATA_PATH = "src/main/resources/mock-data/users.json";
     public static String AIRCRAFT_MOCK_DATA_PATH = "src/main/resources/mock-data/aircraft.json";

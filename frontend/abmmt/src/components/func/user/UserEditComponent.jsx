@@ -6,6 +6,9 @@ import Utils from '../../Utils.js';
 
 import TextField from '@material-ui/core/TextField';
 import Radio from '@material-ui/core/Radio';
+import SendIcon from '@material-ui/icons/Send';
+
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -161,6 +164,7 @@ class EditUserComponent extends Component {
                     variant="contained" 
                     className={classes.menuButton}
                     color="primary"
+                    startIcon={<CloudUploadIcon />}
 
                     onClick={() => {this.validateAndSubmit(this.submitUpdate);}}
                     >
@@ -170,8 +174,8 @@ class EditUserComponent extends Component {
                 <Button 
                     variant="contained" 
                     className={classes.menuButton}
-                    color="secodary"
-
+                    color="default"
+                    endIcon={< SendIcon/>}
                     onClick={() => {this.validateAndSubmit(this.submitCreate); }}
                     >
                     Create

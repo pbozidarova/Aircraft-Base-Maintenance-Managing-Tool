@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static managing.tool.constants.GlobalConstants.FRONTEND_URL;
+import static managing.tool.constants.GlobalConstants.*;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -67,9 +67,10 @@ public class UserController {
             @PathVariable String companyNum, @RequestBody UserViewDto userViewDto ){
 
         if(!this.userService.userExists(companyNum)){
-            throw new NotFoundInDb(String.format("User with company number %s does not exist!", companyNum), "companyNum");
-
-//            return ResponseEntity.notFound().build();
+            throw new NotFoundInDb(String.format(NOTFOUNDERROR, companyNum), "companyNum");
+        }
+        if(this.userService.emailExists(userViewDto.getEmail())){
+            throw new FoundInDb(String.format(FOUNDERROR, userViewDto.getEmail()), "email");
         }
 
         UserViewDto user = this.userService.updateUser(userViewDto);
@@ -82,10 +83,10 @@ public class UserController {
             @PathVariable String companyNum, @RequestBody UserViewDto userViewDto ){
 
         if(this.userService.userExists(companyNum)){
-            throw new FoundInDb(String.format("User with company number %s already exists!", companyNum), "companyNum");
+            throw new FoundInDb(String.format(FOUNDERROR, companyNum), "companyNum");
         }
         if(this.userService.emailExists(userViewDto.getEmail())){
-            throw new FoundInDb(String.format("Email %s already exist!", userViewDto.getEmail()), "email");
+            throw new FoundInDb(String.format(FOUNDERROR, userViewDto.getEmail()), "email");
         }
 
         UserViewDto user = this.userService.createUser(userViewDto);
