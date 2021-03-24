@@ -8,8 +8,6 @@ import { withStyles } from '@material-ui/core/styles';
 
 import EditUserComponent from './UserEditComponent'
 import DataComponent from '../DataComponent'
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
 
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -37,25 +35,10 @@ class UsersComponent extends Component {
     }
    
     componentDidMount(){
-        // let username = AuthenticationService.isUserLoggedIn();
         this.refreshUsers();
         this.selectUser(Utils.emptyObj(USERS_HEADER_DATA))
-        
-        // Object.keys(this.state.selected).length != 0 && ;  
     }
     
-    // shouldComponentUpdate(nextProps, nextState){
-    //     // console.log(nextProps, nextState);
-    //     // console.log(this.props == nextProps);
-    //     // console.log(this.props);
-    //     // console.log(nextProps);
-
-    //     return this.state.users != nextState.users || this.state.selected != nextState.selected
-    //     // return this.props.users != nextProps.users
-        
-    // }   
-  
-
     refreshUsers(){
         BackendService.getAll('users')
             .then(response => {    

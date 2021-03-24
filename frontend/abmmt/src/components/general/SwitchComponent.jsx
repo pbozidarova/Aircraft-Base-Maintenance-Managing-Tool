@@ -1,35 +1,68 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+
+
+import{BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+
 import LoginComponent from './LoginComponent'
 import LogoutComponent from './LogoutComponent'
+import AircraftComponent from '../func/aircraft/AircraftComponent'
+import DashboardComponent from './DashboardComponent';
+import FacilityComponent from '../func/facility/FacilityComponent'
+import TaskComponent from '../func/task/TaskComponent'
+import MaintenanceComponent from '../func/maintenance/MaintenanceComponent'
+import NotificationComponent from '../func/notification/NotificationComponent'
 
+import UsersComponent from '../func/user/UsersComponent'
 import ErrorComponent from './ErrorComponent'
-import AircraftComponent from '../func/AircraftComponent'
-import TaskComponent from '../func/TaskComponent'
-import MaintenanceComponent from '../func/MaintenanceComponent'
-import UsersComponent from '../func/UsersComponent'
-import{BrowserRouter as Route, Switch, Link, withRouter} from 'react-router-dom'
+import AuthenticatedRoute from './AuthenticatedRoute'
+
+
+import { styles } from '../UseStyles.js'
+import { withStyles } from '@material-ui/core/styles';
 
 
 class SwitchComponent extends Component {
+  
 
-    render(){
-        return (
+  shouldComponentUpdate(){
+    return false
+  }
+ 
+  render(){
+    const { classes } = this.props;
+
+    return (   
+        
+          <Switch >
+              <Route path="/" exact component={LoginComponent} />
+              <AuthenticatedRoute path="/home" 
+                                  component={() => (<DashboardComponent handleInfo={this.props.handleInfo} />)} />
+              <AuthenticatedRoute path="/mpd" 
+                                  component={() => (<TaskComponent handleInfo={this.props.handleInfo}/>)} />
+              <AuthenticatedRoute path="/maintenance" 
+                                  component={() => (<MaintenanceComponent handleInfo={this.props.handleInfo}/> )} />
+              <AuthenticatedRoute path="/notifications" 
+                                  component={() => (<NotificationComponent handleInfo={this.props.handleInfo}/> )} />
+              <AuthenticatedRoute path="/aircraft" 
+                                  component={() => (<AircraftComponent handleInfo={this.props.handleInfo}/>)} />
+              <AuthenticatedRoute path="/facility" 
+                                  component={() => (<FacilityComponent handleInfo={this.props.handleInfo}/>)} />
+              <AuthenticatedRoute path="/users" 
+                                  component={() => (<UsersComponent handleInfo={this.props.handleInfo} />)} />
             
-            <Switch>
-                <Route path="/" exact component={LoginComponent}></Route>
-                <Route path="/home"></Route>
-                <Route path="/mpd" component={TaskComponent}></Route>
-                <Route path="/maintenance" component={MaintenanceComponent}></Route>
-                <Route path="/aircraft" component={AircraftComponent}></Route>
-                
-                <Route path="/users" component={UsersComponent}></Route>
-                <Route path="/login" component={LoginComponent}></Route>
-                <Route path="/logout" component={LogoutComponent}></Route>
-                <Route component={ErrorComponent}/>
-            </Switch>                
-            
-        )
-    }
+              <AuthenticatedRoute path="/logout" component={LogoutComponent}/>
+              <Route path="/login" component={LoginComponent}/>
+              <Route component={ErrorComponent}/>
+          </Switch>      
+               
+    )}
+ 
 }
 
-export default withRouter(SwitchComponent);
+SwitchComponent.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(SwitchComponent);
+

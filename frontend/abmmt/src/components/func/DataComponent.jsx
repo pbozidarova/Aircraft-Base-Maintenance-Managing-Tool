@@ -39,11 +39,7 @@ class DataComponent extends Component{
         this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this)
         
     }
-    // shouldComponentUpdate(nextProps, nextState){
-       
-    //     return this.props.users == nextProps.users
-        
-    // }  
+ 
 
     isSelected(currentRow) {
         

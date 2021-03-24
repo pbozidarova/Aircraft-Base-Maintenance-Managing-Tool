@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box';
 import{BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 
 import AppBarDrawerComponent from './AppBarDrowerComponent'
-import SwitchComponent from './SWComponent'
+import SwitchComponent from './SwitchComponent'
 
 import LoginComponent from './LoginComponent'
 import LogoutComponent from './LogoutComponent'
@@ -80,28 +80,7 @@ class AbmmtComponent extends Component {
 
                     <SwitchComponent  handleInfo={this.handleInfo} infoPanel={this.state.infoPanel}/>
                     
-                      {/* <Switch >
-                          <Route path="/" exact component={LoginComponent}></Route>
-                          <AuthenticatedRoute path="/home" 
-                                              component={() => (<DashboardComponent handleInfo={this.handleInfo} infoPanel={this.state.handleInfo}/>)} />
-                          <AuthenticatedRoute path="/mpd" 
-                                              component={() => (<TaskComponent handleInfo={this.handleInfo}/>)} />
-                          <AuthenticatedRoute path="/maintenance" 
-                                              component={() => (<MaintenanceComponent handleInfo={this.handleInfo}/> )}></AuthenticatedRoute>
-                          <AuthenticatedRoute path="/notifications" 
-                                              component={() => (<NotificationComponent handleInfo={this.handleInfo}/> )}></AuthenticatedRoute>
-                          <AuthenticatedRoute path="/aircraft" 
-                                              component={() => (<AircraftComponent handleInfo={this.handleInfo}/>)} ></AuthenticatedRoute>
-                          <AuthenticatedRoute path="/facility" 
-                                              component={() => (<FacilityComponent handleInfo={this.handleInfo}/>)} ></AuthenticatedRoute>
-                        
-                          <AuthenticatedRoute path="/users" 
-                                              component={() => (<UsersComponent handleInfo={this.handleInfo} infoPanel={this.state.infoPanel}/>)} ></AuthenticatedRoute>
-                        
-                          <AuthenticatedRoute path="/logout" component={LogoutComponent}/>
-                          <Route path="/login" component={LoginComponent}/>
-                          <Route component={ErrorComponent}/>
-                      </Switch>       */}
+                      
                     </Grid>        
                          
                 </Container>
