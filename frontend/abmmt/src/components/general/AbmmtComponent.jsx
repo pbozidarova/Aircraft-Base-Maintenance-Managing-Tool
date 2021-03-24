@@ -9,6 +9,7 @@ import Box from '@material-ui/core/Box';
 import{BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 
 import AppBarDrawerComponent from './AppBarDrowerComponent'
+import SwitchComponent from './SWComponent'
 
 import LoginComponent from './LoginComponent'
 import LogoutComponent from './LogoutComponent'
@@ -26,10 +27,36 @@ import FooterComponent from './FooterComponent'
 
 import { styles } from '../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
-
+import {MESSAGES} from '../../Constanst.js'
+import { Grid } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 
 class AbmmtComponent extends Component {
   
+  constructor(props){
+    super(props)
+    this.state = {
+      infoPanel : {
+          info: MESSAGES.initialLoad,
+          success: MESSAGES.empty,
+          error: MESSAGES.empty,
+      },
+    }
+
+    this.Alert = this.Alert.bind(this);
+    this.handleInfo = this.handleInfo.bind(this);
+  }
+
+  Alert(props) {
+    return <MuiAlert elevation={3} variant="filled" {...props} />;
+  }
+  
+  handleInfo(msg){
+    // return msg
+    this.setState({...this.state, infoPanel : msg})
+  }
+
+ 
   render(){
     const { classes } = this.props;
 
@@ -43,22 +70,41 @@ class AbmmtComponent extends Component {
             <main className={classes.content}>
               <div className={classes.appBarSpacer} />
                 <Container maxWidth={false} className={classes.container}>
-                    <Switch>
-                        <Route path="/" exact component={LoginComponent}></Route>
-                        <AuthenticatedRoute path="/home" component={DashboardComponent}></AuthenticatedRoute>
-                        <AuthenticatedRoute path="/mpd" component={TaskComponent}></AuthenticatedRoute>
-                        <AuthenticatedRoute path="/maintenance" component={MaintenanceComponent}></AuthenticatedRoute>
-                        <AuthenticatedRoute path="/notifications" component={NotificationComponent}></AuthenticatedRoute>
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                      <div>
+                          {this.state.infoPanel.info && <this.Alert severity="info" >{this.state.infoPanel.info} </this.Alert>}
+                          {this.state.infoPanel.success && <this.Alert severity="success" >{this.state.infoPanel.success} </this.Alert>}
+                          {this.state.infoPanel.error && <this.Alert severity="error" >{this.state.infoPanel.error} </this.Alert>}
+                      </div>
+                    </Grid>
 
-
-                        <AuthenticatedRoute path="/aircraft" component={AircraftComponent}></AuthenticatedRoute>
-                        <AuthenticatedRoute path="/facility" component={FacilityComponent}></AuthenticatedRoute>
+                    <SwitchComponent  handleInfo={this.handleInfo} infoPanel={this.state.infoPanel}/>
+                    
+                      {/* <Switch >
+                          <Route path="/" exact component={LoginComponent}></Route>
+                          <AuthenticatedRoute path="/home" 
+                                              component={() => (<DashboardComponent handleInfo={this.handleInfo} infoPanel={this.state.handleInfo}/>)} />
+                          <AuthenticatedRoute path="/mpd" 
+                                              component={() => (<TaskComponent handleInfo={this.handleInfo}/>)} />
+                          <AuthenticatedRoute path="/maintenance" 
+                                              component={() => (<MaintenanceComponent handleInfo={this.handleInfo}/> )}></AuthenticatedRoute>
+                          <AuthenticatedRoute path="/notifications" 
+                                              component={() => (<NotificationComponent handleInfo={this.handleInfo}/> )}></AuthenticatedRoute>
+                          <AuthenticatedRoute path="/aircraft" 
+                                              component={() => (<AircraftComponent handleInfo={this.handleInfo}/>)} ></AuthenticatedRoute>
+                          <AuthenticatedRoute path="/facility" 
+                                              component={() => (<FacilityComponent handleInfo={this.handleInfo}/>)} ></AuthenticatedRoute>
                         
-                        <AuthenticatedRoute path="/users" component={UsersComponent}></AuthenticatedRoute>
-                        <AuthenticatedRoute path="/logout" component={LogoutComponent}></AuthenticatedRoute>
-                        <Route path="/login" component={LoginComponent}></Route>
-                        <Route component={ErrorComponent}/>
-                    </Switch>              
+                          <AuthenticatedRoute path="/users" 
+                                              component={() => (<UsersComponent handleInfo={this.handleInfo} infoPanel={this.state.infoPanel}/>)} ></AuthenticatedRoute>
+                        
+                          <AuthenticatedRoute path="/logout" component={LogoutComponent}/>
+                          <Route path="/login" component={LoginComponent}/>
+                          <Route component={ErrorComponent}/>
+                      </Switch>       */}
+                    </Grid>        
+                         
                 </Container>
                   
                 <Box pt={4}>

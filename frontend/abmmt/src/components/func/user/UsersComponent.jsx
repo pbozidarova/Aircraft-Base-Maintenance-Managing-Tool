@@ -23,11 +23,6 @@ class UsersComponent extends Component {
         super(props)
         
         this.state = {
-            infoPanel : {
-                info: MESSAGES.initialLoad,
-                success: MESSAGES.empty,
-                error: MESSAGES.empty,
-            },
             users : [],
             selected: {},
             authority: {},
@@ -37,25 +32,39 @@ class UsersComponent extends Component {
         this.refreshUsers = this.refreshUsers.bind(this)
         this.selectUser = this.selectUser.bind(this)
         this.handleAuthorityRoleChange = this.handleAuthorityRoleChange.bind(this)
-        this.handleChange = this.handleChange.bind(this)
-        this.handleInfo = this.handleInfo.bind(this);
-        this.Alert = this.Alert.bind(this);
+        this.handleChange = this.handleChange.bind(this)    
 
     }
    
     componentDidMount(){
         // let username = AuthenticationService.isUserLoggedIn();
         this.refreshUsers();
-        this.selectUser(Utils.emptyObj(USERS_HEADER_DATA));
-
-        // this.createEmptySelect();
+        this.selectUser(Utils.emptyObj(USERS_HEADER_DATA))
+        
+        // Object.keys(this.state.selected).length != 0 && ;  
     }
+    
+    shouldComponentUpdate(nextProps, nextState){
+        // console.log(nextProps, nextState);
+        // console.log(this.props == nextProps);
+        // console.log(this.props);
+        // console.log(nextProps);
+
+        return this.state.users != nextState.users || this.state.selected != nextState.selected
+        // return this.props.users != nextProps.users
+        
+    }   
+  
 
     refreshUsers(){
         BackendService.getAll('users')
             .then(
                 response => {
-                    this.setState({users : response.data._embedded.userViewDtoList});
+                    
+                    this.setState( {...this.state, 
+                        users:  response.data._embedded.userViewDtoList});
+                    
+                    // this.props.handleInfo({success : MESSAGES.successUpdated})
                 }
             ); 
     }
@@ -65,10 +74,11 @@ class UsersComponent extends Component {
         let roleObj = user.roles.includes('ENGINEER') ? 'ENGINEER' : 'MECHANIC'
         
         this.setState({
+            ...this.state,
             selected: user, 
             authority: authorityObj,
             role: roleObj
-        },console.log(this.state))
+        },() => console.log(this.state.selected))
         
     }
     
@@ -77,7 +87,7 @@ class UsersComponent extends Component {
             {   ...this.state,
                 selected: {...this.state.selected, [event.target.name] : event.target.value}
             }
-        , console.log(this.state))
+        , () => console.log(this.state))
         
     }
 
@@ -111,29 +121,13 @@ class UsersComponent extends Component {
         
     }
 
-    handleInfo(msg){
-        this.setState({...this.state, infoPanel : msg})
-    }
-
-    Alert(props) {
-        return <MuiAlert elevation={6} variant="filled" {...props} />;
-    }
-
     render(){
         const { classes } = this.props;
         const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
         return(
                    
-            <Grid container spacing={3}>
-
-            <Grid item xs={12}>
-                    <div>
-                        {this.state.infoPanel.info && <this.Alert severity="info" >{this.state.infoPanel.info} </this.Alert>}
-                        {this.state.infoPanel.success && <this.Alert severity="success" >{this.state.infoPanel.success} </this.Alert>}
-                        {this.state.infoPanel.error && <this.Alert severity="error" >{this.state.infoPanel.error} </this.Alert>}
-                    </div>
-              </Grid>
+            <Grid container spacing={3}>        
 
               {/* Chart */}
               <Grid item xs={12} md={8} lg={8}>
@@ -156,7 +150,7 @@ class UsersComponent extends Component {
                         selectedUser={this.state.selected} 
                         handleChange={this.handleChange} 
                         handleAuthorityRoleChange={this.handleAuthorityRoleChange} 
-                        handleInfo={this.handleInfo}
+                        handleInfo={this.props.handleInfo}
                         refreshUsers={this.refreshUsers} 
                         labels = {USERS_HEADER_DATA} 
                         booleanFields = {USERS_BOOLEAN_FIELDS}

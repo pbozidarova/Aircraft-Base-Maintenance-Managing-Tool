@@ -38,6 +38,17 @@ class EditUserComponent extends Component {
         
     }
 
+    shouldComponentUpdate(nextProps, nextState){
+        // console.log(nextProps, nextState);
+        // console.log(this.props == nextProps);
+        // console.log(this.props);
+        // console.log(nextProps);
+
+        // return this.state.users != nextState.users
+        return this.props.selectedUser != nextProps.selectedUser
+        
+    }
+
     handleChange(event){
         
         this.setState(
@@ -70,20 +81,16 @@ class EditUserComponent extends Component {
 
              }
         }, () => submit(selectedUser.companyNum, selectedUser) );
-
     
     }
-
 
     submitUpdate(companyNum, selectedUser){
         if(Utils.formIsValid(this.state.errors)) {
             BackendService.updateOne("users", companyNum, selectedUser)
                 .then((r) => {                        
                     this.props.refreshUsers()
-                    console.log(r)
                     this.props.handleInfo({success : MESSAGES.successUpdated});
-                }
-                ).catch(e => {
+                }).catch(e => {
                     this.props.handleInfo({error : e.response.data.message});
                 })
             console.log('submit Update')

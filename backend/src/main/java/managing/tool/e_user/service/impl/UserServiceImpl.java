@@ -160,7 +160,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean emailExistsForAnotherUser(String email, String companyNum) {
         Boolean theSameUSer = this.userRepository.findByEmail(email).getCompanyNum().equals(companyNum);
-        System.out.println();
         return this.emailExists(email) && !theSameUSer;
     }
 

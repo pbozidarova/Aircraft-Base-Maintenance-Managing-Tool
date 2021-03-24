@@ -19,8 +19,11 @@ class Utils {
 
     emptyObj(fullObj){
        return Object.keys(fullObj)
-                            .reduce((acc, curr) =>  acc = {...acc, [curr] : ' '}, {} );
+                    .reduce((acc, curr) =>  acc = {...acc, [curr] : ' '}, {} );
     }
+
+    
+
       
 }
 
