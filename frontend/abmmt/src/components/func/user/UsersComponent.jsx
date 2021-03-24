@@ -44,26 +44,23 @@ class UsersComponent extends Component {
         // Object.keys(this.state.selected).length != 0 && ;  
     }
     
-    shouldComponentUpdate(nextProps, nextState){
-        // console.log(nextProps, nextState);
-        // console.log(this.props == nextProps);
-        // console.log(this.props);
-        // console.log(nextProps);
+    // shouldComponentUpdate(nextProps, nextState){
+    //     // console.log(nextProps, nextState);
+    //     // console.log(this.props == nextProps);
+    //     // console.log(this.props);
+    //     // console.log(nextProps);
 
-        return this.state.users != nextState.users || this.state.selected != nextState.selected
-        // return this.props.users != nextProps.users
+    //     return this.state.users != nextState.users || this.state.selected != nextState.selected
+    //     // return this.props.users != nextProps.users
         
-    }   
+    // }   
   
 
     refreshUsers(){
         BackendService.getAll('users')
-            .then(
-                response => {
-                    
+            .then(response => {    
                     this.setState( {...this.state, 
                         users:  response.data._embedded.userViewDtoList});
-                    
                     // this.props.handleInfo({success : MESSAGES.successUpdated})
                 }
             ); 
@@ -137,8 +134,7 @@ class UsersComponent extends Component {
                         tableRows={this.state.users}
                         tableHeader = {USERS_HEADER_DATA}
                         selectedId={this.state.selected.companyNum}
-                        selectRow={this.selectUser}
-                        
+                        selectRow={this.selectUser} 
                     />
                      
                 </Paper>

@@ -12,6 +12,9 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import InputLabel from '@material-ui/core/InputLabel';
+
+import Select from '@material-ui/core/Select';
 
 import Button from '@material-ui/core/Button';
 
@@ -28,9 +31,12 @@ class EditUserComponent extends Component {
     constructor(props){
         super(props)
         this.state = {
+            facilities: {},
             errors: {},
             
         }
+
+        this.refreshFacilities = this.refreshFacilities.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.validateAndSubmit = this.validateAndSubmit.bind(this);
         this.submitUpdate = this.submitUpdate.bind(this);
@@ -38,16 +44,19 @@ class EditUserComponent extends Component {
         
     }
 
-    shouldComponentUpdate(nextProps, nextState){
-        // console.log(nextProps, nextState);
-        // console.log(this.props == nextProps);
-        // console.log(this.props);
-        // console.log(nextProps);
-
-        // return this.state.users != nextState.users
-        return this.props.selectedUser != nextProps.selectedUser
-        
+    componentDidMount(){
+        this.refreshFacilities();
     }
+
+   refreshFacilities(){
+       BackendService.getAll('facilities')
+        .then(response => {
+            this.setState({
+                ...this.state,
+                facilities: Object.values(response.data)
+            })
+        })
+   }
 
     handleChange(event){
         
@@ -123,6 +132,7 @@ class EditUserComponent extends Component {
             {Object.keys(this.props.labels).map(key => {
                 return (
                         key !== "roles" && 
+                        key !== "facility" &&
                     //  key !== "companyNum" &&
                     
                     <TextField
@@ -136,8 +146,28 @@ class EditUserComponent extends Component {
                     /> 
                 )    
             })}
-            <FormGroup row>
-                
+
+            <FormControl 
+                className={classes.formControl} 
+                error={this.state.errors.facility && this.state.errors.facility.length > 0}>
+                <InputLabel htmlFor="facility">Select Facility</InputLabel>
+                <Select
+                    native
+                    value={this.props.selectedUser.facility}
+                    onChange={handleChange}
+                    
+                    inputProps={{
+                        name: 'facility',
+                        id: 'facility',
+                }}
+                >
+                    <option aria-label="None" value="" />
+                    {Object.values(this.state.facilities).map(f => <option value={f.name}>{f.name}</option>)}
+                    
+                </Select>
+                <FormHelperText>{this.state.errors.facility}</FormHelperText>
+            </FormControl>    
+            <FormGroup row>       
                 <FormControl required error={this.state.errors.authority} component="fieldset" className={classes.formControl}>
                     <FormLabel component="legend">Pick Authority</FormLabel>
                     <RadioGroup  value={authority} onChange={handleAuthorityRoleChange}>
@@ -154,7 +184,7 @@ class EditUserComponent extends Component {
 
                 <FormControl required error={this.state.errors.role} component="fieldset">
                     <FormLabel component="legend">Pick Role</FormLabel>
-                    <RadioGroup   value={role} onChange={handleAuthorityRoleChange}>
+                    <RadioGroup value={role} onChange={handleAuthorityRoleChange}>
                         {  Object.keys(booleanFields).slice(2, 4).map(r => {                                              
                             return (
                                 <FormControlLabel control={

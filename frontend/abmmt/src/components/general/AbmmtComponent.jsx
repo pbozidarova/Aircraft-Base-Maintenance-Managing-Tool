@@ -52,7 +52,6 @@ class AbmmtComponent extends Component {
   }
   
   handleInfo(msg){
-    // return msg
     this.setState({...this.state, infoPanel : msg})
   }
 
