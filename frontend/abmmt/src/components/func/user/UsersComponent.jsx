@@ -1,12 +1,15 @@
 import React, {Component} from 'react'
 import BackendService from '../../../api/CommonAPI.js'
 import {USERS_BOOLEAN_FIELDS, USERS_HEADER_DATA, MESSAGES} from '../../../Constanst.js'
+import Utils from '../../Utils.js'
 
 import { styles } from '../../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
 
 import EditUserComponent from './UserEditComponent'
 import DataComponent from '../DataComponent'
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -22,8 +25,8 @@ class UsersComponent extends Component {
         this.state = {
             infoPanel : {
                 info: MESSAGES.initialLoad,
-                success: MESSAGES.initialLoad,
-                error: MESSAGES.initialLoad,
+                success: MESSAGES.empty,
+                error: MESSAGES.empty,
             },
             users : [],
             selected: {},
@@ -32,18 +35,20 @@ class UsersComponent extends Component {
         }
 
         this.refreshUsers = this.refreshUsers.bind(this)
-        this.createEmptySelect = this.createEmptySelect.bind(this)
         this.selectUser = this.selectUser.bind(this)
         this.handleAuthorityRoleChange = this.handleAuthorityRoleChange.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleInfo = this.handleInfo.bind(this);
+        this.Alert = this.Alert.bind(this);
 
     }
    
     componentDidMount(){
         // let username = AuthenticationService.isUserLoggedIn();
         this.refreshUsers();
-        this.createEmptySelect();
+        this.selectUser(Utils.emptyObj(USERS_HEADER_DATA));
+
+        // this.createEmptySelect();
     }
 
     refreshUsers(){
@@ -53,13 +58,6 @@ class UsersComponent extends Component {
                     this.setState({users : response.data._embedded.userViewDtoList});
                 }
             ); 
-    }
-
-    createEmptySelect(){
-        let emptyUser = Object.keys(USERS_HEADER_DATA)
-                            .reduce((acc, curr) =>  acc = {...acc, [curr] : ' '}, {} );
-    
-        this.selectUser(emptyUser);
     }
 
     selectUser( user) {
@@ -84,8 +82,7 @@ class UsersComponent extends Component {
     }
 
     handleAuthorityRoleChange(event){
-        // console.log(event.target.name + " " + event.target.value)
-        // console.log( "event.target.value.includes('ADMIN') " + event.target.value.includes('ADMIN'))
+        
         let eName = event.target.name
         let eValue = event.target.value
         let updateAuthortyAndRoles = '';
@@ -110,12 +107,16 @@ class UsersComponent extends Component {
             selected: {...this.state.selected, roles: updateAuthortyAndRoles},
             [eName] : eValue
         })
-        console.log(this.state)
+        
         
     }
 
     handleInfo(msg){
         this.setState({...this.state, infoPanel : msg})
+    }
+
+    Alert(props) {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
     }
 
     render(){
@@ -127,32 +128,15 @@ class UsersComponent extends Component {
             <Grid container spacing={3}>
 
             <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                    <form className={classes.root} noValidate autoComplete="off">
-                        <div>
-                            {this.state.infoPanel.info}
-                            {this.state.infoPanel.success}
-                            {this.state.infoPanel.error}
-                            {/* <Button 
-                                variant="contained" 
-                                className={classes.menuButton}
-                                color="secondary"
-
-                                onClick={() => {
-                                    // let emptyObj = Object.keys(USERS_HEADER_DATA).map(key => USERS_HEADER_DATA[key] = '')    
-                                    this.selectUser(USERS_HEADER_DATA)
-                                }}
-                                >
-                                Create User
-                            </Button> */}
-                            
-                        </div>
-                    </form>
-                </Paper>
+                    <div>
+                        {this.state.infoPanel.info && <this.Alert severity="info" >{this.state.infoPanel.info} </this.Alert>}
+                        {this.state.infoPanel.success && <this.Alert severity="success" >{this.state.infoPanel.success} </this.Alert>}
+                        {this.state.infoPanel.error && <this.Alert severity="error" >{this.state.infoPanel.error} </this.Alert>}
+                    </div>
               </Grid>
 
               {/* Chart */}
-              <Grid item xs={12} md={6} lg={8}>
+              <Grid item xs={12} md={8} lg={8}>
                 <Paper className={fixedHeightPaper}>
                             
                     <DataComponent 
@@ -165,7 +149,7 @@ class UsersComponent extends Component {
                      
                 </Paper>
               </Grid>
-              <Grid item xs={12} md={6} lg={4}>
+              <Grid item xs={12} md={4} lg={4}>
                 <Paper className={fixedHeightPaper}>
                   {this.state.selected.companyNum && 
                     <EditUserComponent 
@@ -182,7 +166,6 @@ class UsersComponent extends Component {
                   }
                 </Paper>
               </Grid>
-              {/* Recent Orders */}
              
             </Grid>
     

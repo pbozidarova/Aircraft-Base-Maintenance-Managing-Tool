@@ -18,7 +18,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 
 import {Button, ButtonGroup, Grid} from '@material-ui/core';
-import Utils from '../Utils.js'
 
 import { styles } from '../UseStyles.js'
 import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
@@ -63,9 +62,9 @@ class DataComponent extends Component{
                 <Table   className={classes.tableRow}>
                     <TableBody>
                     <TableHead>
-                        <TableRow   className={classes.tableRow} >
+                        <TableRow size="small"  >
                             { this.props.tableRows[0] && Object.keys(this.props.tableRows[0])
-                                .map(key => <TableCell size="small" className={classes.tableCell}   key={key} > {this.props.tableHeader[key]} </TableCell>)
+                                .map(key => <TableCell size="small" className={classes.tableCell} key={key} > {this.props.tableHeader[key]} </TableCell>)
                             }
                             
                         </TableRow>
@@ -75,8 +74,7 @@ class DataComponent extends Component{
                             .map(tableRow => {
                                 return (
                                 
-                                    <TableRow
-                                        className={classes.tableRow}
+                                    <TableRow size="small"
                                         hover
                                         onClick={() => this.props.selectRow(tableRow)}
                                         tabIndex={-1}

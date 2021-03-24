@@ -69,7 +69,7 @@ public class UserController {
         if(!this.userService.userExists(companyNum)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, companyNum), "companyNum");
         }
-        if(this.userService.emailExists(userViewDto.getEmail())){
+        if(this.userService.emailExistsForAnotherUser(userViewDto.getEmail(), companyNum)){
             throw new FoundInDb(String.format(FOUNDERROR, userViewDto.getEmail()), "email");
         }
 

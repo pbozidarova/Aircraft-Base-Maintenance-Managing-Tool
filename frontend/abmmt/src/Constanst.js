@@ -23,6 +23,7 @@ export const MESSAGES = {
     successUpdated : "Successfully updated!",
     errorNonExistant : "Does not exist!",
     errorExist : "Already exist such company number or email!",
+    empty: "",
 }
 
 

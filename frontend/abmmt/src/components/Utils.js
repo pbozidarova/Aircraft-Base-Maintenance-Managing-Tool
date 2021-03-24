@@ -1,5 +1,4 @@
 
-
 class Utils {
     redirectTo(props, urlParam){
         props.history.push(urlParam)
@@ -17,6 +16,12 @@ class Utils {
         
         return isValid;
     }
+
+    emptyObj(fullObj){
+       return Object.keys(fullObj)
+                            .reduce((acc, curr) =>  acc = {...acc, [curr] : ' '}, {} );
+    }
+      
 }
 
 export default new Utils();

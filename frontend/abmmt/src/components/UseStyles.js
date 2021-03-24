@@ -122,7 +122,7 @@ export const styles = ( theme ) => ({
     },
    
     tableCell: {
-      padding: 10 ,
+      padding: 5 ,
       // margin: 0,
       textAlign: 'left'
     },

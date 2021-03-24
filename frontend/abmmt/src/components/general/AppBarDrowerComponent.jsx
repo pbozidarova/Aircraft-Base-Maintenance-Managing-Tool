@@ -63,62 +63,51 @@ import { withStyles } from '@material-ui/core/styles';
                 <AppBar position="absolute" className={clsx(classes.appBar, this.state.open && classes.appBarShift)}>
                 <Toolbar className={classes.toolbar}>
                     <IconButton
-                    edge="start"
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={this.handleDrawerOpen}
-                    className={clsx( this.state.open && classes.menuButtonHidden)}
+                        edge="start"
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={this.handleDrawerOpen}
+                        className={clsx( this.state.open && classes.menuButtonHidden)}
                     >
-                    {/* <MenuIcon /> */}
-                    <img src={logo} className="App-logo" alt="logo" />
+                        <img src={logo} className="App-logo" alt="logo" />
                     </IconButton>
                     
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title} > 
                         Aicraft Base Maintenance Management Tool
                     </Typography>
 
-                    {/* {!isUserLoggedIn && <Button 
-                        variant="contained"
-                        className={classes.menuButton}
-                        onClick={() => this.redirectTo("/login") }
-                    >
-                        Login
-                    </Button>} */}
                     {isUserLoggedIn && <Button 
                         variant="contained" 
                         // className={classes.menuButton}
                         onClick={  () => {this.redirectTo("/logout"); AuthenticationService.logout()}}>
                         Logout
                     </Button>}
-{/* 
-                    <IconButton color="inherit">
-                    <Badge badgeContent={4} color="secondary">
-                        <NotificationsIcon />
-                    </Badge>
-                    </IconButton> */}
+
                 </Toolbar>
                 </AppBar>
 
                 <Drawer
-                variant="permanent"
-                classes={{
-                    paper: clsx(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
-                }}
-                open={this.state.open}
+                    variant="permanent"
+                    classes={{
+                        paper: clsx(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+                    }}
+                    open={this.state.open}
                 >
-                <div className={classes.toolbarIcon}>
-                    <IconButton onClick={this.handleDrawerClose}>
-                    {/* <ChevronLeftIcon /> */}
-                    <img src={logo} className="App-logo" alt="logo" />
-        
-                    </IconButton>
-                </div>
-                <Divider />
-                {/* <List>{items}</List> */}
-                <List><DrawerItemsMain/></List>
-                <Divider />
-                <List><DrawerItemsSecondary/></List>
-                {/* <List>{secondaryListItems}</List>  */}
+                    <div className={classes.toolbarIcon}>
+                        <IconButton onClick={this.handleDrawerClose}>
+                        <img src={logo} className="App-logo" alt="logo" />
+                        </IconButton>
+                    </div>
+                    <Divider />
+                    <List>
+                        <DrawerItemsMain/>
+                    </List>
+
+                    <Divider />
+                    <List>
+                        <DrawerItemsSecondary/>
+                    </List>
+              
                 </Drawer>
               </>                 
         )

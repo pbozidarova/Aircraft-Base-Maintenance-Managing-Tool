@@ -22,4 +22,5 @@ public interface UserService {
 
     Boolean userExists(String companyNum);
     Boolean emailExists(String email);
+    Boolean emailExistsForAnotherUser(String email, String companyNum);
 }

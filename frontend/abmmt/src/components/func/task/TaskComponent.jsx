@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import BackendService from '../../../api/CommonAPI.js'
 import {TASKS_HEADER_DATA, MESSAGES} from '../../../Constanst.js'
+import Utils from '../../Utils.js'
 
 import DataComponent from '../DataComponent'
 import EditTask from './EditTask'
@@ -40,13 +41,10 @@ class TaskComponent extends Component{
         this.handleInfo = this.handleInfo.bind(this);
     }
     
-
-    
     componentDidMount(){
         // let username = AuthenticationService.isUserLoggedIn();
         this.refreshTasks();
-        this.createEmptySelect();
-
+        this.selectTask(Utils.emptyObj(TASKS_HEADER_DATA))
     }
 
     refreshTasks(){
@@ -59,14 +57,8 @@ class TaskComponent extends Component{
                     });
                 }
             );
-            
     }
-    createEmptySelect(){
-        let emptyUser = Object.keys(TASKS_HEADER_DATA)
-                            .reduce((acc, curr) =>  acc = {...acc, [curr] : ' '}, {} );
-    
-        this.selectTask(emptyUser);
-    }
+   
     selectTask(task) {      
         this.setState({selected: task})
     }

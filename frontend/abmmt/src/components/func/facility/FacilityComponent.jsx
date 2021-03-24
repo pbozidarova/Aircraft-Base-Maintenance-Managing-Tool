@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import BackendService from '../../../api/CommonAPI.js'
 import {FACILITIES_HEADER_DATA, MESSAGES} from '../../../Constanst.js'
+import Utils from '../../Utils.js'
 
 import { styles } from '../../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
@@ -32,14 +33,12 @@ class FacilityComponent extends Component {
 
         this.refreshUsers = this.refreshUsers.bind(this)
         this.selectFacility = this.selectFacility.bind(this)
-        
 
     }
    
     componentDidMount(){
-        // let username = AuthenticationService.isUserLoggedIn();
         this.refreshUsers();
-        this.createEmptySelect();
+        this.selectFacility(Utils.emptyObj(FACILITIES_HEADER_DATA));
 
     }
 
@@ -51,13 +50,6 @@ class FacilityComponent extends Component {
                     this.setState({facilities : response.data});
                 }
             ); 
-    }
-
-    createEmptySelect(){
-        let emptyUser = Object.keys(FACILITIES_HEADER_DATA)
-                            .reduce((acc, curr) =>  acc = {...acc, [curr] : ' '}, {} );
-    
-        this.selectFacility(emptyUser);
     }
 
     selectFacility(facility) {      
@@ -76,7 +68,6 @@ class FacilityComponent extends Component {
     handleInfo(msg){
         this.setState({...this.state, infoPanel : msg})
     }
-
 
     render(){
         const { classes } = this.props;

@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import BackendService from '../../../api/CommonAPI.js'
 import {AIRCRAFT_HEADER_DATA, MESSAGES} from '../../../Constanst.js'
+import Utils from '../../Utils.js'
 
 
 import { styles } from '../../UseStyles.js'
@@ -39,8 +40,7 @@ class AircraftComponent extends Component {
    
     componentDidMount(){
            this.refreshData();
-           this.createEmptySelect();
-
+           this.selectAircraft(Utils.emptyObj(AIRCRAFT_HEADER_DATA))
     }
 
     refreshData(){
@@ -51,12 +51,7 @@ class AircraftComponent extends Component {
                 }
             ); 
     }
-    createEmptySelect(){
-        let emptyUser = Object.keys(AIRCRAFT_HEADER_DATA)
-                            .reduce((acc, curr) =>  acc = {...acc, [curr] : ' '}, {} );
-    
-        this.selectAircraft(emptyUser);
-    }
+  
 
     selectAircraft(aircraft) {      
         this.setState({selected: aircraft})
