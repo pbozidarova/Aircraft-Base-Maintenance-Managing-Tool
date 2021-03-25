@@ -1,29 +1,19 @@
 import React, { Component } from 'react'
-import BackendService from '../../api/CommonAPI.js'
-import {  MESSAGES } from '../../Constanst.js';
 import { styles } from '../UseStyles.js'
-import Utils from '../Utils.js';
+
 import CreateUpdateBtnGroup from './CreateUpdateBtnGroup'
 
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
-import SendIcon from '@material-ui/icons/Send';
-
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import InputLabel from '@material-ui/core/InputLabel';
 
 import Select from '@material-ui/core/Select';
 
-import Button from '@material-ui/core/Button';
-
 import PropTypes from 'prop-types';
-import { withRouter} from 'react-router-dom';
-
 
 import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
-import { RadioGroup, FormControl, FormHelperText, FormLabel, FormGroup, ButtonGroup } from '@material-ui/core';
+
 
 
 class EditGlobalComponent extends Component {
@@ -36,7 +26,6 @@ class EditGlobalComponent extends Component {
           <MuiThemeProvider key={selectedId} > 
               
           {Object.keys(this.props.labels).map(key => {
-              console.log(key == 'description')
               return (
                      booleanFields[key] == null && 
                     // key !== "facility" &&

@@ -54,8 +54,6 @@ export const TASKS_DISABLED_FIELDS = {
     // preparedBy: "Prepared by",
     // status: "Status",
 }
-
-
 export const TASKS_BOOLEAN_FIELDS ={
     toolingAvailable: 'Tooling is available',
     jobCardsPrepared: 'Jobcards are prepared',
@@ -79,6 +77,10 @@ export const AIRCRAFT_HEADER_DATA = {
     engineManufacturer : "Engine Manufacturer",
     engineModelSeries : "Engine Model Series",
     
+}
+export const AIRCRAFT_BOOLEAN_FIELDS ={
+}
+export const AIRCRAFT_DISABLED_FIELDS ={
 }
 export const ICONS_MAPPING = {
     dashboard: <DashboardIcon />,

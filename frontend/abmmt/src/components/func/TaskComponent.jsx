@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
-import BackendService from '../../../api/CommonAPI.js'
-import {TASKS_HEADER_DATA, TASKS_BOOLEAN_FIELDS, TASKS_DISABLED_FIELDS, MESSAGES} from '../../../Constanst.js'
-import Utils from '../../Utils.js'
+import BackendService from '../../api/CommonAPI.js'
+import {TASKS_HEADER_DATA, TASKS_BOOLEAN_FIELDS, TASKS_DISABLED_FIELDS, MESSAGES} from '../../Constanst.js'
+import Utils from '../Utils.js'
 import { withRouter } from 'react-router';
 
-import DataComponent from '../DataComponent'
-import EditGlobalComponent from '../EditGlobalComponent'
+import DataComponent from './DataComponent'
+import EditGlobalComponent from './EditGlobalComponent'
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import clsx from 'clsx';
 
-import { styles } from '../../UseStyles.js'
+import { styles } from '../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
 
 import PropTypes from 'prop-types';

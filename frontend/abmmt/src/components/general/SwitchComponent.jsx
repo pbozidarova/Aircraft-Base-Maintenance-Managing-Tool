@@ -6,10 +6,10 @@ import{BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 
 import LoginComponent from './LoginComponent'
 import LogoutComponent from './LogoutComponent'
-import AircraftComponent from '../func/aircraft/AircraftComponent'
+import AircraftComponent from '../func/AircraftComponent'
 import DashboardComponent from './DashboardComponent';
 import FacilityComponent from '../func/facility/FacilityComponent'
-import TaskComponent from '../func/task/TaskComponent'
+import TaskComponent from '../func/TaskComponent'
 import MaintenanceComponent from '../func/maintenance/MaintenanceComponent'
 import NotificationComponent from '../func/notification/NotificationComponent'
 

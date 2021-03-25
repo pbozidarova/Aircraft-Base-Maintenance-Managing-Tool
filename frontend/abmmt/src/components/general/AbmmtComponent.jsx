@@ -11,18 +11,6 @@ import{BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import AppBarDrawerComponent from './AppBarDrowerComponent'
 import SwitchComponent from './SwitchComponent'
 
-import LoginComponent from './LoginComponent'
-import LogoutComponent from './LogoutComponent'
-import AircraftComponent from '../func/aircraft/AircraftComponent'
-import DashboardComponent from './DashboardComponent';
-import FacilityComponent from '../func/facility/FacilityComponent'
-import TaskComponent from '../func/task/TaskComponent'
-import MaintenanceComponent from '../func/maintenance/MaintenanceComponent'
-import NotificationComponent from '../func/notification/NotificationComponent'
-
-import UsersComponent from '../func/user/UsersComponent'
-import ErrorComponent from './ErrorComponent'
-import AuthenticatedRoute from './AuthenticatedRoute'
 import FooterComponent from './FooterComponent'
 
 import { styles } from '../UseStyles.js'
