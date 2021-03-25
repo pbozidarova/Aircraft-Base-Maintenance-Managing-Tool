@@ -5,6 +5,9 @@ import ListIcon from '@material-ui/icons/List';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import PeopleIcon from '@material-ui/icons/People';
 import LocalAirportIcon from '@material-ui/icons/LocalAirport';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import SendIcon from '@material-ui/icons/Send';
+
 
 export const BACKEND_URL = 'http://localhost:8000';
 export const SESSION_ATTRIBUTE_NAME = 'authenticatedUser';
@@ -42,10 +45,16 @@ export const TASKS_HEADER_DATA = {
     description : 'Description',
     preparedBy: "Prepared by",
     status: "Status",
-    // qualityAssured: "",
-    // areJobCardsPrepared: "",
-    // toolingAvailable: ""
+    isToolingAvailable: 'Tooling is available',
+    areJobCardsPrepared: 'Jobcards are prepared',
+    isQualityAssured: 'Quality is assured'
     
+}
+
+export const TASKS_BOOLEAN_FIELDS ={
+    isToolingAvailable: '',
+    areJobCardsPrepared: '',
+    isQualityAssured: ''
 }
 export const FACILITIES_HEADER_DATA = {
     name: 'Name',
@@ -74,5 +83,7 @@ export const ICONS_MAPPING = {
     users: <PeopleIcon />,
     facility: <LocationCityIcon />,
     aircraft: <LocalAirportIcon />,
+    update: <CloudUploadIcon />,
+    create: < SendIcon/>,
 
 }

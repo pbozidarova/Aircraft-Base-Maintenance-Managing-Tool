@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import BackendService from '../../../api/CommonAPI.js'
-import {TASKS_HEADER_DATA, MESSAGES} from '../../../Constanst.js'
+import {TASKS_HEADER_DATA, TASKS_BOOLEAN_FIELDS, MESSAGES} from '../../../Constanst.js'
 import Utils from '../../Utils.js'
 import { withRouter } from 'react-router';
 
@@ -64,8 +64,6 @@ class TaskComponent extends Component{
         ).catch(e => {
             this.props.handleInfo({error : e.response.data.message});
         })
-    
-
     }
 
     fetchAll(urlParam){
@@ -114,29 +112,27 @@ class TaskComponent extends Component{
                     <DataComponent 
                         tableRows={this.state.tasks} 
                         tableHeader={TASKS_HEADER_DATA}
-                        selected={this.state.selected}
+                        selectedId={this.state.selected.taskNum}
                         selectRow={this.selectTask} 
                     />
-
                 </Paper>
                </Grid>
 
               <Grid item xs={12} md={6} lg={4}>
                 <Paper className={fixedHeightPaper}>
-                  {this.state.selected.companyNum && 
+                  {this.state.selected.taskNum && 
                     <EditTask
-                        selectedUser={this.state.selected} 
+                        selectedTask={this.state.selected} 
                         handleChange={this.handleChange} 
                         handleInfo={this.handleInfo}
                         refreshTasks={this.refreshTasks} 
                         labels = {TASKS_HEADER_DATA} 
-
+                        booleanFields = {TASKS_BOOLEAN_FIELDS}
                     />
                   }
                 </Paper>
               </Grid>
             </Grid>
-    
      )
     }
 

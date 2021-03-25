@@ -3,12 +3,10 @@ import BackendService from '../../../api/CommonAPI.js'
 import {  MESSAGES } from '../../../Constanst.js';
 import { styles } from '../../UseStyles.js'
 import Utils from '../../Utils.js';
+import CreateUpdateBtnGroup from '../CreateUpdateBtnGroup'
 
 import TextField from '@material-ui/core/TextField';
 import Radio from '@material-ui/core/Radio';
-import SendIcon from '@material-ui/icons/Send';
-
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -16,14 +14,14 @@ import InputLabel from '@material-ui/core/InputLabel';
 
 import Select from '@material-ui/core/Select';
 
-import Button from '@material-ui/core/Button';
+
 
 import PropTypes from 'prop-types';
 import { withRouter} from 'react-router-dom';
 
 
 import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
-import { RadioGroup, FormControl, FormHelperText, FormLabel, FormGroup, ButtonGroup } from '@material-ui/core';
+import { RadioGroup, FormControl, FormHelperText, FormLabel, FormGroup, ButtonGroup, Button } from '@material-ui/core';
 
 
 class EditUserComponent extends Component {
@@ -37,7 +35,6 @@ class EditUserComponent extends Component {
         }
 
         this.refreshFacilities = this.refreshFacilities.bind(this);
-        this.handleChange = this.handleChange.bind(this);
         this.validateAndSubmit = this.validateAndSubmit.bind(this);
         this.submitUpdate = this.submitUpdate.bind(this);
         this.submitCreate = this.submitCreate.bind(this);
@@ -58,20 +55,6 @@ class EditUserComponent extends Component {
         })
    }
 
-    handleChange(event){
-        
-        this.setState(
-            {  ...this.state, 
-                 roles : {
-                     ...this.state.roles, 
-                     [event.target.name]
-                     :event.target.checked
-                 }
-            }
-        )            
-    }
-
-
     validateAndSubmit(submit){
         const { selectedUser } = this.props;
         
@@ -81,12 +64,10 @@ class EditUserComponent extends Component {
                 firstName:  selectedUser.firstName != 'First Name' && selectedUser.firstName.length > 2 ? '' : "The first name must contain more than 2 digits!" ,
                 lastName:  selectedUser.lastName != 'Last Name' && selectedUser.lastName.length > 2 ? '' : "The last name must contain more than 2 digits!",
                 email: /^\S+@\S+$/.test(selectedUser.email)  ? '' : "Please provide a valid email!",
-
-                //TODO!!!
-                facility: this.props.selectedUser.facility.length > 2 ? '' : "Please select a facility!",
+                facility: selectedUser.facility.length > 2 ? '' : "Please select a facility!",
                 
-                authority: this.props.selectedUser.roles.length > 0 ? '' : "At least one authority must be checked!",
-                role: this.props.selectedUser.roles.length > 0 ? '' : "At least one role must be checked!",
+                authority: selectedUser.roles.length > 0 ? '' : "At least one authority must be checked!",
+                role: selectedUser.roles.length > 0 ? '' : "At least one role must be checked!",
 
              }
         }, () => submit(selectedUser.companyNum, selectedUser) );
@@ -196,29 +177,14 @@ class EditUserComponent extends Component {
                     <FormHelperText>{this.state.errors.role}</FormHelperText>
                 </FormControl>
             </FormGroup>
-            <ButtonGroup row >  
-                <Button 
-                    variant="contained" 
-                    className={classes.menuButton}
-                    color="primary"
-                    startIcon={<CloudUploadIcon />}
 
-                    onClick={() => {this.validateAndSubmit(this.submitUpdate);}}
-                    >
-                    Update
-                </Button>
-
-                <Button 
-                    variant="contained" 
-                    className={classes.menuButton}
-                    color="default"
-                    endIcon={< SendIcon/>}
-                    onClick={() => {this.validateAndSubmit(this.submitCreate); }}
-                    >
-                    Create
-                </Button>
-            </ButtonGroup>
-                
+            <CreateUpdateBtnGroup
+                validateAndSubmit={this.validateAndSubmit}
+                submitUpdate={this.submitUpdate}
+                submitCreate={this.submitCreate}
+                classes={this.classes}
+                />
+            
             </MuiThemeProvider>
             
         )
