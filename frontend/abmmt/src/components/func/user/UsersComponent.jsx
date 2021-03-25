@@ -42,11 +42,11 @@ class UsersComponent extends Component {
     refreshUsers(){
         BackendService.getAll('users')
             .then(response => {    
-                    this.setState( {...this.state, 
-                        users:  response.data._embedded.userViewDtoList});
-                    // this.props.handleInfo({success : MESSAGES.successUpdated})
-                }
-            ); 
+                    this.setState( {
+                        ...this.state, 
+                        users:  response.data._embedded.userViewDtoList
+                    }, () => this.props.handleInfo({success : MESSAGES.successLoaded}))
+                }) 
     }
 
     selectUser( user) {

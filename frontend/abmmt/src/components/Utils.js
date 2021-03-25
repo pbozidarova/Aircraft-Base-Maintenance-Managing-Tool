@@ -1,7 +1,8 @@
 
 class Utils {
-    redirectTo(props, urlParam){
-        props.history.push(urlParam)
+    redirectTo(props, urlParam, fetchDataFromURL){
+        console.log('param ' + urlParam)
+        props.history.push({pathname: urlParam, fetchDataFromURL})
     }
 
     formIsValid(errors){

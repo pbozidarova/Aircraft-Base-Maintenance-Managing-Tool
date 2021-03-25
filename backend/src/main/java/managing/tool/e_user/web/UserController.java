@@ -1,6 +1,6 @@
 package managing.tool.e_user.web;
 
-import managing.tool.e_notification.web.IssueController;
+import managing.tool.e_notification.web.NotificationController;
 import managing.tool.e_maintenance.web.MaintenanceController;
 import managing.tool.e_task.web.TaskController;
 import managing.tool.e_user.model.dto.UserViewDto;
@@ -96,9 +96,9 @@ public class UserController {
     private Link[] createUserHypermedia(UserViewDto user) {
         List<Link> result = new ArrayList<>();
 
-        Link selfLink = linkTo(methodOn(UserController.class)
-                            .findSingleUser(user.getCompanyNum())).withSelfRel();
-        result.add(selfLink);
+//        Link selfLink = linkTo(methodOn(UserController.class)
+//                            .findSingleUser(user.getCompanyNum())).withSelfRel();
+//        result.add(selfLink);
 
         Link tasksLink = linkTo(methodOn(TaskController.class)
                             .tasksPreparedBy(user.getCompanyNum()))
@@ -110,9 +110,9 @@ public class UserController {
                 .withRel("maintenance");
         result.add(maintenanceLink);
 
-        Link issuesLink = linkTo(methodOn(IssueController.class)
+        Link issuesLink = linkTo(methodOn(NotificationController.class)
                 .findAllIssuesRaisedBy(user.getCompanyNum()))
-                .withRel("issues");
+                .withRel("notifications");
         result.add(issuesLink);
 
         return result.toArray(new Link[0]);

@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 @RestController
 @CrossOrigin
 @RequestMapping("/issues")
-public class IssueController {
+public class NotificationController {
 
     private final NotificationService issueService;
 
 
     @Autowired
-    public IssueController(NotificationService issueService) {
+    public NotificationController(NotificationService issueService) {
         this.issueService = issueService;
 
     }

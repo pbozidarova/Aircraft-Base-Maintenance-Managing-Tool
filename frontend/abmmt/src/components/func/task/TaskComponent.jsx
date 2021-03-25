@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import BackendService from '../../../api/CommonAPI.js'
 import {TASKS_HEADER_DATA, MESSAGES} from '../../../Constanst.js'
 import Utils from '../../Utils.js'
+import { withRouter } from 'react-router';
 
 import DataComponent from '../DataComponent'
 import EditTask from './EditTask'
@@ -25,11 +26,6 @@ class TaskComponent extends Component{
         super(props)
 
         this.state = {
-            infoPanel : {
-                info: MESSAGES.initialLoad,
-                success: MESSAGES.initialLoad,
-                error: MESSAGES.initialLoad,
-            },
             tasks : [],
             selected: {},
             loading: true,            
@@ -42,21 +38,49 @@ class TaskComponent extends Component{
     }
     
     componentDidMount(){
-        // let username = AuthenticationService.isUserLoggedIn();
         this.refreshTasks();
         this.selectTask(Utils.emptyObj(TASKS_HEADER_DATA))
     }
 
     refreshTasks(){
-        BackendService.getAll('tasks')
-            .then(
-                response => {
-                    this.setState({
-                        loading : false, 
-                        tasks : response.data
-                    });
-                }
-            );
+        
+        this.props.location.fetchDataFromURL != null
+                ?   this.partialFetch(this.props.location.fetchDataFromURL.href) 
+                :   this.fetchAll("tasks");
+        
+    }
+    partialFetch(hateoasUrl){
+        BackendService.fetchDataFrom(hateoasUrl)
+        .then(
+            response => {
+                console.log(response)
+                this.setState({
+                    loading : false, 
+                    tasks : response.data._embedded.taskViewDtoList
+                }, () => this.props.handleInfo({success : MESSAGES.successLoaded})
+                );
+                
+            }
+        ).catch(e => {
+            this.props.handleInfo({error : e.response.data.message});
+        })
+    
+
+    }
+
+    fetchAll(urlParam){
+        BackendService.getAll(urlParam)
+        .then(
+            response => {
+                this.setState({
+                    loading : false, 
+                    tasks : response.data
+                }, () => this.props.handleInfo({success : MESSAGES.successLoaded})
+                );
+            }
+        ).catch(e => {
+            this.props.handleInfo({error : e.response.data.message});
+        });
     }
    
     selectTask(task) {      
@@ -82,18 +106,7 @@ class TaskComponent extends Component{
         return(
                            
             <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                    <form className={classes.root} noValidate autoComplete="off">
-                        <div>
-                            {this.state.infoPanel.info}
-                            {this.state.infoPanel.success}
-                            {this.state.infoPanel.error}                            
-                        </div>
-                    </form>
-                </Paper>
-              </Grid>
-
+              
               <Grid item xs={12} md={6} lg={8}>
                 <Paper className={fixedHeightPaper}>
                     
@@ -106,7 +119,7 @@ class TaskComponent extends Component{
                     />
 
                 </Paper>
-              </Grid>
+               </Grid>
 
               <Grid item xs={12} md={6} lg={4}>
                 <Paper className={fixedHeightPaper}>
@@ -114,9 +127,8 @@ class TaskComponent extends Component{
                     <EditTask
                         selectedUser={this.state.selected} 
                         handleChange={this.handleChange} 
-                        handleAuthorityRoleChange={this.handleAuthorityRoleChange} 
                         handleInfo={this.handleInfo}
-                        refreshUsers={this.refreshUsers} 
+                        refreshTasks={this.refreshTasks} 
                         labels = {TASKS_HEADER_DATA} 
 
                     />
@@ -134,4 +146,4 @@ TaskComponent.propTypes = {
     classes: PropTypes.object.isRequired,
   };
   
-  export default withStyles(styles)(TaskComponent);
+  export default withStyles(styles)(withRouter(TaskComponent));

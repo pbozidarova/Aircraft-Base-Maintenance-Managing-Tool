@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import {ICONS_MAPPING} from '../../Constanst.js'
+import Utils from '../Utils'
+import { withRouter } from 'react-router';
 
 import EditIcon from '@material-ui/icons/Edit';
 import TableRow from '@material-ui/core/TableRow';
@@ -9,15 +12,9 @@ import Table from '@material-ui/core/TableRow';
 import TableBody from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
 
-import NotificationsActiveOutlinedIcon from '@material-ui/icons/NotificationsActiveOutlined';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import ListIcon from '@material-ui/icons/List';
-
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 
-
-import {Button, ButtonGroup, Grid} from '@material-ui/core';
 
 import { styles } from '../UseStyles.js'
 import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
@@ -37,7 +34,6 @@ class DataComponent extends Component{
         this.isSelected = this.isSelected.bind(this)
         this.handleChangePage = this.handleChangePage.bind(this)
         this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this)
-        
     }
  
 
@@ -60,81 +56,59 @@ class DataComponent extends Component{
             <div>
 
             <TableContainer>
-                <Table   className={classes.tableRow}>
-                    <TableBody>
-                    <TableHead>
-                        <TableRow size="small"  >
-                            { this.props.tableRows[0] && Object.keys(this.props.tableRows[0])
-                                .map(key => <TableCell size="small" className={classes.tableCell} key={key} > {this.props.tableHeader[key]} </TableCell>)
-                            }
-                            
-                        </TableRow>
-                    </TableHead>
-                        {this.props.tableRows
-                            .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
-                            .map(tableRow => {
-                                return (
-                                
-                                    <TableRow size="small"
-                                        hover
-                                        onClick={() => this.props.selectRow(tableRow)}
-                                        tabIndex={-1}
-                                        key={Object.entries(tableRow)[0][1]}
-                                        selected={this.isSelected(Object.entries(tableRow)[0][1])}
-                                    >   
-                                    
-                                        {Object.keys(this.props.tableHeader)
-                                            .map(key => <TableCell  size="small" className={classes.tableCell} key={key} align="right">{tableRow[key]}</TableCell>)}
-                                    
-                                        <TableCell size="small" >
-                                           <div className={classes.fab}>
-                                            <Tooltip title="Go to notifications" aria-label="add">
-                                                <Fab size="small" color="primary" className={classes.fabChild}>
-                                                    <NotificationsActiveOutlinedIcon />
-                                                </Fab>
-                                            </Tooltip>
-                                            <Tooltip title="Go to tasks" aria-label="add">
-                                                <Fab size="small" color="primary" className={classes.fabChild}>
-                                                    <AssignmentIcon />
-                                                </Fab>
-                                            </Tooltip>
-                                            <Tooltip title="Go to maintenance" aria-label="add">
-                                                <Fab size="small" color="primary" className={classes.fabChild}>
-                                                    <ListIcon />
-                                                </Fab>
-                                            </Tooltip>
-                                            </div>
-                                            </TableCell>
-                                        {/* <ButtonGroup color="primary" size="small" 
-                                        className={classes.menuButton} 
-                                        aria-label="outlined primary button group">
-
-                                        <Button 
-                                            
-                                            // onClick={  () => { console.log(links.maintenance.href); Utils.redirectTo(this.props, "/maintenance");}}
-                                            >
-                                            Notifications
-                                            
-                                        </Button>
-                                        <Button 
-                                            // onClick={  () => { console.log(links.tasks.href); Utils.redirectTo(this.props, "/mpd");}}
-                                            >Projects
-                                            
-                                        </Button>
-                                        <Button 
-                                            // onClick={  () => {this.redirectTo("/logout"); AuthenticationService.logout()}}
-                                            >
-                                            Tasks
-                                        </Button>
-                                        </ButtonGroup>
-                                        */}
-                                        
-                                    </TableRow>                
-                                )   
-                            })
+            <Table className={classes.tableRow}>
+            <TableBody>
+                <TableHead>
+                    <TableRow size="small"  >
+                        { this.props.tableRows[0] && 
+                            Object.keys(this.props.tableRows[0])
+                                .map(key => 
+                                    <TableCell size="small" className={classes.tableCell} key={key} > 
+                                        {this.props.tableHeader[key]} 
+                                    </TableCell>)
                         }
-                    </TableBody>
-                </Table>
+                    </TableRow>
+                </TableHead>
+                    {this.props.tableRows
+                        .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
+                        .map(tableRow => {
+                            return (   
+                                <TableRow size="small"
+                                    hover
+                                    onClick={() => this.props.selectRow(tableRow)}
+                                    tabIndex={-1}
+                                    key={Object.entries(tableRow)[0][1]}
+                                    selected={this.isSelected(Object.entries(tableRow)[0][1])}
+                                >   
+                                    {Object.keys(this.props.tableHeader)
+                                        .map(key => <TableCell  size="small" 
+                                                                className={classes.tableCell} 
+                                                                key={key} align="right">{tableRow[key]}</TableCell>)}
+
+                                    {tableRow._links && 
+                                    
+                                    <TableCell size="small" >
+                                        <div className={classes.fab}>
+                                            {Object.keys(tableRow._links)
+                                            .map(link => 
+                                                    <Tooltip title={`Go to ${link}`} aria-label="add">
+                                                    <Fab 
+                                                        size="small" 
+                                                        color="primary" 
+                                                        className={classes.fabChild}
+                                                        onClick={  () => { Utils.redirectTo(this.props, `/${link}`, tableRow._links[link])}}>
+                                                        {ICONS_MAPPING[link]}
+                                                    </Fab>
+                                                </Tooltip>)
+                                            }
+                                        </div>
+                                    </TableCell>}
+                                </TableRow>                
+                            )   
+                        })
+                    }
+            </TableBody>
+            </Table>
             </TableContainer>
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
@@ -155,4 +129,4 @@ DataComponent.propTypes = {
     classes: PropTypes.object.isRequired,
   };
   
-  export default withStyles(styles)(DataComponent);
+  export default withStyles(styles)(withRouter(DataComponent));

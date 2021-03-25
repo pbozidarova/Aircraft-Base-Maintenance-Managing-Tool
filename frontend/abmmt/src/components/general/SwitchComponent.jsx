@@ -38,7 +38,7 @@ class SwitchComponent extends Component {
               <Route path="/" exact component={LoginComponent} />
               <AuthenticatedRoute path="/home" 
                                   component={() => (<DashboardComponent handleInfo={this.props.handleInfo} />)} />
-              <AuthenticatedRoute path="/mpd" 
+              <AuthenticatedRoute path="/tasks" 
                                   component={() => (<TaskComponent handleInfo={this.props.handleInfo}/>)} />
               <AuthenticatedRoute path="/maintenance" 
                                   component={() => (<MaintenanceComponent handleInfo={this.props.handleInfo}/> )} />
@@ -46,7 +46,7 @@ class SwitchComponent extends Component {
                                   component={() => (<NotificationComponent handleInfo={this.props.handleInfo}/> )} />
               <AuthenticatedRoute path="/aircraft" 
                                   component={() => (<AircraftComponent handleInfo={this.props.handleInfo}/>)} />
-              <AuthenticatedRoute path="/facility" 
+              <AuthenticatedRoute path="/facilities" 
                                   component={() => (<FacilityComponent handleInfo={this.props.handleInfo}/>)} />
               <AuthenticatedRoute path="/users" 
                                   component={() => (<UsersComponent handleInfo={this.props.handleInfo} />)} />

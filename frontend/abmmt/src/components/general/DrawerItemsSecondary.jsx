@@ -7,9 +7,8 @@ import { withRouter } from 'react-router';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import LocationCityIcon from '@material-ui/icons/LocationCity';
-import PeopleIcon from '@material-ui/icons/People';
-import LocalAirportIcon from '@material-ui/icons/LocalAirport';
+
+import { ICONS_MAPPING } from '../../Constanst.js';
 
 class DrawerItemsSecondary extends Component {
     
@@ -17,7 +16,6 @@ class DrawerItemsSecondary extends Component {
         this.props.history.push(urlParam)
     }
 
-    
     render(){
 
         const isUserLoggedIn = AuthenticationService.isUserLoggedIn();
@@ -27,24 +25,23 @@ class DrawerItemsSecondary extends Component {
             <>
                 {  isUserLoggedIn &&
                 <div>
-                    
                     <ListItem button onClick={() => Utils.redirectTo(this.props, "/aircraft") }>
                         <ListItemIcon>
-                            <LocalAirportIcon />
+                            {ICONS_MAPPING.aircraft}
                         </ListItemIcon>
                         <ListItemText primary="Aircraft" />
                     </ListItem>
 
-                    <ListItem button onClick={() => Utils.redirectTo(this.props, "/facility") }>
+                    <ListItem button onClick={() => Utils.redirectTo(this.props, "/facilities") }>
                         <ListItemIcon>
-                            <LocationCityIcon />
+                            {ICONS_MAPPING.facility}
                         </ListItemIcon>
-                        <ListItemText primary="Faclity" />
+                        <ListItemText primary="Faclities" />
                     </ListItem>
                         
                     <ListItem button onClick={() => Utils.redirectTo(this.props, "/users") }>
                         <ListItemIcon>
-                            <PeopleIcon />
+                            {ICONS_MAPPING.users}
                         </ListItemIcon>
                         <ListItemText primary="Users" />
                     </ListItem>

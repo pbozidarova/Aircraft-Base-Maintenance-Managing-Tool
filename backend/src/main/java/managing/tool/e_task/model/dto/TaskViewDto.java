@@ -8,12 +8,13 @@ public class TaskViewDto {
     private String taskNum;
     private String code;
     private String description;
+    private String preparedBy;
+    private String status;
 
     private boolean isToolingAvailable;
     private boolean areJobCardsPrepared;
     private boolean isQualityAssured;
 
-    private List<String> preparedBy;
 
     public TaskViewDto() {
     }
@@ -45,6 +46,15 @@ public class TaskViewDto {
         return this;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public TaskViewDto setStatus(String status) {
+        this.status = status;
+        return this;
+    }
+
     public boolean isToolingAvailable() {
         return isToolingAvailable;
     }
@@ -54,7 +64,7 @@ public class TaskViewDto {
         return this;
     }
 
-    public boolean isAreJobCardsPrepared() {
+    public boolean AreJobCardsPrepared() {
         return areJobCardsPrepared;
     }
 
@@ -72,11 +82,11 @@ public class TaskViewDto {
         return this;
     }
 
-    public List<String> getPreparedBy() {
+    public String getPreparedBy() {
         return preparedBy;
     }
 
-    public TaskViewDto setPreparedBy(List<String> preparedBy) {
+    public TaskViewDto setPreparedBy(String preparedBy) {
         this.preparedBy = preparedBy;
         return this;
     }

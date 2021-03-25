@@ -3,11 +3,14 @@ package managing.tool.e_task.service.impl;
 import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import managing.tool.e_maintenance.service.MaintenanceService;
+import managing.tool.e_task.model.TaskStatusEnum;
 import managing.tool.e_task.model.dto.TaskSeedDto;
 import managing.tool.e_task.model.TaskEntity;
 import managing.tool.e_task.model.dto.TaskViewDto;
 import managing.tool.e_task.repository.TaskRepository;
 import managing.tool.e_task.service.TaskService;
+import managing.tool.e_user.model.RoleEntity;
+import managing.tool.e_user.model.RoleEnum;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -38,9 +41,10 @@ public class TaskServiceImpl implements TaskService {
                 .findAll()
                 .stream()
                 .map(t -> {
-                    TaskViewDto taskViewDto =  this.modelMapper.map(t, TaskViewDto.class);
-
-                    return  taskViewDto;
+                    TaskViewDto mappedTask = this.modelMapper.map(t, TaskViewDto.class);
+                    mappedTask.setPreparedBy(allocatePrepTeam(t));
+                    mappedTask.setStatus(allocateStatus(t));
+                    return mappedTask;
                 } )
                 .collect(Collectors.toList());
     }
@@ -51,8 +55,30 @@ public class TaskServiceImpl implements TaskService {
         return this.taskRepository
                 .findAllByPreparedByContains(this.userService.findByCompanyNum(companyNum))
                 .stream()
-                .map(t -> this.modelMapper.map(t, TaskViewDto.class))
+                .map(t -> {
+                    TaskViewDto mappedTask = this.modelMapper.map(t, TaskViewDto.class);
+                    mappedTask.setPreparedBy(allocatePrepTeam(t));
+                    mappedTask.setStatus(allocateStatus(t));
+                    return mappedTask;
+                })
                 .collect(Collectors.toList());
+    }
+
+    public String allocatePrepTeam(TaskEntity taskEntity){
+        StringBuilder preparedBy = new StringBuilder();
+        taskEntity.getPreparedBy()
+                .stream()
+                .forEach(u -> preparedBy.append(String.format("%s - %s",u.getCompanyNum(), u.getLastName())));
+
+        return preparedBy.toString();
+    }
+
+    public String allocateStatus(TaskEntity taskEntity){
+        return String.valueOf(taskEntity.areJobCardsPrepared()
+                                    && taskEntity.isQualityAssured()
+                                    && taskEntity.isToolingAvailable()
+                                    ? TaskStatusEnum.OK
+                                    : TaskStatusEnum.NOT_OK);
     }
 
     @Override

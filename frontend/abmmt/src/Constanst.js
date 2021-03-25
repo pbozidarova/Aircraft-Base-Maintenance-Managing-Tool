@@ -1,6 +1,23 @@
+import NotificationsActiveOutlinedIcon from '@material-ui/icons/NotificationsActiveOutlined';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import ListIcon from '@material-ui/icons/List';
+import LocationCityIcon from '@material-ui/icons/LocationCity';
+import PeopleIcon from '@material-ui/icons/People';
+import LocalAirportIcon from '@material-ui/icons/LocalAirport';
 
 export const BACKEND_URL = 'http://localhost:8000';
 export const SESSION_ATTRIBUTE_NAME = 'authenticatedUser';
+
+export const MESSAGES = {
+    initialLoad : "Please select a row in order to edit it!",
+    successLoaded: "Successfully loaded!",
+    successCreated : "Successfully created!",
+    successUpdated : "Successfully updated!",
+    errorNonExistant : "Does not exist!",
+    errorExist : "Already exist such company number or email!",
+    empty: "",
+}
 
 export const USERS_HEADER_DATA = {
     companyNum: 'Company Number',
@@ -16,24 +33,20 @@ export const USERS_BOOLEAN_FIELDS = {
     MECHANIC: 'Mechanic',
     ENGINEER: 'Engineer'
 }
-
-export const MESSAGES = {
-    initialLoad : "Please select a row in order to edit it!",
-    successCreated : "Successfully created!",
-    successUpdated : "Successfully updated!",
-    errorNonExistant : "Does not exist!",
-    errorExist : "Already exist such company number or email!",
-    empty: "",
-}
-
-
-export const TASKS_HEADER_DATA = {
-    taskNum: 'Task Number',
-    description : 'Description',
-    code : 'Code',
+export const MAINTENANCE_HEADER_DATA = {
     
 }
-
+export const TASKS_HEADER_DATA = {
+    taskNum: 'Task Number',
+    code : 'Code',
+    description : 'Description',
+    preparedBy: "Prepared by",
+    status: "Status",
+    // qualityAssured: "",
+    // areJobCardsPrepared: "",
+    // toolingAvailable: ""
+    
+}
 export const FACILITIES_HEADER_DATA = {
     name: 'Name',
     city: 'City',
@@ -42,7 +55,6 @@ export const FACILITIES_HEADER_DATA = {
     manager: 'Manager',
     
 }
-
 export const AIRCRAFT_HEADER_DATA = {
     serialNumber : "Serial Number",
     operatorName: "Operator",
@@ -53,4 +65,14 @@ export const AIRCRAFT_HEADER_DATA = {
     engineManufacturer : "Engine Manufacturer",
     engineModelSeries : "Engine Model Series",
     
+}
+export const ICONS_MAPPING = {
+    dashboard: <DashboardIcon />,
+    notifications: <NotificationsActiveOutlinedIcon />,
+    tasks: <AssignmentIcon />,
+    maintenance: <ListIcon />,
+    users: <PeopleIcon />,
+    facility: <LocationCityIcon />,
+    aircraft: <LocalAirportIcon />,
+
 }

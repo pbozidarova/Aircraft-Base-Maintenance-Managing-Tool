@@ -21,7 +21,9 @@ class BackendService {
         return axios.put(`${BACKEND_URL}/${entity}/${num}/create`, putObj);
     }
 
-
+    fetchDataFrom(url){
+        return axios.get(url);
+    }
    
 }
 
