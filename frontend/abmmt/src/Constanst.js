@@ -49,10 +49,10 @@ export const TASKS_HEADER_DATA = {
 }
 
 export const TASKS_DISABLED_FIELDS = {
-    taskNum: 'Task Number',
-    code : 'Code',
-    preparedBy: "Prepared by",
-    status: "Status",
+    // taskNum: 'Task Number',
+    // code : 'Code',
+    // preparedBy: "Prepared by",
+    // status: "Status",
 }
 
 

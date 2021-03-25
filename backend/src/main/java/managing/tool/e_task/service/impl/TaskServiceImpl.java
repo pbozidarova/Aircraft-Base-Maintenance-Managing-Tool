@@ -8,7 +8,9 @@ import managing.tool.e_task.model.TaskEntity;
 import managing.tool.e_task.model.dto.TaskViewDto;
 import managing.tool.e_task.repository.TaskRepository;
 import managing.tool.e_task.service.TaskService;
+import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
+import managing.tool.util.JwtUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,7 @@ public class TaskServiceImpl implements TaskService {
     private final ModelMapper modelMapper;
     private final Gson gson;
     private final Random random;
+    private final JwtUtil jwtUtil;
 
     @Override
     public List<TaskViewDto> findAllTasks() {
@@ -35,8 +38,8 @@ public class TaskServiceImpl implements TaskService {
                 .stream()
                 .map(t -> {
                     TaskViewDto mappedTask = this.modelMapper.map(t, TaskViewDto.class);
-                    mappedTask.setPreparedBy(allocatePrepTeam(t));
-                    mappedTask.setStatus(allocateStatus(t));
+                    mappedTask.setPreparedBy(createPrepTeamString(t));
+                    mappedTask.setStatus(createCorrectStatus(t));
                     return mappedTask;
                 } )
                 .collect(Collectors.toList());
@@ -50,23 +53,23 @@ public class TaskServiceImpl implements TaskService {
                 .stream()
                 .map(t -> {
                     TaskViewDto mappedTask = this.modelMapper.map(t, TaskViewDto.class);
-                    mappedTask.setPreparedBy(allocatePrepTeam(t));
-                    mappedTask.setStatus(allocateStatus(t));
+                    mappedTask.setPreparedBy(createPrepTeamString(t));
+                    mappedTask.setStatus(createCorrectStatus(t));
                     return mappedTask;
                 })
                 .collect(Collectors.toList());
     }
 
-    public String allocatePrepTeam(TaskEntity taskEntity){
+    public String createPrepTeamString(TaskEntity taskEntity){
         StringBuilder preparedBy = new StringBuilder();
         taskEntity.getPreparedBy()
                 .stream()
-                .forEach(u -> preparedBy.append(String.format("%s - %s",u.getCompanyNum(), u.getLastName())));
+                .forEach(u -> preparedBy.append(String.format("%s - %s, ",u.getCompanyNum(), u.getLastName())));
 
-        return preparedBy.toString();
+        return preparedBy.toString().replaceAll(", $", "");
     }
 
-    public String allocateStatus(TaskEntity taskEntity){
+    public String createCorrectStatus(TaskEntity taskEntity){
         return String.valueOf(taskEntity.isJobcardsPrepared()
                                     && taskEntity.isQualityAssured()
                                     && taskEntity.isToolingAvailable()
@@ -104,7 +107,6 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Boolean taskExists(String taskNum) {
-        System.out.println();
         return this.findTaskByTaskNumber(taskNum) != null;
     }
 
@@ -120,19 +122,40 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskViewDto updateTask(TaskViewDto taskViewDto) {
-        TaskEntity taskEntity = this.modelMapper.map(taskViewDto, TaskEntity.class);
+    public TaskViewDto updateTask(TaskViewDto taskViewDto, String token) {
+        TaskEntity taskToUpdate = this.modelMapper.map(taskViewDto, TaskEntity.class);
 
         TaskEntity existingTask = this.taskRepository.findByTaskNum(taskViewDto.getTaskNum());
+        taskToUpdate.setId(existingTask.getId());
+        taskToUpdate.setUpdatedOn(Instant.now());
 
-        taskEntity.setId(existingTask.getId());
-        taskEntity.setUpdatedOn(Instant.now());
+        Set<UserEntity> updatedPrepTeam = preparingTeam(existingTask.getPreparedBy(), token);
+        taskToUpdate.setPreparedBy(updatedPrepTeam);
 
-        return this.modelMapper.map(this.taskRepository.save(taskEntity), TaskViewDto.class);
+        return this.modelMapper.map(this.taskRepository.save(taskToUpdate), TaskViewDto.class);
     }
+
 
     @Override
-    public TaskViewDto createTask(TaskViewDto taskViewDto) {
-        return null;
+    public TaskViewDto createTask(TaskViewDto taskViewDto, String token) {
+        TaskEntity taskToCreate = this.modelMapper.map(taskViewDto, TaskEntity.class);
+        taskToCreate.setUpdatedOn(Instant.now());
+
+        Set<UserEntity> creatingTeam = preparingTeam(new HashSet<>(), token);
+        taskToCreate.setPreparedBy(creatingTeam);
+
+        return this.modelMapper.map(this.taskRepository.save(taskToCreate), TaskViewDto.class);
     }
+
+    public UserEntity userCreatingTheChange(String token){
+        String companyNum = this.jwtUtil.extractUsername(token.replace("Bearer ", ""));
+        return this.userService.findByCompanyNum(companyNum);
+    }
+
+    private Set<UserEntity> preparingTeam(Set<UserEntity> taskPrepTeam,String token) {
+        taskPrepTeam.add(userCreatingTheChange(token));
+
+        return taskPrepTeam;
+    }
+
 }

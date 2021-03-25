@@ -39,14 +39,28 @@ public class TaskController {
 
     @PutMapping("/{taskNum}/update")
     public ResponseEntity<TaskViewDto> updateSingleTask(
+            @RequestHeader("authorization") String jwt,
             @PathVariable String taskNum, @RequestBody TaskViewDto taskViewDto ){
 
         if(!this.taskService.taskExists(taskNum)){
-
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, taskNum), "taskNum");
         }
 
-        TaskViewDto task = this.taskService.updateTask(taskViewDto);
+        TaskViewDto task = this.taskService.updateTask(taskViewDto, jwt);
+
+        return new ResponseEntity<>(task, HttpStatus.OK);
+    }
+
+    @PutMapping("/{taskNum}/create")
+    public ResponseEntity<TaskViewDto> createSingleTask(
+            @RequestHeader("authorization") String jwt,
+            @PathVariable String taskNum, @RequestBody TaskViewDto taskViewDto ){
+
+        if(this.taskService.taskExists(taskNum)){
+            throw new NotFoundInDb(String.format(FOUNDERROR, taskNum), "taskNum");
+        }
+
+        TaskViewDto task = this.taskService.createTask(taskViewDto, jwt);
 
         return new ResponseEntity<>(task, HttpStatus.OK);
     }

@@ -141,7 +141,7 @@ class TaskComponent extends Component{
         if(Utils.formIsValid(this.state.errors)) {
             BackendService.createOne("tasks", taskNum, selected)
                 .then(() => {                        
-                    this.props.refreshTasks()
+                    this.refreshTasks()
                     this.props.handleInfo({success : MESSAGES.successCreated});
                 }
                 ).catch(e => {
@@ -186,7 +186,6 @@ class TaskComponent extends Component{
                         selectedId={this.state.selected.taskNum}
                         handleChange={this.handleChange} 
                         handleInfo={this.handleInfo}
-                        refreshTasks={this.refreshTasks} 
                         labels = {TASKS_HEADER_DATA} 
                         booleanFields = {TASKS_BOOLEAN_FIELDS}
                         disabledFields={TASKS_DISABLED_FIELDS}

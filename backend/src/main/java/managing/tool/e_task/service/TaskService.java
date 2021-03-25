@@ -11,8 +11,8 @@ import java.util.Set;
 public interface TaskService {
 
     TaskViewDto findTask(String taskNum);
-    TaskViewDto updateTask(TaskViewDto taskViewDto);
-    TaskViewDto createTask(TaskViewDto taskViewDto);
+    TaskViewDto updateTask(TaskViewDto taskViewDto, String jwt);
+    TaskViewDto createTask(TaskViewDto taskViewDto, String jwt);
 
     List<TaskViewDto> findAllTasks();
     List<TaskViewDto> findAllByAuthor(String companyNum);
