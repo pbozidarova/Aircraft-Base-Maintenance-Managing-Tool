@@ -1,15 +1,8 @@
 package managing.tool.e_maintenance.model.dto;
 
-import managing.tool.e_aircraft.model.AircraftEntity;
-import managing.tool.e_facility.model.FacilityEntity;
-import managing.tool.e_maintenance.model.MaintenanceStatusEnum;
-import managing.tool.e_task.model.TaskEntity;
-import managing.tool.e_user.model.UserEntity;
-
 import java.time.LocalDate;
-import java.util.Set;
 
-public class MaintenanceViewModel {
+public class MaintenanceViewDto {
     private String maintenanceNum;
     private String aircraftRegistration;
     private LocalDate startDate;
@@ -18,14 +11,14 @@ public class MaintenanceViewModel {
     private String facility;
     private String responsibleEngineer;
 
-    public MaintenanceViewModel() {
+    public MaintenanceViewDto() {
     }
 
     public String getMaintenanceNum() {
         return maintenanceNum;
     }
 
-    public MaintenanceViewModel setMaintenanceNum(String maintenanceNum) {
+    public MaintenanceViewDto setMaintenanceNum(String maintenanceNum) {
         this.maintenanceNum = maintenanceNum;
         return this;
     }
@@ -34,7 +27,7 @@ public class MaintenanceViewModel {
         return aircraftRegistration;
     }
 
-    public MaintenanceViewModel setAircraftRegistration(String aircraftRegistration) {
+    public MaintenanceViewDto setAircraftRegistration(String aircraftRegistration) {
         this.aircraftRegistration = aircraftRegistration;
         return this;
     }
@@ -43,7 +36,7 @@ public class MaintenanceViewModel {
         return startDate;
     }
 
-    public MaintenanceViewModel setStartDate(LocalDate startDate) {
+    public MaintenanceViewDto setStartDate(LocalDate startDate) {
         this.startDate = startDate;
         return this;
     }
@@ -52,7 +45,7 @@ public class MaintenanceViewModel {
         return endDate;
     }
 
-    public MaintenanceViewModel setEndDate(LocalDate endDate) {
+    public MaintenanceViewDto setEndDate(LocalDate endDate) {
         this.endDate = endDate;
         return this;
     }
@@ -61,7 +54,7 @@ public class MaintenanceViewModel {
         return status;
     }
 
-    public MaintenanceViewModel setStatus(String status) {
+    public MaintenanceViewDto setStatus(String status) {
         this.status = status;
         return this;
     }
@@ -70,7 +63,7 @@ public class MaintenanceViewModel {
         return facility;
     }
 
-    public MaintenanceViewModel setFacility(String facility) {
+    public MaintenanceViewDto setFacility(String facility) {
         this.facility = facility;
         return this;
     }
@@ -80,7 +73,7 @@ public class MaintenanceViewModel {
         return responsibleEngineer;
     }
 
-    public MaintenanceViewModel setResponsibleEngineer(String responsibleEngineer) {
+    public MaintenanceViewDto setResponsibleEngineer(String responsibleEngineer) {
         this.responsibleEngineer = responsibleEngineer;
         return this;
     }

@@ -18,19 +18,19 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
 
-class MaintenanceComponent extends Component {
+class NotificationComponent extends Component {
 
     constructor(props){
         super(props)
 
         this.state = {
-            maintenance : [],
+            notifications : [],
             selected: {},
             loading: true,       
             errors: {},     
         }
 
-        this.refreshMaintenance = this.refreshMaintenance.bind(this)
+        this.refreshNotifications = this.refreshNotifications.bind(this)
         this.selectMaintenance = this.selectMaintenance.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleInfo = this.handleInfo.bind(this);
@@ -41,14 +41,14 @@ class MaintenanceComponent extends Component {
     }
     
     componentDidMount(){
-        this.refreshMaintenance();
+        this.refreshNotifications();
         this.selectMaintenance(Utils.emptyObj(MAINTENANCE_HEADER_DATA))
     }
 
-    refreshMaintenance(){
+    refreshNotifications(){
         this.props.location.fetchDataFromURL != null
                 ?   this.partialFetch(this.props.location.fetchDataFromURL.href) 
-                :   this.fetchAll("maintenance");
+                :   this.fetchAll("notifications");
     }
 
     partialFetch(hateoasUrl){

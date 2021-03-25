@@ -46,7 +46,7 @@ public class NotificationController {
     }
 
     @GetMapping("/maintenance/{maintenanceNum}")
-    public ResponseEntity<CollectionModel<EntityModel<NotificationViewDto>>> findAllIssuesForMaintenance(@PathVariable String maintenanceNum){
+    public ResponseEntity<CollectionModel<EntityModel<NotificationViewDto>>> findAllNotifForMaintenance(@PathVariable String maintenanceNum){
         List<EntityModel<NotificationViewDto>> issues = this.issueService
                 .findAllIssuesByMaintenance(maintenanceNum)
                 .stream()

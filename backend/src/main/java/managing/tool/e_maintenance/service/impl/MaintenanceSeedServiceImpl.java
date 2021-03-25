@@ -10,7 +10,6 @@ import managing.tool.e_facility.service.FacilityService;
 import managing.tool.e_maintenance.model.MaintenanceEntity;
 import managing.tool.e_maintenance.model.MaintenanceStatusEnum;
 import managing.tool.e_maintenance.model.dto.MaintenanceSeedDto;
-import managing.tool.e_maintenance.model.dto.MaintenanceViewModel;
 import managing.tool.e_maintenance.repository.MaintenanceRepository;
 import managing.tool.e_maintenance.service.MaintenanceSeedService;
 import managing.tool.e_task.model.TaskEntity;
@@ -18,7 +17,6 @@ import managing.tool.e_task.service.TaskService;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
@@ -26,7 +24,6 @@ import java.io.FileReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
