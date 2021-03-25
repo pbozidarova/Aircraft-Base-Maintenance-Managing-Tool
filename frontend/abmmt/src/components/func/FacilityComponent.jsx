@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
 import BackendService from '../../api/CommonAPI.js'
-import {AIRCRAFT_HEADER_DATA, AIRCRAFT_BOOLEAN_FIELDS, AIRCRAFT_DISABLED_FIELDS, MESSAGES} from '../../Constanst.js'
+import {FACILITIES_HEADER_DATA, FACILITIES_BOOLEAN_FIELDS, FACILITIES_DISABLED_FIELDS, MESSAGES} from '../../Constanst.js'
 import Utils from '../Utils.js'
- 
 
 import { styles } from '../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
@@ -17,19 +16,20 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
 
-class AircraftComponent extends Component {
+
+class FacilityComponent extends Component {
     constructor(props){
         super(props)
-
+        
         this.state = {
-            aircraft : [],
+            facilities : [],
             selected: {},
             loading: true,       
             errors: {},     
         }
 
-        this.refreshAircraft = this.refreshAircraft.bind(this)
-        this.selectAircraft = this.selectAircraft.bind(this)
+        this.refreshFacilities = this.refreshFacilities.bind(this)
+        this.selectFacility = this.selectFacility.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleInfo = this.handleInfo.bind(this);
 
@@ -40,31 +40,32 @@ class AircraftComponent extends Component {
     }
    
     componentDidMount(){
-           this.refreshAircraft();
-           this.selectAircraft(Utils.emptyObj(AIRCRAFT_HEADER_DATA))
+        this.refreshFacilities();
+        this.selectFacility(Utils.emptyObj(FACILITIES_HEADER_DATA));
+
     }
 
-    refreshAircraft(){
-        BackendService.getAll('aircraft')
+    refreshFacilities(){
+        BackendService.getAll('facilities')
             .then(
                 response => {
-                    this.setState({aircraft : response.data}, 
+                    // console.log(response.data);
+                    this.setState({facilities : response.data},
                         () => this.props.handleInfo({success : MESSAGES.successLoaded}));
                 }
-            ).catch(e => {
-                this.props.handleInfo({error : e.response.data.message});
-            }); 
+            ); 
     }
-  
-    selectAircraft(aircraft) {      
-        this.setState({selected: aircraft})
+
+    selectFacility(facility) {      
+        this.setState({selected: facility})
     }
 
     handleChange(event){
         this.setState(
             {   ...this.state,
                 selected: {...this.state.selected, [event.target.name] : event.target.value}
-            })
+            }
+        , console.log(this.state))
         
     }
 
@@ -83,15 +84,15 @@ class AircraftComponent extends Component {
                 // role: this.props.selectedUser.roles.length > 0 ? '' : "At least one role must be checked!",
   
              }
-        }, () => submit(selected.aircraftRegistration, selected) );
+        }, () => submit(selected.name, selected) );
     
       }
 
-      submitUpdate(aircraftRegistration, selected){
+      submitUpdate(name, selected){
         if(Utils.formIsValid(this.state.errors)) {
-            BackendService.updateOne("aircraft", aircraftRegistration, selected)
+            BackendService.updateOne("facilities", name, selected)
                 .then((r) => {                        
-                    this.refreshAircraft()
+                    this.refreshFacilities()
                     this.props.handleInfo({success : MESSAGES.successUpdated});
                 }).catch(e => {
                     this.props.handleInfo({error : e.response.data.message});
@@ -101,11 +102,11 @@ class AircraftComponent extends Component {
         }
       }
 
-      submitCreate(aircraftRegistration, selected){  
+      submitCreate(name, selected){  
         if(Utils.formIsValid(this.state.errors)) {
-            BackendService.createOne("aircraft", aircraftRegistration, selected)
+            BackendService.createOne("facilities", name, selected)
                 .then(() => {                        
-                    this.refreshAircraft()
+                    this.refreshFacilities()
                     this.props.handleInfo({success : MESSAGES.successCreated});
                 }
                 ).catch(e => {
@@ -132,34 +133,33 @@ class AircraftComponent extends Component {
                 <Paper className={fixedHeightPaper}>
                             
                     <DataComponent 
-                        tableRows={this.state.aircraft}
-                        tableHeader = {AIRCRAFT_HEADER_DATA}
-                        selectedId={this.state.selected.aircraftRegistration}
-                        selectRow={this.selectAircraft} 
+                        tableRows={this.state.facilities}
+                        tableHeader = {FACILITIES_HEADER_DATA}
+                        selectedId={this.state.selected.name}
+                        selectRow={this.selectFacility} 
                     />
 
                 </Paper>
               </Grid>
               <Grid item xs={12} md={6} lg={4}>
                 <Paper className={fixedHeightPaper}>
-                  {this.state.selected.aircraftRegistration && 
-                    <EditGlobalComponent 
-                        selected={this.state.selected} 
-                        selectedId={this.state.selected.aircraftRegistration}
-                        handleChange={this.handleChange} 
-                        handleInfo={this.handleInfo}
-                        labels = {AIRCRAFT_HEADER_DATA} 
-                        booleanFields = {AIRCRAFT_BOOLEAN_FIELDS}
-                        disabledFields={AIRCRAFT_DISABLED_FIELDS}
-                        errors={this.state.errors}
-                        validateAndSubmit={this.validateAndSubmit}
-                        submitUpdate={this.submitUpdate}
-                        submitCreate={this.submitCreate}
+                  {this.state.selected.name && 
+                    <EditGlobalComponent
+                    selected={this.state.selected} 
+                    selectedId={this.state.selected.name}
+                    handleChange={this.handleChange} 
+                    handleInfo={this.handleInfo}
+                    labels = {FACILITIES_HEADER_DATA} 
+                    booleanFields = {FACILITIES_BOOLEAN_FIELDS}
+                    disabledFields={FACILITIES_DISABLED_FIELDS}
+                    errors={this.state.errors}
+                    validateAndSubmit={this.validateAndSubmit}
+                    submitUpdate={this.submitUpdate}
+                    submitCreate={this.submitCreate}
                     />
                   }
                 </Paper>
               </Grid>
-              
             </Grid>
     
      
@@ -168,8 +168,8 @@ class AircraftComponent extends Component {
 }
 
 
-AircraftComponent.propTypes = {
+FacilityComponent.propTypes = {
     classes: PropTypes.object.isRequired,
   };
   
-  export default withStyles(styles)(AircraftComponent);
+  export default withStyles(styles)(FacilityComponent);

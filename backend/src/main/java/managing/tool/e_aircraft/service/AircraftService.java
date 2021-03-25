@@ -8,7 +8,12 @@ import java.util.List;
 
 public interface AircraftService {
 
-    List<AircraftViewDto> findAll();
+    AircraftViewDto updateAircraft(AircraftViewDto aircraftDataForUpdate, String jwt);
+    AircraftViewDto createAircraft(AircraftViewDto aircraftNew, String jwt);
 
+    List<AircraftViewDto> findAll();
     AircraftEntity getAircraftByRegistration(String registration);
+
+    Boolean aircraftExists(String registration);
+
 }

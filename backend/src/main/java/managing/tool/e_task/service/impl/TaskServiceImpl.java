@@ -11,6 +11,7 @@ import managing.tool.e_task.service.TaskService;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
 import managing.tool.util.JwtUtil;
+import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,9 +28,9 @@ public class TaskServiceImpl implements TaskService {
     private final UserService userService;
     private final MaintenanceService maintenanceService;
     private final ModelMapper modelMapper;
-    private final Gson gson;
+    private final ServiceUtil utils;
     private final Random random;
-    private final JwtUtil jwtUtil;
+
 
     @Override
     public List<TaskViewDto> findAllTasks() {
@@ -125,35 +126,32 @@ public class TaskServiceImpl implements TaskService {
     public TaskViewDto updateTask(TaskViewDto taskViewDto, String token) {
         TaskEntity taskToUpdate = this.modelMapper.map(taskViewDto, TaskEntity.class);
 
-        TaskEntity existingTask = this.taskRepository.findByTaskNum(taskViewDto.getTaskNum());
-        taskToUpdate.setId(existingTask.getId());
-        taskToUpdate.setUpdatedOn(Instant.now());
+        TaskEntity taskExisting = this.taskRepository.findByTaskNum(taskViewDto.getTaskNum());
+        Set<UserEntity> updatedPrepTeam = preparingTeam(taskExisting.getPreparedBy(), token);
 
-        Set<UserEntity> updatedPrepTeam = preparingTeam(existingTask.getPreparedBy(), token);
-        taskToUpdate.setPreparedBy(updatedPrepTeam);
+        taskToUpdate.setPreparedBy(updatedPrepTeam)
+                .setId(taskExisting.getId())
+                .setUpdatedOn(Instant.now());
 
         return this.modelMapper.map(this.taskRepository.save(taskToUpdate), TaskViewDto.class);
     }
 
 
     @Override
-    public TaskViewDto createTask(TaskViewDto taskViewDto, String token) {
-        TaskEntity taskToCreate = this.modelMapper.map(taskViewDto, TaskEntity.class);
-        taskToCreate.setUpdatedOn(Instant.now());
+    public TaskViewDto createTask(TaskViewDto taskNew, String token) {
+        TaskEntity taskToCreate = this.modelMapper.map(taskNew, TaskEntity.class);
 
         Set<UserEntity> creatingTeam = preparingTeam(new HashSet<>(), token);
-        taskToCreate.setPreparedBy(creatingTeam);
+
+        taskToCreate.setPreparedBy(creatingTeam)
+                .setCreatedOn(Instant.now());
 
         return this.modelMapper.map(this.taskRepository.save(taskToCreate), TaskViewDto.class);
     }
 
-    public UserEntity userCreatingTheChange(String token){
-        String companyNum = this.jwtUtil.extractUsername(token.replace("Bearer ", ""));
-        return this.userService.findByCompanyNum(companyNum);
-    }
 
     private Set<UserEntity> preparingTeam(Set<UserEntity> taskPrepTeam,String token) {
-        taskPrepTeam.add(userCreatingTheChange(token));
+        taskPrepTeam.add(this.utils.userCreatingTheChange(token));
 
         return taskPrepTeam;
     }

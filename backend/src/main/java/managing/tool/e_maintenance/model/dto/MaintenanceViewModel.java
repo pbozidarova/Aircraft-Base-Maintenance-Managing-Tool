@@ -11,11 +11,11 @@ import java.util.Set;
 
 public class MaintenanceViewModel {
     private String maintenanceNum;
+    private String aircraftRegistration;
     private LocalDate startDate;
     private LocalDate endDate;
     private String status;
     private String facility;
-
     private String responsibleEngineer;
 
     public MaintenanceViewModel() {
@@ -27,6 +27,15 @@ public class MaintenanceViewModel {
 
     public MaintenanceViewModel setMaintenanceNum(String maintenanceNum) {
         this.maintenanceNum = maintenanceNum;
+        return this;
+    }
+
+    public String getAircraftRegistration() {
+        return aircraftRegistration;
+    }
+
+    public MaintenanceViewModel setAircraftRegistration(String aircraftRegistration) {
+        this.aircraftRegistration = aircraftRegistration;
         return this;
     }
 

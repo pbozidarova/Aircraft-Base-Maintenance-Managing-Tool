@@ -4,6 +4,7 @@ import managing.tool.e_notification.web.NotificationController;
 import managing.tool.e_maintenance.web.MaintenanceController;
 import managing.tool.e_task.web.TaskController;
 import managing.tool.e_user.model.dto.UserViewDto;
+import managing.tool.e_user.service.UserCreateUpdateService;
 import managing.tool.e_user.service.UserService;
 import managing.tool.exception.FoundInDb;
 import managing.tool.exception.NotFoundInDb;
@@ -27,9 +28,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @CrossOrigin(FRONTEND_URL)
 public class UserController {
     private final UserService userService;
+    private final UserCreateUpdateService userCreateUpdateService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserCreateUpdateService userCreateUpdateService) {
         this.userService = userService;
+        this.userCreateUpdateService = userCreateUpdateService;
     }
 
     @GetMapping("all")
@@ -62,33 +65,33 @@ public class UserController {
 
     @PutMapping("/{companyNum}/update")
     public ResponseEntity<UserViewDto> updateSingleUser(
-            @PathVariable String companyNum, @RequestBody UserViewDto userViewDto ){
+            @PathVariable String companyNum, @RequestBody UserViewDto userDataForUpdate ){
 
         if(!this.userService.userExists(companyNum)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, companyNum), "companyNum");
         }
-        if(this.userService.emailExistsForAnotherUser(userViewDto.getEmail(), companyNum)){
-            throw new FoundInDb(String.format(FOUNDERROR, userViewDto.getEmail()), "email");
+        if(this.userService.emailExistsForAnotherUser(userDataForUpdate.getEmail(), companyNum)){
+            throw new FoundInDb(String.format(FOUNDERROR, userDataForUpdate.getEmail()), "email");
         }
 
-        UserViewDto user = this.userService.updateUser(userViewDto);
+        UserViewDto userUpdated = this.userCreateUpdateService.updateUser(userDataForUpdate);
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(userUpdated, HttpStatus.OK);
     }
 
     @PutMapping("/{companyNum}/create")
     public ResponseEntity<UserViewDto> createSingleUser(
-            @PathVariable String companyNum, @RequestBody UserViewDto userViewDto ){
+            @PathVariable String companyNum, @RequestBody UserViewDto userNew ){
 
         if(this.userService.userExists(companyNum)){
             throw new FoundInDb(String.format(FOUNDERROR, companyNum), "companyNum");
         }
-        if(this.userService.emailExists(userViewDto.getEmail())){
-            throw new FoundInDb(String.format(FOUNDERROR, userViewDto.getEmail()), "email");
+        if(this.userService.emailExists(userNew.getEmail())){
+            throw new FoundInDb(String.format(FOUNDERROR, userNew.getEmail()), "email");
         }
 
-        UserViewDto user = this.userService.createUser(userViewDto);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        UserViewDto userCreated = this.userCreateUpdateService.createUser(userNew);
+        return new ResponseEntity<>(userCreated, HttpStatus.OK);
     }
 
     private Link[] createUserHypermedia(UserViewDto user) {

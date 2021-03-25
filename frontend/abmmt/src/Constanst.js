@@ -21,7 +21,6 @@ export const MESSAGES = {
     errorExist : "Already exist such company number or email!",
     empty: "",
 }
-
 export const USERS_HEADER_DATA = {
     companyNum: 'Company Number',
     firstName : 'First Name',
@@ -38,8 +37,17 @@ export const USERS_BOOLEAN_FIELDS = {
     roles: 'Roles'
 }
 export const MAINTENANCE_HEADER_DATA = {
-    
+    maintenanceNum: 'Maintenance Number',
+    aircraftRegistration: 'Aircraft Registration',
+    startDate: 'Start Date',
+    endDate: 'End Date',
+    status: 'Status',
+    facility: 'Facility',
+    responsibleEngineer: 'Responsible Engineer'
 }
+export const MAINTENANCE_BOOLEAN_FIELDS = {}
+export const MAINTENANCE_DISABLED_FIELDS ={}
+
 export const TASKS_HEADER_DATA = {
     taskNum: 'Task Number',
     code : 'Code',
@@ -67,21 +75,23 @@ export const FACILITIES_HEADER_DATA = {
     manager: 'Manager',
     
 }
+export const FACILITIES_BOOLEAN_FIELDS = {}
+export const FACILITIES_DISABLED_FIELDS ={}
+
 export const AIRCRAFT_HEADER_DATA = {
+    aircraftRegistration : "Registration",
     serialNumber : "Serial Number",
-    operatorName: "Operator",
-    operatorICAOCode : "Operator ICAO Code",
     aircraftType : "Type",
     aircraftModel : "Model",
-    aircraftRegistration : "Registration",
+    operatorName: "Operator",
+    operatorICAOCode : "Operator ICAO Code",
     engineManufacturer : "Engine Manufacturer",
     engineModelSeries : "Engine Model Series",
     
 }
-export const AIRCRAFT_BOOLEAN_FIELDS ={
-}
-export const AIRCRAFT_DISABLED_FIELDS ={
-}
+export const AIRCRAFT_BOOLEAN_FIELDS ={}
+export const AIRCRAFT_DISABLED_FIELDS ={}
+
 export const ICONS_MAPPING = {
     dashboard: <DashboardIcon />,
     notifications: <NotificationsActiveOutlinedIcon />,

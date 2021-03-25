@@ -1,16 +1,20 @@
 package managing.tool.e_facility.web;
 
 import managing.tool.constants.GlobalConstants;
+import managing.tool.e_aircraft.model.dto.AircraftViewDto;
 import managing.tool.e_facility.model.dto.FacilityViewDto;
 import managing.tool.e_facility.service.FacilityService;
+import managing.tool.exception.FoundInDb;
+import managing.tool.exception.NotFoundInDb;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static managing.tool.constants.GlobalConstants.FOUNDERROR;
+import static managing.tool.constants.GlobalConstants.NOTFOUNDERROR;
 
 @RestController
 @CrossOrigin(GlobalConstants.FRONTEND_URL)
@@ -30,6 +34,34 @@ public class FacilityController {
         return  ResponseEntity
                 .ok()
                 .body(this.facilityService.findAll());
+    }
+
+    @PutMapping("/{name}/update")
+    public ResponseEntity<FacilityViewDto> updateSingleTask(
+            @RequestHeader("authorization") String jwt,
+            @PathVariable String name, @RequestBody FacilityViewDto facilityDataForUpdate ){
+
+        if(!this.facilityService.facilityExists(name)){
+            throw new NotFoundInDb(String.format(NOTFOUNDERROR, name), "name");
+        }
+
+        FacilityViewDto facilityUpdated = this.facilityService.updateFacility(facilityDataForUpdate, jwt);
+
+        return new ResponseEntity<>(facilityUpdated, HttpStatus.OK);
+    }
+
+    @PutMapping("/{name}/create")
+    public ResponseEntity<FacilityViewDto> createSingleTask(
+            @RequestHeader("authorization") String jwt,
+            @PathVariable String name, @RequestBody FacilityViewDto facilityNew ){
+
+        if(this.facilityService.facilityExists(name)){
+            throw new FoundInDb(String.format(FOUNDERROR, name), "name");
+        }
+
+        FacilityViewDto facilityCreated = this.facilityService.createFacility(facilityNew, jwt);
+
+        return new ResponseEntity<>(facilityCreated, HttpStatus.OK);
     }
 
 }

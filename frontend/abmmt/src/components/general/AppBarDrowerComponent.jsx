@@ -6,8 +6,6 @@ import logo from '../../favicon-32x32.png'
 import clsx from 'clsx';
 
 import IconButton from '@material-ui/core/IconButton';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import Badge from '@material-ui/core/Badge';
 import PropTypes from 'prop-types';
 
 import AppBar from '@material-ui/core/AppBar';

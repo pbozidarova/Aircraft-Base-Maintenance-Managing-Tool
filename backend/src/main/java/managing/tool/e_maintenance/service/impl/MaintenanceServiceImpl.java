@@ -34,14 +34,25 @@ public class MaintenanceServiceImpl implements MaintenanceService {
     private final ModelMapper modelMapper;
     private final UserService userService;
 
-
     @Override
     public List<MaintenanceViewModel> findAllMaintenanceEvents() {
 
         return this.maintenanceRepository
                 .findAll()
                 .stream()
-                .map(m -> this.modelMapper.map(m, MaintenanceViewModel.class))
+                .map(m -> {
+                    MaintenanceViewModel maintenanceViewModel = this.modelMapper.map(m, MaintenanceViewModel.class);
+                    maintenanceViewModel.setFacility(m.getFacility().getName())
+                                        .setAircraftRegistration(m.getAircraft().getAircraftRegistration())
+                                        .setResponsibleEngineer(
+                                                String.format("%s - %s, %s",
+                                                        m.getResponsibleEngineer().getCompanyNum(),
+                                                        m.getResponsibleEngineer().getFirstName(),
+                                                        m.getResponsibleEngineer().getLastName()
+                                        ));
+
+                    return maintenanceViewModel;
+                })
                 .collect(Collectors.toList());
     }
 

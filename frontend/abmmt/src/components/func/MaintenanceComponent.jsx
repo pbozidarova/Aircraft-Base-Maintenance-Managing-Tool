@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import BackendService from '../../api/CommonAPI.js'
-import {TASKS_HEADER_DATA, TASKS_BOOLEAN_FIELDS, TASKS_DISABLED_FIELDS, MESSAGES} from '../../Constanst.js'
+import {MAINTENANCE_HEADER_DATA, MAINTENANCE_BOOLEAN_FIELDS, MAINTENANCE_DISABLED_FIELDS, MESSAGES} from '../../Constanst.js'
 import Utils from '../Utils.js'
 import { withRouter } from 'react-router';
 
@@ -18,19 +18,20 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
 
-class TaskComponent extends Component{
+class MaintenanceComponent extends Component {
+
     constructor(props){
         super(props)
 
         this.state = {
-            tasks : [],
+            maintenance : [],
             selected: {},
             loading: true,       
             errors: {},     
         }
 
-        this.refreshTasks = this.refreshTasks.bind(this)
-        this.selectTask = this.selectTask.bind(this)
+        this.refreshMaintenance = this.refreshMaintenance.bind(this)
+        this.selectMaintenance = this.selectMaintenance.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleInfo = this.handleInfo.bind(this);
 
@@ -40,17 +41,16 @@ class TaskComponent extends Component{
     }
     
     componentDidMount(){
-        this.refreshTasks();
-        this.selectTask(Utils.emptyObj(TASKS_HEADER_DATA))
+        this.refreshMaintenance();
+        this.selectMaintenance(Utils.emptyObj(MAINTENANCE_HEADER_DATA))
     }
 
-    refreshTasks(){
-        
+    refreshMaintenance(){
         this.props.location.fetchDataFromURL != null
                 ?   this.partialFetch(this.props.location.fetchDataFromURL.href) 
-                :   this.fetchAll("tasks");
-        
+                :   this.fetchAll("maintenance");
     }
+
     partialFetch(hateoasUrl){
         BackendService.fetchDataFrom(hateoasUrl)
         .then(
@@ -58,7 +58,7 @@ class TaskComponent extends Component{
                 console.log(response)
                 this.setState({
                     loading : false, 
-                    tasks : response.data._embedded.taskViewDtoList
+                    maintenance : response.data._embedded.maintenanceViewDtoList
                 }, () => this.props.handleInfo({success : MESSAGES.successLoaded})
                 );
                 
@@ -74,7 +74,7 @@ class TaskComponent extends Component{
             response => {
                 this.setState({
                     loading : false, 
-                    tasks : response.data
+                    maintenance : response.data
                 }, () => this.props.handleInfo({success : MESSAGES.successLoaded})
                 );
                 console.log(response.data)
@@ -84,8 +84,8 @@ class TaskComponent extends Component{
         });
     }
    
-    selectTask(task) {      
-        this.setState({selected: task})
+    selectMaintenance(maintenance) {      
+        this.setState({selected: maintenance})
     }
     handleChange(event){
         let eName = event.target.name
@@ -116,15 +116,15 @@ class TaskComponent extends Component{
                 // role: this.props.selectedUser.roles.length > 0 ? '' : "At least one role must be checked!",
   
              }
-        }, () => submit(selected.taskNum, selected) );
+        }, () => submit(selected.maintenanceNum, selected) );
     
       }
   
-      submitUpdate(taskNum, selected){
+      submitUpdate(maintenanceNum, selected){
         if(Utils.formIsValid(this.state.errors)) {
-            BackendService.updateOne("tasks", taskNum, selected)
+            BackendService.updateOne("maintenance", maintenanceNum, selected)
                 .then((r) => {                        
-                    this.refreshTasks()
+                    this.refreshMaintenance()
                     this.props.handleInfo({success : MESSAGES.successUpdated});
                 }).catch(e => {
                     this.props.handleInfo({error : e.response.data.message});
@@ -134,11 +134,11 @@ class TaskComponent extends Component{
         }
       }
   
-      submitCreate(taskNum, selected){  
+      submitCreate(maintenanceNum, selected){  
         if(Utils.formIsValid(this.state.errors)) {
-            BackendService.createOne("tasks", taskNum, selected)
+            BackendService.createOne("maintenance", maintenanceNum, selected)
                 .then(() => {                        
-                    this.refreshTasks()
+                    this.refreshMaintenance()
                     this.props.handleInfo({success : MESSAGES.successCreated});
                 }
                 ).catch(e => {
@@ -167,25 +167,25 @@ class TaskComponent extends Component{
                     
                     { this.state.loading && <CircularProgress color="secondary"/> }
                     <DataComponent 
-                        tableRows={this.state.tasks} 
-                        tableHeader={TASKS_HEADER_DATA}
-                        selectedId={this.state.selected.taskNum}
-                        selectRow={this.selectTask} 
+                        tableRows={this.state.maintenance} 
+                        tableHeader={MAINTENANCE_HEADER_DATA}
+                        selectedId={this.state.selected.maintenanceNum}
+                        selectRow={this.selectMaintenance} 
                     />
                 </Paper>
                </Grid>
 
               <Grid item xs={12} md={6} lg={4}>
                 <Paper className={fixedHeightPaper}>
-                  {this.state.selected.taskNum && 
+                  {this.state.selected.maintenanceNum && 
                     <EditGlobalComponent
                         selected={this.state.selected} 
-                        selectedId={this.state.selected.taskNum}
+                        selectedId={this.state.selected.maintenanceNum}
                         handleChange={this.handleChange} 
                         handleInfo={this.handleInfo}
-                        labels = {TASKS_HEADER_DATA} 
-                        booleanFields = {TASKS_BOOLEAN_FIELDS}
-                        disabledFields={TASKS_DISABLED_FIELDS}
+                        labels = {MAINTENANCE_HEADER_DATA} 
+                        booleanFields = {MAINTENANCE_BOOLEAN_FIELDS}
+                        disabledFields={MAINTENANCE_DISABLED_FIELDS}
                         errors={this.state.errors}
                         validateAndSubmit={this.validateAndSubmit}
                         submitUpdate={this.submitUpdate}
@@ -197,11 +197,11 @@ class TaskComponent extends Component{
             </Grid>
      )
     }
-
 }
 
-TaskComponent.propTypes = {
+
+MaintenanceComponent.propTypes = {
     classes: PropTypes.object.isRequired,
   };
   
-  export default withStyles(styles)(withRouter(TaskComponent));
+  export default withStyles(styles)(withRouter(MaintenanceComponent));

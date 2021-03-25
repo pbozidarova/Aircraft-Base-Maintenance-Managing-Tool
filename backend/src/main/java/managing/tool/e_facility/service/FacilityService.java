@@ -8,8 +8,12 @@ import java.util.List;
 
 public interface FacilityService {
 
+    FacilityViewDto updateFacility(FacilityViewDto facilityDataForUpdate, String jwt);
+    FacilityViewDto createFacility(FacilityViewDto facilityNew, String jwt);
+
     List<FacilityViewDto> findAll();
-
-
     FacilityEntity getFacilityByName(String name);
+
+    Boolean facilityExists(String name);
+
 }

@@ -2,6 +2,7 @@ package managing.tool.e_task.web;
 
 import managing.tool.e_task.model.dto.TaskViewDto;
 import managing.tool.e_task.service.TaskService;
+import managing.tool.exception.FoundInDb;
 import managing.tool.exception.NotFoundInDb;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -40,27 +41,27 @@ public class TaskController {
     @PutMapping("/{taskNum}/update")
     public ResponseEntity<TaskViewDto> updateSingleTask(
             @RequestHeader("authorization") String jwt,
-            @PathVariable String taskNum, @RequestBody TaskViewDto taskViewDto ){
+            @PathVariable String taskNum, @RequestBody TaskViewDto taskDataForUpdate ){
 
         if(!this.taskService.taskExists(taskNum)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, taskNum), "taskNum");
         }
 
-        TaskViewDto task = this.taskService.updateTask(taskViewDto, jwt);
+        TaskViewDto taskUpdated = this.taskService.updateTask(taskDataForUpdate, jwt);
 
-        return new ResponseEntity<>(task, HttpStatus.OK);
+        return new ResponseEntity<>(taskUpdated, HttpStatus.OK);
     }
 
     @PutMapping("/{taskNum}/create")
     public ResponseEntity<TaskViewDto> createSingleTask(
             @RequestHeader("authorization") String jwt,
-            @PathVariable String taskNum, @RequestBody TaskViewDto taskViewDto ){
+            @PathVariable String taskNum, @RequestBody TaskViewDto taskNew ){
 
         if(this.taskService.taskExists(taskNum)){
-            throw new NotFoundInDb(String.format(FOUNDERROR, taskNum), "taskNum");
+            throw new FoundInDb(String.format(FOUNDERROR, taskNum), "taskNum");
         }
 
-        TaskViewDto task = this.taskService.createTask(taskViewDto, jwt);
+        TaskViewDto task = this.taskService.createTask(taskNew, jwt);
 
         return new ResponseEntity<>(task, HttpStatus.OK);
     }

@@ -8,9 +8,9 @@ import LoginComponent from './LoginComponent'
 import LogoutComponent from './LogoutComponent'
 import AircraftComponent from '../func/AircraftComponent'
 import DashboardComponent from './DashboardComponent';
-import FacilityComponent from '../func/facility/FacilityComponent'
+import FacilityComponent from '../func/FacilityComponent'
 import TaskComponent from '../func/TaskComponent'
-import MaintenanceComponent from '../func/maintenance/MaintenanceComponent'
+import MaintenanceComponent from '../func/MaintenanceComponent'
 import NotificationComponent from '../func/notification/NotificationComponent'
 
 import UsersComponent from '../func/user/UsersComponent'
