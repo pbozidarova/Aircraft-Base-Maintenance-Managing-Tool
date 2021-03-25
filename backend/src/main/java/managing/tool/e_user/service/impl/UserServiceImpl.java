@@ -149,6 +149,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean userExists(String companyNum) {
+
         return this.findByCompanyNum(companyNum) != null;
     }
 
@@ -159,8 +160,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean emailExistsForAnotherUser(String email, String companyNum) {
-        Boolean theSameUSer = this.userRepository.findByEmail(email).getCompanyNum().equals(companyNum);
-        return this.emailExists(email) && !theSameUSer;
+        return this.emailExists(email) && !this.userRepository.findByEmail(email).getCompanyNum().equals(companyNum);
     }
 
     @Override

@@ -63,7 +63,7 @@ public class TaskSeedServiceImpl implements TaskSeedService {
 
 
                     task.setToolingAvailable(this.random.nextBoolean());
-                    task.setAreJobCardsPrepared(this.random.nextBoolean());
+                    task.setJobcardsPrepared(this.random.nextBoolean());
                     task.setQualityAssured(this.random.nextBoolean());
 
                     this.taskRepository.save(task);

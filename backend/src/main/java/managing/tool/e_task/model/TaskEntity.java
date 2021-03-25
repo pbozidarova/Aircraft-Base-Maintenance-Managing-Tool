@@ -18,7 +18,7 @@ public class TaskEntity extends BaseEntity {
     private String description;
 
     private boolean isToolingAvailable;
-    private boolean areJobCardsPrepared;
+    private boolean isJobcardsPrepared;
     private boolean isQualityAssured;
 
     private Set<MaintenanceEntity> maintenances;
@@ -67,13 +67,14 @@ public class TaskEntity extends BaseEntity {
         isToolingAvailable = toolingAvailable;
         return this;
     }
-    @Column(name = "are_jobcards_preapred", nullable = false)
-    public boolean areJobCardsPrepared() {
-        return areJobCardsPrepared;
+
+    @Column(name = "is_jobcards_preapred", nullable = false)
+    public boolean isJobcardsPrepared() {
+        return isJobcardsPrepared;
     }
 
-    public TaskEntity setAreJobCardsPrepared(boolean areJobCardsPrepared) {
-        this.areJobCardsPrepared = areJobCardsPrepared;
+    public TaskEntity setJobcardsPrepared(boolean jobcardsPrepared) {
+        isJobcardsPrepared = jobcardsPrepared;
         return this;
     }
 
@@ -117,8 +118,6 @@ public class TaskEntity extends BaseEntity {
         return this;
     }
 
-    public boolean isAreJobCardsPrepared() {
-        return areJobCardsPrepared;
-    }
+
 
 }

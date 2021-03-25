@@ -39,7 +39,6 @@ public class UserController {
                 .stream()
                 .map(u -> EntityModel.of(u, createUserHypermedia(u)))
                 .collect(Collectors.toList());
-
         return ResponseEntity.ok(
                                 CollectionModel.of(
                                         users,
@@ -59,7 +58,6 @@ public class UserController {
 
         return ResponseEntity
                 .ok(EntityModel.of(userViewDto, createUserHypermedia(userViewDto)));
-
     }
 
     @PutMapping("/{companyNum}/update")

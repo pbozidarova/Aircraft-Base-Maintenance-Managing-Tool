@@ -4,25 +4,18 @@ import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import managing.tool.e_maintenance.service.MaintenanceService;
 import managing.tool.e_task.model.TaskStatusEnum;
-import managing.tool.e_task.model.dto.TaskSeedDto;
 import managing.tool.e_task.model.TaskEntity;
 import managing.tool.e_task.model.dto.TaskViewDto;
 import managing.tool.e_task.repository.TaskRepository;
 import managing.tool.e_task.service.TaskService;
-import managing.tool.e_user.model.RoleEntity;
-import managing.tool.e_user.model.RoleEnum;
-import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static managing.tool.constants.GlobalConstants.TASKS_MOCK_DATA_PATH;
 
 @Service
 @AllArgsConstructor
@@ -74,7 +67,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     public String allocateStatus(TaskEntity taskEntity){
-        return String.valueOf(taskEntity.areJobCardsPrepared()
+        return String.valueOf(taskEntity.isJobcardsPrepared()
                                     && taskEntity.isQualityAssured()
                                     && taskEntity.isToolingAvailable()
                                     ? TaskStatusEnum.OK
@@ -88,6 +81,11 @@ public class TaskServiceImpl implements TaskService {
                 .stream()
                 .map(t -> this.modelMapper.map(t, TaskViewDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public TaskEntity findTaskByTaskNumber(String taskNum) {
+        return this.taskRepository.findByTaskNum(taskNum);
     }
 
     @Override
@@ -105,12 +103,36 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskViewDto findTask(String taskNum) {
+    public Boolean taskExists(String taskNum) {
+        System.out.println();
+        return this.findTaskByTaskNumber(taskNum) != null;
+    }
 
+
+
+    @Override
+    public TaskViewDto findTask(String taskNum) {
         return this.modelMapper.map(
                 this.taskRepository.findByTaskNum(taskNum),
                 TaskViewDto.class
         );
 
+    }
+
+    @Override
+    public TaskViewDto updateTask(TaskViewDto taskViewDto) {
+        TaskEntity taskEntity = this.modelMapper.map(taskViewDto, TaskEntity.class);
+
+        TaskEntity existingTask = this.taskRepository.findByTaskNum(taskViewDto.getTaskNum());
+
+        taskEntity.setId(existingTask.getId());
+        taskEntity.setUpdatedOn(Instant.now());
+
+        return this.modelMapper.map(this.taskRepository.save(taskEntity), TaskViewDto.class);
+    }
+
+    @Override
+    public TaskViewDto createTask(TaskViewDto taskViewDto) {
+        return null;
     }
 }

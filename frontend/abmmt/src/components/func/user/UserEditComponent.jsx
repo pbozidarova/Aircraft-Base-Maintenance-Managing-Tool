@@ -112,10 +112,8 @@ class EditUserComponent extends Component {
                 
             {Object.keys(this.props.labels).map(key => {
                 return (
-                        key !== "roles" && 
-                        key !== "facility" &&
-                    //  key !== "companyNum" &&
-                    
+                    booleanFields[key] ==null && key !== "facility" &&
+                                        
                     <TextField
                         id={key}
                         name={key}

@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import BackendService from '../../../api/CommonAPI.js'
-import {TASKS_HEADER_DATA, TASKS_BOOLEAN_FIELDS, MESSAGES} from '../../../Constanst.js'
+import {TASKS_HEADER_DATA, TASKS_BOOLEAN_FIELDS, TASKS_DISABLED_FIELDS, MESSAGES} from '../../../Constanst.js'
 import Utils from '../../Utils.js'
 import { withRouter } from 'react-router';
 
 import DataComponent from '../DataComponent'
-import EditTask from './EditTask'
+import EditGlobalComponent from '../EditGlobalComponent'
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Grid from '@material-ui/core/Grid';
@@ -28,13 +28,18 @@ class TaskComponent extends Component{
         this.state = {
             tasks : [],
             selected: {},
-            loading: true,            
+            loading: true,       
+            errors: {},     
         }
 
         this.refreshTasks = this.refreshTasks.bind(this)
         this.selectTask = this.selectTask.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleInfo = this.handleInfo.bind(this);
+
+        this.validateAndSubmit = this.validateAndSubmit.bind(this);
+        this.submitUpdate = this.submitUpdate.bind(this)
+        this.submitCreate = this.submitCreate.bind(this)
     }
     
     componentDidMount(){
@@ -75,6 +80,7 @@ class TaskComponent extends Component{
                     tasks : response.data
                 }, () => this.props.handleInfo({success : MESSAGES.successLoaded})
                 );
+                console.log(response.data)
             }
         ).catch(e => {
             this.props.handleInfo({error : e.response.data.message});
@@ -85,13 +91,67 @@ class TaskComponent extends Component{
         this.setState({selected: task})
     }
     handleChange(event){
+        let eName = event.target.name
+        let eValue = event.target.value
+        let eCheked = event.target.checked
+        
+        let updatePair = eCheked ? {[eName] : eCheked }: {[eName]: eValue}
+        
         this.setState(
             {   ...this.state,
-                selected: {...this.state.selected, [event.target.name] : event.target.value}
-            }
-        , console.log(this.state))
+                selected: {...this.state.selected, ...updatePair}
+            })
         
     }
+
+    validateAndSubmit(submit){
+        const { selected } = this.state;
+        
+        this.setState({ errors: 
+             { 
+                // companyNum: /^[N]\d{5}$/.test(selectedUser.companyNum) ? '' : "Follow the pattern N plus 5 digits!" ,
+                // firstName:  selectedUser.firstName != 'First Name' && selectedUser.firstName.length > 2 ? '' : "The first name must contain more than 2 digits!" ,
+                // lastName:  selectedUser.lastName != 'Last Name' && selectedUser.lastName.length > 2 ? '' : "The last name must contain more than 2 digits!",
+                // email: /^\S+@\S+$/.test(selectedUser.email)  ? '' : "Please provide a valid email!",
+                // facility: this.props.selectedUser.facility.length > 2 ? '' : "Please select a facility!",
+                
+                // authority: this.props.selectedUser.roles.length > 0 ? '' : "At least one authority must be checked!",
+                // role: this.props.selectedUser.roles.length > 0 ? '' : "At least one role must be checked!",
+  
+             }
+        }, () => submit(selected.taskNum, selected) );
+    
+      }
+  
+      submitUpdate(taskNum, selected){
+        if(Utils.formIsValid(this.state.errors)) {
+            BackendService.updateOne("tasks", taskNum, selected)
+                .then((r) => {                        
+                    this.refreshTasks()
+                    this.props.handleInfo({success : MESSAGES.successUpdated});
+                }).catch(e => {
+                    this.props.handleInfo({error : e.response.data.message});
+                    // this.props.handleInfo({error : e});
+                })
+            console.log('submit Update')
+        }
+      }
+  
+      submitCreate(taskNum, selected){  
+        if(Utils.formIsValid(this.state.errors)) {
+            BackendService.createOne("tasks", taskNum, selected)
+                .then(() => {                        
+                    this.props.refreshTasks()
+                    this.props.handleInfo({success : MESSAGES.successCreated});
+                }
+                ).catch(e => {
+                    this.props.handleInfo({error : e.response.data.message});
+                })
+  
+            console.log('submit Create')
+        }
+      }
+
 
     handleInfo(msg){
         this.setState({...this.state, infoPanel : msg})
@@ -121,13 +181,19 @@ class TaskComponent extends Component{
               <Grid item xs={12} md={6} lg={4}>
                 <Paper className={fixedHeightPaper}>
                   {this.state.selected.taskNum && 
-                    <EditTask
-                        selectedTask={this.state.selected} 
+                    <EditGlobalComponent
+                        selected={this.state.selected} 
+                        selectedId={this.state.selected.taskNum}
                         handleChange={this.handleChange} 
                         handleInfo={this.handleInfo}
                         refreshTasks={this.refreshTasks} 
                         labels = {TASKS_HEADER_DATA} 
                         booleanFields = {TASKS_BOOLEAN_FIELDS}
+                        disabledFields={TASKS_DISABLED_FIELDS}
+                        errors={this.state.errors}
+                        validateAndSubmit={this.validateAndSubmit}
+                        submitUpdate={this.submitUpdate}
+                        submitCreate={this.submitCreate}
                     />
                   }
                 </Paper>

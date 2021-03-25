@@ -34,7 +34,8 @@ export const USERS_BOOLEAN_FIELDS = {
     USER : 'User',
     ADMIN: 'Admin',
     MECHANIC: 'Mechanic',
-    ENGINEER: 'Engineer'
+    ENGINEER: 'Engineer',
+    roles: 'Roles'
 }
 export const MAINTENANCE_HEADER_DATA = {
     
@@ -45,16 +46,20 @@ export const TASKS_HEADER_DATA = {
     description : 'Description',
     preparedBy: "Prepared by",
     status: "Status",
-    isToolingAvailable: 'Tooling is available',
-    areJobCardsPrepared: 'Jobcards are prepared',
-    isQualityAssured: 'Quality is assured'
-    
 }
 
+export const TASKS_DISABLED_FIELDS = {
+    taskNum: 'Task Number',
+    code : 'Code',
+    preparedBy: "Prepared by",
+    status: "Status",
+}
+
+
 export const TASKS_BOOLEAN_FIELDS ={
-    isToolingAvailable: '',
-    areJobCardsPrepared: '',
-    isQualityAssured: ''
+    toolingAvailable: 'Tooling is available',
+    jobCardsPrepared: 'Jobcards are prepared',
+    qualityAssured: 'Quality is assured'
 }
 export const FACILITIES_HEADER_DATA = {
     name: 'Name',

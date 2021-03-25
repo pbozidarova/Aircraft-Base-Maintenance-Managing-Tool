@@ -12,7 +12,7 @@ public class TaskViewDto {
     private String status;
 
     private boolean isToolingAvailable;
-    private boolean areJobCardsPrepared;
+    private boolean isJobCardsPrepared;
     private boolean isQualityAssured;
 
 
@@ -64,12 +64,12 @@ public class TaskViewDto {
         return this;
     }
 
-    public boolean AreJobCardsPrepared() {
-        return areJobCardsPrepared;
+    public boolean isJobCardsPrepared() {
+        return isJobCardsPrepared;
     }
 
-    public TaskViewDto setAreJobCardsPrepared(boolean areJobCardsPrepared) {
-        this.areJobCardsPrepared = areJobCardsPrepared;
+    public TaskViewDto setJobCardsPrepared(boolean jobCardsPrepared) {
+        isJobCardsPrepared = jobCardsPrepared;
         return this;
     }
 
