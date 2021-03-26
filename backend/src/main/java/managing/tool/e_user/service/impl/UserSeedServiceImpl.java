@@ -3,6 +3,8 @@ package managing.tool.e_user.service.impl;
 import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import managing.tool.constants.GlobalConstants;
+import managing.tool.e_facility.service.FacilitySeedService;
+import managing.tool.e_facility.service.FacilityService;
 import managing.tool.e_user.model.RoleEntity;
 import managing.tool.e_user.model.RoleEnum;
 import managing.tool.e_user.model.UserEntity;
@@ -31,7 +33,7 @@ public class UserSeedServiceImpl implements UserSeedService {
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
     private final Random random;
-
+    private final FacilitySeedService facilitySeedService;
 
     @Override
     public void seedUsers() throws FileNotFoundException {
@@ -55,7 +57,7 @@ public class UserSeedServiceImpl implements UserSeedService {
                     roleSet.add(role);
                     user.setRoles(roleSet);
                     user.setCompanyNum(uDto.getCompanyNum());
-
+//                    user.setFacility(this.facilitySeedService.getRandomFacility());
                     user.setPassword(passwordEncoder.encode(GlobalConstants.DUMMY_PASS));
                     this.userRepository.saveAndFlush(user);
                 });

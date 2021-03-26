@@ -4,6 +4,7 @@ import managing.tool.constants.GlobalConstants;
 import managing.tool.e_notification.web.NotificationController;
 import managing.tool.e_maintenance.model.dto.MaintenanceViewDto;
 import managing.tool.e_maintenance.service.MaintenanceService;
+import managing.tool.e_task.service.TaskService;
 import managing.tool.e_task.web.TaskController;
 import managing.tool.exception.FoundInDb;
 import managing.tool.exception.NotFoundInDb;
@@ -29,15 +30,26 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class MaintenanceController {
 
     private final MaintenanceService maintenanceService;
+    private final TaskService taskService;
 
-    public MaintenanceController(MaintenanceService maintenanceService) {
+    public MaintenanceController(MaintenanceService maintenanceService, TaskService taskService) {
         this.maintenanceService = maintenanceService;
+        this.taskService = taskService;
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<MaintenanceViewDto>> getAllMaintenanceEvents(){
-        return ResponseEntity.ok()
-                            .body(this.maintenanceService.findAllMaintenanceEvents());
+    public ResponseEntity<CollectionModel<EntityModel<MaintenanceViewDto>>> getAllMaintenanceEvents(){
+        List<EntityModel<MaintenanceViewDto>> allMaintenanceEvents = this.maintenanceService
+                .findAllMaintenanceEvents()
+                .stream()
+                .map(m -> EntityModel.of(m, createMaintenanceHypermedia(m)))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(
+                CollectionModel.of(
+                        allMaintenanceEvents,
+                        linkTo(methodOn(MaintenanceController.class).getAllMaintenanceEvents()).withSelfRel())
+        );
     }
 
     @GetMapping("/{maintenanceNum}")
@@ -45,7 +57,7 @@ public class MaintenanceController {
         MaintenanceViewDto maintenance = this.maintenanceService.findMaintenanceByNum(maintenanceNum);
 
         return ResponseEntity
-                .ok(EntityModel.of(maintenance, createUserHypermedia(maintenance)));
+                .ok(EntityModel.of(maintenance, createMaintenanceHypermedia(maintenance)));
     }
 
     @PutMapping("/{maintenanceNum}/update")
@@ -81,7 +93,7 @@ public class MaintenanceController {
         List<EntityModel<MaintenanceViewDto>> maintenance = this.maintenanceService
                 .findAllMaintenanceByResponsibleEngineer(companyNum)
                 .stream()
-                .map(m -> EntityModel.of(m, createUserHypermedia(m)))
+                .map(m -> EntityModel.of(m, createMaintenanceHypermedia(m)))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(
@@ -91,7 +103,39 @@ public class MaintenanceController {
                 );
     }
 
-    private Link[] createUserHypermedia(MaintenanceViewDto maintenance) {
+    @GetMapping("/facility/{name}")
+    public ResponseEntity<CollectionModel<EntityModel<MaintenanceViewDto>>> maintenanceInFacility(@PathVariable String name){
+
+        List<EntityModel<MaintenanceViewDto>> maintenanceInFacilityByName = this.maintenanceService.
+                findAllByFacility(name)
+                .stream()
+                .map(EntityModel::of)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(
+                CollectionModel.of(maintenanceInFacilityByName,
+                        linkTo(methodOn(MaintenanceController.class).
+                                maintenanceInFacility(name)).withSelfRel())
+        );
+    }
+
+    @GetMapping("/task/{taskNum}")
+    public ResponseEntity<CollectionModel<EntityModel<MaintenanceViewDto>>> findAllMaintenanceByTaskNum(@PathVariable String taskNum){
+
+        List<EntityModel<MaintenanceViewDto>> allMaintenanceByTaskNum = this.taskService
+                .findAllMaintenanceByTask(taskNum)
+                .stream()
+                .map(EntityModel::of)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(
+                CollectionModel.of(allMaintenanceByTaskNum,
+                        linkTo(methodOn(MaintenanceController.class).
+                                findAllMaintenanceByTaskNum(taskNum)).withSelfRel()));
+    }
+
+
+    private Link[] createMaintenanceHypermedia(MaintenanceViewDto maintenance) {
         List<Link> result = new ArrayList<>();
 
 //        Link selfLink = linkTo(methodOn(MaintenanceController.class)

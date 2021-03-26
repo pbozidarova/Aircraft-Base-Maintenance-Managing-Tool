@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService {
 
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
+
     private final Random random;
 
 
@@ -65,19 +66,7 @@ public class UserServiceImpl implements UserService {
     public List<UserViewDto> findAllUsers() {
         return this.userRepository.findAll()
                 .stream()
-                .map(u -> {
-                    UserViewDto userView = this.modelMapper.map(u, UserViewDto.class);
-
-                    userView.setFacility(u.getFacility().getName());
-
-                    userView.setRoles( userView
-                                            .getRoles()
-                                            .replace("[", "")
-                                            .replace("]", "")
-                    );
-
-                    return userView;
-                })
+                .map(this::buildUserVMRelationalStrings)
                 .collect(Collectors.toList());
     }
 
@@ -112,5 +101,30 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.getOne(randomId);
     }
 
+    @Override
+    public List<UserEntity> findAll() {
+        return this.userRepository.findAll();
+    }
+
+    @Override
+    public void saveUser(UserEntity user) {
+        this.userRepository.saveAndFlush(user);
+    }
+
+
+    private UserViewDto buildUserVMRelationalStrings(UserEntity u){
+        UserViewDto userView = this.modelMapper.map(u, UserViewDto.class);
+
+        userView.setFacility(u.getFacility().getName());
+
+        userView.setRoles( userView
+                .getRoles()
+                .replace("[", "")
+                .replace("]", "")
+        );
+
+        return userView;
+
+    }
 
 }

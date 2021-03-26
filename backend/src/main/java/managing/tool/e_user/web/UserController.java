@@ -1,5 +1,6 @@
 package managing.tool.e_user.web;
 
+import managing.tool.e_facility.service.FacilityService;
 import managing.tool.e_notification.web.NotificationController;
 import managing.tool.e_maintenance.web.MaintenanceController;
 import managing.tool.e_task.web.TaskController;
@@ -29,10 +30,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class UserController {
     private final UserService userService;
     private final UserCreateUpdateService userCreateUpdateService;
+    private final FacilityService facilityService;
 
-    public UserController(UserService userService, UserCreateUpdateService userCreateUpdateService) {
+    public UserController(UserService userService, UserCreateUpdateService userCreateUpdateService, FacilityService facilityService) {
         this.userService = userService;
         this.userCreateUpdateService = userCreateUpdateService;
+        this.facilityService = facilityService;
     }
 
     @GetMapping("all")
@@ -42,6 +45,7 @@ public class UserController {
                 .stream()
                 .map(u -> EntityModel.of(u, createUserHypermedia(u)))
                 .collect(Collectors.toList());
+
         return ResponseEntity.ok(
                                 CollectionModel.of(
                                         users,
@@ -92,6 +96,18 @@ public class UserController {
 
         UserViewDto userCreated = this.userCreateUpdateService.createUser(userNew);
         return new ResponseEntity<>(userCreated, HttpStatus.OK);
+    }
+
+    @GetMapping("/facility/{name}")
+    public ResponseEntity<CollectionModel<EntityModel<UserViewDto>>> usersFromFacility(@PathVariable String name){
+
+        List<EntityModel<UserViewDto>> employeesFromFacility = this.facilityService.
+                findAllUsersByFacilityName(name)
+                .stream()
+                .map(EntityModel::of)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(CollectionModel.of(employeesFromFacility));
     }
 
     private Link[] createUserHypermedia(UserViewDto user) {

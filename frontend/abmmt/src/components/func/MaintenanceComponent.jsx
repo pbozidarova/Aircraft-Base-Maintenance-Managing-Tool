@@ -58,7 +58,7 @@ class MaintenanceComponent extends Component {
                 console.log(response)
                 this.setState({
                     loading : false, 
-                    maintenance : response.data._embedded.maintenanceViewModelList
+                    maintenance : response.data._embedded.maintenanceViewDtoList
                 }, () => this.props.handleInfo({success : MESSAGES.successLoaded})
                 );
                 
@@ -75,7 +75,7 @@ class MaintenanceComponent extends Component {
             response => {
                 this.setState({
                     loading : false, 
-                    maintenance : response.data
+                    maintenance : response.data._embedded.maintenanceViewDtoList
                 }, () => this.props.handleInfo({success : MESSAGES.successLoaded})
                 );
                 console.log(response.data)

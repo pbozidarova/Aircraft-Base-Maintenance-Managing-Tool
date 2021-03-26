@@ -9,6 +9,7 @@ import managing.tool.e_facility.model.dto.FacilityViewDto;
 import managing.tool.e_facility.service.FacilityService;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_facility.repository.FacilityRepository;
+import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.repository.UserRepository;
 import managing.tool.e_user.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -52,6 +53,29 @@ public class FacilityServiceImpl implements FacilityService {
                 .setCreatedOn(Instant.now());
 
         return this.modelMapper.map(this.facilityRepository.save(facilityToBeCreated), FacilityViewDto.class);
+    }
+
+    @Override
+    public List<UserViewDto> findAllUsersByFacilityName(String name) {
+
+        return this.facilityRepository.findByName(name)
+                .getEmployees()
+                .stream()
+                .map(employee -> {
+                    UserViewDto userView = this.modelMapper.map(employee, UserViewDto.class);
+
+                    userView.setFacility(employee.getFacility().getName());
+
+                    userView.setRoles( userView
+                            .getRoles()
+                            .replace("[", "")
+                            .replace("]", "")
+                    );
+
+                    return userView;
+                })
+                .collect(Collectors.toList());
+
     }
 
     @Override

@@ -2,6 +2,7 @@ package managing.tool.e_task.service.impl;
 
 import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
+import managing.tool.e_maintenance.model.dto.MaintenanceViewDto;
 import managing.tool.e_maintenance.service.MaintenanceService;
 import managing.tool.e_task.model.TaskStatusEnum;
 import managing.tool.e_task.model.TaskEntity;
@@ -41,6 +42,27 @@ public class TaskServiceImpl implements TaskService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<MaintenanceViewDto> findAllMaintenanceByTask(String taskNum) {
+        return this.taskRepository.findByTaskNum(taskNum)
+                .getMaintenances()
+                .stream()
+                .map(maintenanceEntity -> {
+                    MaintenanceViewDto maintenanceViewModel = this.modelMapper.map(maintenanceEntity, MaintenanceViewDto.class);
+                    maintenanceViewModel.setFacility(maintenanceEntity.getFacility().getName())
+                            .setAircraftRegistration(maintenanceEntity.getAircraft().getAircraftRegistration())
+                            .setResponsibleEngineer(
+                                    String.format("%s - %s, %s",
+                                            maintenanceEntity.getResponsibleEngineer().getCompanyNum(),
+                                            maintenanceEntity.getResponsibleEngineer().getLastName(),
+                                            maintenanceEntity.getResponsibleEngineer().getFirstName()
+                                    ));
+
+                    return maintenanceViewModel;
+                })
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public List<TaskViewDto> findAllByAuthor(String companyNum) {
@@ -48,12 +70,7 @@ public class TaskServiceImpl implements TaskService {
         return this.taskRepository
                 .findAllByPreparedByContains(this.userService.findByCompanyNum(companyNum))
                 .stream()
-                .map(t -> {
-                    TaskViewDto mappedTask = this.modelMapper.map(t, TaskViewDto.class);
-                    mappedTask.setPreparedBy(createPrepTeamString(t));
-                    mappedTask.setStatus(createCorrectStatus(t));
-                    return mappedTask;
-                })
+                .map(this::buildTaskVMRelationalStrings)
                 .collect(Collectors.toList());
     }
 

@@ -3,7 +3,9 @@ package managing.tool.e_user.service;
 import managing.tool.e_user.model.dto.UserDetailsDto;
 import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.model.UserEntity;
+import org.apache.catalina.User;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,4 +25,8 @@ public interface UserService {
     Boolean userExists(String companyNum);
     Boolean emailExists(String email);
     Boolean emailExistsForAnotherUser(String email, String companyNum);
+
+    List<UserEntity> findAll();
+    void saveUser(UserEntity user);
+
 }

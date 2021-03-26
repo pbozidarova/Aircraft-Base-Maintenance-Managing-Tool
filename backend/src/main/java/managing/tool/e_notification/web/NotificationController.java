@@ -13,41 +13,39 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/issues")
+@RequestMapping("/notifications")
 public class NotificationController {
 
-    private final NotificationService issueService;
+    private final NotificationService notificationService;
 
 
     @Autowired
     public NotificationController(NotificationService issueService) {
-        this.issueService = issueService;
+        this.notificationService = issueService;
 
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<NotificationViewDto>> findAllIssues(){
         return ResponseEntity.ok()
-                .body(this.issueService.findAllIssues());
+                .body(this.notificationService.findAllIssues());
     }
 
     @GetMapping("/user/{companyNum}")
     public ResponseEntity<CollectionModel<EntityModel<NotificationViewDto>>> findAllIssuesRaisedBy(@PathVariable String companyNum){
 
-        List<EntityModel<NotificationViewDto>> issues = this.issueService
+        List<EntityModel<NotificationViewDto>> issues = this.notificationService
                 .findAllIssuesByAuthor(companyNum)
                 .stream()
                 .map(EntityModel::of)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(CollectionModel.of(issues));
-
-
     }
 
     @GetMapping("/maintenance/{maintenanceNum}")
     public ResponseEntity<CollectionModel<EntityModel<NotificationViewDto>>> findAllNotifForMaintenance(@PathVariable String maintenanceNum){
-        List<EntityModel<NotificationViewDto>> issues = this.issueService
+        List<EntityModel<NotificationViewDto>> issues = this.notificationService
                 .findAllIssuesByMaintenance(maintenanceNum)
                 .stream()
                 .map(EntityModel::of)
@@ -55,5 +53,19 @@ public class NotificationController {
 
         return ResponseEntity.ok(CollectionModel.of(issues));
     }
+
+    @GetMapping("/task/{taskNum}")
+    public ResponseEntity<CollectionModel<EntityModel<NotificationViewDto>>> findAllNotifForTask
+            (@PathVariable String taskNum){
+
+        List<EntityModel<NotificationViewDto>> notifications = this.notificationService
+                .findAllNotifForTask(taskNum)
+                .stream()
+                .map(EntityModel::of)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(CollectionModel.of(notifications));
+    }
+
 
 }

@@ -74,7 +74,7 @@ class TaskComponent extends Component{
             response => {
                 this.setState({
                     loading : false, 
-                    tasks : response.data
+                    tasks : response.data._embedded.taskViewDtoList
                 }, () => this.props.handleInfo({success : MESSAGES.successLoaded})
                 );
                 console.log(response.data)

@@ -31,7 +31,7 @@ class NotificationComponent extends Component {
         }
 
         this.refreshNotifications = this.refreshNotifications.bind(this)
-        this.selectMaintenance = this.selectMaintenance.bind(this)
+        this.selectNotification = this.selectNotification.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleInfo = this.handleInfo.bind(this);
 
@@ -42,7 +42,7 @@ class NotificationComponent extends Component {
     
     componentDidMount(){
         this.refreshNotifications();
-        this.selectMaintenance(Utils.emptyObj(NOTIFICATIONS_HEADER_DATA))
+        this.selectNotification(Utils.emptyObj(NOTIFICATIONS_HEADER_DATA))
     }
 
     refreshNotifications(){

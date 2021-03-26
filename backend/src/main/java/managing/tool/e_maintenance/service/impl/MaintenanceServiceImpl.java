@@ -3,6 +3,7 @@ package managing.tool.e_maintenance.service.impl;
 import lombok.AllArgsConstructor;
 import managing.tool.e_aircraft.repository.AircraftRepository;
 import managing.tool.e_aircraft.service.AircraftService;
+import managing.tool.e_facility.model.FacilityEntity;
 import managing.tool.e_facility.repository.FacilityRepository;
 import managing.tool.e_facility.service.FacilityService;
 import managing.tool.e_maintenance.model.MaintenanceEntity;
@@ -10,6 +11,8 @@ import managing.tool.e_maintenance.model.MaintenanceStatusEnum;
 import managing.tool.e_maintenance.model.dto.MaintenanceViewDto;
 import managing.tool.e_maintenance.repository.MaintenanceRepository;
 import managing.tool.e_maintenance.service.MaintenanceService;
+import managing.tool.e_task.model.TaskEntity;
+import managing.tool.e_task.service.TaskService;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -102,6 +105,17 @@ public class MaintenanceServiceImpl implements MaintenanceService {
     @Override
     public Boolean maintenanceExists(String maintenanceNum) {
         return this.findByMaintenanceNum(maintenanceNum) != null;
+    }
+
+    @Override
+    public List<MaintenanceViewDto> findAllByFacility(String name) {
+        FacilityEntity facilityEntity = this.facilityService.getFacilityByName(name);
+
+        return this.maintenanceRepository
+                .findAllByFacility(facilityEntity)
+                .stream()
+                .map(this::buildMaintenanceVMRelationalStrings)
+                .collect(Collectors.toList());
     }
 
     private MaintenanceViewDto buildMaintenanceVMRelationalStrings(MaintenanceEntity maintenanceEntity){

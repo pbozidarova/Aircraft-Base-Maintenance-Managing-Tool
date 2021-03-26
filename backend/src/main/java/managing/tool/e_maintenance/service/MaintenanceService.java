@@ -3,6 +3,7 @@ package managing.tool.e_maintenance.service;
 import managing.tool.e_maintenance.model.MaintenanceEntity;
 import managing.tool.e_maintenance.model.dto.MaintenanceViewDto;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface MaintenanceService {
@@ -17,5 +18,7 @@ public interface MaintenanceService {
 
     Boolean maintenanceExists(String maintenanceNum);
 
+    //HATEOAS methods
+    List<MaintenanceViewDto> findAllByFacility(String name);
 
 }

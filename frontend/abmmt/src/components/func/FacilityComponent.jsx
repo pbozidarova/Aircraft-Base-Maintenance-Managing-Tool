@@ -50,7 +50,7 @@ class FacilityComponent extends Component {
             .then(
                 response => {
                     // console.log(response.data);
-                    this.setState({facilities : response.data},
+                    this.setState({facilities : response.data._embedded.facilityViewDtoList},
                         () => this.props.handleInfo({success : MESSAGES.successLoaded}));
                 }
             ); 

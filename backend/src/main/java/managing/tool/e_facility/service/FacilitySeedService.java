@@ -10,5 +10,6 @@ public interface FacilitySeedService {
 
     void seedFacilities() throws FileNotFoundException;
     boolean areFacilitiesImported();
+    FacilityEntity getRandomFacility();
 
 }
