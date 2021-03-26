@@ -1,9 +1,9 @@
 package managing.tool.e_user.web;
 
 import managing.tool.e_facility.service.FacilityService;
+import managing.tool.e_maintenance.web.MaintenanceReadController;
 import managing.tool.e_notification.web.NotificationController;
-import managing.tool.e_maintenance.web.MaintenanceController;
-import managing.tool.e_task.web.TaskController;
+import managing.tool.e_task.web.TaskReadController;
 import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.service.UserCreateUpdateService;
 import managing.tool.e_user.service.UserService;
@@ -27,12 +27,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @RequestMapping("/users")
 @CrossOrigin(FRONTEND_URL)
-public class UserController {
+public class UserReadController {
     private final UserService userService;
     private final UserCreateUpdateService userCreateUpdateService;
     private final FacilityService facilityService;
 
-    public UserController(UserService userService, UserCreateUpdateService userCreateUpdateService, FacilityService facilityService) {
+    public UserReadController(UserService userService, UserCreateUpdateService userCreateUpdateService, FacilityService facilityService) {
         this.userService = userService;
         this.userCreateUpdateService = userCreateUpdateService;
         this.facilityService = facilityService;
@@ -49,7 +49,7 @@ public class UserController {
         return ResponseEntity.ok(
                                 CollectionModel.of(
                                         users,
-                                        linkTo(methodOn(UserController.class).allUsers()).withSelfRel())
+                                        linkTo(methodOn(UserReadController.class).allUsers()).withSelfRel())
         );
 
     }
@@ -117,12 +117,12 @@ public class UserController {
 //                            .findSingleUser(user.getCompanyNum())).withSelfRel();
 //        result.add(selfLink);
 
-        Link tasksLink = linkTo(methodOn(TaskController.class)
+        Link tasksLink = linkTo(methodOn(TaskReadController.class)
                             .tasksPreparedBy(user.getCompanyNum()))
                             .withRel("tasks");
         result.add(tasksLink);
 
-        Link maintenanceLink = linkTo(methodOn(MaintenanceController.class)
+        Link maintenanceLink = linkTo(methodOn(MaintenanceReadController.class)
                 .findMaintenanceByResponsibleEngineer(user.getCompanyNum()))
                 .withRel("maintenance");
         result.add(maintenanceLink);

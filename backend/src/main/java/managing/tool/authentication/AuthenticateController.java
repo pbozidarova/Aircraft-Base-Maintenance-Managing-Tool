@@ -1,8 +1,10 @@
 package managing.tool.authentication;
 
+import lombok.AllArgsConstructor;
 import managing.tool.authentication.models.AuthenticationRequest;
 import managing.tool.authentication.models.AuthenticationResponse;
 import managing.tool.e_user.service.impl.UserDetailsServiceImpl;
+import managing.tool.exception.NotFoundInDb;
 import managing.tool.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,18 +18,12 @@ import static managing.tool.constants.GlobalConstants.FRONTEND_URL;
 
 @RestController
 @CrossOrigin(FRONTEND_URL)
+@AllArgsConstructor
 class AuthenticateController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtTokenUtil;
     private final UserDetailsServiceImpl userDetailsServiceimpl;
-
-    @Autowired
-    AuthenticateController(AuthenticationManager authenticationManager, JwtUtil jwtTokenUtil, UserDetailsServiceImpl userDetailsServiceimpl) {
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenUtil = jwtTokenUtil;
-        this.userDetailsServiceimpl = userDetailsServiceimpl;
-    }
 
     @PostMapping(value = "/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
@@ -41,7 +37,7 @@ class AuthenticateController {
         }
         catch (BadCredentialsException e) {
             //TODO Handle Exeption
-            throw new Exception("Incorrect username or password", e);
+            throw new NotFoundInDb("Incorrect username or password", "login");
 //            return ResponseEntity.noContent().build();
         }
 

@@ -1,36 +1,26 @@
 package managing.tool.e_notification.web;
 
-import managing.tool.e_maintenance.web.MaintenanceController;
+import lombok.AllArgsConstructor;
 import managing.tool.e_notification.model.dto.NotificationViewDto;
 import managing.tool.e_notification.service.NotificationService;
-import managing.tool.e_task.model.dto.TaskViewDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/notifications")
+@AllArgsConstructor
 public class NotificationController {
 
     private final NotificationService notificationService;
-
-
-    @Autowired
-    public NotificationController(NotificationService issueService) {
-        this.notificationService = issueService;
-
-    }
 
     @GetMapping("/all")
     public ResponseEntity<List<NotificationViewDto>> findAllIssues(){

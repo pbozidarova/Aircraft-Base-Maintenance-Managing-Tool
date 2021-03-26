@@ -1,7 +1,7 @@
 package managing.tool.e_task.web;
 
-import managing.tool.e_maintenance.model.dto.MaintenanceViewDto;
-import managing.tool.e_maintenance.web.MaintenanceController;
+import lombok.AllArgsConstructor;
+import managing.tool.e_maintenance.web.MaintenanceReadController;
 import managing.tool.e_notification.web.NotificationController;
 import managing.tool.e_task.model.dto.TaskViewDto;
 import managing.tool.e_task.service.TaskService;
@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Column;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,12 +25,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @RequestMapping("/tasks")
 @CrossOrigin(FRONTEND_URL)
-public class TaskController {
+@AllArgsConstructor
+public class TaskReadController {
     private final TaskService taskService;
-
-    public TaskController(TaskService taskService) {
-        this.taskService = taskService;
-    }
 
     @GetMapping("all")
     public ResponseEntity<CollectionModel<EntityModel<TaskViewDto>>> allTasks(){
@@ -44,7 +40,7 @@ public class TaskController {
         return ResponseEntity.ok(
                 CollectionModel.of(
                         allTasks,
-                        linkTo(methodOn(TaskController.class).allTasks()).withSelfRel())
+                        linkTo(methodOn(TaskReadController.class).allTasks()).withSelfRel())
         );
     }
 
@@ -52,35 +48,6 @@ public class TaskController {
     public ResponseEntity<TaskViewDto> findTask(@PathVariable String taskNum){
         return ResponseEntity.ok().body(this.taskService.findTask(taskNum));
     }
-
-    @PutMapping("/{taskNum}/update")
-    public ResponseEntity<TaskViewDto> updateSingleTask(
-            @RequestHeader("authorization") String jwt,
-            @PathVariable String taskNum, @RequestBody TaskViewDto taskDataForUpdate ){
-
-        if(!this.taskService.taskExists(taskNum)){
-            throw new NotFoundInDb(String.format(NOTFOUNDERROR, taskNum), "taskNum");
-        }
-
-        TaskViewDto taskUpdated = this.taskService.updateTask(taskDataForUpdate, jwt);
-
-        return new ResponseEntity<>(taskUpdated, HttpStatus.OK);
-    }
-
-    @PutMapping("/{taskNum}/create")
-    public ResponseEntity<TaskViewDto> createSingleTask(
-            @RequestHeader("authorization") String jwt,
-            @PathVariable String taskNum, @RequestBody TaskViewDto taskNew ){
-
-        if(this.taskService.taskExists(taskNum)){
-            throw new FoundInDb(String.format(FOUNDERROR, taskNum), "taskNum");
-        }
-
-        TaskViewDto task = this.taskService.createTask(taskNew, jwt);
-
-        return new ResponseEntity<>(task, HttpStatus.OK);
-    }
-
 
     @GetMapping("/user/{companyNum}")
     public ResponseEntity<CollectionModel<EntityModel<TaskViewDto>>> tasksPreparedBy(@PathVariable String companyNum){
@@ -115,7 +82,7 @@ public class TaskController {
 //                .findMaintenanceByNum(maintenance.getMaintenanceNum())).withSelfRel();
 //        result.add(selfLink);
 
-        Link tasksLink = linkTo(methodOn(MaintenanceController.class)
+        Link tasksLink = linkTo(methodOn(MaintenanceReadController.class)
                 .findAllMaintenanceByTaskNum(taskViewDto.getTaskNum()))
                 .withRel("maintenance");
         result.add(tasksLink);

@@ -1,10 +1,11 @@
 package managing.tool.e_facility.web;
 
+import lombok.AllArgsConstructor;
 import managing.tool.constants.GlobalConstants;
 import managing.tool.e_facility.model.dto.FacilityViewDto;
 import managing.tool.e_facility.service.FacilityService;
-import managing.tool.e_maintenance.web.MaintenanceController;
-import managing.tool.e_user.web.UserController;
+import managing.tool.e_maintenance.web.MaintenanceReadController;
+import managing.tool.e_user.web.UserReadController;
 import managing.tool.exception.FoundInDb;
 import managing.tool.exception.NotFoundInDb;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,29 +28,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @CrossOrigin(GlobalConstants.FRONTEND_URL)
 @RequestMapping("/facilities")
-public class FacilityController {
+@AllArgsConstructor
+public class FacilityCUDController {
 
     private final FacilityService facilityService;
-
-    @Autowired
-    public FacilityController(FacilityService facilityService) {
-        this.facilityService = facilityService;
-    }
-
-    @GetMapping("/all")
-    public ResponseEntity<CollectionModel<EntityModel<FacilityViewDto>>> allFacility(){
-        List<EntityModel<FacilityViewDto>> facilities = this.facilityService
-                .findAll()
-                .stream()
-                .map(f -> EntityModel.of(f, createFacilityHypermedia(f)))
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(
-                CollectionModel.of(
-                        facilities,
-                        linkTo(methodOn(FacilityController.class).allFacility()).withSelfRel())
-        );
-    }
 
     @PutMapping("/{name}/update")
     public ResponseEntity<FacilityViewDto> updateSingleTask(
@@ -79,25 +61,6 @@ public class FacilityController {
         return new ResponseEntity<>(facilityCreated, HttpStatus.OK);
     }
 
-    private Link[] createFacilityHypermedia(FacilityViewDto facility) {
-        List<Link> result = new ArrayList<>();
 
-//        Link selfLink = linkTo(methodOn(UserController.class)
-//                            .findSingleUser(user.getCompanyNum())).withSelfRel();
-//        result.add(selfLink);
-
-        Link usersLink = linkTo(methodOn(UserController.class)
-                .usersFromFacility(facility.getName()))
-                .withRel("users");
-        result.add(usersLink);
-
-        Link maintenanceLink = linkTo(methodOn(MaintenanceController.class)
-                .maintenanceInFacility(facility.getName()))
-                .withRel("maintenance");
-        result.add(maintenanceLink);
-
-
-        return result.toArray(new Link[0]);
-    }
 
 }
