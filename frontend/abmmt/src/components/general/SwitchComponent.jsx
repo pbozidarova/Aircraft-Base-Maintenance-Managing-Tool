@@ -11,7 +11,7 @@ import DashboardComponent from './DashboardComponent';
 import FacilityComponent from '../func/FacilityComponent'
 import TaskComponent from '../func/TaskComponent'
 import MaintenanceComponent from '../func/MaintenanceComponent'
-import NotificationComponent from '../func/notification/NotificationComponent'
+import NotificationComponent from '../func/NotificationComponent'
 
 import UsersComponent from '../func/user/UsersComponent'
 import ErrorComponent from './ErrorComponent'

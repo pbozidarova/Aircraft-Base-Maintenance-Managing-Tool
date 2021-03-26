@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
-@Table(name = "issues")
+@Table(name = "notifications")
 public class NotificationEntity extends BaseEntity {
 
     private String notificationNum;

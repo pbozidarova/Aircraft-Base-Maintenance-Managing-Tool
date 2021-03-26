@@ -48,6 +48,20 @@ export const MAINTENANCE_HEADER_DATA = {
 export const MAINTENANCE_BOOLEAN_FIELDS = {}
 export const MAINTENANCE_DISABLED_FIELDS ={}
 
+
+export const NOTIFICATIONS_HEADER_DATA = {
+    // maintenanceNum: 'Maintenance Number',
+    // aircraftRegistration: 'Aircraft Registration',
+    // startDate: 'Start Date',
+    // endDate: 'End Date',
+    // status: 'Status',
+    // facility: 'Facility',
+    // responsibleEngineer: 'Responsible Engineer'
+}
+export const NOTIFICATIONS_BOOLEAN_FIELDS = {}
+export const NOTIFICATIONS_DISABLED_FIELDS ={}
+
+
 export const TASKS_HEADER_DATA = {
     taskNum: 'Task Number',
     code : 'Code',

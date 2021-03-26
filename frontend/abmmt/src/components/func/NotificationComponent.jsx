@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import BackendService from '../../api/CommonAPI.js'
-import {MAINTENANCE_HEADER_DATA, MAINTENANCE_BOOLEAN_FIELDS, MAINTENANCE_DISABLED_FIELDS, MESSAGES} from '../../Constanst.js'
+import {NOTIFICATIONS_HEADER_DATA, NOTIFICATIONS_BOOLEAN_FIELDS, NOTIFICATIONS_DISABLED_FIELDS, MESSAGES} from '../../Constanst.js'
 import Utils from '../Utils.js'
 import { withRouter } from 'react-router';
 
@@ -42,7 +42,7 @@ class NotificationComponent extends Component {
     
     componentDidMount(){
         this.refreshNotifications();
-        this.selectMaintenance(Utils.emptyObj(MAINTENANCE_HEADER_DATA))
+        this.selectMaintenance(Utils.emptyObj(NOTIFICATIONS_HEADER_DATA))
     }
 
     refreshNotifications(){
@@ -58,7 +58,7 @@ class NotificationComponent extends Component {
                 console.log(response)
                 this.setState({
                     loading : false, 
-                    maintenance : response.data._embedded.maintenanceViewModelList
+                    notifications : response.data._embedded.maintenanceViewModelList
                 }, () => this.props.handleInfo({success : MESSAGES.successLoaded})
                 );
                 
@@ -75,7 +75,7 @@ class NotificationComponent extends Component {
             response => {
                 this.setState({
                     loading : false, 
-                    maintenance : response.data
+                    notifications : response.data
                 }, () => this.props.handleInfo({success : MESSAGES.successLoaded})
                 );
                 console.log(response.data)
@@ -85,8 +85,8 @@ class NotificationComponent extends Component {
         });
     }
    
-    selectMaintenance(maintenance) {      
-        this.setState({selected: maintenance})
+    selectNotification(notification) {      
+        this.setState({selected: notification})
     }
     handleChange(event){
         let eName = event.target.name
@@ -117,15 +117,15 @@ class NotificationComponent extends Component {
                 // role: this.props.selectedUser.roles.length > 0 ? '' : "At least one role must be checked!",
   
              }
-        }, () => submit(selected.maintenanceNum, selected) );
+        }, () => submit(selected.notificationNum, selected) );
     
       }
   
-      submitUpdate(maintenanceNum, selected){
+      submitUpdate(notificationNum, selected){
         if(Utils.formIsValid(this.state.errors)) {
-            BackendService.updateOne("maintenance", maintenanceNum, selected)
+            BackendService.updateOne("notifications", notificationNum, selected)
                 .then((r) => {                        
-                    this.refreshMaintenance()
+                    this.refreshNotifications()
                     this.props.handleInfo({success : MESSAGES.successUpdated});
                 }).catch(e => {
                     this.props.handleInfo({error : e.response.data.message});
@@ -135,11 +135,11 @@ class NotificationComponent extends Component {
         }
       }
   
-      submitCreate(maintenanceNum, selected){  
+      submitCreate(notificationNum, selected){  
         if(Utils.formIsValid(this.state.errors)) {
-            BackendService.createOne("maintenance", maintenanceNum, selected)
+            BackendService.createOne("notifications", notificationNum, selected)
                 .then(() => {                        
-                    this.refreshMaintenance()
+                    this.refreshNotifications()
                     this.props.handleInfo({success : MESSAGES.successCreated});
                 }
                 ).catch(e => {
@@ -168,25 +168,25 @@ class NotificationComponent extends Component {
                     
                     { this.state.loading && <CircularProgress color="secondary"/> }
                     <DataComponent 
-                        tableRows={this.state.maintenance} 
-                        tableHeader={MAINTENANCE_HEADER_DATA}
-                        selectedId={this.state.selected.maintenanceNum}
-                        selectRow={this.selectMaintenance} 
+                        tableRows={this.state.notifications} 
+                        tableHeader={NOTIFICATIONS_HEADER_DATA}
+                        selectedId={this.state.selected.notificationNum}
+                        selectRow={this.selectNotification} 
                     />
                 </Paper>
                </Grid>
 
               <Grid item xs={12} md={6} lg={4}>
                 <Paper className={fixedHeightPaper}>
-                  {this.state.selected.maintenanceNum && 
+                  {this.state.selected.notificationNum && 
                     <EditGlobalComponent
                         selected={this.state.selected} 
-                        selectedId={this.state.selected.maintenanceNum}
+                        selectedId={this.state.selected.notificationNum}
                         handleChange={this.handleChange} 
                         handleInfo={this.handleInfo}
-                        labels = {MAINTENANCE_HEADER_DATA} 
-                        booleanFields = {MAINTENANCE_BOOLEAN_FIELDS}
-                        disabledFields={MAINTENANCE_DISABLED_FIELDS}
+                        labels = {NOTIFICATIONS_HEADER_DATA} 
+                        booleanFields = {NOTIFICATIONS_BOOLEAN_FIELDS}
+                        disabledFields={NOTIFICATIONS_DISABLED_FIELDS}
                         errors={this.state.errors}
                         validateAndSubmit={this.validateAndSubmit}
                         submitUpdate={this.submitUpdate}
@@ -201,8 +201,8 @@ class NotificationComponent extends Component {
 }
 
 
-MaintenanceComponent.propTypes = {
+NotificationComponent.propTypes = {
     classes: PropTypes.object.isRequired,
   };
   
-  export default withStyles(styles)(withRouter(MaintenanceComponent));
+  export default withStyles(styles)(withRouter(NotificationComponent));
