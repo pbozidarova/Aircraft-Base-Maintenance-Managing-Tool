@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
+import {MESSAGES} from '../../Constanst.js'
+
 import {Button, Input } from '@material-ui/core'
 import SaveIcon from '@material-ui/icons/Save'
 import AuthenticationService from '../AuthenticationService.js'
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Utils from '../Utils.js'
+import { withRouter } from 'react-router';
 
 class LoginComponent extends Component{
 
@@ -12,8 +16,7 @@ class LoginComponent extends Component{
         this.state = {
             username: 'N90909',
             password: '',
-            hasLoginFailed: false,
-            showSuccessMsg: false
+            
         }
         this.handleChange = this.handleChange.bind(this);
         this.loginClicked = this.loginClicked.bind(this);
@@ -35,13 +38,13 @@ class LoginComponent extends Component{
             .then(response => {
                 console.log(response.data.token);
                 AuthenticationService.registerSuccessfullLogin(this.state.username, response.data.token)
-                this.props.history.push('/home')
+                Utils.redirectTo(this.props, '/home')
+
+                this.props.handleInfo({success : MESSAGES.successLogingIn});
+
             }).catch((e) => {
-                console.log(e);
-                this.setState({
-                            showSuccessMsg:false, 
-                            hasLoginFailed:true
-                        })
+                // console.log(e)
+                this.props.handleInfo({error : e.response.data.message});
             })
     }
 
@@ -50,8 +53,7 @@ class LoginComponent extends Component{
             <Grid container spacing={3}>
                 <Grid item xs={12} md={5} lg={5}>
                     <Paper className="{fixedHeightPaper}">
-                        {this.state.hasLoginFailed && <div>Invalid Credentials</div>}
-                        {this.state.showSuccessMsg && <div>Login Successful</div>}
+
                         <div>
                             <Input 
                                 type="text" 
@@ -84,4 +86,4 @@ class LoginComponent extends Component{
 
 }
 
-export default LoginComponent;
+export default withRouter(LoginComponent);

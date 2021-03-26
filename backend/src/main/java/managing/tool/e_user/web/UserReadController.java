@@ -66,38 +66,7 @@ public class UserReadController {
         return ResponseEntity
                 .ok(EntityModel.of(userViewDto, createUserHypermedia(userViewDto)));
     }
-
-    @PutMapping("/{companyNum}/update")
-    public ResponseEntity<UserViewDto> updateSingleUser(
-            @PathVariable String companyNum, @RequestBody UserViewDto userDataForUpdate ){
-
-        if(!this.userService.userExists(companyNum)){
-            throw new NotFoundInDb(String.format(NOTFOUNDERROR, companyNum), "companyNum");
-        }
-        if(this.userService.emailExistsForAnotherUser(userDataForUpdate.getEmail(), companyNum)){
-            throw new FoundInDb(String.format(FOUNDERROR, userDataForUpdate.getEmail()), "email");
-        }
-
-        UserViewDto userUpdated = this.userCreateUpdateService.updateUser(userDataForUpdate);
-
-        return new ResponseEntity<>(userUpdated, HttpStatus.OK);
-    }
-
-    @PutMapping("/{companyNum}/create")
-    public ResponseEntity<UserViewDto> createSingleUser(
-            @PathVariable String companyNum, @RequestBody UserViewDto userNew ){
-
-        if(this.userService.userExists(companyNum)){
-            throw new FoundInDb(String.format(FOUNDERROR, companyNum), "companyNum");
-        }
-        if(this.userService.emailExists(userNew.getEmail())){
-            throw new FoundInDb(String.format(FOUNDERROR, userNew.getEmail()), "email");
-        }
-
-        UserViewDto userCreated = this.userCreateUpdateService.createUser(userNew);
-        return new ResponseEntity<>(userCreated, HttpStatus.OK);
-    }
-
+    
     @GetMapping("/facility/{name}")
     public ResponseEntity<CollectionModel<EntityModel<UserViewDto>>> usersFromFacility(@PathVariable String name){
 

@@ -26,7 +26,7 @@ class AuthenticateController {
     private final UserDetailsServiceImpl userDetailsServiceimpl;
 
     @PostMapping(value = "/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -36,7 +36,7 @@ class AuthenticateController {
             );
         }
         catch (BadCredentialsException e) {
-            //TODO Handle Exeption
+            //TODO Handle Exception
             throw new NotFoundInDb("Incorrect username or password", "login");
 //            return ResponseEntity.noContent().build();
         }

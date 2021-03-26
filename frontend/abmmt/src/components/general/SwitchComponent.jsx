@@ -35,7 +35,7 @@ class SwitchComponent extends Component {
     return (   
         
           <Switch >
-              <Route path="/" exact component={LoginComponent} />
+              <Route path="/" exact component={() => (<LoginComponent handleInfo={this.props.handleInfo} />)} />
               <AuthenticatedRoute path="/home" 
                                   component={() => (<DashboardComponent handleInfo={this.props.handleInfo} />)} />
               <AuthenticatedRoute path="/tasks" 
@@ -52,7 +52,7 @@ class SwitchComponent extends Component {
                                   component={() => (<UsersComponent handleInfo={this.props.handleInfo} />)} />
             
               <AuthenticatedRoute path="/logout" component={LogoutComponent}/>
-              <Route path="/login" component={LoginComponent}/>
+              <Route path="/login" component={() => (<LoginComponent handleInfo={this.props.handleInfo} />)}/>
               <Route component={ErrorComponent}/>
           </Switch>      
                

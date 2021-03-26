@@ -16,6 +16,7 @@ export const SESSION_ATTRIBUTE_NAME = 'authenticatedUser';
 
 export const MESSAGES = {
     initialLoad : "Please select a row in order to edit it!",
+    successLogingIn: "Successfully logging in!",
     successLoaded: "Successfully loaded!",
     successCreated : "Successfully created!",
     successUpdated : "Successfully updated!",
