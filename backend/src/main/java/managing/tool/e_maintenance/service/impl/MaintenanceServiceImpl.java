@@ -1,6 +1,7 @@
 package managing.tool.e_maintenance.service.impl;
 
 import lombok.AllArgsConstructor;
+import managing.tool.e_aircraft.model.AircraftEntity;
 import managing.tool.e_aircraft.repository.AircraftRepository;
 import managing.tool.e_aircraft.service.AircraftService;
 import managing.tool.e_facility.model.FacilityEntity;
@@ -93,6 +94,15 @@ public class MaintenanceServiceImpl implements MaintenanceService {
         return this.maintenanceRepository.findAllByResponsibleEngineer(userEntity)
                 .stream()
                 .map(this::buildMaintenanceVMRelationalStrings)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<MaintenanceViewDto> findAllByAircraft(String registration) {
+
+        return this.maintenanceRepository
+                .findAllByAircraft_AircraftRegistration(registration)
+                .stream().map(this::buildMaintenanceVMRelationalStrings)
                 .collect(Collectors.toList());
     }
 

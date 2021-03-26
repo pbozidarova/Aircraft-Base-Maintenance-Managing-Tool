@@ -97,9 +97,7 @@ public class MaintenanceController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(
-                CollectionModel.of(maintenance,
-                        linkTo(methodOn(MaintenanceController.class).
-                                getAllMaintenanceEvents()).withSelfRel())
+                CollectionModel.of(maintenance)
                 );
     }
 
@@ -109,15 +107,28 @@ public class MaintenanceController {
         List<EntityModel<MaintenanceViewDto>> maintenanceInFacilityByName = this.maintenanceService.
                 findAllByFacility(name)
                 .stream()
-                .map(EntityModel::of)
+                .map(m -> EntityModel.of(m, createMaintenanceHypermedia(m)))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(
-                CollectionModel.of(maintenanceInFacilityByName,
-                        linkTo(methodOn(MaintenanceController.class).
-                                maintenanceInFacility(name)).withSelfRel())
+                CollectionModel.of(maintenanceInFacilityByName)
         );
     }
+
+    @GetMapping("/aircraft/{registration}")
+    public ResponseEntity<CollectionModel<EntityModel<MaintenanceViewDto>>> maintenanceByAircraft(@PathVariable String registration){
+
+        List<EntityModel<MaintenanceViewDto>> maintenanceByAircraftRegistration = this.maintenanceService.
+                findAllByAircraft(registration)
+                .stream()
+                .map(m -> EntityModel.of(m, createMaintenanceHypermedia(m)))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(
+                CollectionModel.of(maintenanceByAircraftRegistration)
+        );
+    }
+
 
     @GetMapping("/task/{taskNum}")
     public ResponseEntity<CollectionModel<EntityModel<MaintenanceViewDto>>> findAllMaintenanceByTaskNum(@PathVariable String taskNum){
@@ -125,13 +136,11 @@ public class MaintenanceController {
         List<EntityModel<MaintenanceViewDto>> allMaintenanceByTaskNum = this.taskService
                 .findAllMaintenanceByTask(taskNum)
                 .stream()
-                .map(EntityModel::of)
+                .map(m -> EntityModel.of(m, createMaintenanceHypermedia(m)))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(
-                CollectionModel.of(allMaintenanceByTaskNum,
-                        linkTo(methodOn(MaintenanceController.class).
-                                findAllMaintenanceByTaskNum(taskNum)).withSelfRel()));
+                CollectionModel.of(allMaintenanceByTaskNum));
     }
 
 

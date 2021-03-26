@@ -38,9 +38,36 @@ class UsersComponent extends Component {
         this.refreshUsers();
         this.selectUser(Utils.emptyObj(USERS_HEADER_DATA))
     }
-    
+
     refreshUsers(){
-        BackendService.getAll('users')
+        console.log(this.props)
+        
+        this.props.location !=null &&
+        this.props.location.fetchDataFromURL != null
+        ?   this.partialFetch(this.props.location.fetchDataFromURL.href) 
+        :   this.fetchAll("users");
+    }
+
+    partialFetch(hateoasUrl){
+        BackendService.fetchDataFrom(hateoasUrl)
+        .then(
+            response => {
+                console.log(response)
+                this.setState({
+                    loading : false, 
+                    tasks : response.data._embedded.taskViewDtoList
+                }, () => this.props.handleInfo({success : MESSAGES.successLoaded})
+                );
+                
+            }
+        ).catch(e => {
+            this.props.handleInfo({error : e.response.data.message});
+        })
+    }
+
+    
+    fetchAll(urlParam){
+        BackendService.getAll(urlParam)
             .then(response => {    
                     this.setState( {
                         ...this.state, 

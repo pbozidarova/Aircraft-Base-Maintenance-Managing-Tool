@@ -104,7 +104,7 @@ public class UserController {
         List<EntityModel<UserViewDto>> employeesFromFacility = this.facilityService.
                 findAllUsersByFacilityName(name)
                 .stream()
-                .map(EntityModel::of)
+                .map(u -> EntityModel.of(u, createUserHypermedia(u)))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(CollectionModel.of(employeesFromFacility));

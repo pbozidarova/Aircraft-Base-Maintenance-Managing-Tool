@@ -15,5 +15,7 @@ public interface MaintenanceRepository extends JpaRepository<MaintenanceEntity, 
     MaintenanceEntity findByMaintenanceNum(String maintenanceNum);
     List<MaintenanceEntity> findAllByResponsibleEngineer(UserEntity userEntity);
     List<MaintenanceEntity> findAllByFacility(FacilityEntity facilityEntity);
-    List<MaintenanceEntity> findAllByTasksContaining(TaskEntity taskEntity);
+
+    List<MaintenanceEntity> findAllByAircraft_AircraftRegistration(String registration);
+    //List<MaintenanceEntity> findAllByTasksContaining(TaskEntity taskEntity);
 }

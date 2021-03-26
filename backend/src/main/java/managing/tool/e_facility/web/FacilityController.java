@@ -41,7 +41,7 @@ public class FacilityController {
         List<EntityModel<FacilityViewDto>> facilities = this.facilityService
                 .findAll()
                 .stream()
-                .map(u -> EntityModel.of(u, createFacilityHypermedia(u)))
+                .map(f -> EntityModel.of(f, createFacilityHypermedia(f)))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(

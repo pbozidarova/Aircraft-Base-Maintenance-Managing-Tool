@@ -88,7 +88,7 @@ public class TaskController {
         List<EntityModel<TaskViewDto>> tasks = this.taskService
                 .findAllByAuthor(companyNum)
                 .stream()
-                .map(EntityModel::of)
+                .map(t -> EntityModel.of(t, createTasksHypermedia(t)))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(CollectionModel.of(tasks));
@@ -101,7 +101,7 @@ public class TaskController {
         List<EntityModel<TaskViewDto>> tasks = this.taskService
                 .findAllAddedInMaintenance(maintenanceNum)
                 .stream()
-                .map(EntityModel::of)
+                .map(t -> EntityModel.of(t, createTasksHypermedia(t)))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(CollectionModel.of(tasks));

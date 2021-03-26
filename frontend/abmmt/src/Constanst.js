@@ -1,7 +1,9 @@
 import NotificationsActiveOutlinedIcon from '@material-ui/icons/NotificationsActiveOutlined';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import ListIcon from '@material-ui/icons/List';
+// import AssignmentIcon from '@material-ui/icons/Assignment';
+// import ListIcon from '@material-ui/icons/List';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import BuildIcon from '@material-ui/icons/Build';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import PeopleIcon from '@material-ui/icons/People';
 import LocalAirportIcon from '@material-ui/icons/LocalAirport';
@@ -109,8 +111,8 @@ export const AIRCRAFT_DISABLED_FIELDS ={}
 export const ICONS_MAPPING = {
     dashboard: <DashboardIcon />,
     notifications: <NotificationsActiveOutlinedIcon />,
-    tasks: <AssignmentIcon />,
-    maintenance: <ListIcon />,
+    tasks: <AccountBalanceIcon />,
+    maintenance: <BuildIcon />,
     users: <PeopleIcon />,
     facility: <LocationCityIcon />,
     aircraft: <LocalAirportIcon />,

@@ -12,7 +12,6 @@ public interface MaintenanceService {
 
     List<MaintenanceViewDto> findAllMaintenanceEvents();
     MaintenanceViewDto findMaintenanceByNum(String maintenanceNum );
-    List<MaintenanceViewDto> findAllMaintenanceByResponsibleEngineer(String companyNum );
 
     MaintenanceEntity findByMaintenanceNum(String maintenanceNum);
 
@@ -20,5 +19,7 @@ public interface MaintenanceService {
 
     //HATEOAS methods
     List<MaintenanceViewDto> findAllByFacility(String name);
+    List<MaintenanceViewDto> findAllMaintenanceByResponsibleEngineer(String companyNum );
 
+    List<MaintenanceViewDto> findAllByAircraft(String registration);
 }

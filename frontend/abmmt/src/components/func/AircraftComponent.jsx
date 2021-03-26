@@ -48,7 +48,7 @@ class AircraftComponent extends Component {
         BackendService.getAll('aircraft')
             .then(
                 response => {
-                    this.setState({aircraft : response.data}, 
+                    this.setState({aircraft : response.data._embedded.aircraftViewDtoList}, 
                         () => this.props.handleInfo({success : MESSAGES.successLoaded}));
                 }
             ).catch(e => {

@@ -45,7 +45,8 @@ class TaskComponent extends Component{
     }
 
     refreshTasks(){
-        
+        console.log(this.props)
+
         this.props.location.fetchDataFromURL != null
                 ?   this.partialFetch(this.props.location.fetchDataFromURL.href) 
                 :   this.fetchAll("tasks");
