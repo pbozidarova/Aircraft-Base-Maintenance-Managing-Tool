@@ -1,6 +1,7 @@
 package managing.tool.e_notification.service.impl;
 
 import lombok.AllArgsConstructor;
+import managing.tool.e_notification.model.NotificationEntity;
 import managing.tool.e_notification.model.dto.NotificationViewDto;
 import managing.tool.e_notification.repository.NotificationRepository;
 import managing.tool.e_notification.service.NotificationService;
@@ -27,7 +28,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 
     @Override
-    public List<NotificationViewDto> findAllIssues() {
+    public List<NotificationViewDto> findAllNotifications() {
         return this.notificationRepository
                 .findAll()
                 .stream()
@@ -36,7 +37,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<NotificationViewDto> findAllIssuesByAuthor(String companyNum) {
+    public List<NotificationViewDto> findAllNotificationsByAuthor(String companyNum) {
         UserEntity userEntity = this.userService.findByCompanyNum(companyNum);
 
         return this.notificationRepository.findAllByAuthor(userEntity)
@@ -46,7 +47,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<NotificationViewDto> findAllIssuesByMaintenance(String maintenanceNum) {
+    public List<NotificationViewDto> findAllNotificationByMaintenance(String maintenanceNum) {
         MaintenanceEntity maintenanceEntity = this.maintenanceService.findByMaintenanceNum(maintenanceNum);
 
         return this.notificationRepository.findAllByMaintenance(maintenanceEntity)
@@ -65,4 +66,26 @@ public class NotificationServiceImpl implements NotificationService {
                 .collect(Collectors.toList());
 
     }
+
+    @Override
+    public NotificationEntity findNyNotificationNum(String notificationNum) {
+        return this.notificationRepository.findByNotificationNum(notificationNum);
+    }
+
+    @Override
+    public Boolean notificationExists(String notificationNum) {
+        return  this.findNyNotificationNum(notificationNum) != null;
+    }
+
+    @Override
+    public NotificationViewDto updateNotification(NotificationViewDto notificationViewDto) {
+        return null;
+    }
+
+    @Override
+    public NotificationViewDto createNotification(NotificationViewDto notificationViewDto) {
+        return null;
+    }
+
+
 }

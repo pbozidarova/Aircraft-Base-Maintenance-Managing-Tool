@@ -1,25 +1,15 @@
 package managing.tool.e_task.web;
 
-import managing.tool.e_maintenance.web.MaintenanceReadController;
-import managing.tool.e_notification.web.NotificationController;
 import managing.tool.e_task.model.dto.TaskViewDto;
 import managing.tool.e_task.service.TaskService;
 import managing.tool.exception.FoundInDb;
 import managing.tool.exception.NotFoundInDb;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static managing.tool.constants.GlobalConstants.*;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/tasks")

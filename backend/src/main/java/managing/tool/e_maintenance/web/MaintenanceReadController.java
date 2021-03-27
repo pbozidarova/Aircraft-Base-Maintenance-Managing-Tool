@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import managing.tool.constants.GlobalConstants;
 import managing.tool.e_maintenance.model.dto.MaintenanceViewDto;
 import managing.tool.e_maintenance.service.MaintenanceService;
-import managing.tool.e_notification.web.NotificationController;
+import managing.tool.e_notification.web.NotificationREADController;
 import managing.tool.e_task.service.TaskService;
 import managing.tool.e_task.web.TaskReadController;
 import org.springframework.hateoas.CollectionModel;
@@ -122,7 +122,7 @@ public class MaintenanceReadController {
                 .withTitle(String.format("All tasks included in maintenance event %s.", maintenance.getMaintenanceNum()));
         result.add(tasksLink);
 
-        Link notificationsLink = linkTo(methodOn(NotificationController.class)
+        Link notificationsLink = linkTo(methodOn(NotificationREADController.class)
                 .findAllNotifForMaintenance(maintenance.getMaintenanceNum()))
                 .withRel("notifications")
                 .withTitle(String.format("All notifications raised for maintenance event %s.", maintenance.getMaintenanceNum()));

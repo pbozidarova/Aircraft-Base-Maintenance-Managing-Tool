@@ -3,7 +3,6 @@ package managing.tool.e_notification.web;
 import lombok.AllArgsConstructor;
 import managing.tool.e_notification.model.dto.NotificationViewDto;
 import managing.tool.e_notification.service.NotificationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
@@ -18,21 +17,21 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @CrossOrigin
 @RequestMapping("/notifications")
 @AllArgsConstructor
-public class NotificationController {
+public class NotificationREADController {
 
     private final NotificationService notificationService;
 
     @GetMapping("/all")
     public ResponseEntity<List<NotificationViewDto>> findAllIssues(){
         return ResponseEntity.ok()
-                .body(this.notificationService.findAllIssues());
+                .body(this.notificationService.findAllNotifications());
     }
 
     @GetMapping("/user/{companyNum}")
     public ResponseEntity<CollectionModel<EntityModel<NotificationViewDto>>> findAllIssuesRaisedBy(@PathVariable String companyNum){
 
         List<EntityModel<NotificationViewDto>> issues = this.notificationService
-                .findAllIssuesByAuthor(companyNum)
+                .findAllNotificationsByAuthor(companyNum)
                 .stream()
                 .map(EntityModel::of)
                 .collect(Collectors.toList());
@@ -43,7 +42,7 @@ public class NotificationController {
     @GetMapping("/maintenance/{maintenanceNum}")
     public ResponseEntity<CollectionModel<EntityModel<NotificationViewDto>>> findAllNotifForMaintenance(@PathVariable String maintenanceNum){
         List<EntityModel<NotificationViewDto>> issues = this.notificationService
-                .findAllIssuesByMaintenance(maintenanceNum)
+                .findAllNotificationByMaintenance(maintenanceNum)
                 .stream()
                 .map(EntityModel::of)
                 .collect(Collectors.toList());

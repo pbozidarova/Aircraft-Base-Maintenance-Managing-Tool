@@ -12,6 +12,8 @@ import java.util.List;
 @Repository
 public interface NotificationRepository extends JpaRepository<NotificationEntity, Long> {
 
+    NotificationEntity findByNotificationNum(String notificationNum);
+
     List<NotificationEntity> findAllByAuthor(UserEntity userEntity);
     List<NotificationEntity> findAllByMaintenance(MaintenanceEntity maintenanceEntity);
     List<NotificationEntity> findAllByTasksContaining(TaskEntity taskEntity);

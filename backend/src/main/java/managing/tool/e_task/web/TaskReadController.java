@@ -2,15 +2,12 @@ package managing.tool.e_task.web;
 
 import lombok.AllArgsConstructor;
 import managing.tool.e_maintenance.web.MaintenanceReadController;
-import managing.tool.e_notification.web.NotificationController;
+import managing.tool.e_notification.web.NotificationREADController;
 import managing.tool.e_task.model.dto.TaskViewDto;
 import managing.tool.e_task.service.TaskService;
-import managing.tool.exception.FoundInDb;
-import managing.tool.exception.NotFoundInDb;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -88,7 +85,7 @@ public class TaskReadController {
                 .withTitle(String.format("All maintenance events that include task number: %s!", taskViewDto.getTaskNum()));
         result.add(tasksLink);
 
-        Link notificationsLink = linkTo(methodOn(NotificationController.class)
+        Link notificationsLink = linkTo(methodOn(NotificationREADController.class)
                 .findAllNotifForTask(taskViewDto.getTaskNum()))
                 .withRel("notifications")
                 .withTitle(String.format("All notifications raised for task number: %s!", taskViewDto.getTaskNum()));

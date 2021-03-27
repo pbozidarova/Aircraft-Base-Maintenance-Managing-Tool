@@ -2,17 +2,14 @@ package managing.tool.e_user.web;
 
 import managing.tool.e_facility.service.FacilityService;
 import managing.tool.e_maintenance.web.MaintenanceReadController;
-import managing.tool.e_notification.web.NotificationController;
+import managing.tool.e_notification.web.NotificationREADController;
 import managing.tool.e_task.web.TaskReadController;
 import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.service.UserCreateUpdateService;
 import managing.tool.e_user.service.UserService;
-import managing.tool.exception.FoundInDb;
-import managing.tool.exception.NotFoundInDb;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -99,7 +96,7 @@ public class UserReadController {
                 .withTitle(String.format("Maintenance by responsible engineer %s - %s, %s!", user.getCompanyNum(), user.getFirstName(), user.getLastName()));
         result.add(maintenanceLink);
 
-        Link issuesLink = linkTo(methodOn(NotificationController.class)
+        Link issuesLink = linkTo(methodOn(NotificationREADController.class)
                 .findAllIssuesRaisedBy(user.getCompanyNum()))
                 .withRel("notifications")
                 .withTitle(String.format("Notifications by author %s - %s, %s!", user.getCompanyNum(), user.getFirstName(), user.getLastName()));

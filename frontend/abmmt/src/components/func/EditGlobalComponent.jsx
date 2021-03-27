@@ -97,10 +97,9 @@ class EditGlobalComponent extends Component {
                     native
                     value={selected[key]}
                     onChange={handleChange}
-                    inputProps={{
-                      name: {key},
-                      id: {key},
-                  }}>
+                    id={key}
+                    name={key}
+                    >
                     <option aria-label="None" value="" />
                     {Object.values(this.state[key]).map(f => <option value={f}>{f}</option>)}
                     

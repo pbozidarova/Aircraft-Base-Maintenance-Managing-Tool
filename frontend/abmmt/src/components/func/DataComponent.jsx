@@ -71,13 +71,13 @@ class DataComponent extends Component{
                 </TableHead>
                     {this.props.tableRows
                         .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
-                        .map(tableRow => {
+                        .map((tableRow, index) => {
                             return (   
                                 <TableRow size="small"
                                     hover
                                     onClick={() => this.props.selectRow(tableRow)}
                                     tabIndex={-1}
-                                    key={Object.entries(tableRow)[0][1]}
+                                    key={index}
                                     selected={this.isSelected(Object.entries(tableRow)[0][1])}
                                 >   
                                     {Object.keys(this.props.tableHeader)
