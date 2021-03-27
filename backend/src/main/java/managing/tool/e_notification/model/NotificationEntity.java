@@ -41,8 +41,8 @@ public class NotificationEntity extends BaseEntity {
         return communication;
     }
 
-    public NotificationEntity setCommunication(Set<ReplyEntity> replay) {
-        this.communication = replay;
+    public NotificationEntity setCommunication(Set<ReplyEntity> communication) {
+        this.communication = communication;
         return this;
     }
 

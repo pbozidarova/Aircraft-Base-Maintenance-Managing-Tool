@@ -44,6 +44,9 @@ export const FETCH_DATA_KEY = {
     aircraftRegistration: 'aircraftViewDtoList',
     manager: 'userViewDtoList',
     responsibleEngineer: 'userViewDtoList',
+    tasks : 'taskViewDtoList',
+    maintenance: 'maintenanceViewDtoList',
+    notifications: 'notificationViewDtoList',  
     
 }
 

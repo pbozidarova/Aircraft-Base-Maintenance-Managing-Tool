@@ -6,7 +6,7 @@ import managing.tool.e_user.model.UserEntity;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name="replies")
 public class ReplyEntity extends BaseEntity {
 
     private String description;
