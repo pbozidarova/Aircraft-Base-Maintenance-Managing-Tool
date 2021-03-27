@@ -44,23 +44,12 @@ class TaskComponent extends Component{
         this.selectTask(Utils.emptyObj(TASKS_HEADER_DATA))
     }
 
-    refreshTasks(){
-        // this.props.location.fetchDataFromURL != null
-        //         ?   this.partialFetch(this.props.location.fetchDataFromURL.href, this.props.location.fetchDataFromURL.title) 
-        //         :   this.fetchAll("tasks");
-        console.log(this.props.location)
-
+    refreshTasks(){   
         let key = 'taskViewDtoList'
-        let isProvidedPartialUrl = this.props.location.fetchDataFromURL != null
-
-        if(isProvidedPartialUrl){
-            let hateoasUrl = this.props.location.fetchDataFromURL.href
-            let title = this.props.location.fetchDataFromURL.title
-            
-            this.partialFetch(hateoasUrl, title, key) 
-        }else{
-            this.fetchAll("tasks", key);
-        }
+        let shouldFetchPartialData = this.props.location.fetchDataFromURL
+        
+        shouldFetchPartialData ? this.partialFetch(shouldFetchPartialData.href, shouldFetchPartialData.title, key) 
+                               : this.fetchAll("tasks", key)
         
     }
     partialFetch(hateoasUrl, title, key){
@@ -71,13 +60,9 @@ class TaskComponent extends Component{
                 this.setState({
                     loading : false, 
                     tasks : response.data._embedded[key]
-                }, () => this.props.handleInfo({success : MESSAGES.successLoaded + title})
-                );
-                
+                }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, title));
             }
-        ).catch(e => {
-            this.props.handleInfo({error : e.response.data.message});
-        })
+        ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, title))
     }
 
     fetchAll(urlParam, key){
@@ -87,13 +72,10 @@ class TaskComponent extends Component{
                 this.setState({
                     loading : false, 
                     tasks : response.data._embedded[key]
-                }, () => this.props.handleInfo({success : MESSAGES.successLoaded + MESSAGES.allData})
-                );
-                console.log(response.data)
+                }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData));
             }
-        ).catch(e => {
-            this.props.handleInfo({error : e.response.data.message});
-        });
+        ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
+
     }
    
     selectTask(task) {      

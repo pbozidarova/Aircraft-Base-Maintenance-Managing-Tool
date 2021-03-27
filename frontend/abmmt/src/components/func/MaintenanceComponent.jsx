@@ -46,56 +46,36 @@ class MaintenanceComponent extends Component {
     }
 
     refreshMaintenance(){
-        console.log(this.props.location)
-
         let key = 'maintenanceViewDtoList'
-        let isProvidedPartialUrl = this.props.location.fetchDataFromURL != null
 
-        if(isProvidedPartialUrl){
-            let hateoasUrl = this.props.location.fetchDataFromURL.href
-            let title = this.props.location.fetchDataFromURL.title
-            
-            this.partialFetch(hateoasUrl, title, key) 
-        }else{
-            this.fetchAll("maintenance", key);
-        }
-
+        let shouldFetchPartialData = this.props.location.fetchDataFromURL
+        
+        shouldFetchPartialData ? this.partialFetch(shouldFetchPartialData.href, shouldFetchPartialData.title, key) 
+                               : this.fetchAll("maintenance", key)
     }
 
     partialFetch(hateoasUrl, title, key){
         BackendService.fetchDataFrom(hateoasUrl)
         .then(
             response => {
-                console.log(response)
                 this.setState({
                     loading : false, 
                     maintenance : response.data._embedded[key]
-                }, () => this.props.handleInfo({success : MESSAGES.successLoaded + title})
-                );
-                
+                }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, title));
             }
-        ).catch(e => {
-            // console.log(e)
-            Utils.allocateCorrectErrorMessage(e, title, this.props.handleInfo)
-            
-        })
+        ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, title))
     }
 
     fetchAll(urlParam, key){
-        
         BackendService.getAll(urlParam)
         .then(
             response => {
                 this.setState({
                     loading : false, 
                     maintenance : response.data._embedded[key]
-                }, () => this.props.handleInfo({success : MESSAGES.successLoaded + MESSAGES.allData})
-                );
-                console.log(response.data)
+                }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData));
             }
-        ).catch(e => {
-            Utils.allocateCorrectErrorMessage(e, MESSAGES.allData, this.props.handleInfo)
-        });
+        ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
     }
    
     selectMaintenance(maintenance) {      

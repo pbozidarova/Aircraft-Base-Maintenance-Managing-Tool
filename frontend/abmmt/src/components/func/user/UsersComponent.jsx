@@ -42,20 +42,11 @@ class UsersComponent extends Component {
     }
 
     refreshUsers(){
-
-        console.log(this.props.location)
-
         let key = 'userViewDtoList'
-        let isProvidedPartialUrl = this.props.location.fetchDataFromURL != null
-
-        if(isProvidedPartialUrl){
-            let hateoasUrl = this.props.location.fetchDataFromURL.href
-            let title = this.props.location.fetchDataFromURL.title
-            
-            this.partialFetch(hateoasUrl, title, key) 
-        }else{
-            this.fetchAll("users", key);
-        }
+        let shouldFetchPartialData = this.props.location.fetchDataFromURL
+        
+        shouldFetchPartialData ? this.partialFetch(shouldFetchPartialData.href, shouldFetchPartialData.title, key) 
+                               : this.fetchAll("users", key)
     }
 
     partialFetch(hateoasUrl, title, key){
@@ -82,7 +73,9 @@ class UsersComponent extends Component {
                         ...this.state, 
                         users:  response.data._embedded[key]
                     }, () => this.props.handleInfo({success : MESSAGES.successLoaded + MESSAGES.allData}))
-                }) 
+                }).catch(e => {
+                    Utils.allocateCorrectErrorMessage(e, MESSAGES.allData, this.props.handleInfo)
+                });
     }
 
     selectUser( user) {

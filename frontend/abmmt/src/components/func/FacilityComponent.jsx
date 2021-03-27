@@ -51,10 +51,11 @@ class FacilityComponent extends Component {
             .then(
                 response => {
                     console.log(response.data);
-                    this.setState({facilities : response.data._embedded.facilityViewDtoList},
-                        () => this.props.handleInfo({success : MESSAGES.successLoaded}));
+                    this.setState({
+                        facilities : response.data._embedded.facilityViewDtoList
+                    }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData));
                 }
-            ); 
+            ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
     }
 
     selectFacility(facility) {      
@@ -96,7 +97,8 @@ class FacilityComponent extends Component {
                     this.refreshFacilities()
                     this.props.handleInfo({success : MESSAGES.successUpdated});
                 }).catch(e => {
-                    this.props.handleInfo({error : e.response.data.message});
+                    Utils.allocateCorrectErrorMessage(e, name, this.props.handleInfo)
+
                     // this.props.handleInfo({error : e});
                 })
             console.log('submit Update')
@@ -111,7 +113,8 @@ class FacilityComponent extends Component {
                     this.props.handleInfo({success : MESSAGES.successCreated});
                 }
                 ).catch(e => {
-                    this.props.handleInfo({error : e.response.data.message});
+                    Utils.allocateCorrectErrorMessage(e, name, this.props.handleInfo)
+
                 })
   
             console.log('submit Create')

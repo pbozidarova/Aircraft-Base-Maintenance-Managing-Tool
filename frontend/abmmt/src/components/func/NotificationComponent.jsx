@@ -47,35 +47,23 @@ class NotificationComponent extends Component {
 
     refreshNotifications(){
         let key = 'notificationViewDtoList'
-        let isProvidedPartialUrl = this.props.location.fetchDataFromURL != null
-
-        if(isProvidedPartialUrl){
-            
-            let hateoasUrl = this.props.location.fetchDataFromURL.href
-            let title = this.props.location.fetchDataFromURL.title
-            
-            this.partialFetch(hateoasUrl, title, key) 
-        }else{
-            this.fetchAll("notifications", key);
-        }
+        let shouldFetchPartialData = this.props.location.fetchDataFromURL
+        
+        shouldFetchPartialData ? this.partialFetch(shouldFetchPartialData.href, shouldFetchPartialData.title, key) 
+                               : this.fetchAll("notifications", key)
     }
 
     partialFetch(hateoasUrl, title, key){
         BackendService.fetchDataFrom(hateoasUrl)
         .then(
             response => {
-                console.log(response)
+                console.log(this.props.handleInfo)
                 this.setState({
                     loading : false, 
                     notifications : response.data._embedded[key]
-                }, () => this.props.handleInfo({success : MESSAGES.successLoaded + title})
-                );
-                
+                }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, title));
             }
-        ).catch(e => {
-            console.log(e)
-            // this.props.handleInfo({error : e.response.data.message});
-        })
+        ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, title))
     }
 
     fetchAll(urlParam, key){
@@ -84,14 +72,11 @@ class NotificationComponent extends Component {
             response => {
                 this.setState({
                     loading : false, 
-                    notifications : response.data
-                }, () => this.props.handleInfo({success : MESSAGES.successLoaded + MESSAGES.allData})
-                );
-                console.log(response.data)
+                    notifications : response.data.embedded[key]
+                }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData));
             }
-        ).catch(e => {
-            this.props.handleInfo({error : e.response.data.message});
-        });
+        ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
+
     }
    
     selectNotification(notification) {      

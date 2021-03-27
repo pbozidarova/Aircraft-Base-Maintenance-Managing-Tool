@@ -89,7 +89,7 @@ public class UserReadController {
         Link tasksLink = linkTo(methodOn(TaskReadController.class)
                             .tasksPreparedBy(user.getCompanyNum()))
                             .withRel("tasks")
-                            .withTitle(String.format("Tasks that has been prepared by team in which %s - %s, %s has taken part!", user.getCompanyNum(), user.getFirstName(), user.getLastName()));
+                            .withTitle(String.format("Tasks that have been prepared by team in which %s - %s, %s has taken part!", user.getCompanyNum(), user.getFirstName(), user.getLastName()));
 
         result.add(tasksLink);
 

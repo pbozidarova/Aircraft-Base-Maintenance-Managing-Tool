@@ -3,8 +3,6 @@ import BackendService from '../api/CommonAPI.js'
 
 class Utils {
     redirectTo(props, urlParam, fetchDataFromURL){
-        console.log('param ' + urlParam + '  ' + fetchDataFromURL)
-        console.log(fetchDataFromURL)
         props.history.push({pathname: urlParam, fetchDataFromURL: fetchDataFromURL})
     }
 
@@ -26,9 +24,14 @@ class Utils {
                     .reduce((acc, curr) =>  acc = {...acc, [curr] : ' '}, {} );
     }
 
-    allocateCorrectErrorMessage(serverError, title, handleInfo){
+    
+    allocateCorrectSuccessMessage(handleInfo, messageVar){
+        handleInfo({success : MESSAGES.successLoaded + messageVar})
+    }
+
+    allocateCorrectErrorMessage(serverError, handleInfo, messageVar){
         let errorToShow = serverError.response == null 
-        ? {error: MESSAGES.errorNonExistant + title} 
+        ? {error: MESSAGES.errorNonExistant + messageVar} 
         : {error: serverError.response.data.message}
 
         handleInfo(errorToShow);

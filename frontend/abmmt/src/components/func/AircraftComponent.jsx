@@ -45,17 +45,14 @@ class AircraftComponent extends Component {
     }
 
     refreshAircraft(){
-        console.log(this.props.location)
-
+        
         BackendService.getAll('aircraft')
-            .then(
-                response => {
-                    this.setState({aircraft : response.data._embedded.aircraftViewDtoList}, 
-                        () => this.props.handleInfo({success : MESSAGES.successLoaded}));
+            .then(response => {
+                    this.setState({
+                        aircraft : response.data._embedded.aircraftViewDtoList
+                    }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData));
                 }
-            ).catch(e => {
-                this.props.handleInfo({error : e.response.data.message});
-            }); 
+            ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
     }
   
     selectAircraft(aircraft) {      
