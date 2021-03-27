@@ -60,7 +60,7 @@ public class NotificationServiceImpl implements NotificationService {
     public List<NotificationViewDto> findAllNotifForTask(String taskNum) {
         TaskEntity taskEntity = this.taskService.findTaskByTaskNumber(taskNum);
 
-        return this.notificationRepository.findAllByTasksContaining(taskEntity)
+        return this.notificationRepository.findAllByTask(taskEntity)
                 .stream()
                 .map(n -> this.modelMapper.map(n, NotificationViewDto.class))
                 .collect(Collectors.toList());

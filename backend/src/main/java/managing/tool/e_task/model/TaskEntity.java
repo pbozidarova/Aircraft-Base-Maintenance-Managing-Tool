@@ -24,7 +24,7 @@ public class TaskEntity extends BaseEntity {
     private Set<MaintenanceEntity> maintenances;
     private Set<UserEntity> preparedBy;
 
-    private Set<NotificationEntity> tickets;
+    private Set<NotificationEntity> notifications;
 
     public TaskEntity() {
     }
@@ -108,16 +108,13 @@ public class TaskEntity extends BaseEntity {
         return this;
     }
 
-    @ManyToMany(mappedBy = "tasks")
-    public Set<NotificationEntity> getTickets() {
-        return tickets;
+    @OneToMany
+    public Set<NotificationEntity> getNotifications() {
+        return notifications;
     }
 
-    public TaskEntity setTickets(Set<NotificationEntity> tickets) {
-        this.tickets = tickets;
+    public TaskEntity setNotifications(Set<NotificationEntity> notifications) {
+        this.notifications = notifications;
         return this;
     }
-
-
-
 }

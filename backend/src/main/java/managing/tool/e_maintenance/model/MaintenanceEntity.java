@@ -3,9 +3,11 @@ package managing.tool.e_maintenance.model;
 import managing.tool.e_base.BaseEntity;
 import managing.tool.e_aircraft.model.AircraftEntity;
 import managing.tool.e_facility.model.FacilityEntity;
+import managing.tool.e_notification.model.NotificationEntity;
 import managing.tool.e_task.model.TaskEntity;
 import managing.tool.e_user.model.UserEntity;
 
+import javax.management.Notification;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
@@ -24,6 +26,7 @@ public class MaintenanceEntity extends BaseEntity {
    private UserEntity responsibleEngineer;
 
    private Set<TaskEntity> tasks;
+   private Set<NotificationEntity> notifications;
 
     public MaintenanceEntity() {
     }
@@ -105,6 +108,16 @@ public class MaintenanceEntity extends BaseEntity {
 
     public MaintenanceEntity setTasks(Set<TaskEntity> tasks) {
         this.tasks = tasks;
+        return this;
+    }
+
+    @OneToMany(mappedBy = "maintenance",cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    public Set<NotificationEntity> getNotifications() {
+        return notifications;
+    }
+
+    public MaintenanceEntity setNotifications(Set<NotificationEntity> notifications) {
+        this.notifications = notifications;
         return this;
     }
 }

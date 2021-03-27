@@ -6,7 +6,7 @@ import managing.tool.e_task.model.TaskEntity;
 import managing.tool.e_user.model.UserEntity;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Set;
 
 @Entity
@@ -14,14 +14,14 @@ import java.util.Set;
 public class NotificationEntity extends BaseEntity {
 
     private String notificationNum;
-    private Set<CommunicationEntity> communication;
+    private Set<ReplyEntity> communication;
     private UserEntity author;
     private NotificationStatusEnum status;
     private NotificationClassificationEnum classification;
-    private LocalDateTime dueDate;
+    private Instant dueDate;
 
     private MaintenanceEntity maintenance;
-    private Set<TaskEntity> tasks;
+    private TaskEntity task;
 
     public NotificationEntity() {
     }
@@ -37,16 +37,16 @@ public class NotificationEntity extends BaseEntity {
     }
 
     @OneToMany(fetch = FetchType.EAGER)
-    public Set<CommunicationEntity> getCommunication() {
+    public Set<ReplyEntity> getCommunication() {
         return communication;
     }
 
-    public NotificationEntity setCommunication(Set<CommunicationEntity> replay) {
+    public NotificationEntity setCommunication(Set<ReplyEntity> replay) {
         this.communication = replay;
         return this;
     }
 
-    @OneToOne
+    @ManyToOne
     public UserEntity getAuthor() {
         return author;
     }
@@ -78,18 +78,17 @@ public class NotificationEntity extends BaseEntity {
         return this;
     }
 
-
     @Column(name = "due_date", nullable = false)
-    public LocalDateTime getDueDate() {
+    public Instant getDueDate() {
         return dueDate;
     }
 
-    public NotificationEntity setDueDate(LocalDateTime dueDate) {
+    public NotificationEntity setDueDate(Instant dueDate) {
         this.dueDate = dueDate;
         return this;
     }
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     public MaintenanceEntity getMaintenance() {
         return maintenance;
     }
@@ -99,17 +98,27 @@ public class NotificationEntity extends BaseEntity {
         return this;
     }
 
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(
-            name = "issues_tasks",
-            joinColumns = @JoinColumn(name = "issue_id"),
-            inverseJoinColumns = @JoinColumn(name = "task_id"))
-    public Set<TaskEntity> getTasks() {
-        return tasks;
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    public TaskEntity getTask() {
+        return task;
     }
 
-    public NotificationEntity setTasks(Set<TaskEntity> tasks) {
-        this.tasks = tasks;
+    public NotificationEntity setTask(TaskEntity task) {
+        this.task = task;
         return this;
     }
+
+    //    @ManyToMany(cascade = CascadeType.MERGE)
+//    @JoinTable(
+//            name = "issues_tasks",
+//            joinColumns = @JoinColumn(name = "issue_id"),
+//            inverseJoinColumns = @JoinColumn(name = "task_id"))
+//    public Set<TaskEntity> getTasks() {
+//        return tasks;
+//    }
+//
+//    public NotificationEntity setTasks(Set<TaskEntity> tasks) {
+//        this.tasks = tasks;
+//        return this;
+//    }
 }
