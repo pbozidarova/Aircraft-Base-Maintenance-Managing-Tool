@@ -53,7 +53,8 @@ public class AircraftReadController {
 
         Link maintenanceLink = linkTo(methodOn(MaintenanceReadController.class)
                 .maintenanceByAircraft(aircraftViewDto.getAircraftRegistration()))
-                .withRel("maintenance");
+                .withRel("maintenance")
+                .withTitle(String.format("Maintenance events that have been performed on %s.", aircraftViewDto.getAircraftRegistration()));
         result.add(maintenanceLink);
 
 

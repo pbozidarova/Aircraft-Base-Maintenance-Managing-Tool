@@ -45,6 +45,8 @@ class AircraftComponent extends Component {
     }
 
     refreshAircraft(){
+        console.log(this.props.location)
+
         BackendService.getAll('aircraft')
             .then(
                 response => {

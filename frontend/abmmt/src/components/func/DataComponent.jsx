@@ -96,7 +96,7 @@ class DataComponent extends Component{
                                                         size="small" 
                                                         color="primary" 
                                                         className={classes.fabChild}
-                                                        onClick={  () => { Utils.redirectTo(this.props, `/${link}`, tableRow._links[link])}}>
+                                                        onClick={  () => {console.log(tableRow); console.log(tableRow._links[link]);  Utils.redirectTo(this.props, `/${link}`, tableRow._links[link])}}>
                                                         {ICONS_MAPPING[link]}
                                                     </Fab>
                                                 </Tooltip>)

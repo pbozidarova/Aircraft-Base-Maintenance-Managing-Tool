@@ -45,22 +45,33 @@ class TaskComponent extends Component{
     }
 
     refreshTasks(){
-        console.log(this.props)
+        // this.props.location.fetchDataFromURL != null
+        //         ?   this.partialFetch(this.props.location.fetchDataFromURL.href, this.props.location.fetchDataFromURL.title) 
+        //         :   this.fetchAll("tasks");
+        console.log(this.props.location)
 
-        this.props.location.fetchDataFromURL != null
-                ?   this.partialFetch(this.props.location.fetchDataFromURL.href) 
-                :   this.fetchAll("tasks");
+        let key = 'taskViewDtoList'
+        let isProvidedPartialUrl = this.props.location.fetchDataFromURL != null
+
+        if(isProvidedPartialUrl){
+            let hateoasUrl = this.props.location.fetchDataFromURL.href
+            let title = this.props.location.fetchDataFromURL.title
+            
+            this.partialFetch(hateoasUrl, title, key) 
+        }else{
+            this.fetchAll("tasks", key);
+        }
         
     }
-    partialFetch(hateoasUrl){
+    partialFetch(hateoasUrl, title, key){
         BackendService.fetchDataFrom(hateoasUrl)
         .then(
             response => {
                 console.log(response)
                 this.setState({
                     loading : false, 
-                    tasks : response.data._embedded.taskViewDtoList
-                }, () => this.props.handleInfo({success : MESSAGES.successLoaded})
+                    tasks : response.data._embedded[key]
+                }, () => this.props.handleInfo({success : MESSAGES.successLoaded + title})
                 );
                 
             }
@@ -69,14 +80,14 @@ class TaskComponent extends Component{
         })
     }
 
-    fetchAll(urlParam){
+    fetchAll(urlParam, key){
         BackendService.getAll(urlParam)
         .then(
             response => {
                 this.setState({
                     loading : false, 
-                    tasks : response.data._embedded.taskViewDtoList
-                }, () => this.props.handleInfo({success : MESSAGES.successLoaded})
+                    tasks : response.data._embedded[key]
+                }, () => this.props.handleInfo({success : MESSAGES.successLoaded + MESSAGES.allData})
                 );
                 console.log(response.data)
             }

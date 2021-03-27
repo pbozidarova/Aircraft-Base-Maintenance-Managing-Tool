@@ -5,6 +5,7 @@ import Utils from '../../Utils.js'
 
 import { styles } from '../../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router';
 
 import EditUserComponent from './UserEditComponent'
 import DataComponent from '../DataComponent'
@@ -22,6 +23,7 @@ class UsersComponent extends Component {
         
         this.state = {
             users : [],
+            
             selected: {},
             authority: {},
             role: {},
@@ -40,39 +42,46 @@ class UsersComponent extends Component {
     }
 
     refreshUsers(){
-        console.log(this.props)
-        
-        this.props.location !=null &&
-        this.props.location.fetchDataFromURL != null
-        ?   this.partialFetch(this.props.location.fetchDataFromURL.href) 
-        :   this.fetchAll("users");
+
+        console.log(this.props.location)
+
+        let key = 'userViewDtoList'
+        let isProvidedPartialUrl = this.props.location.fetchDataFromURL != null
+
+        if(isProvidedPartialUrl){
+            let hateoasUrl = this.props.location.fetchDataFromURL.href
+            let title = this.props.location.fetchDataFromURL.title
+            
+            this.partialFetch(hateoasUrl, title, key) 
+        }else{
+            this.fetchAll("users", key);
+        }
     }
 
-    partialFetch(hateoasUrl){
+    partialFetch(hateoasUrl, title, key){
         BackendService.fetchDataFrom(hateoasUrl)
         .then(
             response => {
                 console.log(response)
                 this.setState({
-                    loading : false, 
-                    tasks : response.data._embedded.taskViewDtoList
-                }, () => this.props.handleInfo({success : MESSAGES.successLoaded})
+                    users : response.data._embedded[key]
+                }, () => this.props.handleInfo({success : MESSAGES.successLoaded + title})
                 );
-                
             }
         ).catch(e => {
-            this.props.handleInfo({error : e.response.data.message});
+            Utils.allocateCorrectErrorMessage(e, title, this.props.handleInfo)
         })
     }
-
     
-    fetchAll(urlParam){
+    fetchAll(urlParam, key){
         BackendService.getAll(urlParam)
             .then(response => {    
+                console.log(response)
+
                     this.setState( {
                         ...this.state, 
-                        users:  response.data._embedded.userViewDtoList
-                    }, () => this.props.handleInfo({success : MESSAGES.successLoaded}))
+                        users:  response.data._embedded[key]
+                    }, () => this.props.handleInfo({success : MESSAGES.successLoaded + MESSAGES.allData}))
                 }) 
     }
 
@@ -179,4 +188,4 @@ UsersComponent.propTypes = {
     classes: PropTypes.object.isRequired,
   };
   
-  export default withStyles(styles)(UsersComponent);
+  export default withStyles(styles)(withRouter(UsersComponent));

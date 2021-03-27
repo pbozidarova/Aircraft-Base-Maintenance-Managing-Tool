@@ -58,12 +58,14 @@ public class FacilityReadController {
 
         Link usersLink = linkTo(methodOn(UserReadController.class)
                 .usersFromFacility(facility.getName()))
-                .withRel("users");
+                .withRel("users")
+                .withTitle(String.format("The accounts of the employees working in %s.", facility.getName()));
         result.add(usersLink);
 
         Link maintenanceLink = linkTo(methodOn(MaintenanceReadController.class)
                 .maintenanceInFacility(facility.getName()))
-                .withRel("maintenance");
+                .withRel("maintenance")
+                .withTitle(String.format("The maintenance events that has been performed in %s.", facility.getName()));
         result.add(maintenanceLink);
 
 

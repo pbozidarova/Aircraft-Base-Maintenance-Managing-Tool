@@ -16,12 +16,13 @@ export const SESSION_ATTRIBUTE_NAME = 'authenticatedUser';
 
 export const MESSAGES = {
     initialLoad : "Please select a row in order to edit it!",
-    successLogingIn: "Successfully logging in!",
-    successLoaded: "Successfully loaded!",
-    successCreated : "Successfully created!",
-    successUpdated : "Successfully updated!",
-    errorNonExistant : "Does not exist!",
-    errorExist : "Already exist such company number or email!",
+    successLogingIn: "Successfully logged in!",
+    successLoaded: "Successfully loaded! ",
+    allData: "All data!",
+    successCreated : "Successfully created! ",
+    successUpdated : "Successfully updated! ",
+    errorNonExistant : "Does not exist! ",
+    errorExist : "Already exist such company number or email! ",
     empty: "",
 }
 export const USERS_HEADER_DATA = {

@@ -65,9 +65,9 @@ class AbmmtComponent extends Component {
                           {this.state.infoPanel.error && <this.Alert severity="error" >{this.state.infoPanel.error} </this.Alert>}
                       </div>
                     </Grid>
-
-                    <SwitchComponent  handleInfo={this.handleInfo} infoPanel={this.state.infoPanel}/>
-                    
+                    <Grid item xs={12}>
+                      <SwitchComponent  handleInfo={this.handleInfo} infoPanel={this.state.infoPanel}/>
+                    </Grid>
                       
                     </Grid>        
                          

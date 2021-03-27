@@ -118,12 +118,14 @@ public class MaintenanceReadController {
 
         Link tasksLink = linkTo(methodOn(TaskReadController.class)
                 .tasksInMaintenance(maintenance.getMaintenanceNum()))
-                .withRel("tasks");
+                .withRel("tasks")
+                .withTitle(String.format("All tasks included in maintenance event %s.", maintenance.getMaintenanceNum()));
         result.add(tasksLink);
 
         Link notificationsLink = linkTo(methodOn(NotificationController.class)
                 .findAllNotifForMaintenance(maintenance.getMaintenanceNum()))
-                .withRel("notifications");
+                .withRel("notifications")
+                .withTitle(String.format("All notifications raised for maintenance event %s.", maintenance.getMaintenanceNum()));
         result.add(notificationsLink);
 
         return result.toArray(new Link[0]);

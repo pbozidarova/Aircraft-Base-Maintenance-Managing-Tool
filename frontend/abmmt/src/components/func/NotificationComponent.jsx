@@ -46,20 +46,29 @@ class NotificationComponent extends Component {
     }
 
     refreshNotifications(){
-        this.props.location.fetchDataFromURL != null
-                ?   this.partialFetch(this.props.location.fetchDataFromURL.href) 
-                :   this.fetchAll("notifications");
+        let key = 'notificationViewDtoList'
+        let isProvidedPartialUrl = this.props.location.fetchDataFromURL != null
+
+        if(isProvidedPartialUrl){
+            
+            let hateoasUrl = this.props.location.fetchDataFromURL.href
+            let title = this.props.location.fetchDataFromURL.title
+            
+            this.partialFetch(hateoasUrl, title, key) 
+        }else{
+            this.fetchAll("notifications", key);
+        }
     }
 
-    partialFetch(hateoasUrl){
+    partialFetch(hateoasUrl, title, key){
         BackendService.fetchDataFrom(hateoasUrl)
         .then(
             response => {
                 console.log(response)
                 this.setState({
                     loading : false, 
-                    notifications : response.data._embedded.maintenanceViewModelList
-                }, () => this.props.handleInfo({success : MESSAGES.successLoaded})
+                    notifications : response.data._embedded[key]
+                }, () => this.props.handleInfo({success : MESSAGES.successLoaded + title})
                 );
                 
             }
@@ -69,14 +78,14 @@ class NotificationComponent extends Component {
         })
     }
 
-    fetchAll(urlParam){
+    fetchAll(urlParam, key){
         BackendService.getAll(urlParam)
         .then(
             response => {
                 this.setState({
                     loading : false, 
                     notifications : response.data
-                }, () => this.props.handleInfo({success : MESSAGES.successLoaded})
+                }, () => this.props.handleInfo({success : MESSAGES.successLoaded + MESSAGES.allData})
                 );
                 console.log(response.data)
             }

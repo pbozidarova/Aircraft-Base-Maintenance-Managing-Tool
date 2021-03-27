@@ -66,7 +66,7 @@ public class UserReadController {
         return ResponseEntity
                 .ok(EntityModel.of(userViewDto, createUserHypermedia(userViewDto)));
     }
-    
+
     @GetMapping("/facility/{name}")
     public ResponseEntity<CollectionModel<EntityModel<UserViewDto>>> usersFromFacility(@PathVariable String name){
 
@@ -88,17 +88,22 @@ public class UserReadController {
 
         Link tasksLink = linkTo(methodOn(TaskReadController.class)
                             .tasksPreparedBy(user.getCompanyNum()))
-                            .withRel("tasks");
+                            .withRel("tasks")
+                            .withTitle(String.format("Tasks that has been prepared by team in which %s - %s, %s has taken part!", user.getCompanyNum(), user.getFirstName(), user.getLastName()));
+
         result.add(tasksLink);
 
         Link maintenanceLink = linkTo(methodOn(MaintenanceReadController.class)
                 .findMaintenanceByResponsibleEngineer(user.getCompanyNum()))
-                .withRel("maintenance");
+                .withRel("maintenance")
+                .withTitle(String.format("Maintenance by responsible engineer %s - %s, %s!", user.getCompanyNum(), user.getFirstName(), user.getLastName()));
         result.add(maintenanceLink);
 
         Link issuesLink = linkTo(methodOn(NotificationController.class)
                 .findAllIssuesRaisedBy(user.getCompanyNum()))
-                .withRel("notifications");
+                .withRel("notifications")
+                .withTitle(String.format("Notifications by author %s - %s, %s!", user.getCompanyNum(), user.getFirstName(), user.getLastName()));
+
         result.add(issuesLink);
 
         return result.toArray(new Link[0]);

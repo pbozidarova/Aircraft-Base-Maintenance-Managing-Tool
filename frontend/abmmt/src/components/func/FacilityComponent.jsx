@@ -46,10 +46,11 @@ class FacilityComponent extends Component {
     }
 
     refreshFacilities(){
+        
         BackendService.getAll('facilities')
             .then(
                 response => {
-                    // console.log(response.data);
+                    console.log(response.data);
                     this.setState({facilities : response.data._embedded.facilityViewDtoList},
                         () => this.props.handleInfo({success : MESSAGES.successLoaded}));
                 }

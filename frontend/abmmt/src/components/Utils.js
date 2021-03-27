@@ -1,8 +1,11 @@
+import {MESSAGES} from '../Constanst.js'
+import BackendService from '../api/CommonAPI.js'
 
 class Utils {
     redirectTo(props, urlParam, fetchDataFromURL){
-        console.log('param ' + urlParam)
-        props.history.push({pathname: urlParam, fetchDataFromURL})
+        console.log('param ' + urlParam + '  ' + fetchDataFromURL)
+        console.log(fetchDataFromURL)
+        props.history.push({pathname: urlParam, fetchDataFromURL: fetchDataFromURL})
     }
 
     formIsValid(errors){
@@ -23,8 +26,14 @@ class Utils {
                     .reduce((acc, curr) =>  acc = {...acc, [curr] : ' '}, {} );
     }
 
-    
+    allocateCorrectErrorMessage(serverError, title, handleInfo){
+        let errorToShow = serverError.response == null 
+        ? {error: MESSAGES.errorNonExistant + title} 
+        : {error: serverError.response.data.message}
 
+        handleInfo(errorToShow);
+    }
+   
       
 }
 

@@ -71,7 +71,7 @@ public class FacilityServiceImpl implements FacilityService {
                             .replace("[", "")
                             .replace("]", "")
                     );
-
+                    System.out.println();
                     return userView;
                 })
                 .collect(Collectors.toList());
