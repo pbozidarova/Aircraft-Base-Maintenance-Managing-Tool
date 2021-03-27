@@ -50,7 +50,7 @@ class EditUserComponent extends Component {
         .then(response => {
             this.setState({
                 ...this.state,
-                facilities: Object.values(response.data)
+                facilities: Object.values(response.data._embedded.facilityViewDtoList)
             })
         })
    }
@@ -134,7 +134,6 @@ class EditUserComponent extends Component {
                     native
                     value={this.props.selectedUser.facility}
                     onChange={handleChange}
-                    
                     inputProps={{
                         name: 'facility',
                         id: 'facility',
@@ -145,7 +144,8 @@ class EditUserComponent extends Component {
                     
                 </Select>
                 <FormHelperText>{this.state.errors.facility}</FormHelperText>
-            </FormControl>    
+            </FormControl>   
+             
             <FormGroup row>       
                 <FormControl required error={this.state.errors.authority} component="fieldset" className={classes.formControl}>
                     <FormLabel component="legend">Pick Authority</FormLabel>

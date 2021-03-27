@@ -8,6 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router';
 
 import EditUserComponent from './UserEditComponent'
+
 import DataComponent from '../DataComponent'
 
 import PropTypes from 'prop-types';
@@ -15,6 +16,7 @@ import clsx from 'clsx';
 
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import EditGlobalComponent from '../EditGlobalComponent.jsx'
 
 
 class UsersComponent extends Component {
@@ -56,12 +58,10 @@ class UsersComponent extends Component {
                 console.log(response)
                 this.setState({
                     users : response.data._embedded[key]
-                }, () => this.props.handleInfo({success : MESSAGES.successLoaded + title})
-                );
+                }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, title));
             }
-        ).catch(e => {
-            Utils.allocateCorrectErrorMessage(e, title, this.props.handleInfo)
-        })
+        ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, title))
+    
     }
     
     fetchAll(urlParam, key){

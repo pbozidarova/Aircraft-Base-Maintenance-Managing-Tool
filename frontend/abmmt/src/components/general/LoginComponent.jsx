@@ -44,8 +44,8 @@ class LoginComponent extends Component{
                 this.props.handleInfo({success : MESSAGES.successLogingIn});
 
             }).catch((e) => {
-                console.log(e)
-                // this.props.handleInfo({error : e.response.data.message});
+                // console.log(e)
+                this.props.handleInfo({error : e.response.data.message});
             })
     }
 

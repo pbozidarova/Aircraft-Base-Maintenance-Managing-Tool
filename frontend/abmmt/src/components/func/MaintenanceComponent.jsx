@@ -87,7 +87,7 @@ class MaintenanceComponent extends Component {
         let eCheked = event.target.checked
         
         let updatePair = eCheked ? {[eName] : eCheked }: {[eName]: eValue}
-        
+        console.log(updatePair)
         this.setState(
             {   ...this.state,
                 selected: {...this.state.selected, ...updatePair}

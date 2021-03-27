@@ -23,8 +23,42 @@ export const MESSAGES = {
     successUpdated : "Successfully updated! ",
     errorNonExistant : "Does not exist! ",
     errorExist : "Already exist such company number or email! ",
+    errorSomethingIsWrong: "We are so sorry! Something is wrong. Please try again later!",
     empty: "",
 }
+
+export const ICONS_MAPPING = {
+    dashboard: <DashboardIcon />,
+    notifications: <NotificationsActiveOutlinedIcon />,
+    tasks: <AccountBalanceIcon />,
+    maintenance: <BuildIcon />,
+    users: <PeopleIcon />,
+    facility: <LocationCityIcon />,
+    aircraft: <LocalAirportIcon />,
+    update: <CloudUploadIcon />,
+    create: < SendIcon/>,
+}
+
+export const FETCH_DATA_KEY = {
+    facility: 'facilityViewDtoList',
+    aircraftRegistration: 'aircraftViewDtoList',
+    manager: 'userViewDtoList',
+    responsibleEngineer: 'userViewDtoList',
+    
+}
+
+export const GLOBAL_SELECT_FIELDS = {
+    //allocate select fields and request mapping for the backend
+    facility: ['facilities', 'name'],
+    aircraftRegistration: ['aircraft', 'aircraftRegistration'],
+    manager: ['users', 'companyNum', 'lastName', 'firstName'],
+    responsibleEngineer: 'users',
+    //TODO!!!!
+    // authory: "Authority",
+    // role: "Role"
+}
+
+//USERS--------------------------------------------
 export const USERS_HEADER_DATA = {
     companyNum: 'Company Number',
     firstName : 'First Name',
@@ -40,6 +74,8 @@ export const USERS_BOOLEAN_FIELDS = {
     ENGINEER: 'Engineer',
     roles: 'Roles'
 }
+
+//MAINTENANCE--------------------------------------------
 export const MAINTENANCE_HEADER_DATA = {
     maintenanceNum: 'Maintenance Number',
     aircraftRegistration: 'Aircraft Registration',
@@ -52,7 +88,7 @@ export const MAINTENANCE_HEADER_DATA = {
 export const MAINTENANCE_BOOLEAN_FIELDS = {}
 export const MAINTENANCE_DISABLED_FIELDS ={}
 
-
+//NOTIFICATIONS--------------------------------------------
 export const NOTIFICATIONS_HEADER_DATA = {
     // maintenanceNum: 'Maintenance Number',
     // aircraftRegistration: 'Aircraft Registration',
@@ -65,7 +101,7 @@ export const NOTIFICATIONS_HEADER_DATA = {
 export const NOTIFICATIONS_BOOLEAN_FIELDS = {}
 export const NOTIFICATIONS_DISABLED_FIELDS ={}
 
-
+//TASKS--------------------------------------------
 export const TASKS_HEADER_DATA = {
     taskNum: 'Task Number',
     code : 'Code',
@@ -73,7 +109,6 @@ export const TASKS_HEADER_DATA = {
     preparedBy: "Prepared by",
     status: "Status",
 }
-
 export const TASKS_DISABLED_FIELDS = {
     // taskNum: 'Task Number',
     // code : 'Code',
@@ -85,6 +120,8 @@ export const TASKS_BOOLEAN_FIELDS ={
     jobCardsPrepared: 'Jobcards are prepared',
     qualityAssured: 'Quality is assured'
 }
+
+//FACILITIES--------------------------------------------
 export const FACILITIES_HEADER_DATA = {
     name: 'Name',
     city: 'City',
@@ -96,6 +133,7 @@ export const FACILITIES_HEADER_DATA = {
 export const FACILITIES_BOOLEAN_FIELDS = {}
 export const FACILITIES_DISABLED_FIELDS ={}
 
+//AIRCRAFT--------------------------------------------
 export const AIRCRAFT_HEADER_DATA = {
     aircraftRegistration : "Registration",
     serialNumber : "Serial Number",
@@ -110,15 +148,3 @@ export const AIRCRAFT_HEADER_DATA = {
 export const AIRCRAFT_BOOLEAN_FIELDS ={}
 export const AIRCRAFT_DISABLED_FIELDS ={}
 
-export const ICONS_MAPPING = {
-    dashboard: <DashboardIcon />,
-    notifications: <NotificationsActiveOutlinedIcon />,
-    tasks: <AccountBalanceIcon />,
-    maintenance: <BuildIcon />,
-    users: <PeopleIcon />,
-    facility: <LocationCityIcon />,
-    aircraft: <LocalAirportIcon />,
-    update: <CloudUploadIcon />,
-    create: < SendIcon/>,
-
-}
