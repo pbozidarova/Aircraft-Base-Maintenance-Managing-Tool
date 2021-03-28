@@ -14,6 +14,7 @@ public interface MaintenanceService {
     MaintenanceViewDto findMaintenanceByNum(String maintenanceNum );
 
     MaintenanceEntity findByMaintenanceNum(String maintenanceNum);
+    MaintenanceEntity getRandomMaintenance();
 
     Boolean maintenanceExists(String maintenanceNum);
 
@@ -22,4 +23,5 @@ public interface MaintenanceService {
     List<MaintenanceViewDto> findAllMaintenanceByResponsibleEngineer(String companyNum );
 
     List<MaintenanceViewDto> findAllByAircraft(String registration);
+
 }

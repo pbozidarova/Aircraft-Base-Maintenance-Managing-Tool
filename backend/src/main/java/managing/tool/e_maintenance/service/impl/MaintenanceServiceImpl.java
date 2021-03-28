@@ -31,6 +31,7 @@ public class MaintenanceServiceImpl implements MaintenanceService {
     private final UserService userService;
     private final AircraftService aircraftService;
     private final FacilityService facilityService;
+    private final Random random;
 
     @Override
     public MaintenanceViewDto updateMaintenance(MaintenanceViewDto maintenanceDataForUpdate, String jwt) {
@@ -110,6 +111,14 @@ public class MaintenanceServiceImpl implements MaintenanceService {
     @Override
     public MaintenanceEntity findByMaintenanceNum(String maintenanceNum) {
         return this.maintenanceRepository.findByMaintenanceNum(maintenanceNum);
+    }
+
+    @Override
+    public MaintenanceEntity getRandomMaintenance() {
+        long maxRandomNumber = this.maintenanceRepository.count();
+        long randomId = this.random.nextInt((int) maxRandomNumber) +1;
+
+        return this.maintenanceRepository.getOne(randomId);
     }
 
     @Override

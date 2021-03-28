@@ -12,7 +12,7 @@ public class GlobalConstants {
     public static String AIRCRAFT_MOCK_DATA_PATH = "src/main/resources/mock-data/aircraft.json";
     public static String EVENTS_MOCK_DATA_PATH = "src/main/resources/mock-data/maintenance.json";
     public static String TASKS_MOCK_DATA_PATH = "src/main/resources/mock-data/tasks.json";
-    public static String TICKETS_MOCK_DATA_PATH = "src/main/resources/mock-data/tickets.json";
+    public static String REPLIES_MOCK_DATA_PATH = "src/main/resources/mock-data/replies.json";
     public static  String FACILITIES_MOCK_DATA_PATH = "src/main/resources/mock-data/facilities.json";
 
 }

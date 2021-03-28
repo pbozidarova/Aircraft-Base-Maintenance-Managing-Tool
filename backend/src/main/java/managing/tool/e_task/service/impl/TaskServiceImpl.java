@@ -123,6 +123,13 @@ public class TaskServiceImpl implements TaskService {
         return this.findTaskByTaskNumber(taskNum) != null;
     }
 
+    @Override
+    public TaskEntity getRandomTask() {
+        long maxRandomNumber = this.taskRepository.count();
+        long randomId = this.random.nextInt((int) maxRandomNumber);
+
+        return this.taskRepository.getOne(randomId);
+    }
 
 
     @Override

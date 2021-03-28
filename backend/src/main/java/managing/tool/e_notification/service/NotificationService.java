@@ -9,6 +9,9 @@ import java.util.List;
 
 public interface NotificationService {
 
+    void generateMockupNotificationsOnInitialLaunch();
+    boolean notificationsExist();
+
     List<NotificationViewDto> findAllNotifications();
     List<NotificationViewDto> findAllNotificationsByAuthor(String companyNum);
     List<NotificationViewDto> findAllNotificationByMaintenance(String maintenanceNum);

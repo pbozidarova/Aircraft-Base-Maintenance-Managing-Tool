@@ -1,6 +1,7 @@
 package managing.tool.e_task.service.impl;
 
 import com.google.gson.Gson;
+import lombok.AllArgsConstructor;
 import managing.tool.e_maintenance.service.MaintenanceService;
 import managing.tool.e_task.model.TaskEntity;
 import managing.tool.e_task.model.dto.TaskSeedDto;
@@ -23,6 +24,7 @@ import static managing.tool.constants.GlobalConstants.TASKS_MOCK_DATA_PATH;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class TaskSeedServiceImpl implements TaskSeedService {
     private final TaskRepository taskRepository;
     private final UserService userService;
@@ -30,17 +32,6 @@ public class TaskSeedServiceImpl implements TaskSeedService {
     private final ModelMapper modelMapper;
     private final Gson gson;
     private final Random random;
-
-    public TaskSeedServiceImpl(TaskRepository taskRepository, UserService userService, MaintenanceService maintenanceService, ModelMapper modelMapper, Gson gson, Random random) {
-        this.taskRepository = taskRepository;
-        this.userService = userService;
-        this.maintenanceService = maintenanceService;
-        this.modelMapper = modelMapper;
-        this.gson = gson;
-        this.random = random;
-    }
-
-
 
     @Override
     public void seedTasks() throws FileNotFoundException {

@@ -28,4 +28,6 @@ public interface TaskService {
 
 
     Boolean taskExists(String taskNum);
+
+    TaskEntity getRandomTask();
 }
