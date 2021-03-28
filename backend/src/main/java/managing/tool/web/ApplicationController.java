@@ -42,6 +42,7 @@ public class ApplicationController implements CommandLineRunner {
         this.taskSeedService.seedTasks();
         this.maintenanceSeedService.seedMaintenance();
         this.replySeedService.seedReplies();
+        this.notificationService.generateMockupNotificationsOnInitialLaunch();
 
     }
 }

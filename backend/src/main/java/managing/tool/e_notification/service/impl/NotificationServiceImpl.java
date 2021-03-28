@@ -17,8 +17,10 @@ import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -26,6 +28,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository notificationRepository;
@@ -71,17 +74,15 @@ public class NotificationServiceImpl implements NotificationService {
                                       .setStatus(randomStatus)
                                       .setMaintenance(randomMaintenance)
                                       .setTask(randomTask)
+                                      .setDueDate(Instant.now().plus(3, ChronoUnit.DAYS))
                                       .setCreatedOn(Instant.now());
 
                     if(randomStatus.equals(NotificationStatusEnum.CLOSED)) {
                         NotificationClassificationEnum randomClassification = classificationEnum[random.nextInt(classificationEnumLength)];
                         notificationEntity.setClassification(randomClassification);
                     }
-
                     this.notificationRepository.save(notificationEntity);
                 });
-
-
     }
 
     @Override
@@ -94,7 +95,18 @@ public class NotificationServiceImpl implements NotificationService {
         return this.notificationRepository
                 .findAll()
                 .stream()
-                .map(i -> this.modelMapper.map(i, NotificationViewDto.class))
+                .map(notificationEntity -> {
+                    NotificationViewDto notificationViewDto = this.modelMapper.map(notificationEntity, NotificationViewDto.class);
+
+                    notificationViewDto
+                            .setAuthor(String.format("%s - %s, %s",
+                                        notificationEntity.getAuthor().getCompanyNum(),
+                                        notificationEntity.getAuthor().getLastName(),
+                                        notificationEntity.getAuthor().getFirstName()
+                            ));
+
+                    return notificationViewDto;
+                })
                 .collect(Collectors.toList());
     }
 

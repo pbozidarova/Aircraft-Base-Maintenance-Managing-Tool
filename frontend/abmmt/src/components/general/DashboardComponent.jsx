@@ -36,26 +36,26 @@ class DashboardComponent extends Component {
     }
 
     refreshData(){
-      Object.keys(this.state).forEach((key, index) => {
-        let responseKey = FETCH_DATA_KEY[key]
-        BackendService.getAll(key)
-        .then(
-            response => {
-              let responseKeyObj = response.data._embedded[responseKey] != null 
-                                  ? response.data._embedded[responseKey]
-                                  : []
+      // // Object.keys(this.state).forEach((key, index) => {
+      // //   let responseKey = FETCH_DATA_KEY[key]
+      // //   BackendService.getAll(key)
+      // //   .then(
+      // //       response => {
+      // //         let responseKeyObj = response.data._embedded[responseKey] != null 
+      // //                             ? response.data._embedded[responseKey]
+      // //                             : []
 
-              // setTimeout(() => {
-              //   console.log(response.data);
-              //   console.log(index);
-                this.setState({
-                    loading : index == 0 ? false : true, 
-                    [key] : response.data._embedded[responseKey]
-                },  () => {console.log(this.state); Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData)});
-              // }, 500);
-            }
-        ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
-      })
+      // //         // setTimeout(() => {
+      // //         //   console.log(response.data);
+      // //         //   console.log(index);
+      // //           this.setState({
+      // //               loading : index == 0 ? false : true, 
+      // //               [key] : response.data._embedded[responseKey]
+      // //           },  () => {console.log(this.state); Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData)});
+      // //         // }, 500);
+      // //       }
+      // //   ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
+      // })
 
       
     }

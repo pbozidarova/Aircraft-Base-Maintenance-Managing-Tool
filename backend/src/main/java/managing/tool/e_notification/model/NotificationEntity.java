@@ -68,7 +68,7 @@ public class NotificationEntity extends BaseEntity {
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "classification", nullable = false)
+    @Column(name = "classification")
     public NotificationClassificationEnum getClassification() {
         return classification;
     }

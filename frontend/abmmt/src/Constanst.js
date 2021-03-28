@@ -93,11 +93,17 @@ export const MAINTENANCE_DISABLED_FIELDS ={}
 
 //NOTIFICATIONS--------------------------------------------
 export const NOTIFICATIONS_HEADER_DATA = {
-    // maintenanceNum: 'Maintenance Number',
+    notificationNum: 'Notification Number',
+    author: 'Author',
+    status: 'Status',
+    classification: 'Classification',
+    dueDate: 'Due date',
+    maintenanceNum: 'Maintenance Number',
+    taskNum: 'Task Number'
+
     // aircraftRegistration: 'Aircraft Registration',
     // startDate: 'Start Date',
     // endDate: 'End Date',
-    // status: 'Status',
     // facility: 'Facility',
     // responsibleEngineer: 'Responsible Engineer'
 }

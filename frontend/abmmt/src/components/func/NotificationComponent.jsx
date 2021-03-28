@@ -57,7 +57,6 @@ class NotificationComponent extends Component {
         BackendService.fetchDataFrom(hateoasUrl)
         .then(
             response => {
-                console.log(this.props.handleInfo)
                 this.setState({
                     loading : false, 
                     notifications : response.data._embedded[key]
@@ -72,10 +71,10 @@ class NotificationComponent extends Component {
             response => {
                 this.setState({
                     loading : false, 
-                    notifications : response.data.embedded[key]
-                }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData));
+                    notifications : response.data
+                }, () => {console.log(this.state); Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData)});
             }
-        ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
+        ).catch(e => {console.log(e); Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData )});
 
     }
    

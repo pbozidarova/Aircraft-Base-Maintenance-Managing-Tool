@@ -28,15 +28,12 @@ public class NotificationREADController {
     }
 
     @GetMapping("/user/{companyNum}")
-    public ResponseEntity<CollectionModel<EntityModel<NotificationViewDto>>> findAllIssuesRaisedBy(@PathVariable String companyNum){
+    public ResponseEntity<List<NotificationViewDto>> findAllIssuesRaisedBy(@PathVariable String companyNum){
 
-        List<EntityModel<NotificationViewDto>> issues = this.notificationService
-                .findAllNotificationsByAuthor(companyNum)
-                .stream()
-                .map(EntityModel::of)
-                .collect(Collectors.toList());
+        List<NotificationViewDto> issues = this.notificationService
+                .findAllNotificationsByAuthor(companyNum);
 
-        return ResponseEntity.ok(CollectionModel.of(issues));
+        return ResponseEntity.ok().body(issues);
     }
 
     @GetMapping("/maintenance/{maintenanceNum}")

@@ -1,23 +1,33 @@
 package managing.tool.e_notification.model.dto;
 
+import managing.tool.e_maintenance.model.MaintenanceEntity;
+import managing.tool.e_notification.model.NotificationClassificationEnum;
+import managing.tool.e_notification.model.NotificationStatusEnum;
+import managing.tool.e_notification.model.ReplyEntity;
+import managing.tool.e_task.model.TaskEntity;
+import managing.tool.e_user.model.UserEntity;
+
+import java.time.Instant;
+import java.util.Set;
+
 public class NotificationViewDto {
-    private String issueNum;
+    private String notificationNum;
     private String author;
     private String status;
     private String classification;
     private String dueDate;
-
-    private String maintenance;
+    private String maintenanceNum;
+    private String taskNum;
 
     public NotificationViewDto() {
     }
 
-    public String getIssueNum() {
-        return issueNum;
+    public String getNotificationNum() {
+        return notificationNum;
     }
 
-    public NotificationViewDto setIssueNum(String issueNum) {
-        this.issueNum = issueNum;
+    public NotificationViewDto setNotificationNum(String notificationNum) {
+        this.notificationNum = notificationNum;
         return this;
     }
 
@@ -57,12 +67,21 @@ public class NotificationViewDto {
         return this;
     }
 
-    public String getMaintenance() {
-        return maintenance;
+    public String getMaintenanceNum() {
+        return maintenanceNum;
     }
 
-    public NotificationViewDto setMaintenance(String maintenance) {
-        this.maintenance = maintenance;
+    public NotificationViewDto setMaintenanceNum(String maintenanceNum) {
+        this.maintenanceNum = maintenanceNum;
+        return this;
+    }
+
+    public String getTaskNum() {
+        return taskNum;
+    }
+
+    public NotificationViewDto setTaskNum(String taskNum) {
+        this.taskNum = taskNum;
         return this;
     }
 }
