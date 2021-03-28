@@ -37,16 +37,22 @@ class DashboardComponent extends Component {
 
     refreshData(){
       Object.keys(this.state).forEach((key, index) => {
-        key != 'loading' &&
+        let responseKey = FETCH_DATA_KEY[key]
         BackendService.getAll(key)
         .then(
             response => {
-                console.log(response.data);
-                console.log(index);
+              let responseKeyObj = response.data._embedded[responseKey] != null 
+                                  ? response.data._embedded[responseKey]
+                                  : []
+
+              // setTimeout(() => {
+              //   console.log(response.data);
+              //   console.log(index);
                 this.setState({
                     loading : index == 0 ? false : true, 
-                    [key] : response.data._embedded.FETCH_DATA_KEY[key]
+                    [key] : response.data._embedded[responseKey]
                 },  () => {console.log(this.state); Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData)});
+              // }, 500);
             }
         ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
       })
@@ -64,7 +70,19 @@ class DashboardComponent extends Component {
             
             { this.state.loading && <CircularProgress color="secondary"/> }
 
-            <Grid item xs={12} md={5} lg={4}>
+            <Grid item xs={12} md={7} lg={12}>
+              <Paper className={fixedHeightPaper}>
+                <DataComponent 
+                        tableRows={this.state.notifications}
+                        tableHeader = {NOTIFICATIONS_HEADER_DATA}
+                        selectedId={this.state.notifications[0]}
+                        selectRow={this.selectFacility} 
+                    />
+
+              </Paper>
+            </Grid>
+
+            <Grid item xs={12} md={5} lg={6}>
               <Paper className={classes.paper, classes.fixedHeightDash}>
               <DataComponent 
                         tableRows={this.state.tasks}
@@ -76,7 +94,7 @@ class DashboardComponent extends Component {
               </Paper>
             </Grid>
             
-            <Grid item xs={12} md={5} lg={4}>
+            <Grid item xs={12} md={5} lg={6}>
               <Paper className={fixedHeightPaper}>
                 <DataComponent 
                         tableRows={this.state.maintenance}
@@ -87,17 +105,7 @@ class DashboardComponent extends Component {
                  
               </Paper>
             </Grid>
-            <Grid item xs={12} md={7} lg={4}>
-              <Paper className={fixedHeightPaper}>
-                {/* <DataComponent 
-                        tableRows={this.state.notifications}
-                        tableHeader = {NOTIFICATIONS_HEADER_DATA}
-                        selectedId={this.state.notifications[0]}
-                        selectRow={this.selectFacility} 
-                    /> */}
-
-              </Paper>
-            </Grid>
+            
             
            
           </Grid>
