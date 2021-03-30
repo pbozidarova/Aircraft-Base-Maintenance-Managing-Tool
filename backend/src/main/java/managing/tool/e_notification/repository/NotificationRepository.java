@@ -18,5 +18,5 @@ public interface NotificationRepository extends JpaRepository<NotificationEntity
     List<NotificationEntity> findAllByAuthor(UserEntity userEntity);
     List<NotificationEntity> findAllByMaintenance(MaintenanceEntity maintenanceEntity);
     List<NotificationEntity> findAllByTask(TaskEntity taskEntity);
-    List<ReplyEntity> findAllByNotificationNum(String notificationNum);
+
 }

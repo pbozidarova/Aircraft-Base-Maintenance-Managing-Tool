@@ -14,7 +14,7 @@ import java.util.Set;
 public class NotificationEntity extends BaseEntity {
 
     private String notificationNum;
-    private Set<ReplyEntity> communication;
+    private Set<ReplyEntity> replies;
     private UserEntity author;
     private NotificationStatusEnum status;
     private NotificationClassificationEnum classification;
@@ -37,12 +37,12 @@ public class NotificationEntity extends BaseEntity {
     }
 
     @OneToMany
-    public Set<ReplyEntity> getCommunication() {
-        return communication;
+    public Set<ReplyEntity> getReplies() {
+        return replies;
     }
 
-    public NotificationEntity setCommunication(Set<ReplyEntity> communication) {
-        this.communication = communication;
+    public NotificationEntity setReplies(Set<ReplyEntity> communication) {
+        this.replies = communication;
         return this;
     }
 

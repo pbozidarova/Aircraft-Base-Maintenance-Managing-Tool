@@ -70,7 +70,7 @@ public class NotificationServiceImpl implements NotificationService {
                             randomTask.getTaskNum());
 
                     notificationEntity.setNotificationNum(notificationNum)
-                                      .setCommunication(communication)
+                                      .setReplies(communication)
                                       .setAuthor(this.userService.getRandomUser())
                                       .setStatus(randomStatus)
                                       .setMaintenance(randomMaintenance)
@@ -161,7 +161,8 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public List<ReplyViewDto> getCommunication(String notificationNum) {
         return this.notificationRepository
-                        .findAllByNotificationNum(notificationNum)
+                        .findByNotificationNum(notificationNum)
+                        .getReplies()
                         .stream()
                         .map(reply -> {
                             ReplyViewDto replyViewDto = this.modelMapper.map(reply, ReplyViewDto.class);
