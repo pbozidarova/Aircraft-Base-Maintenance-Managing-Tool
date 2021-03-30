@@ -27,7 +27,7 @@ public class NotificationCUDController {
     private final NotificationService notificationService;
 
     @PutMapping("/{notificationNum}/update")
-    public ResponseEntity<NotificationViewDto> updateSingleNotification(
+    public ResponseEntity<NotificationViewDto> updateNotification(
             @PathVariable String notificationNum, @RequestBody NotificationViewDto notificationDataForUpdate ){
 
         if(!this.notificationService.notificationExists(notificationNum)){
@@ -43,7 +43,7 @@ public class NotificationCUDController {
     }
 
     @PutMapping("/{notificationNum}/create")
-    public ResponseEntity<NotificationViewDto> createSingleUser(
+    public ResponseEntity<NotificationViewDto> createNotification(
             @PathVariable String notificationNum, @RequestBody NotificationViewDto notificationNewData ){
 
         if(this.notificationService.notificationExists(notificationNum)){

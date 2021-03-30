@@ -5,14 +5,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
 public abstract class BaseEntity {
 
     private long id;
-    private Instant createdOn;
-    private Instant updatedOn;
+    private LocalDateTime createdOn;
+    private LocalDateTime updatedOn;
 
     public BaseEntity() {
     }
@@ -28,20 +29,20 @@ public abstract class BaseEntity {
         return this;
     }
 
-    public Instant getCreatedOn() {
+    public LocalDateTime getCreatedOn() {
         return createdOn;
     }
 
-    public BaseEntity setCreatedOn(Instant createdOn) {
+    public BaseEntity setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
         return this;
     }
 
-    public Instant getUpdatedOn() {
+    public LocalDateTime getUpdatedOn() {
         return updatedOn;
     }
 
-    public BaseEntity setUpdatedOn(Instant updatedOn) {
+    public BaseEntity setUpdatedOn(LocalDateTime updatedOn) {
         this.updatedOn = updatedOn;
         return this;
     }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,7 +37,7 @@ public class AircraftServiceImpl implements AircraftService {
         AircraftEntity aircraftExisting = this.aircraftRepository.findByAircraftRegistration(aircraftDataForUpdate.getAircraftRegistration());
 
         aircraftNewData.setId(aircraftExisting.getId());
-        aircraftNewData.setUpdatedOn(Instant.now());
+        aircraftNewData.setUpdatedOn(LocalDateTime.now());
 
         return this.modelMapper.map(this.aircraftRepository.save(aircraftNewData), AircraftViewDto.class);
     }
@@ -44,7 +45,7 @@ public class AircraftServiceImpl implements AircraftService {
     @Override
     public AircraftViewDto createAircraft(AircraftViewDto aircraftNew, String jwt) {
         AircraftEntity aircraftToCreate = this.modelMapper.map(aircraftNew, AircraftEntity.class);
-        aircraftToCreate.setCreatedOn(Instant.now());
+        aircraftToCreate.setCreatedOn(LocalDateTime.now());
 
         return this.modelMapper.map(this.aircraftRepository.save(aircraftToCreate), AircraftViewDto.class);
     }

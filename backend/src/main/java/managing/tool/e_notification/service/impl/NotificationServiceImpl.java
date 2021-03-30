@@ -22,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.List;
@@ -75,8 +77,8 @@ public class NotificationServiceImpl implements NotificationService {
                                       .setStatus(randomStatus)
                                       .setMaintenance(randomMaintenance)
                                       .setTask(randomTask)
-                                      .setDueDate(Instant.now().plus(3, ChronoUnit.DAYS))
-                                      .setCreatedOn(Instant.now());
+                                      .setDueDate(LocalDate.now().plusDays(3))
+                                      .setCreatedOn(LocalDateTime.now());
 
                     if(randomStatus.equals(NotificationStatusEnum.CLOSED)) {
                         NotificationClassificationEnum randomClassification = classificationEnum[random.nextInt(classificationEnumLength)];
@@ -167,11 +169,24 @@ public class NotificationServiceImpl implements NotificationService {
                         .map(reply -> {
                             ReplyViewDto replyViewDto = this.modelMapper.map(reply, ReplyViewDto.class);
 
-                            replyViewDto.setAuthor(this.serviceUtil.userViewStringBuild(reply.getAuthor()));
+                            replyViewDto.setAuthor(this.serviceUtil.userViewStringBuild(reply.getAuthor()))
+                                        .setCreatedOn(reply.getCreatedOn().toString().replace("T", " "));
 
                             return replyViewDto;
                         }).collect(Collectors.toList());
     }
 
+    @Override
+    public ReplyViewDto createReply(String notificationNum, String jwt) {
 
+        ReplyEntity reply = new ReplyEntity();
+        UserEntity author = this.serviceUtil.identifyingUserFromToken(jwt);
+        reply.setAuthor(author)
+                .setCreatedOn(LocalDateTime.now());
+
+        ReplyEntity replySaved = this.replyService.saveReply(reply);
+        this.notificationRepository.findByNotificationNum(notificationNum).getReplies().add(replySaved);
+
+        return this.modelMapper.map(reply, ReplyViewDto.class);
+    }
 }

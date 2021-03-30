@@ -26,4 +26,6 @@ public interface NotificationService {
     NotificationViewDto createNotification(NotificationViewDto notificationViewDto);
 
     List<ReplyViewDto> getCommunication(String notificationNum);
+
+    ReplyViewDto createReply(String notificationNum, String jwt);
 }

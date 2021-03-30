@@ -4,10 +4,17 @@ package managing.tool.e_notification.web;
 import lombok.AllArgsConstructor;
 import managing.tool.e_notification.model.dto.ReplyViewDto;
 import managing.tool.e_notification.service.NotificationService;
+import managing.tool.e_task.model.dto.TaskViewDto;
+import managing.tool.exception.FoundInDb;
+import managing.tool.exception.NotFoundInDb;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static managing.tool.constants.GlobalConstants.FOUNDERROR;
+import static managing.tool.constants.GlobalConstants.NOTFOUNDERROR;
 
 @RestController
 @CrossOrigin
@@ -23,6 +30,20 @@ public class ReplyController {
                 this.notificationService.getCommunication(notificationNum);
 
         return ResponseEntity.ok().body(communication);
+    }
+
+    @PutMapping("/{notificationNum}/create")
+    public ResponseEntity<ReplyViewDto> createReplyForNotification(
+            @RequestHeader("authorization") String jwt,
+            @PathVariable String notificationNum, @RequestBody ReplyViewDto replyToCreate ){
+
+        if(this.notificationService.notificationExists(notificationNum)){
+            throw new NotFoundInDb(String.format(NOTFOUNDERROR, notificationNum), "notificationNum");
+        }
+
+        ReplyViewDto replyCreated = this.notificationService.createReply(notificationNum, jwt);
+
+        return new ResponseEntity<>(replyCreated, HttpStatus.OK);
     }
 
 }

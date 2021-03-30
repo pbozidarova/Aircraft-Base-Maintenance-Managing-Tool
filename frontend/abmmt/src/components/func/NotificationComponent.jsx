@@ -165,6 +165,7 @@ class NotificationComponent extends Component {
                         tableHeader={NOTIFICATIONS_HEADER_DATA}
                         selectedId={this.state.selected.notificationNum}
                         selectRow={this.selectNotification} 
+                        handleInfo={this.handleInfo}
                     />
                 </Paper>
                </Grid>

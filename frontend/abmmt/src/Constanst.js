@@ -9,6 +9,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import LocalAirportIcon from '@material-ui/icons/LocalAirport';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import SendIcon from '@material-ui/icons/Send';
+import AttachFileIcon from '@material-ui/icons/AttachFile';
 
 
 export const BACKEND_URL = 'http://localhost:8000';
@@ -37,6 +38,7 @@ export const ICONS_MAPPING = {
     aircraft: <LocalAirportIcon />,
     update: <CloudUploadIcon />,
     create: < SendIcon/>,
+    attach: <AttachFileIcon/>
 }
 
 export const FETCH_DATA_KEY = {
@@ -98,8 +100,8 @@ export const NOTIFICATIONS_HEADER_DATA = {
     status: 'Status',
     classification: 'Classification',
     dueDate: 'Due date',
-    maintenanceNum: 'Maintenance Number',
-    taskNum: 'Task Number'
+    // maintenanceNum: 'Maintenance Number',
+    // taskNum: 'Task Number'
 
     // aircraftRegistration: 'Aircraft Registration',
     // startDate: 'Start Date',

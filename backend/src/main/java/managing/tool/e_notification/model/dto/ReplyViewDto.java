@@ -4,6 +4,7 @@ public class ReplyViewDto {
 
     private String description;
     private String author;
+    private String createdOn;
 
     public String getDescription() {
         return description;
@@ -20,6 +21,15 @@ public class ReplyViewDto {
 
     public ReplyViewDto setAuthor(String author) {
         this.author = author;
+        return this;
+    }
+
+    public String getCreatedOn() {
+        return createdOn;
+    }
+
+    public ReplyViewDto setCreatedOn(String createdOn) {
+        this.createdOn = createdOn;
         return this;
     }
 }

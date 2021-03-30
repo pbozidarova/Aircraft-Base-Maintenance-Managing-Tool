@@ -21,6 +21,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -50,7 +51,7 @@ public class MaintenanceServiceImpl implements MaintenanceService {
                 .setStatus(MaintenanceStatusEnum.valueOf(maintenanceDataForUpdate.getStatus()))
                 .setResponsibleEngineer(responsibleEngineer)
                 .setId(maintenanceExisting.getId())
-                .setUpdatedOn(Instant.now());
+                .setUpdatedOn(LocalDateTime.now());
 
         return this.modelMapper.map(this.maintenanceRepository.save(maintenanceToUpdate), MaintenanceViewDto.class);
     }
@@ -67,7 +68,7 @@ public class MaintenanceServiceImpl implements MaintenanceService {
                 .setFacility(this.facilityService.getFacilityByName(maintenanceNew.getFacility()))
                 .setStatus(MaintenanceStatusEnum.valueOf(maintenanceNew.getStatus()))
                 .setResponsibleEngineer(responsibleEngineer)
-                .setCreatedOn(Instant.now());
+                .setCreatedOn(LocalDateTime.now());
 
         return this.modelMapper.map(this.maintenanceRepository.save(maintenanceToCreate), MaintenanceViewDto.class);
 

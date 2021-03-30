@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -48,7 +49,7 @@ public class UserCreateUpdateServiceImpl implements UserCreateUpdateService {
 
         allocateRoles(userEntity, userViewDto.getRoles());
 
-        userEntity.setUpdatedOn(Instant.now());
+        userEntity.setUpdatedOn(LocalDateTime.now());
 
 
         return this.modelMapper.map(this.userRepository.save( userEntity) , UserViewDto.class);
@@ -78,8 +79,8 @@ public class UserCreateUpdateServiceImpl implements UserCreateUpdateService {
 
         allocateRoles(user, userViewDto.getRoles());
 
-        user.setUpdatedOn(Instant.now());
-        user.setCreatedOn(Instant.now());
+        user.setUpdatedOn(LocalDateTime.now());
+        user.setCreatedOn(LocalDateTime.now());
 
         this.userRepository.save(user);
 

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -144,7 +145,7 @@ public class TaskServiceImpl implements TaskService {
 
         taskToUpdate.setPreparedBy(updatedPrepTeam)
                 .setId(taskExisting.getId())
-                .setUpdatedOn(Instant.now());
+                .setUpdatedOn(LocalDateTime.now());
 
         return this.modelMapper.map(this.taskRepository.save(taskToUpdate), TaskViewDto.class);
     }
@@ -157,7 +158,7 @@ public class TaskServiceImpl implements TaskService {
         Set<UserEntity> creatingTeam = preparingTeam(new HashSet<>(), token);
 
         taskToCreate.setPreparedBy(creatingTeam)
-                .setCreatedOn(Instant.now());
+                .setCreatedOn(LocalDateTime.now());
 
         return this.modelMapper.map(this.taskRepository.save(taskToCreate), TaskViewDto.class);
     }

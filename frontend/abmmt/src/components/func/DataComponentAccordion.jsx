@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import {ICONS_MAPPING} from '../../Constanst.js'
 import Utils from '../Utils'
 import { withRouter } from 'react-router';
+import BackendService from '../../api/CommonAPI.js'
+import {MESSAGES} from '../../Constanst.js'
 
 import EditIcon from '@material-ui/icons/Edit';
 import TableRow from '@material-ui/core/TableRow';
@@ -11,15 +13,18 @@ import TableContainer from '@material-ui/core/TableRow';
 import Table from '@material-ui/core/TableRow';
 import TableBody from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
+import Button from '@material-ui/core/Button';
+
 
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
-import Paper from '@material-ui/core/Paper';
+import SendIcon from '@material-ui/icons/Send';
+import TextField from '@material-ui/core/TextField';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
-import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 
@@ -41,6 +46,8 @@ class DataComponentAccordion extends Component{
             page: 0,
             rowsPerPage: 5,
             open: false,
+            replies: [],
+            newReply: '',
         }
 
         this.isSelected = this.isSelected.bind(this)
@@ -61,17 +68,36 @@ class DataComponentAccordion extends Component{
         this.setState({rowsPerPage: parseInt(event.target.value, 10)});
         this.setState({page: 0});
     }
+
+    fetchAndExpand(index, notificationNum){
+        BackendService.getOne('replies', notificationNum)
+            .then(response => {
+                
+                this.setState( { 
+                    ...this.state, 
+                    open: {[index]:!this.state.open.[index]},
+                    replies: response.data
+                }, () => {console.log(this.state); Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData)});
+            }
+        ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
+
+    }
+
+    saveReply(notificationNum){
+        
+    }
+
     render(){
         const { classes } = this.props;
 
         return(
-            <div>
+            <>
             <TableContainer>
-            <Table  className={classes.table}>
+            <Table  className={classes.table} >
             <TableBody>
-                <TableHead>
+                <TableHead> 
                     <TableRow size="small"  className={classes.tableRow}>
-                        <TableCell />
+                        <TableCell  />
 
                         { this.props.tableRows[0] && 
                             Object.keys(this.props.tableRows[0])
@@ -84,89 +110,124 @@ class DataComponentAccordion extends Component{
                 </TableHead>
                 
                 {this.props.tableRows
-                        .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
-                        .map((tableRow, index) => {
+                .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
+                .map((tableRow, index) => {
+                    let notificationNum = tableRow.notificationNum;
+                    
+                    return (   
+                        <>
+                        <TableRow  size="small"
+                            hover
+                            onClick={() => this.props.selectRow(tableRow)}
+                            tabIndex={-1}
+                            key={index}
+                            selected={this.isSelected(notificationNum)}
+                        >   
+
+                            <TableCell >
+                                <IconButton aria-label="expand row" size="small" 
+                                    onClick={() => this.fetchAndExpand(index, notificationNum)}>
+                                {this.state.open[index] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                </IconButton>
+                            </TableCell>
                             
-                            return (   
-                                <>
-                                <TableRow size="small"
-                                    hover
-                                    onClick={() => this.props.selectRow(tableRow)}
-                                    tabIndex={-1}
-                                    key={index}
-                                    selected={this.isSelected(Object.entries(tableRow)[0][1])}
-                                >   
+                            {Object.keys(this.props.tableHeader)
+                                .map(key => <TableCell  size="small" 
+                                                        className={classes.tableCell} 
+                                                        key={key} align="right">{tableRow[key]}</TableCell>)}
 
-                                    <TableCell>
-                                        <IconButton aria-label="expand row" size="small" 
-                                            onClick={() => this.setState( { ...this.state, open: {[index]:!this.state.open.[index]}}, console.log(this.state))}>
-                                        {this.state.open[index] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                                        </IconButton>
-                                    </TableCell>
+                            {tableRow._links && 
+                            
+                            <TableCell size="small" >
+                                <div className={classes.fab}>
+                                    {Object.keys(tableRow._links)
+                                    .map(link => 
+                                            <Tooltip title={`Go to ${link}`} aria-label="add">
+                                            <Fab 
+                                                size="small" 
+                                                color="primary" 
+                                                className={classes.fabChild}
+                                                onClick={  () => {console.log(tableRow); console.log(tableRow._links[link]);  Utils.redirectTo(this.props, `/${link}`, tableRow._links[link])}}>
+                                                {ICONS_MAPPING[link]}
+                                            </Fab>
+                                        </Tooltip>)
+                                    }
+                                </div>
+                            </TableCell>}
+                        </TableRow>           
+                        <TableRow>
+                            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                            <Collapse in={this.state.open[index]} timeout="auto" unmountOnExit>
+                                <Box margin={1}>
+                                <Table size="small" aria-label="replies" component={Paper}>
+                                    <TableBody>
+                                    <TableHead>
                                     
-                                    {Object.keys(this.props.tableHeader)
-                                        .map(key => <TableCell  size="small" 
-                                                                className={classes.tableCell} 
-                                                                key={key} align="right">{tableRow[key]}</TableCell>)}
-
-                                    {tableRow._links && 
+                                    <TableRow fullWidth>
+                                        <TableCell colSpan={4} align="left">Description</TableCell>
+                                        <TableCell align="left">Author</TableCell>
+                                        <TableCell align="left">Date</TableCell>
+                                        <TableCell align="left">Attachments</TableCell>
+                                    </TableRow>
+                                    </TableHead>
                                     
-                                    <TableCell size="small" >
-                                        <div className={classes.fab}>
-                                            {Object.keys(tableRow._links)
-                                            .map(link => 
-                                                    <Tooltip title={`Go to ${link}`} aria-label="add">
-                                                    <Fab 
-                                                        size="small" 
-                                                        color="primary" 
-                                                        className={classes.fabChild}
-                                                        onClick={  () => {console.log(tableRow); console.log(tableRow._links[link]);  Utils.redirectTo(this.props, `/${link}`, tableRow._links[link])}}>
-                                                        {ICONS_MAPPING[link]}
-                                                    </Fab>
-                                                </Tooltip>)
-                                            }
-                                        </div>
-                                    </TableCell>}
-                                </TableRow>           
-                                <TableRow>
-                                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                                    <Collapse in={this.state.open[index]} timeout="auto" unmountOnExit>
-                                        <Box margin={1}>
-                                        <Typography variant="h6" gutterBottom component="div">
-                                            History
-                                        </Typography>
-                                        <Table size="small" aria-label="purchases">
-                                            <TableHead>
-                                            <TableRow>
-                                                <TableCell>Date</TableCell>
-                                                <TableCell>Customer</TableCell>
-                                                <TableCell align="right">Amount</TableCell>
-                                                <TableCell align="right">Total price ($)</TableCell>
+                                    {this.state.replies.map(reply => {
+                                        
+                                       return <>
+                                            <TableRow >
+                                                {Object.keys(reply).map(key => <TableCell colSpan={key=='description' ? 4 : 1}>{reply[key]}</TableCell>)}
                                             </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                            
-                                                <TableRow >
-                                                <TableCell>
-                                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci perferendis ipsa voluptatem laudantium, odio cumque quam accusantium natus quis tempore temporibus aperiam voluptatibus fugit voluptate ipsum hic quasi inventore at.    
+                                            <TableRow >
+                                                <TableCell colSpan={4} >
+                                                    <TextField
+                                                        fullWidth
+                                                        // id={key}
+                                                        // name={key}
+                                                        label={"Enter your reply here"}
+                                                        // defaultValue={selected[key]}
+                                                        // disabled={disabledFields[key]}
+                                                        rows={3}
+                                                        multiline
+                                                        // onChange={handleChange}
+                                                        // error={errors[key] && errors.length > 0}
+                                                        helperText={''}
+                                                    /> 
+                                                </TableCell>
+                                                <TableCell  align="right">
+                                                    <Button 
+                                                        variant="contained" 
+                                                        className={classes.menuButton}
+                                                        color="default"
+                                                        endIcon={ICONS_MAPPING.attach}>Attach</Button>
+                                                    
                                                 </TableCell>
                                                 <TableCell>
-                                                    Author
+                                                    <Button
+                                                        variant="contained" 
+                                                        className={classes.menuButton}
+                                                        color="default"
+                                                        endIcon={ICONS_MAPPING.create}
+                                                        onClick={() => this.saveReply(notificationNum)}
+                                                        >Send</Button>
                                                 </TableCell>
-                                                
-                                                </TableRow>
-                                            
-                                            </TableBody>
-                                        </Table>
-                                        </Box>
-                                    </Collapse>
-                                    </TableCell>
-                                </TableRow>
+                                            </TableRow>
+                                            <TableRow>
+                                               
+                                            </TableRow>
+                                        </>
+                                        })
+                                    }
+                                    </TableBody>
+                                </Table>
+                                </Box>
+                            </Collapse>
+                            </TableCell>
+                        </TableRow>
 
-                                </>
+                        </>
 
-                            )   
-                        })
+                    )   
+                })
                     }
             </TableBody>
             </Table>
@@ -181,7 +242,7 @@ class DataComponentAccordion extends Component{
                 onChangePage={this.handleChangePage}
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
             />
-         </div>
+         </>
         )
     }
 

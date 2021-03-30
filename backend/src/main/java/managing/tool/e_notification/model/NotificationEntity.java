@@ -7,6 +7,8 @@ import managing.tool.e_user.model.UserEntity;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -18,7 +20,7 @@ public class NotificationEntity extends BaseEntity {
     private UserEntity author;
     private NotificationStatusEnum status;
     private NotificationClassificationEnum classification;
-    private Instant dueDate;
+    private LocalDate dueDate;
 
     private MaintenanceEntity maintenance;
     private TaskEntity task;
@@ -79,14 +81,18 @@ public class NotificationEntity extends BaseEntity {
     }
 
     @Column(name = "due_date", nullable = false)
-    public Instant getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public NotificationEntity setDueDate(Instant dueDate) {
+    public NotificationEntity setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
         return this;
     }
+
+
+
+
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     public MaintenanceEntity getMaintenance() {

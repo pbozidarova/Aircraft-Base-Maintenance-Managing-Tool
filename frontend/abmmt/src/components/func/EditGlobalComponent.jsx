@@ -84,7 +84,7 @@ class EditGlobalComponent extends Component {
           {console.log(selected) ||
           Object.keys(GLOBAL_SELECT_FIELDS).map(key => {                                              
             // console.log(key)
-            console.log(key + ' ' + selected[key])
+            // console.log(key + ' ' + selected[key])
             return (
               this.props.labels[key] &&
               <FormControl 

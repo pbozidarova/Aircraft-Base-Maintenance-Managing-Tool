@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -39,7 +40,7 @@ public class ReplyServiceImpl implements ReplyService {
         Arrays.stream(dtos).forEach(dto -> {
             ReplyEntity replyEntity = this.modelMapper.map(dto, ReplyEntity.class);
             replyEntity.setAuthor(this.userService.getRandomUser());
-            replyEntity.setCreatedOn(Instant.now());
+            replyEntity.setCreatedOn(LocalDateTime.now());
 
             this.replyRepository.save(replyEntity);
         });
@@ -53,6 +54,11 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
     public List<ReplyEntity> findAll() {
         return this.replyRepository.findAll();
+    }
+
+    @Override
+    public ReplyEntity saveReply(ReplyEntity reply) {
+        return this.replyRepository.save(reply);
     }
 
 

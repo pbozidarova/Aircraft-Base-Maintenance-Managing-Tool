@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +41,7 @@ public class FacilityServiceImpl implements FacilityService {
 
         facilityToBeUpdated.setManager(this.userService.findByCompanyNum(companyNumOfManager))
                 .setEmployees(facilityExisting.getEmployees())
-                .setUpdatedOn(Instant.now())
+                .setUpdatedOn(LocalDateTime.now())
                 .setId(facilityExisting.getId());
 
         return this.modelMapper.map(this.facilityRepository.save(facilityToBeUpdated), FacilityViewDto.class);
@@ -52,7 +53,7 @@ public class FacilityServiceImpl implements FacilityService {
         String companyNumOfManager = this.serviceUtil.companyNumFromUserString(facilityNew.getManager());
 
         facilityToBeCreated.setManager(this.userService.findByCompanyNum(companyNumOfManager))
-                .setCreatedOn(Instant.now());
+                .setCreatedOn(LocalDateTime.now());
 
         return this.modelMapper.map(this.facilityRepository.save(facilityToBeCreated), FacilityViewDto.class);
     }
