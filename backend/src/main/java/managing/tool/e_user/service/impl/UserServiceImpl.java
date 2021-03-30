@@ -33,18 +33,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserViewDto findUser(String companyNum) {
         UserEntity userEntity = this.userRepository.findByCompanyNum(companyNum);
+        return this.buildUserVMRelationalStrings(userEntity);
 
-        UserViewDto userView = this.modelMapper
-                .map(userEntity,
-                        UserViewDto.class);
-        userView.setFacility(userEntity.getFacility().getName());
+//        UserViewDto userView = this.modelMapper.map(userEntity, UserViewDto.class);
 
-        userView.setRoles( userView
-                .getRoles()
-                .replace("[", "")
-                .replace("]", "")
-        );
-        return userView;
+//
+//        userView.setFacility(userEntity.getFacility().getName());
+//
+//        userView.setRoles( userView
+//                .getRoles()
+//                .replace("[", "")
+//                .replace("]", "")
+//        );
+//        return userView;
     }
 
 

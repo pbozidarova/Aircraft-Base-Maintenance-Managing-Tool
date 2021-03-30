@@ -27,6 +27,7 @@ public class NotificationREADController {
                 .body(this.notificationService.findAllNotifications());
     }
 
+    
     @GetMapping("/user/{companyNum}")
     public ResponseEntity<List<NotificationViewDto>> findAllIssuesRaisedBy(@PathVariable String companyNum){
 

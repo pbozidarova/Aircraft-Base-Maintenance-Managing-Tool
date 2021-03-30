@@ -12,6 +12,7 @@ import managing.tool.e_facility.repository.FacilityRepository;
 import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.repository.UserRepository;
 import managing.tool.e_user.service.UserService;
+import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,12 +30,13 @@ public class FacilityServiceImpl implements FacilityService {
     private final FacilityRepository facilityRepository;
     private final ModelMapper modelMapper;
     private final UserService userService;
+    private final ServiceUtil serviceUtil;
 
     @Override
     public FacilityViewDto updateFacility(FacilityViewDto facilityDataForUpdate, String jwt) {
         FacilityEntity facilityToBeUpdated = this.modelMapper.map(facilityDataForUpdate, FacilityEntity.class);
         FacilityEntity facilityExisting = this.facilityRepository.findByName(facilityDataForUpdate.getName());
-        String companyNumOfManager = facilityDataForUpdate.getManager().split(" - ")[0];
+        String companyNumOfManager = this.serviceUtil.companyNumFromUserString(facilityDataForUpdate.getManager());
 
         facilityToBeUpdated.setManager(this.userService.findByCompanyNum(companyNumOfManager))
                 .setEmployees(facilityExisting.getEmployees())
@@ -47,7 +49,7 @@ public class FacilityServiceImpl implements FacilityService {
     @Override
     public FacilityViewDto createFacility(FacilityViewDto facilityNew, String jwt) {
         FacilityEntity facilityToBeCreated = this.modelMapper.map(facilityNew, FacilityEntity.class);
-        String companyNumOfManager = facilityNew.getManager().split(" - ")[0];
+        String companyNumOfManager = this.serviceUtil.companyNumFromUserString(facilityNew.getManager());
 
         facilityToBeCreated.setManager(this.userService.findByCompanyNum(companyNumOfManager))
                 .setCreatedOn(Instant.now());
@@ -86,8 +88,8 @@ public class FacilityServiceImpl implements FacilityService {
                 .map(f -> {
                     FacilityViewDto facilityViewDto = this.modelMapper.map(f, FacilityViewDto.class);
                     facilityViewDto
-                            .setManager(String.format("%s - %s, %s", f.getManager().getCompanyNum(),
-                                                        f.getManager().getLastName(), f.getManager().getFirstName()));
+                            .setManager(this.serviceUtil.userViewStringBuild(f.getManager()));
+
                     return facilityViewDto;
                 })
                 .collect(Collectors.toList());

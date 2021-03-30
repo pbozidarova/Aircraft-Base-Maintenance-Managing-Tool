@@ -13,9 +13,17 @@ public class ServiceUtil {
     private final UserService userService;
 
 
-    public UserEntity userCreatingTheChange(String token){
+    public UserEntity identifyingUserFromToken(String token){
         String companyNum = this.jwtUtil.extractUsername(token.replace("Bearer ", ""));
         return this.userService.findByCompanyNum(companyNum);
+    }
+
+    public String userViewStringBuild(UserEntity userEntity){
+        return String.format("%s - %s, %s",  userEntity.getCompanyNum(), userEntity.getLastName(), userEntity.getFirstName());
+    }
+
+    public String companyNumFromUserString(String userViewStringBuilt){
+        return userViewStringBuilt.split(" - ")[0];
     }
 
 }

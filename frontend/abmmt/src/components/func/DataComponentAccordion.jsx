@@ -12,6 +12,17 @@ import Table from '@material-ui/core/TableRow';
 import TableBody from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
 
+import Box from '@material-ui/core/Box';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
+import Paper from '@material-ui/core/Paper';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
+
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 
@@ -22,13 +33,14 @@ import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
 
-class DataComponent extends Component{
+class DataComponentAccordion extends Component{
     constructor(props){
         super(props)
 
         this.state = {
             page: 0,
-            rowsPerPage: 5
+            rowsPerPage: 5,
+            open: false,
         }
 
         this.isSelected = this.isSelected.bind(this)
@@ -54,12 +66,13 @@ class DataComponent extends Component{
 
         return(
             <div>
-
             <TableContainer>
-            <Table className={classes.tableRow}>
+            <Table  className={classes.table}>
             <TableBody>
                 <TableHead>
-                    <TableRow size="small"  >
+                    <TableRow size="small"  className={classes.tableRow}>
+                        <TableCell />
+
                         { this.props.tableRows[0] && 
                             Object.keys(this.props.tableRows[0])
                                 .map(key => 
@@ -69,11 +82,13 @@ class DataComponent extends Component{
                         }
                     </TableRow>
                 </TableHead>
+                
                 {this.props.tableRows
                         .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
                         .map((tableRow, index) => {
                             
                             return (   
+                                <>
                                 <TableRow size="small"
                                     hover
                                     onClick={() => this.props.selectRow(tableRow)}
@@ -81,6 +96,14 @@ class DataComponent extends Component{
                                     key={index}
                                     selected={this.isSelected(Object.entries(tableRow)[0][1])}
                                 >   
+
+                                    <TableCell>
+                                        <IconButton aria-label="expand row" size="small" 
+                                            onClick={() => this.setState( { ...this.state, open: {[index]:!this.state.open.[index]}}, console.log(this.state))}>
+                                        {this.state.open[index] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                        </IconButton>
+                                    </TableCell>
+                                    
                                     {Object.keys(this.props.tableHeader)
                                         .map(key => <TableCell  size="small" 
                                                                 className={classes.tableCell} 
@@ -104,13 +127,51 @@ class DataComponent extends Component{
                                             }
                                         </div>
                                     </TableCell>}
-                                </TableRow>                
+                                </TableRow>           
+                                <TableRow>
+                                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                                    <Collapse in={this.state.open[index]} timeout="auto" unmountOnExit>
+                                        <Box margin={1}>
+                                        <Typography variant="h6" gutterBottom component="div">
+                                            History
+                                        </Typography>
+                                        <Table size="small" aria-label="purchases">
+                                            <TableHead>
+                                            <TableRow>
+                                                <TableCell>Date</TableCell>
+                                                <TableCell>Customer</TableCell>
+                                                <TableCell align="right">Amount</TableCell>
+                                                <TableCell align="right">Total price ($)</TableCell>
+                                            </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                            
+                                                <TableRow >
+                                                <TableCell>
+                                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci perferendis ipsa voluptatem laudantium, odio cumque quam accusantium natus quis tempore temporibus aperiam voluptatibus fugit voluptate ipsum hic quasi inventore at.    
+                                                </TableCell>
+                                                <TableCell>
+                                                    Author
+                                                </TableCell>
+                                                
+                                                </TableRow>
+                                            
+                                            </TableBody>
+                                        </Table>
+                                        </Box>
+                                    </Collapse>
+                                    </TableCell>
+                                </TableRow>
+
+                                </>
+
                             )   
                         })
                     }
             </TableBody>
             </Table>
             </TableContainer>
+            
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
@@ -126,8 +187,8 @@ class DataComponent extends Component{
 
 }
 
-DataComponent.propTypes = {
+DataComponentAccordion.propTypes = {
     classes: PropTypes.object.isRequired,
   };
   
-  export default withStyles(styles)(withRouter(DataComponent));
+  export default withStyles(styles)(withRouter(DataComponentAccordion));

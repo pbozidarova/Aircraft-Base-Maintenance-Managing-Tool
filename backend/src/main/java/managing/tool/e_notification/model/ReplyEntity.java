@@ -11,6 +11,7 @@ public class ReplyEntity extends BaseEntity {
 
     private String description;
     private UserEntity author;
+//    private NotificationEntity notification;
 
     public ReplyEntity() {
     }
@@ -35,4 +36,14 @@ public class ReplyEntity extends BaseEntity {
         this.author = author;
         return this;
     }
+
+//    @ManyToOne
+//    public NotificationEntity getNotification() {
+//        return notification;
+//    }
+//
+//    public ReplyEntity setNotification(NotificationEntity notification) {
+//        this.notification = notification;
+//        return this;
+//    }
 }

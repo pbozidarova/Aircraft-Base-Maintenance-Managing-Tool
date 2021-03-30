@@ -1,6 +1,5 @@
 package managing.tool.e_task.service.impl;
 
-import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import managing.tool.e_maintenance.model.dto.MaintenanceViewDto;
 import managing.tool.e_maintenance.service.MaintenanceService;
@@ -11,7 +10,6 @@ import managing.tool.e_task.repository.TaskRepository;
 import managing.tool.e_task.service.TaskService;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
-import managing.tool.util.JwtUtil;
 import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -31,7 +29,7 @@ public class TaskServiceImpl implements TaskService {
     private final ModelMapper modelMapper;
     private final ServiceUtil utils;
     private final Random random;
-
+    private final ServiceUtil serviceUtil;
 
     @Override
     public List<TaskViewDto> findAllTasks() {
@@ -51,12 +49,8 @@ public class TaskServiceImpl implements TaskService {
                     MaintenanceViewDto maintenanceViewModel = this.modelMapper.map(maintenanceEntity, MaintenanceViewDto.class);
                     maintenanceViewModel.setFacility(maintenanceEntity.getFacility().getName())
                             .setAircraftRegistration(maintenanceEntity.getAircraft().getAircraftRegistration())
-                            .setResponsibleEngineer(
-                                    String.format("%s - %s, %s",
-                                            maintenanceEntity.getResponsibleEngineer().getCompanyNum(),
-                                            maintenanceEntity.getResponsibleEngineer().getLastName(),
-                                            maintenanceEntity.getResponsibleEngineer().getFirstName()
-                                    ));
+                            .setResponsibleEngineer(this.serviceUtil.userViewStringBuild(maintenanceEntity.getResponsibleEngineer())
+                            );
 
                     return maintenanceViewModel;
                 })
@@ -77,7 +71,7 @@ public class TaskServiceImpl implements TaskService {
     public String createPrepTeamString(TaskEntity taskEntity){
         StringBuilder preparedBy = new StringBuilder();
         taskEntity.getPreparedBy()
-                .forEach(u -> preparedBy.append(String.format("%s - %s, ",u.getCompanyNum(), u.getLastName())));
+                .forEach(u -> preparedBy.append(this.serviceUtil.userViewStringBuild(u)));
 
         return preparedBy.toString().replaceAll(", $", "");
     }
@@ -170,7 +164,7 @@ public class TaskServiceImpl implements TaskService {
 
 
     private Set<UserEntity> preparingTeam(Set<UserEntity> taskPrepTeam,String token) {
-        taskPrepTeam.add(this.utils.userCreatingTheChange(token));
+        taskPrepTeam.add(this.utils.identifyingUserFromToken(token));
 
         return taskPrepTeam;
     }

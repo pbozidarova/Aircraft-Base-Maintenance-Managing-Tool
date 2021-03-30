@@ -11,4 +11,5 @@ public interface ReplyService {
     boolean areRepliesUploaded();
 
     List<ReplyEntity> findAll();
+
 }

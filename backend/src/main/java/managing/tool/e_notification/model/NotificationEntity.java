@@ -36,7 +36,7 @@ public class NotificationEntity extends BaseEntity {
         return this;
     }
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     public Set<ReplyEntity> getCommunication() {
         return communication;
     }

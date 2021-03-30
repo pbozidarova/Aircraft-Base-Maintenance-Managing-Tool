@@ -6,6 +6,7 @@ import managing.tool.e_notification.model.NotificationEntity;
 import managing.tool.e_notification.model.NotificationStatusEnum;
 import managing.tool.e_notification.model.ReplyEntity;
 import managing.tool.e_notification.model.dto.NotificationViewDto;
+import managing.tool.e_notification.model.dto.ReplyViewDto;
 import managing.tool.e_notification.repository.NotificationRepository;
 import managing.tool.e_notification.service.NotificationService;
 import managing.tool.e_maintenance.model.MaintenanceEntity;
@@ -15,6 +16,7 @@ import managing.tool.e_task.model.TaskEntity;
 import managing.tool.e_task.service.TaskService;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
+import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +40,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final ModelMapper modelMapper;
     private final ReplyService replyService;
     private final Random random;
+    private final ServiceUtil serviceUtil;
 
     @Override
     public void generateMockupNotificationsOnInitialLaunch() {
@@ -51,9 +54,7 @@ public class NotificationServiceImpl implements NotificationService {
         NotificationClassificationEnum[] classificationEnum = NotificationClassificationEnum.values();
         int classificationEnumLength = classificationEnum.length;
 
-        this.replyService
-                .findAll()
-                .stream()
+        this.replyService.findAll()
                 .forEach(reply -> {
                     NotificationEntity notificationEntity = new NotificationEntity();
 
@@ -99,11 +100,7 @@ public class NotificationServiceImpl implements NotificationService {
                     NotificationViewDto notificationViewDto = this.modelMapper.map(notificationEntity, NotificationViewDto.class);
 
                     notificationViewDto
-                            .setAuthor(String.format("%s - %s, %s",
-                                        notificationEntity.getAuthor().getCompanyNum(),
-                                        notificationEntity.getAuthor().getLastName(),
-                                        notificationEntity.getAuthor().getFirstName()
-                            ));
+                            .setAuthor(this.serviceUtil.userViewStringBuild(notificationEntity.getAuthor()));
 
                     return notificationViewDto;
                 })
@@ -142,13 +139,13 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public NotificationEntity findNyNotificationNum(String notificationNum) {
+    public NotificationEntity findByNotificationNum(String notificationNum) {
         return this.notificationRepository.findByNotificationNum(notificationNum);
     }
 
     @Override
     public Boolean notificationExists(String notificationNum) {
-        return  this.findNyNotificationNum(notificationNum) != null;
+        return  this.findByNotificationNum(notificationNum) != null;
     }
 
     @Override
@@ -159,6 +156,20 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public NotificationViewDto createNotification(NotificationViewDto notificationViewDto) {
         return null;
+    }
+
+    @Override
+    public List<ReplyViewDto> getCommunication(String notificationNum) {
+        return this.notificationRepository
+                        .findAllByNotificationNum(notificationNum)
+                        .stream()
+                        .map(reply -> {
+                            ReplyViewDto replyViewDto = this.modelMapper.map(reply, ReplyViewDto.class);
+
+                            replyViewDto.setAuthor(this.serviceUtil.userViewStringBuild(reply.getAuthor()));
+
+                            return replyViewDto;
+                        }).collect(Collectors.toList());
     }
 
 

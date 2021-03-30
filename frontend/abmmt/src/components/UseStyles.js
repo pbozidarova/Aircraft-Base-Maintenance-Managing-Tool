@@ -120,10 +120,20 @@ export const styles = ( theme ) => ({
     fabChild: {
       flexGrow: 1
     },
-   
-    tableCell: {
-      padding: 5 ,
-      // margin: 0,
-      textAlign: 'left'
-    },
+  //  table: {
+  //   display: 'flex',
+  //  },
+  //   tableCell: {
+  //     padding: 5 ,
+  //     // margin: 0,
+  //     textAlign: 'left'
+  //   },
+  //   tableRow: {
+  //     flexGrow: 1,
+  //     width:100,
+  //     borderBottom: 'unset',
+
+  //     // margin: 0,
+  //     // textAlign: 'left'
+  //   },
   });

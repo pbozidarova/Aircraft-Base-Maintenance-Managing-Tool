@@ -16,6 +16,7 @@ import managing.tool.e_task.model.TaskEntity;
 import managing.tool.e_task.service.TaskService;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
+import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ public class MaintenanceServiceImpl implements MaintenanceService {
     private final UserService userService;
     private final AircraftService aircraftService;
     private final FacilityService facilityService;
+    private final ServiceUtil serviceUtil;
     private final Random random;
 
     @Override
@@ -139,14 +141,10 @@ public class MaintenanceServiceImpl implements MaintenanceService {
 
     private MaintenanceViewDto buildMaintenanceVMRelationalStrings(MaintenanceEntity maintenanceEntity){
         MaintenanceViewDto maintenanceViewModel = this.modelMapper.map(maintenanceEntity, MaintenanceViewDto.class);
+
         maintenanceViewModel.setFacility(maintenanceEntity.getFacility().getName())
                 .setAircraftRegistration(maintenanceEntity.getAircraft().getAircraftRegistration())
-                .setResponsibleEngineer(
-                        String.format("%s - %s, %s",
-                                maintenanceEntity.getResponsibleEngineer().getCompanyNum(),
-                                maintenanceEntity.getResponsibleEngineer().getLastName(),
-                                maintenanceEntity.getResponsibleEngineer().getFirstName()
-                        ));
+                .setResponsibleEngineer(this.serviceUtil.userViewStringBuild(maintenanceEntity.getResponsibleEngineer()));
 
         return maintenanceViewModel;
 

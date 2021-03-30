@@ -54,4 +54,6 @@ public class ReplyServiceImpl implements ReplyService {
     public List<ReplyEntity> findAll() {
         return this.replyRepository.findAll();
     }
+
+
 }
