@@ -6,6 +6,7 @@ import managing.tool.e_notification.model.NotificationEntity;
 import managing.tool.e_notification.model.NotificationStatusEnum;
 import managing.tool.e_notification.model.ReplyEntity;
 import managing.tool.e_notification.model.dto.NotificationViewDto;
+import managing.tool.e_notification.model.dto.ReplyResponseDto;
 import managing.tool.e_notification.model.dto.ReplyViewDto;
 import managing.tool.e_notification.repository.NotificationRepository;
 import managing.tool.e_notification.service.NotificationService;
@@ -177,14 +178,15 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public ReplyViewDto createReply(String notificationNum, String jwt) {
+    public ReplyViewDto createReply(String notificationNum, String jwt, ReplyResponseDto reply) {
 
-        ReplyEntity reply = new ReplyEntity();
+        ReplyEntity replyToCreate = new ReplyEntity();
         UserEntity author = this.serviceUtil.identifyingUserFromToken(jwt);
-        reply.setAuthor(author)
+        replyToCreate.setDescription(reply.getDescription())
+                .setAuthor(author)
                 .setCreatedOn(LocalDateTime.now());
 
-        ReplyEntity replySaved = this.replyService.saveReply(reply);
+        ReplyEntity replySaved = this.replyService.saveReply(replyToCreate);
         this.notificationRepository.findByNotificationNum(notificationNum).getReplies().add(replySaved);
 
         return this.modelMapper.map(reply, ReplyViewDto.class);

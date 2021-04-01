@@ -46,13 +46,15 @@ class DataComponentAccordion extends Component{
             page: 0,
             rowsPerPage: 5,
             open: false,
-            replies: [],
-            newReply: '',
+            fetchedReplies: [],
+            currentReply: '',
         }
 
         this.isSelected = this.isSelected.bind(this)
+        this.handleChange = this.handleChange.bind(this)
         this.handleChangePage = this.handleChangePage.bind(this)
         this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this)
+        this.saveReply = this.saveReply.bind(this)
     }
  
 
@@ -60,6 +62,14 @@ class DataComponentAccordion extends Component{
         
         return this.props.selectedId === currentRow;
     }
+
+    handleChange(event){
+        this.setState(
+            {   ...this.state,
+                currentReply : event.target.value
+            }) 
+    }
+
     handleChangePage = (event, newPage) => {
         this.setState({page: newPage});
     }
@@ -76,15 +86,26 @@ class DataComponentAccordion extends Component{
                 this.setState( { 
                     ...this.state, 
                     open: {[index]:!this.state.open.[index]},
-                    replies: response.data
+                    fetchedReplies: response.data
                 }, () => {console.log(this.state); Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData)});
             }
         ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
 
     }
 
-    saveReply(notificationNum){
-        
+    saveReply(notificationNum, reply){
+        console.log(reply)
+        BackendService.createOne('replies', notificationNum, {description: reply})
+        .then(() => {                        
+            // this.refreshFacilities()
+            // this.props.handleInfo({success : MESSAGES.successCreated});
+        }
+        ).catch(e => {
+            // Utils.allocateCorrectErrorMessage(e, reply, this.props.handleInfo)
+
+        })
+
+    console.log('submit Create')
     }
 
     render(){
@@ -171,52 +192,49 @@ class DataComponentAccordion extends Component{
                                     </TableRow>
                                     </TableHead>
                                     
-                                    {this.state.replies.map(reply => {
+                                    {this.state.fetchedReplies.map(reply => {
                                         
                                        return <>
                                             <TableRow >
                                                 {Object.keys(reply).map(key => <TableCell colSpan={key=='description' ? 4 : 1}>{reply[key]}</TableCell>)}
                                             </TableRow>
-                                            <TableRow >
-                                                <TableCell colSpan={4} >
-                                                    <TextField
-                                                        fullWidth
-                                                        // id={key}
-                                                        // name={key}
-                                                        label={"Enter your reply here"}
-                                                        // defaultValue={selected[key]}
-                                                        // disabled={disabledFields[key]}
-                                                        rows={3}
-                                                        multiline
-                                                        // onChange={handleChange}
-                                                        // error={errors[key] && errors.length > 0}
-                                                        helperText={''}
-                                                    /> 
-                                                </TableCell>
-                                                <TableCell  align="right">
-                                                    <Button 
-                                                        variant="contained" 
-                                                        className={classes.menuButton}
-                                                        color="default"
-                                                        endIcon={ICONS_MAPPING.attach}>Attach</Button>
-                                                    
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Button
-                                                        variant="contained" 
-                                                        className={classes.menuButton}
-                                                        color="default"
-                                                        endIcon={ICONS_MAPPING.create}
-                                                        onClick={() => this.saveReply(notificationNum)}
-                                                        >Send</Button>
-                                                </TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                               
-                                            </TableRow>
                                         </>
                                         })
                                     }
+                                    <TableRow >
+                                        <TableCell colSpan={4} >
+                                            <TextField
+                                                fullWidth
+                                                // id={key}
+                                                // name={key}
+                                                label={"Enter your reply here"}
+                                                // defaultValue={selected[key]}
+                                                // disabled={disabledFields[key]}
+                                                rows={3}
+                                                multiline
+                                                onChange={this.handleChange}
+                                                // error={errors[key] && errors.length > 0}
+                                                helperText={''}
+                                            /> 
+                                        </TableCell>
+                                        <TableCell  align="right">
+                                            <Button 
+                                                variant="contained" 
+                                                className={classes.menuButton}
+                                                color="default"
+                                                endIcon={ICONS_MAPPING.attach}>Attach</Button>
+                                            
+                                        </TableCell>
+                                        <TableCell>
+                                            <Button
+                                                variant="contained" 
+                                                className={classes.menuButton}
+                                                color="default"
+                                                endIcon={ICONS_MAPPING.create}
+                                                onClick={() => this.saveReply(notificationNum, this.state.currentReply)}
+                                                >Send</Button>
+                                        </TableCell>
+                                    </TableRow>
                                     </TableBody>
                                 </Table>
                                 </Box>

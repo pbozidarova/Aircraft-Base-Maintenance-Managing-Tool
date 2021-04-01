@@ -3,6 +3,7 @@ package managing.tool.e_notification.service;
 import managing.tool.e_notification.model.NotificationEntity;
 import managing.tool.e_notification.model.ReplyEntity;
 import managing.tool.e_notification.model.dto.NotificationViewDto;
+import managing.tool.e_notification.model.dto.ReplyResponseDto;
 import managing.tool.e_notification.model.dto.ReplyViewDto;
 
 import java.util.Collection;
@@ -27,5 +28,5 @@ public interface NotificationService {
 
     List<ReplyViewDto> getCommunication(String notificationNum);
 
-    ReplyViewDto createReply(String notificationNum, String jwt);
+    ReplyViewDto createReply(String notificationNum, String jwt, ReplyResponseDto reply);
 }

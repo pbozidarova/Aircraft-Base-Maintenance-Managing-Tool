@@ -67,8 +67,7 @@ class FacilityComponent extends Component {
             {   ...this.state,
                 selected: {...this.state.selected, [event.target.name] : event.target.value}
             }
-        , console.log(this.state))
-        
+        , console.log(this.state)) 
     }
 
     validateAndSubmit(submit){
