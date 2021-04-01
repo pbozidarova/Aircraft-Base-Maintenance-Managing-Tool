@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 import BackendService from '../../api/CommonAPI.js'
 import {MESSAGES} from '../../Constanst.js'
 
+
 import EditIcon from '@material-ui/icons/Edit';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
@@ -16,15 +17,13 @@ import TableHead from '@material-ui/core/TableHead';
 import Button from '@material-ui/core/Button';
 
 
-import Box from '@material-ui/core/Box';
-import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import SendIcon from '@material-ui/icons/Send';
-import TextField from '@material-ui/core/TextField';
+
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
-import Paper from '@material-ui/core/Paper';
+
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 
@@ -36,6 +35,7 @@ import { styles } from '../UseStyles.js'
 import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
 
 import PropTypes from 'prop-types';
+import RepliesComponent from './RepliesComponent.jsx';
 
 
 class DataComponentAccordion extends Component{
@@ -54,6 +54,7 @@ class DataComponentAccordion extends Component{
         this.handleChange = this.handleChange.bind(this)
         this.handleChangePage = this.handleChangePage.bind(this)
         this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this)
+        this.handleOpenState = this.handleOpenState.bind(this)
         this.saveReply = this.saveReply.bind(this)
     }
  
@@ -78,30 +79,38 @@ class DataComponentAccordion extends Component{
         this.setState({rowsPerPage: parseInt(event.target.value, 10)});
         this.setState({page: 0});
     }
+    handleOpenState(index){
+        this.setState({
+            ...this.state,
+            open: {[index]:!this.state.open.[index]},
+        })
+    }
 
     fetchAndExpand(index, notificationNum){
+
         BackendService.getOne('replies', notificationNum)
             .then(response => {
-                
                 this.setState( { 
                     ...this.state, 
-                    open: {[index]:!this.state.open.[index]},
+                    // open: {[index]:!this.state.open.[index]},
                     fetchedReplies: response.data
-                }, () => {console.log(this.state); Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData)});
+                }, () => {this.handleOpenState(index); Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData)});
             }
         ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
 
     }
 
-    saveReply(notificationNum, reply){
+    saveReply(index, notificationNum, reply){
         console.log(reply)
         BackendService.createOne('replies', notificationNum, {description: reply})
-        .then(() => {                        
-            // this.refreshFacilities()
+        .then(() => {
+            this.handleOpenState(index)
+                     
+             this.fetchAndExpand(index, notificationNum)
             // this.props.handleInfo({success : MESSAGES.successCreated});
         }
         ).catch(e => {
-            // Utils.allocateCorrectErrorMessage(e, reply, this.props.handleInfo)
+            Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, reply)
 
         })
 
@@ -176,71 +185,12 @@ class DataComponentAccordion extends Component{
                                 </div>
                             </TableCell>}
                         </TableRow>           
-                        <TableRow>
-                            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                            <Collapse in={this.state.open[index]} timeout="auto" unmountOnExit>
-                                <Box margin={1}>
-                                <Table size="small" aria-label="replies" component={Paper}>
-                                    <TableBody>
-                                    <TableHead>
-                                    
-                                    <TableRow fullWidth>
-                                        <TableCell colSpan={4} align="left">Description</TableCell>
-                                        <TableCell align="left">Author</TableCell>
-                                        <TableCell align="left">Date</TableCell>
-                                        <TableCell align="left">Attachments</TableCell>
-                                    </TableRow>
-                                    </TableHead>
-                                    
-                                    {this.state.fetchedReplies.map(reply => {
-                                        
-                                       return <>
-                                            <TableRow >
-                                                {Object.keys(reply).map(key => <TableCell colSpan={key=='description' ? 4 : 1}>{reply[key]}</TableCell>)}
-                                            </TableRow>
-                                        </>
-                                        })
-                                    }
-                                    <TableRow >
-                                        <TableCell colSpan={4} >
-                                            <TextField
-                                                fullWidth
-                                                // id={key}
-                                                // name={key}
-                                                label={"Enter your reply here"}
-                                                // defaultValue={selected[key]}
-                                                // disabled={disabledFields[key]}
-                                                rows={3}
-                                                multiline
-                                                onChange={this.handleChange}
-                                                // error={errors[key] && errors.length > 0}
-                                                helperText={''}
-                                            /> 
-                                        </TableCell>
-                                        <TableCell  align="right">
-                                            <Button 
-                                                variant="contained" 
-                                                className={classes.menuButton}
-                                                color="default"
-                                                endIcon={ICONS_MAPPING.attach}>Attach</Button>
-                                            
-                                        </TableCell>
-                                        <TableCell>
-                                            <Button
-                                                variant="contained" 
-                                                className={classes.menuButton}
-                                                color="default"
-                                                endIcon={ICONS_MAPPING.create}
-                                                onClick={() => this.saveReply(notificationNum, this.state.currentReply)}
-                                                >Send</Button>
-                                        </TableCell>
-                                    </TableRow>
-                                    </TableBody>
-                                </Table>
-                                </Box>
-                            </Collapse>
-                            </TableCell>
-                        </TableRow>
+                        <RepliesComponent
+                            index={index}
+                            notificationNum={notificationNum}
+                            saveReply={this.saveReply}
+                            open={this.state.open}
+                            />
 
                         </>
 

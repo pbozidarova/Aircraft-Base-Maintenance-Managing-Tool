@@ -96,7 +96,7 @@ class FacilityComponent extends Component {
                     this.refreshFacilities()
                     this.props.handleInfo({success : MESSAGES.successUpdated});
                 }).catch(e => {
-                    Utils.allocateCorrectErrorMessage(e, name, this.props.handleInfo)
+                    Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, name)
 
                     // this.props.handleInfo({error : e});
                 })
@@ -109,11 +109,10 @@ class FacilityComponent extends Component {
             BackendService.createOne("facilities", name, selected)
                 .then(() => {                        
                     this.refreshFacilities()
-                    this.props.handleInfo({success : MESSAGES.successCreated});
+                    Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.successCreated)
                 }
                 ).catch(e => {
-                    Utils.allocateCorrectErrorMessage(e, name, this.props.handleInfo)
-
+                    Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, name)
                 })
   
             console.log('submit Create')

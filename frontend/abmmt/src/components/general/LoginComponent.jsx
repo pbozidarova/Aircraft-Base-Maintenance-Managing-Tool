@@ -41,11 +41,11 @@ class LoginComponent extends Component{
                 AuthenticationService.registerSuccessfullLogin(this.state.username, response.data.token)
                 Utils.redirectTo(this.props, '/home')
 
-                this.props.handleInfo({success : MESSAGES.successLogingIn});
-
+                Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.successLogingIn)
             }).catch((e) => {
-                console.log(e)
+                // console.log(e)
                 // this.props.handleInfo({error : e.response.data.message});
+                Utils.allocateCorrectErrorMessage(e, this.props.handleInfo)
             })
     }
 
