@@ -15,6 +15,7 @@ import managing.tool.e_maintenance.service.MaintenanceService;
 import managing.tool.e_notification.service.ReplyService;
 import managing.tool.e_task.model.TaskEntity;
 import managing.tool.e_task.service.TaskService;
+import managing.tool.e_user.model.RoleEnum;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
 import managing.tool.util.ServiceUtil;
@@ -171,7 +172,10 @@ public class NotificationServiceImpl implements NotificationService {
                             ReplyViewDto replyViewDto = this.modelMapper.map(reply, ReplyViewDto.class);
 
                             replyViewDto.setAuthor(this.serviceUtil.userViewStringBuild(reply.getAuthor()))
-                                        .setCreatedOn(reply.getCreatedOn().toString().replace("T", " "));
+                                        .setCreatedOn(reply.getCreatedOn().toString().replace("T", " "))
+                                        .setTitle(reply.getAuthor().getRoles().contains(RoleEnum.ADMIN)
+                                                            ? RoleEnum.ADMIN.toString()
+                                                            : RoleEnum.MECHANIC.toString());
 
                             return replyViewDto;
                         }).collect(Collectors.toList());

@@ -4,7 +4,7 @@ import {NOTIFICATIONS_HEADER_DATA, NOTIFICATIONS_BOOLEAN_FIELDS, NOTIFICATIONS_D
 import Utils from '../Utils.js'
 import { withRouter } from 'react-router';
 
-import DataComponentAccordion from './DataComponentAccordion'
+import DataComponent from './DataComponent'
 import EditGlobalComponent from './EditGlobalComponent'
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -81,6 +81,7 @@ class NotificationComponent extends Component {
     selectNotification(notification) {      
         this.setState({selected: notification})
     }
+    
     handleChange(event){
         let eName = event.target.name
         let eValue = event.target.value
@@ -160,7 +161,7 @@ class NotificationComponent extends Component {
                 <Paper className={fixedHeightPaper}>
                     
                     { this.state.loading && <CircularProgress color="secondary"/> }
-                    <DataComponentAccordion
+                    <DataComponent
                         tableRows={this.state.notifications} 
                         tableHeader={NOTIFICATIONS_HEADER_DATA}
                         selectedId={this.state.selected.notificationNum}

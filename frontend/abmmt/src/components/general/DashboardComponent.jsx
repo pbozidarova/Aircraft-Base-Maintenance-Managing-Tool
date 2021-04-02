@@ -18,7 +18,7 @@ class DashboardComponent extends Component {
       super(props)
       
       this.state = {
-          tasks : [],
+          // tasks : [],
           maintenance: [],
           notifications: [],     
           loading: true,       
@@ -26,40 +26,70 @@ class DashboardComponent extends Component {
           // errors: {},     
       }
 
-      this.refreshData = this.refreshData.bind(this)
+      this.refreshNotifications = this.refreshNotifications.bind(this)
+      this.selectNotification = this.selectNotification.bind(this)
+      this.selectMaintenance = this.selectMaintenance.bind(this)
     }
 
     componentDidMount(){
-      this.refreshData();
+      this.refreshNotifications();
+      this.refreshMaintenance();
       // this.selectFacility(Utils.emptyObj(FACILITIES_HEADER_DATA));
 
     }
 
-    refreshData(){
-      // // Object.keys(this.state).forEach((key, index) => {
-      // //   let responseKey = FETCH_DATA_KEY[key]
-      // //   BackendService.getAll(key)
-      // //   .then(
-      // //       response => {
-      // //         let responseKeyObj = response.data._embedded[responseKey] != null 
-      // //                             ? response.data._embedded[responseKey]
-      // //                             : []
+    refreshMaintenance(){
+      let key = 'maintenanceViewDtoList'
 
-      // //         // setTimeout(() => {
-      // //         //   console.log(response.data);
-      // //         //   console.log(index);
-      // //           this.setState({
-      // //               loading : index == 0 ? false : true, 
-      // //               [key] : response.data._embedded[responseKey]
-      // //           },  () => {console.log(this.state); Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData)});
-      // //         // }, 500);
-      // //       }
-      // //   ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
-      // })
-
-      
+      BackendService.getAll("maintenance")
+        .then(
+            response => {
+                this.setState({
+                    loading : false, 
+                    maintenance : response.data._embedded[key]
+                }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData));
+            }
+        ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
     }
-    
+
+    refreshNotifications(){
+      BackendService.getAll('notifications')
+      .then(
+          response => {
+              this.setState({
+                  loading : false, 
+                  notifications : response.data
+              }, () => {console.log(this.state); Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData)});
+          }
+      ).catch(e => {console.log(e); Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData )});
+      // Object.keys(this.state).forEach((key, index) => {
+      //   let responseKey = FETCH_DATA_KEY[key]
+      //   BackendService.getAll(key)
+      //   .then(
+      //       response => {
+      //         let responseKeyObj = response.data._embedded[responseKey] != null 
+      //                             ? response.data._embedded[responseKey]
+      //                             : []
+
+      //         // setTimeout(() => {
+      //         //   console.log(response.data);
+      //         //   console.log(index);
+      //           this.setState({
+      //               loading : index == 0 ? false : true, 
+      //               [key] : response.data._embedded[responseKey]
+      //           },  () => {console.log(this.state); Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData)});
+      //         // }, 500);
+      //       }
+      //   ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
+      // })
+    }
+    selectNotification(notification) {      
+      this.setState({selected: notification})
+  } 
+  
+  selectMaintenance(maintenance) {      
+    this.setState({selected: maintenance})
+  }
 
     render(){
         const { classes } = this.props;
@@ -70,19 +100,34 @@ class DashboardComponent extends Component {
             
             { this.state.loading && <CircularProgress color="secondary"/> }
 
-            <Grid item xs={12} md={7} lg={12}>
+            <Grid item xs={12} md={5} lg={6}>
+              <Paper className={fixedHeightPaper}>
+                <DataComponent 
+                        tableRows={this.state.maintenance}
+                        tableHeader = {MAINTENANCE_HEADER_DATA}
+                        selectedId={this.state.maintenance[0]}
+                        selectRow={this.selectMaintenance} 
+                        handleInfo={this.props.handleInfo}
+                    />       
+                 
+              </Paper>
+            </Grid>
+            
+
+            <Grid item xs={12} md={7} lg={6}>
               <Paper className={fixedHeightPaper}>
                 <DataComponent 
                         tableRows={this.state.notifications}
                         tableHeader = {NOTIFICATIONS_HEADER_DATA}
                         selectedId={this.state.notifications[0]}
-                        selectRow={this.selectFacility} 
+                        selectRow={this.selectNotification} 
+                        handleInfo={this.props.handleInfo}
                     />
 
               </Paper>
             </Grid>
 
-            <Grid item xs={12} md={5} lg={6}>
+            {/* <Grid item xs={12} md={5} lg={6}>
               <Paper className={classes.paper, classes.fixedHeightDash}>
               <DataComponent 
                         tableRows={this.state.tasks}
@@ -92,20 +137,9 @@ class DashboardComponent extends Component {
                     />
                   
               </Paper>
-            </Grid>
+            </Grid> */}
             
-            <Grid item xs={12} md={5} lg={6}>
-              <Paper className={fixedHeightPaper}>
-                <DataComponent 
-                        tableRows={this.state.maintenance}
-                        tableHeader = {MAINTENANCE_HEADER_DATA}
-                        selectedId={this.state.maintenance[0]}
-                        selectRow={this.selectFacility} 
-                    />       
-                 
-              </Paper>
-            </Grid>
-            
+           
             
            
           </Grid>

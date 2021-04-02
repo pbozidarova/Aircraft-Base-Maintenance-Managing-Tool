@@ -111,6 +111,14 @@ export const NOTIFICATIONS_HEADER_DATA = {
 }
 export const NOTIFICATIONS_BOOLEAN_FIELDS = {}
 export const NOTIFICATIONS_DISABLED_FIELDS ={}
+export const REPLIES_HEADER_DATA ={
+    description: 'Description',
+    author: 'Author',
+    title: 'Title',
+    date: 'Date',
+    attachments: 'Attachments'
+}
+
 
 //TASKS--------------------------------------------
 export const TASKS_HEADER_DATA = {

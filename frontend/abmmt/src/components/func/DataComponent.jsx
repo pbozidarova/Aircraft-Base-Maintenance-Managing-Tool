@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import {ICONS_MAPPING} from '../../Constanst.js'
 import Utils from '../Utils'
 import { withRouter } from 'react-router';
+import BackendService from '../../api/CommonAPI.js'
+import {MESSAGES} from '../../Constanst.js'
+
 
 import EditIcon from '@material-ui/icons/Edit';
 import TableRow from '@material-ui/core/TableRow';
@@ -11,6 +14,18 @@ import TableContainer from '@material-ui/core/TableRow';
 import Table from '@material-ui/core/TableRow';
 import TableBody from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
+import Button from '@material-ui/core/Button';
+
+
+import IconButton from '@material-ui/core/IconButton';
+import SendIcon from '@material-ui/icons/Send';
+
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+
+
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -20,20 +35,27 @@ import { styles } from '../UseStyles.js'
 import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
 
 import PropTypes from 'prop-types';
+import RepliesComponent from './RepliesComponent.jsx';
 
 
-class DataComponent extends Component{
+class DataComponentAccordion extends Component{
     constructor(props){
         super(props)
 
         this.state = {
             page: 0,
-            rowsPerPage: 5
+            rowsPerPage: 5,
+            open: false,
+            fetchedReplies: [],
+            currentReply: '',
         }
 
         this.isSelected = this.isSelected.bind(this)
+        this.handleChange = this.handleChange.bind(this)
         this.handleChangePage = this.handleChangePage.bind(this)
         this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this)
+        this.handleOpenState = this.handleOpenState.bind(this)
+    
     }
  
 
@@ -41,6 +63,14 @@ class DataComponent extends Component{
         
         return this.props.selectedId === currentRow;
     }
+
+    handleChange(event){
+        this.setState(
+            {   ...this.state,
+                currentReply : event.target.value
+            }) 
+    }
+
     handleChangePage = (event, newPage) => {
         this.setState({page: newPage});
     }
@@ -49,17 +79,41 @@ class DataComponent extends Component{
         this.setState({rowsPerPage: parseInt(event.target.value, 10)});
         this.setState({page: 0});
     }
+    handleOpenState(index){
+        this.setState({
+            ...this.state,
+            open: {[index]:!this.state.open.[index]},
+        })
+    }
+
+    fetchAndExpand(index, notificationNum){
+
+        BackendService.getOne('replies', notificationNum)
+            .then(response => {
+                this.setState( { 
+                    ...this.state, 
+                    // open: {[index]:!this.state.open.[index]},
+                    fetchedReplies: response.data
+                }, () => {this.handleOpenState(index); Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData)});
+            }
+        ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
+
+    }
+
     render(){
         const { classes } = this.props;
 
         return(
             <div>
-
             <TableContainer>
-            <Table className={classes.tableRow}>
+            <Table  className={classes.table} >
             <TableBody>
-                <TableHead>
-                    <TableRow size="small"  >
+                <TableHead> 
+                    <TableRow size="small"  className={classes.tableRow}>
+                        
+                        {//load an empty cell in the table header only if the parent component is the Notifications component
+                        this.props.tableHeader.notificationNum && <TableCell  />}
+                    
                         { this.props.tableRows[0] && 
                             Object.keys(this.props.tableRows[0])
                                 .map(key => 
@@ -69,48 +123,78 @@ class DataComponent extends Component{
                         }
                     </TableRow>
                 </TableHead>
-                {this.props.tableRows
-                        .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
-                        .map((tableRow, index) => {
+                
+                {this.props.tableRows.length > 0 && this.props.tableRows
+                .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
+                .map((tableRow, index) => {
+                    let notificationNum = tableRow.notificationNum;
+                    
+                    return (   
+                        <>
+                        <TableRow  size="small"
+                            hover
+                            onClick={() => this.props.selectRow(tableRow)}
+                            tabIndex={-1}
+                            key={index}
+                            selected={this.isSelected(notificationNum)}
+                        >   
                             
-                            return (   
-                                <TableRow size="small"
-                                    hover
-                                    onClick={() => this.props.selectRow(tableRow)}
-                                    tabIndex={-1}
-                                    key={index}
-                                    selected={this.isSelected(Object.entries(tableRow)[0][1])}
-                                >   
-                                    {Object.keys(this.props.tableHeader)
-                                        .map(key => <TableCell  size="small" 
-                                                                className={classes.tableCell} 
-                                                                key={key} align="right">{tableRow[key]}</TableCell>)}
+                            {this.props.tableHeader.notificationNum &&
+                            //load the arrow button only if the parent component is the Notifications component
+                            <TableCell >
+                                <IconButton aria-label="expand row" size="small" 
+                                    onClick={() => this.fetchAndExpand(index, notificationNum)}>
+                                {this.state.open[index] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                </IconButton>
+                            </TableCell>
+                            }
+                            
+                            {Object.keys(this.props.tableHeader)
+                                .map(key => <TableCell  size="small" 
+                                                        className={classes.tableCell} 
+                                                        key={key} align="right">{tableRow[key]}</TableCell>)}
 
-                                    {tableRow._links && 
-                                    
-                                    <TableCell size="small" >
-                                        <div className={classes.fab}>
-                                            {Object.keys(tableRow._links)
-                                            .map(link => 
-                                                    <Tooltip title={`Go to ${link}`} aria-label="add">
-                                                    <Fab 
-                                                        size="small" 
-                                                        color="primary" 
-                                                        className={classes.fabChild}
-                                                        onClick={  () => {console.log(tableRow); console.log(tableRow._links[link]);  Utils.redirectTo(this.props, `/${link}`, tableRow._links[link])}}>
-                                                        {ICONS_MAPPING[link]}
-                                                    </Fab>
-                                                </Tooltip>)
-                                            }
-                                        </div>
-                                    </TableCell>}
-                                </TableRow>                
-                            )   
-                        })
-                    }
+                            {tableRow._links && 
+                            <TableCell size="small" >
+                                <div className={classes.fab}>
+                                    {Object.keys(tableRow._links)
+                                    .map(link => 
+                                            <Tooltip title={`Go to ${link}`} aria-label="add">
+                                            <Fab 
+                                                size="small" 
+                                                color="primary" 
+                                                className={classes.fabChild}
+                                                onClick={  () => Utils.redirectTo(this.props, `/${link}`, tableRow._links[link])}>
+                                                {ICONS_MAPPING[link]}
+                                            </Fab>
+                                        </Tooltip>)
+                                    }
+                                </div>
+                            </TableCell>}
+                        </TableRow>     
+
+                        {this.props.tableHeader.notificationNum &&
+                        //load the replies block only if the parent component is the Notifications component                        
+                            <TableRow>
+                                <RepliesComponent
+                                    index={index}
+                                    notificationNum={notificationNum}
+                                    saveReply={this.saveReply}
+                                    open={this.state.open}
+                                    fetchedReplies={this.state.fetchedReplies}
+                                    classes={this.props.classes}
+                                />
+                            </TableRow>
+                        }
+                    </>
+
+                    )   
+                })
+            }
             </TableBody>
             </Table>
             </TableContainer>
+            
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
@@ -126,8 +210,8 @@ class DataComponent extends Component{
 
 }
 
-DataComponent.propTypes = {
+DataComponentAccordion.propTypes = {
     classes: PropTypes.object.isRequired,
   };
   
-  export default withStyles(styles)(withRouter(DataComponent));
+  export default withStyles(styles)(withRouter(DataComponentAccordion));

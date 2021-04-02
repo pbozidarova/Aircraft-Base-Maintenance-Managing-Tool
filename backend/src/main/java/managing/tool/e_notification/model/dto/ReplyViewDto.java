@@ -4,6 +4,7 @@ public class ReplyViewDto {
 
     private String description;
     private String author;
+    private String title;
     private String createdOn;
 
     public String getDescription() {
@@ -21,6 +22,15 @@ public class ReplyViewDto {
 
     public ReplyViewDto setAuthor(String author) {
         this.author = author;
+        return this;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public ReplyViewDto setTitle(String title) {
+        this.title = title;
         return this;
     }
 
