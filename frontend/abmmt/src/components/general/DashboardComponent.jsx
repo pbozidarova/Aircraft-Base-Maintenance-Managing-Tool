@@ -8,135 +8,53 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {DASHBOARD_CARDS, ICONS_MAPPING} from '../../Constanst.js'
-import Fab from '@material-ui/core/Fab';
-import Tooltip from '@material-ui/core/Tooltip';
-
+import { withRouter } from 'react-router';
 import clsx from 'clsx';
-import DataComponent from '../func/DataComponent'
-
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import { styles } from '../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
-import { MAINTENANCE_HEADER_DATA, NOTIFICATIONS_HEADER_DATA, TASKS_HEADER_DATA, MESSAGES, FETCH_DATA_KEY } from '../../Constanst.js';
-import BackendService from '../../api/CommonAPI.js'
 import Utils from '../Utils.js'
-import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 class DashboardComponent extends Component {
-    constructor(props){
-      super(props)
-      
-      this.state = {
-          // tasks : [],
-          maintenance: [],
-          notifications: [],     
-          loading: true,       
-  
-          // errors: {},     
-      }
-
-      // this.refreshNotifications = this.refreshNotifications.bind(this)
-      // this.selectNotification = this.selectNotification.bind(this)
-      // this.selectMaintenance = this.selectMaintenance.bind(this)
-    }
-
-  //   componentDidMount(){
-  //     this.refreshNotifications();
-  //     this.refreshMaintenance();
-  //     // this.selectFacility(Utils.emptyObj(FACILITIES_HEADER_DATA));
-
-  //   }
-
-  //   refreshMaintenance(){
-  //     let key = 'maintenanceViewDtoList'
-
-  //     BackendService.getAll("maintenance")
-  //       .then(
-  //           response => {
-  //               this.setState({
-  //                   loading : false, 
-  //                   maintenance : response.data._embedded[key]
-  //               }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData));
-  //           }
-  //       ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
-  //   }
-
-  //   refreshNotifications(){
-  //     BackendService.getAll('notifications')
-  //     .then(
-  //         response => {
-  //             this.setState({
-  //                 loading : false, 
-  //                 notifications : response.data
-  //             }, () => {console.log(this.state); Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData)});
-  //         }
-  //     ).catch(e => {console.log(e); Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData )});
-  //     // Object.keys(this.state).forEach((key, index) => {
-  //     //   let responseKey = FETCH_DATA_KEY[key]
-  //     //   BackendService.getAll(key)
-  //     //   .then(
-  //     //       response => {
-  //     //         let responseKeyObj = response.data._embedded[responseKey] != null 
-  //     //                             ? response.data._embedded[responseKey]
-  //     //                             : []
-
-  //     //         // setTimeout(() => {
-  //     //         //   console.log(response.data);
-  //     //         //   console.log(index);
-  //     //           this.setState({
-  //     //               loading : index == 0 ? false : true, 
-  //     //               [key] : response.data._embedded[responseKey]
-  //     //           },  () => {console.log(this.state); Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData)});
-  //     //         // }, 500);
-  //     //       }
-  //     //   ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
-  //     // })
-  //   }
-  //   selectNotification(notification) {      
-  //     this.setState({selected: notification})
-  // } 
-  
-  // selectMaintenance(maintenance) {      
-  //   this.setState({selected: maintenance})
-  // }
 
     render(){
         const { classes } = this.props;
         const fixedHeightPaper = clsx(classes.paper, classes.fixedHeightDash);
 
         return (
-        <Grid container spacing={3}>
+        <Grid container spacing={4}>
             
-            {Object.keys(DASHBOARD_CARDS).forEach(card => {
-             { console.log(card.image)}
-                <Grid item xs={12} md={5} lg={6}> 
-                <Card className={classes.root}>
-                  <CardActionArea>
-                    <CardMedia
-                      className={classes.media}
-                      image={card.image}
-                      title={card.image}
-                    />
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="h2">
-                          {card.title}
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary" component="p">
-                          {card.description}
-                      </Typography>
-                      <Typography align="right">
+            {Object.keys(DASHBOARD_CARDS).map(card => {
+             { console.log(DASHBOARD_CARDS[card])}
+               return <Grid item xs={12} md={4} lg={4}> 
+                
+                  <Card className={classes.root}>
+                    <CardActionArea onClick={() => Utils.redirectTo( this.props, `/${card}`)}>
+                      <CardMedia
+                        className={classes.media}
+                        image={DASHBOARD_CARDS[card].image}
+                        title={DASHBOARD_CARDS[card].title}
+                      />
+                      <CardContent>
+                        <Typography gutterBottom variant="h5" component="h2">
+                            {DASHBOARD_CARDS[card].title} {ICONS_MAPPING[card]} 
                         </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                  <CardActions>
-                    <Button size="small" color="primary"> 
-                        {ICONS_MAPPING[card]} Visit {card.title}
-                    </Button>
-                    
-                </CardActions>
-                </Card>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            {DASHBOARD_CARDS[card].description}
+                        </Typography>
+                        <Typography align="right">
+                          </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                    <CardActions>
+                      <Button size="small" color="primary"> 
+                          Visit {DASHBOARD_CARDS[card].title} 
+                      </Button>
+                      
+                  </CardActions>
+                  </Card>
                 </Grid>
             })}
            
@@ -201,4 +119,4 @@ DashboardComponent.propTypes = {
     classes: PropTypes.object.isRequired,
   };
   
-  export default withStyles(styles)(DashboardComponent);
+  export default withStyles(styles)(withRouter(DashboardComponent));

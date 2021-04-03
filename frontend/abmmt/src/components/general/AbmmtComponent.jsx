@@ -25,7 +25,7 @@ class AbmmtComponent extends Component {
     super(props)
     this.state = {
       infoPanel : {
-          info: MESSAGES.initialLoad,
+          info: MESSAGES.welcomeMsg,
           success: MESSAGES.empty,
           error: MESSAGES.empty,
       },

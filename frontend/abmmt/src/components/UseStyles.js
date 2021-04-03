@@ -25,7 +25,8 @@ export const styles = ( theme ) => ({
       display: 'flex',
     },
     root: {
-      maxWidth: 345,
+      // maxWidth: 400,
+      // maxHeight: 300,
     },
     media: {
       height: 140,

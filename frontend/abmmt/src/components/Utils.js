@@ -3,6 +3,7 @@ import BackendService from '../api/CommonAPI.js'
 
 class Utils {
     redirectTo(props, urlParam, fetchDataFromURL){
+
         props.history.push({pathname: urlParam, fetchDataFromURL: fetchDataFromURL})
     }
 

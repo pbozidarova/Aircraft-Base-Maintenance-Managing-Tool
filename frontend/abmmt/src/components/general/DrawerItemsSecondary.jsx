@@ -34,7 +34,7 @@ class DrawerItemsSecondary extends Component {
 
                     <ListItem button onClick={() => Utils.redirectTo(this.props, "/facilities") }>
                         <ListItemIcon>
-                            {ICONS_MAPPING.facility}
+                            {ICONS_MAPPING.facilities}
                         </ListItemIcon>
                         <ListItemText primary="Faclities" />
                     </ListItem>
