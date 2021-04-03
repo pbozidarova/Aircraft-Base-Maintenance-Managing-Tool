@@ -41,6 +41,35 @@ export const ICONS_MAPPING = {
     attach: <AttachFileIcon/>
 }
 
+export const DASHBOARD_CARDS = {
+    tasks: {
+        title: 'Maintenance Tasks',
+        description: '',
+        image: '',
+    },
+    maintenance: {
+        title: 'Maintenance Events',
+        description: '',
+        image: '',
+    },
+    notifications: {
+        title: 'Notifications',
+        description: '',
+        image: '',
+    },
+    aircraft: {
+        title: 'Aircraft',
+        description: '',
+        image: "https://images.unsplash.com/photo-1530545124313-ce5e8eae55af?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80",
+    },
+    facilities: {
+        title: 'Facilities',
+        description: '',
+        image: '',
+    }
+
+}
+
 export const FETCH_DATA_KEY = {
     facility: 'facilityViewDtoList',
     aircraftRegistration: 'aircraftViewDtoList',

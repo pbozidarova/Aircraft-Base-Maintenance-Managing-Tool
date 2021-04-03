@@ -24,6 +24,13 @@ export const styles = ( theme ) => ({
   abmmt: {
       display: 'flex',
     },
+    root: {
+      maxWidth: 345,
+    },
+    media: {
+      height: 140,
+    },
+  
     toolbar: {
       paddingRight: 24, // keep right padding when drawer closed
     },
