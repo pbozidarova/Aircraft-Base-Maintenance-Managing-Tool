@@ -19,6 +19,7 @@ import managing.tool.e_user.model.RoleEnum;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
 import managing.tool.util.ServiceUtil;
+import org.apache.tomcat.jni.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -150,6 +151,13 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public Boolean notificationExists(String notificationNum) {
         return  this.findByNotificationNum(notificationNum) != null;
+    }
+
+    @Override
+    public Integer openNotificationsOfLoggedInUser(String token) {
+        UserEntity userEntity = this.serviceUtil.identifyingUserFromToken(token);
+
+        return this.notificationRepository.countNotificationEntitiesByAuthorAndStatus(userEntity, NotificationStatusEnum.OPENED);
     }
 
     @Override

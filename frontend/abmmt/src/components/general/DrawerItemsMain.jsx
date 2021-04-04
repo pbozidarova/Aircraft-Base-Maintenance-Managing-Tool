@@ -46,7 +46,7 @@ class DrawerItemsMain extends Component {
                     
                     <ListItem button onClick={() => Utils.redirectTo(this.props, "/notifications") }>
                         <ListItemIcon>
-                            <Badge badgeContent={4} color="secondary">
+                            <Badge badgeContent={this.props.openNotifications} color="secondary">
                                 {ICONS_MAPPING.notifications}
                             </Badge>
                         </ListItemIcon>

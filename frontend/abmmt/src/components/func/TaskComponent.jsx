@@ -75,7 +75,7 @@ class TaskComponent extends Component{
                 this.setState({
                     loading : false, 
                     tasks : response.data._embedded[key]
-                }, () => Utils.infoMessage(this.props.handleInfo, MESSAGES.allTasks));
+                }, () => Utils.infoMessage(this.props.handleInfo, MESSAGES.allTasks + MESSAGES.initialAdvice));
             }
         ).catch(e => Utils.errorMessage(e, this.props.handleInfo ));
 

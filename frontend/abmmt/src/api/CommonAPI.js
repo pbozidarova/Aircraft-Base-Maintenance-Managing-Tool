@@ -21,6 +21,10 @@ class BackendService {
         return axios.put(`${BACKEND_URL}/${entity}/${num}/create`, putObj);
     }
 
+    fetchOpenNotificationsCount(){
+        return axios.get(`${BACKEND_URL}/notifications/open`)
+    }
+
     fetchDataFrom(url){
         return axios.get(url);
     }

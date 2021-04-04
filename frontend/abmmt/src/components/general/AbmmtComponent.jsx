@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import BackendService from '../../api/CommonAPI.js'
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
@@ -8,7 +9,7 @@ import Box from '@material-ui/core/Box';
 
 import{BrowserRouter as Router} from 'react-router-dom'
 
-import AppBarDrawerComponent from './AppBarDrowerComponent'
+import AppBarDrawerComponent from './AppBarDrawerComponent'
 import SwitchComponent from './SwitchComponent'
 
 import FooterComponent from './FooterComponent'
@@ -29,10 +30,12 @@ class AbmmtComponent extends Component {
           success: MESSAGES.empty,
           error: MESSAGES.empty,
       },
+      openNotifications: '',
     }
 
     this.Alert = this.Alert.bind(this);
     this.handleInfo = this.handleInfo.bind(this);
+    this.fetchOpenNotificationsCount = this.fetchOpenNotificationsCount.bind(this);
   }
 
   Alert(props) {
@@ -41,6 +44,14 @@ class AbmmtComponent extends Component {
   
   handleInfo(msg){
     this.setState({...this.state, infoPanel : msg})
+  }
+
+  fetchOpenNotificationsCount(){
+    BackendService.fetchOpenNotificationsCount()
+        .then(response => {
+            // console.log(response)
+            this.setState({openNotifications: response.data})
+        });
   }
 
  
@@ -52,7 +63,7 @@ class AbmmtComponent extends Component {
       <div className={classes.abmmt}>
           <CssBaseline />
           <Router>
-            <AppBarDrawerComponent handleInfo={this.handleInfo}/>        
+            <AppBarDrawerComponent handleInfo={this.handleInfo} openNotifications={this.state.openNotifications}/>        
     
             <main className={classes.content}>
               <div className={classes.appBarSpacer} />
@@ -69,7 +80,7 @@ class AbmmtComponent extends Component {
 
                     {/* Here are the components between which we are switching */}
                     <Grid item xs={12}>
-                      <SwitchComponent  handleInfo={this.handleInfo} />
+                      <SwitchComponent  handleInfo={this.handleInfo} fetchOpenNotificationsCount={this.fetchOpenNotificationsCount}/>
                     </Grid>
                   </Grid>        
                 </Container>

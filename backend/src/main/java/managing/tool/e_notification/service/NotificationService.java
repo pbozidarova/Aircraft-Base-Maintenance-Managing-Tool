@@ -23,6 +23,7 @@ public interface NotificationService {
 
     NotificationEntity findByNotificationNum(String notificationNum);
     Boolean notificationExists(String notificationNum);
+    Integer openNotificationsOfLoggedInUser(String jwt);
     NotificationViewDto updateNotification(NotificationViewDto notificationViewDto);
     NotificationViewDto createNotification(NotificationViewDto notificationViewDto);
 

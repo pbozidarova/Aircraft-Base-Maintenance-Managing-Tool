@@ -40,17 +40,22 @@ class LoginComponent extends Component{
             .then(response => {
                 console.log(response.data.token);
                 AuthenticationService.registerSuccessfullLogin(this.state.username, response.data.token)
+                
+                this.props.fetchOpenNotificationsCount();
+
                 Utils.redirectTo(this.props, '/home')
 
                 Utils.successMessage(this.props.handleInfo, MESSAGES.successLogingIn)
             }).catch((e) => {
                 // console.log(e)
+                console.log(this.props)
                 // this.props.handleInfo({error : e.response.data.message});
                 Utils.errorMessage(e, this.props.handleInfo)
             })
     }
 
     render() {
+        console.log('omg')
         return(
             <Grid container>
 
@@ -94,7 +99,7 @@ class LoginComponent extends Component{
                         </div>
                     </Paper>
                 </Grid>
-                </Grid> 
+            </Grid> 
             
         )
     }

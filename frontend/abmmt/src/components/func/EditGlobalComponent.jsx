@@ -67,7 +67,7 @@ class EditGlobalComponent extends Component {
                     ...this.state,
                     ...stateObj
                 })
-              }).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.errorSomethingIsWrong ));
+              }).catch(e => Utils.errorMessage(e, this.props.handleInfo, MESSAGES.errorSomethingIsWrong ));
 
             })
       }

@@ -110,8 +110,6 @@ class AircraftComponent extends Component {
                 ).catch(e => {
                     Utils.errorMessage(e, this.props.handleInfo )
                 })
-  
-            console.log('submit Create')
         }
       }
 

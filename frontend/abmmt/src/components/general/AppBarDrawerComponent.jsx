@@ -30,13 +30,21 @@ import { MESSAGES } from '../../Constanst.js';
     constructor(props){
         super(props)
         this.state = {
-            open : false
+            open : false,
+            
         }
         
         this.handleDrawerOpen = this.handleDrawerOpen.bind(this)
         this.handleDrawerClose = this.handleDrawerClose.bind(this)
+        // this.openNotifications = this.openNotifications.bind(this)
         
     }
+
+    componentDidMount(){
+        // this.openNotifications();
+        
+    }
+
     redirectTo(urlParam){
         this.props.history.push(urlParam)
     }
@@ -49,11 +57,19 @@ import { MESSAGES } from '../../Constanst.js';
         this.setState({ open : false })
     };
 
+    // openNotifications(){
+    //     BackendService.fetchOpenNotificationsCount()
+    //         .then(response => {
+    //             // console.log(response)
+    //             this.setState({openNotifications: response.data})
+    //         });
+    // }
+
 
     // [open, setOpen] = React.useState(true);
       
     render(){
-        const { classes, handleInfo } = this.props;
+        const { classes, handleInfo, openNotifications } = this.props;
         const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
         const drawerWidth = 240;
         const isUserLoggedIn = AuthenticationService.isUserLoggedIn();
@@ -100,7 +116,7 @@ import { MESSAGES } from '../../Constanst.js';
                     </div>
                     <Divider />
                     <List>
-                        <DrawerItemsMain/>
+                        <DrawerItemsMain openNotifications={openNotifications}/>
                     </List>
 
                     <Divider />

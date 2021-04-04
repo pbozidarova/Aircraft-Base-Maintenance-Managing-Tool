@@ -35,7 +35,7 @@ class Utils {
     }
 
     errorMessage(serverError, handleInfo, messageVar){
-        console.log('here')
+        console.log(serverError)
         let errorToShow = serverError.response == null 
         ? {error: MESSAGES.errorNonExistant + messageVar} 
         : {error: serverError.response.data.message}

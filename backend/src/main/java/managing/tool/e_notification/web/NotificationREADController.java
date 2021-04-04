@@ -37,6 +37,13 @@ public class NotificationREADController {
         return ResponseEntity.ok().body(issues);
     }
 
+    @GetMapping("/open")
+    public ResponseEntity<Integer> findOpenNotificationsOfLoggedInUser(@RequestHeader("authorization") String jwt){
+        Integer openNotificationsOfLoggedInUser = this.notificationService.openNotificationsOfLoggedInUser(jwt);
+
+        return ResponseEntity.ok().body(openNotificationsOfLoggedInUser);
+    }
+
     @GetMapping("/maintenance/{maintenanceNum}")
     public ResponseEntity<CollectionModel<EntityModel<NotificationViewDto>>> findAllNotifForMaintenance(@PathVariable String maintenanceNum){
         List<EntityModel<NotificationViewDto>> issues = this.notificationService
