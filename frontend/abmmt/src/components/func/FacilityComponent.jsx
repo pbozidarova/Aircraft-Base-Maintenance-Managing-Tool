@@ -53,9 +53,9 @@ class FacilityComponent extends Component {
                     console.log(response.data);
                     this.setState({
                         facilities : response.data._embedded.facilityViewDtoList
-                    }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData));
+                    }, () => Utils.successMessage(this.props.handleInfo, MESSAGES.allData));
                 }
-            ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
+            ).catch(e => Utils.errorMessage(e, this.props.handleInfo, MESSAGES.allData ));
     }
 
     selectFacility(facility) {      
@@ -96,7 +96,7 @@ class FacilityComponent extends Component {
                     this.refreshFacilities()
                     this.props.handleInfo({success : MESSAGES.successUpdated});
                 }).catch(e => {
-                    Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, name)
+                    Utils.errorMessage(e, this.props.handleInfo, name)
 
                     // this.props.handleInfo({error : e});
                 })
@@ -109,10 +109,10 @@ class FacilityComponent extends Component {
             BackendService.createOne("facilities", name, selected)
                 .then(() => {                        
                     this.refreshFacilities()
-                    Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.successCreated)
+                    Utils.successMessage(this.props.handleInfo, MESSAGES.successCreated)
                 }
                 ).catch(e => {
-                    Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, name)
+                    Utils.errorMessage(e, this.props.handleInfo, name)
                 })
   
             console.log('submit Create')

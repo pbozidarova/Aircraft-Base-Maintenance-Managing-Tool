@@ -46,9 +46,11 @@ class NotificationComponent extends Component {
     }
 
     refreshNotifications(){
+        Utils.infoMessage(this.props.handleInfo, MESSAGES.pleaseWait);
+        
         let key = 'notificationViewDtoList'
         let shouldFetchPartialData = this.props.location.fetchDataFromURL
-        
+
         shouldFetchPartialData ? this.partialFetch(shouldFetchPartialData.href, shouldFetchPartialData.title, key) 
                                : this.fetchAll("notifications", key)
     }
@@ -60,9 +62,9 @@ class NotificationComponent extends Component {
                 this.setState({
                     loading : false, 
                     notifications : response.data
-                }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, title));
+                }, () => Utils.infoMessage(this.props.handleInfo, title));
             }
-        ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, title))
+        ).catch(e => Utils.errorMessage(e, this.props.handleInfo, title))
     }
 
     fetchAll(urlParam, key){
@@ -72,9 +74,9 @@ class NotificationComponent extends Component {
                 this.setState({
                     loading : false, 
                     notifications : response.data
-                }, () => {console.log(this.state); Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData)});
+                }, () => {Utils.successMessage(this.props.handleInfo, MESSAGES.allData)});
             }
-        ).catch(e => {console.log(e); Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData )});
+        ).catch(e => {Utils.errorMessage(e, this.props.handleInfo, MESSAGES.allData )});
 
     }
    
@@ -120,9 +122,9 @@ class NotificationComponent extends Component {
             BackendService.updateOne("notifications", notificationNum, selected)
                 .then((r) => {                        
                     this.refreshNotifications()
-                    this.props.handleInfo({success : MESSAGES.successUpdated});
+                    Utils.successMessage(this.props.handleInfo, MESSAGES.successUpdated)
                 }).catch(e => {
-                    this.props.handleInfo({error : e.response.data.message});
+                    Utils.errorMessage(e, this.props.handleInfo )
                     // this.props.handleInfo({error : e});
                 })
             console.log('submit Update')
@@ -134,13 +136,11 @@ class NotificationComponent extends Component {
             BackendService.createOne("notifications", notificationNum, selected)
                 .then(() => {                        
                     this.refreshNotifications()
-                    this.props.handleInfo({success : MESSAGES.successCreated});
+                    Utils.successMessage(this.props.handleInfo, MESSAGES.successCreated)
                 }
                 ).catch(e => {
-                    this.props.handleInfo({error : e.response.data.message});
+                    Utils.errorMessage(e, this.props.handleInfo )
                 })
-  
-            console.log('submit Create')
         }
       }
 

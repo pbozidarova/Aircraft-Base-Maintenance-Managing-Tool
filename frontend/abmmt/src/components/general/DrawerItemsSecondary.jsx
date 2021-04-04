@@ -46,31 +46,9 @@ class DrawerItemsSecondary extends Component {
                         <ListItemText primary="Users" />
                     </ListItem>
                     
-
-                    {/* <ListItem button onClick={  () => {this.redirectTo("/logout"); AuthenticationService.logout(); }}>
-                    <ListItemIcon>
-                        <BarChartIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Logout" />
-
-                    {/* {isUserLoggedIn && <Link to="/logout" onClick={AuthenticationService.logout}><ListItemText primary="Login" /></Link>} 
-                    </ListItem> */}
-                    
                 </div>
              }
 
-              {/* !isUserLoggedIn &&
-                 <div>
-                    <ListItem button onClick={() => this.redirectTo("/login") }>
-                    <ListItemIcon>
-                        <BarChartIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Login" />
-                    //{ {!isUserLoggedIn && <Link to="/login"><ListItemText primary="Login" /></Link>} }
-                    </ListItem>
-                
-                </div>
-              */}
         </>
         )
     }

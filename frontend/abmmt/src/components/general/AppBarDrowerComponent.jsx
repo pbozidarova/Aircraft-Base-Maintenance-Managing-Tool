@@ -20,6 +20,8 @@ import DrawerItemsSecondary from './DrawerItemsSecondary.jsx';
 
 import { styles } from '../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
+import Utils from '../Utils.js';
+import { MESSAGES } from '../../Constanst.js';
 
 
 
@@ -51,11 +53,11 @@ import { withStyles } from '@material-ui/core/styles';
     // [open, setOpen] = React.useState(true);
       
     render(){
-        const { classes } = this.props;
+        const { classes, handleInfo } = this.props;
         const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
         const drawerWidth = 240;
         const isUserLoggedIn = AuthenticationService.isUserLoggedIn();
-
+        console.log(this.props)
         return(
         <>
                 <AppBar position="absolute" className={clsx(classes.appBar, this.state.open && classes.appBarShift)}>
@@ -77,7 +79,7 @@ import { withStyles } from '@material-ui/core/styles';
                     {isUserLoggedIn && <Button 
                         variant="contained" 
                         // className={classes.menuButton}
-                        onClick={  () => {this.redirectTo("/logout"); AuthenticationService.logout()}}>
+                        onClick={  () => {Utils.infoMessage(handleInfo, MESSAGES.successLogOut ); this.redirectTo("/logout"); AuthenticationService.logout()}}>
                         Logout
                     </Button>}
 

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-
 import{BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 
 import LoginComponent from './LoginComponent'
@@ -51,7 +50,7 @@ class SwitchComponent extends Component {
               <AuthenticatedRoute path="/users" 
                                   component={() => (<UsersComponent handleInfo={this.props.handleInfo} />)} />
             
-              <AuthenticatedRoute path="/logout" component={LogoutComponent}/>
+              <AuthenticatedRoute path="/logout" component={() => (<LogoutComponent handleInfo={this.props.handleInfo} />)}/>
               <Route path="/login" component={() => (<LoginComponent handleInfo={this.props.handleInfo} />)}/>
               <Route component={ErrorComponent}/>
           </Switch>      

@@ -6,6 +6,7 @@ import SaveIcon from '@material-ui/icons/Save'
 import AuthenticationService from '../AuthenticationService.js'
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Divider from '@material-ui/core/Divider';
 import Utils from '../Utils.js'
 import { withRouter } from 'react-router';
 import { MuiThemeProvider } from '@material-ui/core/styles';
@@ -41,19 +42,20 @@ class LoginComponent extends Component{
                 AuthenticationService.registerSuccessfullLogin(this.state.username, response.data.token)
                 Utils.redirectTo(this.props, '/home')
 
-                Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.successLogingIn)
+                Utils.successMessage(this.props.handleInfo, MESSAGES.successLogingIn)
             }).catch((e) => {
                 // console.log(e)
                 // this.props.handleInfo({error : e.response.data.message});
-                Utils.allocateCorrectErrorMessage(e, this.props.handleInfo)
+                Utils.errorMessage(e, this.props.handleInfo)
             })
     }
 
     render() {
         return(
-            <MuiThemeProvider>
+            <Grid container>
 
                 <Grid item xs={12} md={5} lg={5}>
+
                     <Paper className="{fixedHeightPaper}">
                         
                             <TextField 
@@ -64,19 +66,24 @@ class LoginComponent extends Component{
                                 variant="outlined"  
                                 value={this.state.username} 
                                 onChange={this.handleChange}
-                                helperText="Very long text"
-                                /> 
-                      
+                                size="small"
+                                helperText="Change to N70707 to experience a different role and authority!"
+                            /> 
+                            <br/>
+                            <Divider/>
+                            <br/>
                             <TextField 
                                 type="password" 
                                 name="password" 
                                 id="password" 
                                 label="Password"  
                                 variant="outlined"  
-                                value={this.state.password} onChange={this.handleChange}
-                                helperText="Your password is preset and it is 1234"
+                                value={this.state.password} 
+                                onChange={this.handleChange}
+                                size="small"
+                                helperText="The password is 1234"
                                 /> 
-                        <div>
+                        <div align="right">
                         <Button
                             startIcon={<SaveIcon />}
                             size="large"
@@ -87,7 +94,7 @@ class LoginComponent extends Component{
                         </div>
                     </Paper>
                 </Grid>
-                </MuiThemeProvider> 
+                </Grid> 
             
         )
     }

@@ -18,6 +18,9 @@ import Utils from '../Utils.js'
 
 
 class DashboardComponent extends Component {
+    constructor(props){
+      super(props)
+    }
 
     render(){
         const { classes } = this.props;
@@ -49,7 +52,7 @@ class DashboardComponent extends Component {
                       </CardContent>
                     </CardActionArea>
                     <CardActions>
-                      <Button size="small" color="primary"> 
+                      <Button size="small" color="primary" onClick={() => Utils.redirectTo( this.props, `/${card}`)}> 
                           Visit {DASHBOARD_CARDS[card].title} 
                       </Button>
                       

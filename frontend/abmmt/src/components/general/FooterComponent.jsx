@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
+import { withRouter } from 'react-router';
+import Utils from '../Utils.js'
 
 class FooterComponent extends Component {
 
@@ -8,8 +10,7 @@ class FooterComponent extends Component {
         return (
             <Typography variant="body2" color="textSecondary" align="center">
               {'Copyright © '}
-              
-                <Link color="inherit" to="/home">Aicraft Base Maintenance Management Tool</Link>
+                <Link color="inherit" onClick={() => Utils.redirectTo(this.props, "/home")}>Aicraft Base Maintenance Management Tool</Link>
               {' '}
               {new Date().getFullYear()}
               {'.'}
@@ -19,4 +20,4 @@ class FooterComponent extends Component {
 }
 
 
-export default FooterComponent;
+export default withRouter(FooterComponent);

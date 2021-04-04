@@ -48,6 +48,9 @@ class TaskComponent extends Component{
         let key = 'taskViewDtoList'
         let shouldFetchPartialData = this.props.location.fetchDataFromURL
         
+        Utils.infoMessage(this.props.handleInfo, MESSAGES.pleaseWait);
+
+        //Check if the user wants to render all the tasks of it is coming from a HATEOAS link and requires partial fetch
         shouldFetchPartialData ? this.partialFetch(shouldFetchPartialData.href, shouldFetchPartialData.title, key) 
                                : this.fetchAll("tasks", key)
         
@@ -60,9 +63,9 @@ class TaskComponent extends Component{
                 this.setState({
                     loading : false, 
                     tasks : response.data._embedded[key]
-                }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, title));
+                }, () => Utils.successMessage(this.props.handleInfo, title));
             }
-        ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, title))
+        ).catch(e => Utils.errorMessage(e, this.props.handleInfo, title))
     }
 
     fetchAll(urlParam, key){
@@ -72,15 +75,16 @@ class TaskComponent extends Component{
                 this.setState({
                     loading : false, 
                     tasks : response.data._embedded[key]
-                }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData));
+                }, () => Utils.infoMessage(this.props.handleInfo, MESSAGES.allTasks));
             }
-        ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
+        ).catch(e => Utils.errorMessage(e, this.props.handleInfo ));
 
     }
    
     selectTask(task) {      
         this.setState({selected: task})
     }
+
     handleChange(event){
         let eName = event.target.name
         let eValue = event.target.value
@@ -119,9 +123,11 @@ class TaskComponent extends Component{
             BackendService.updateOne("tasks", taskNum, selected)
                 .then((r) => {                        
                     this.refreshTasks()
-                    this.props.handleInfo({success : MESSAGES.successUpdated});
+                    Utils.successMessage(this.props.handleInfo, MESSAGES.successUpdated)
+                    
                 }).catch(e => {
-                    this.props.handleInfo({error : e.response.data.message});
+                    Utils.errorMessage(e, this.props.handleInfo )
+                    // this.props.handleInfo({error : e.response.data.message});
                     // this.props.handleInfo({error : e});
                 })
             console.log('submit Update')
@@ -133,10 +139,10 @@ class TaskComponent extends Component{
             BackendService.createOne("tasks", taskNum, selected)
                 .then(() => {                        
                     this.refreshTasks()
-                    this.props.handleInfo({success : MESSAGES.successCreated});
+                    Utils.successMessage(this.props.handleInfo, MESSAGES.successCreated)
                 }
                 ).catch(e => {
-                    this.props.handleInfo({error : e.response.data.message});
+                    Utils.errorMessage(e, this.props.handleInfo )
                 })
   
             console.log('submit Create')

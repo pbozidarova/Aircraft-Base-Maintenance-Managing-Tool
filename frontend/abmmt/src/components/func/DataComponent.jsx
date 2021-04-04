@@ -72,7 +72,6 @@ class DataComponentAccordion extends Component{
             }) 
     }
 
-
     handleChangePage = (event, newPage) => {
         this.setState({page: newPage});
     }
@@ -96,9 +95,9 @@ class DataComponentAccordion extends Component{
                     ...this.state, 
                     // open: {[index]:!this.state.open.[index]},
                     fetchedReplies: response.data
-                }, () => {this.handleOpenState(index); Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData)});
+                }, () => {this.handleOpenState(index); Utils.successMessage(this.props.handleInfo, MESSAGES.allData)});
             }
-        ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
+        ).catch(e => Utils.errorMessage(e, this.props.handleInfo, MESSAGES.allData ));
 
     }
 
@@ -113,7 +112,7 @@ class DataComponentAccordion extends Component{
         }
         ).catch(e => {
             // console.log(e.response)
-            Utils.allocateCorrectErrorMessage(e, this.props.handleInfo)
+            Utils.errorMessage(e, this.props.handleInfo)
 
         })
 

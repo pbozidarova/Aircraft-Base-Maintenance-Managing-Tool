@@ -25,7 +25,7 @@ class AbmmtComponent extends Component {
     super(props)
     this.state = {
       infoPanel : {
-          info: MESSAGES.welcomeMsg,
+          info: MESSAGES.welcomeMsg + MESSAGES.usersInfo,
           success: MESSAGES.empty,
           error: MESSAGES.empty,
       },
@@ -52,12 +52,13 @@ class AbmmtComponent extends Component {
       <div className={classes.abmmt}>
           <CssBaseline />
           <Router>
-            <AppBarDrawerComponent/>        
+            <AppBarDrawerComponent handleInfo={this.handleInfo}/>        
     
             <main className={classes.content}>
               <div className={classes.appBarSpacer} />
                 <Container maxWidth={false} className={classes.container}>
-                <Grid container spacing={3}>
+                  <Grid container spacing={3}>
+                  {/* Here is the info panel */}
                     <Grid item xs={12}>
                       <div>
                           {this.state.infoPanel.info && <this.Alert severity="info" >{this.state.infoPanel.info} </this.Alert>}
@@ -65,12 +66,12 @@ class AbmmtComponent extends Component {
                           {this.state.infoPanel.error && <this.Alert severity="error" >{this.state.infoPanel.error} </this.Alert>}
                       </div>
                     </Grid>
+
+                    {/* Here are the components between which we are switching */}
                     <Grid item xs={12}>
-                      <SwitchComponent  handleInfo={this.handleInfo} infoPanel={this.state.infoPanel}/>
+                      <SwitchComponent  handleInfo={this.handleInfo} />
                     </Grid>
-                      
-                    </Grid>        
-                         
+                  </Grid>        
                 </Container>
                   
                 <Box pt={4}>

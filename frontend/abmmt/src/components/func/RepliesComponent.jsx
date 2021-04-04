@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import {ICONS_MAPPING, REPLIES_HEADER_DATA} from '../../Constanst.js'
-import BackendService from '../../api/CommonAPI.js'
-import Utils from '../Utils'
+
 
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';

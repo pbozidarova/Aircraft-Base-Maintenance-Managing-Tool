@@ -50,9 +50,9 @@ class AircraftComponent extends Component {
             .then(response => {
                     this.setState({
                         aircraft : response.data._embedded.aircraftViewDtoList
-                    }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData));
+                    }, () => Utils.successMessage(this.props.handleInfo, MESSAGES.allData));
                 }
-            ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
+            ).catch(e => Utils.errorMessage(e, this.props.handleInfo, MESSAGES.allData ));
     }
   
     selectAircraft(aircraft) {      
@@ -91,9 +91,9 @@ class AircraftComponent extends Component {
             BackendService.updateOne("aircraft", aircraftRegistration, selected)
                 .then((r) => {                        
                     this.refreshAircraft()
-                    this.props.handleInfo({success : MESSAGES.successUpdated});
+                    Utils.successMessage(this.props.handleInfo, MESSAGES.successUpdated)
                 }).catch(e => {
-                    this.props.handleInfo({error : e.response.data.message});
+                    Utils.errorMessage(e, this.props.handleInfo )
                     // this.props.handleInfo({error : e});
                 })
             console.log('submit Update')
@@ -105,10 +105,10 @@ class AircraftComponent extends Component {
             BackendService.createOne("aircraft", aircraftRegistration, selected)
                 .then(() => {                        
                     this.refreshAircraft()
-                    this.props.handleInfo({success : MESSAGES.successCreated});
+                    Utils.successMessage(this.props.handleInfo, MESSAGES.successCreated)
                 }
                 ).catch(e => {
-                    this.props.handleInfo({error : e.response.data.message});
+                    Utils.errorMessage(e, this.props.handleInfo )
                 })
   
             console.log('submit Create')

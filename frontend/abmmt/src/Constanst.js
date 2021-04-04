@@ -16,13 +16,17 @@ export const BACKEND_URL = 'http://localhost:8000';
 export const SESSION_ATTRIBUTE_NAME = 'authenticatedUser';
 
 export const MESSAGES = {
-    welcomeMsg : "Welcome to the Aircraft Base Maintenance Management Tool!",
+    welcomeMsg : "Welcome to the Aircraft Base Maintenance Management Tool! ",
+    usersInfo: "If you login with N90909, you will be an Engineer and Admin, and if you login with N70707 you will be Mechanic and User.",
     initialLoad : "Please select a row in order to edit it!",
     successLogingIn: "Successfully logged in!",
+    successLogOut: "Successfully logged out! We are expecting you again soon!",
     successLoaded: "Successfully loaded! ",
     allData: "All data!",
+    allTasks: "You are reviewing all the tasks that our highly trained maintenance staff is capable of performing on an aircraft!",
     successCreated : "Successfully created! ",
     successUpdated : "Successfully updated! ",
+    pleaseWait: "Please wait!",
     errorNonExistant : "Does not exist! ",
     errorExist : "Already exist such company number or email! ",
     errorSomethingIsWrong: "We are so sorry! Something is wrong. Please try again later!",

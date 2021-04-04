@@ -61,9 +61,9 @@ class MaintenanceComponent extends Component {
                 this.setState({
                     loading : false, 
                     maintenance : response.data._embedded[key]
-                }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, title));
+                }, () => Utils.infoMessage(this.props.handleInfo, title));
             }
-        ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, title))
+        ).catch(e => Utils.errorMessage(e, this.props.handleInfo, title))
     }
 
     fetchAll(urlParam, key){
@@ -73,9 +73,9 @@ class MaintenanceComponent extends Component {
                 this.setState({
                     loading : false, 
                     maintenance : response.data._embedded[key]
-                }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, MESSAGES.allData));
+                }, () => Utils.infoMessage(this.props.handleInfo, MESSAGES.allData));
             }
-        ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
+        ).catch(e => Utils.errorMessage(e, this.props.handleInfo, MESSAGES.allData ));
     }
    
     selectMaintenance(maintenance) {      
@@ -119,9 +119,9 @@ class MaintenanceComponent extends Component {
             BackendService.updateOne("maintenance", maintenanceNum, selected)
                 .then((r) => {                        
                     this.refreshMaintenance()
-                    this.props.handleInfo({success : MESSAGES.successUpdated});
+                    Utils.successMessage(this.props.handleInfo, MESSAGES.successUpdated)
                 }).catch(e => {
-                    this.props.handleInfo({error : e.response.data.message});
+                    Utils.errorMessage(e, this.props.handleInfo )
                     // this.props.handleInfo({error : e});
                 })
             console.log('submit Update')
@@ -133,10 +133,10 @@ class MaintenanceComponent extends Component {
             BackendService.createOne("maintenance", maintenanceNum, selected)
                 .then(() => {                        
                     this.refreshMaintenance()
-                    this.props.handleInfo({success : MESSAGES.successCreated});
+                    Utils.successMessage(this.props.handleInfo, MESSAGES.successCreated)
                 }
                 ).catch(e => {
-                    this.props.handleInfo({error : e.response.data.message});
+                    Utils.errorMessage(e, this.props.handleInfo )
                 })
   
             console.log('submit Create')

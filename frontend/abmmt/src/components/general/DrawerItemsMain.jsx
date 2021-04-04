@@ -15,16 +15,13 @@ import Badge from '@material-ui/core/Badge';
 class DrawerItemsMain extends Component {
        
     render(){
-
         const isUserLoggedIn = AuthenticationService.isUserLoggedIn();
-
-
         return (
             <>
                 {  isUserLoggedIn &&
                 <div>
                     
-                    <ListItem button onClick={() => Utils.redirectTo(this.props, "/home") }>
+                    <ListItem button  onClick={() => Utils.redirectTo(this.props, "/home") }>
                         <ListItemIcon>
                             {ICONS_MAPPING.dashboard}
                         </ListItemIcon>
@@ -55,54 +52,10 @@ class DrawerItemsMain extends Component {
                         </ListItemIcon>
                         <ListItemText primary="Notifications" />
                     </ListItem>
-                    
-
-                    {/* <ListItem button onClick={() => this.redirectTo("/aircraft") }>
-                        <ListItemIcon>
-                            <LocalAirportIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Aircraft" />
-                    </ListItem>
-
-                    <ListItem button onClick={() => this.redirectTo("/facility") }>
-                        <ListItemIcon>
-                            <LocationCityIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Faclity" />
-                    </ListItem>
-                        
-                    <ListItem button onClick={() => this.redirectTo("/users") }>
-                        <ListItemIcon>
-                            <PeopleIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Users" />
-                    </ListItem> */}
-                    
-
-                    {/* <ListItem button onClick={  () => {this.redirectTo("/logout"); AuthenticationService.logout(); }}>
-                    <ListItemIcon>
-                        <BarChartIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Logout" />
-
-                    {/* {isUserLoggedIn && <Link to="/logout" onClick={AuthenticationService.logout}><ListItemText primary="Login" /></Link>} 
-                    </ListItem> */}
-                    
+                  
                 </div>
              }
-
-              {/* !isUserLoggedIn &&
-                 <div>
-                    <ListItem button onClick={() => this.redirectTo("/login") }>
-                    <ListItemIcon>
-                        <BarChartIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Login" />
-                    //{ {!isUserLoggedIn && <Link to="/login"><ListItemText primary="Login" /></Link>} }
-                    </ListItem>
-                
-                </div>
-              */}
+ 
         </>
         )
     }

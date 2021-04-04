@@ -1,5 +1,4 @@
 import {MESSAGES} from '../Constanst.js'
-import BackendService from '../api/CommonAPI.js'
 
 class Utils {
     redirectTo(props, urlParam, fetchDataFromURL){
@@ -25,12 +24,17 @@ class Utils {
                     .reduce((acc, curr) =>  acc = {...acc, [curr] : ' '}, {} );
     }
 
-    
-    allocateCorrectSuccessMessage(handleInfo, messageVar){
-        handleInfo({success : MESSAGES.successLoaded + messageVar})
+    infoMessage(handleInfo, messageVar){
+        // handleInfo({success : MESSAGES.successLoaded + messageVar})
+        handleInfo({info : messageVar})
     }
 
-    allocateCorrectErrorMessage(serverError, handleInfo, messageVar){
+    successMessage(handleInfo, messageVar){
+        // handleInfo({success : MESSAGES.successLoaded + messageVar})
+        handleInfo({success : messageVar})
+    }
+
+    errorMessage(serverError, handleInfo, messageVar){
         console.log('here')
         let errorToShow = serverError.response == null 
         ? {error: MESSAGES.errorNonExistant + messageVar} 
