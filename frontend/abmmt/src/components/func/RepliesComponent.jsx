@@ -16,31 +16,9 @@ import TextField from '@material-ui/core/TextField';
 
 class RepliesComponent extends Component {
 
-    constructor(props){
-        super(props)
-
-        this.saveReply = this.saveReply.bind(this)
-    }
-
-    saveReply(index, notificationNum, reply){
-        console.log(reply)
-        BackendService.createOne('replies', notificationNum, {description: reply})
-        .then(() => {
-            this.handleOpenState(index)
-                     
-             this.fetchAndExpand(index, notificationNum)
-            // this.props.handleInfo({success : MESSAGES.successCreated});
-        }
-        ).catch(e => {
-            Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, reply)
-
-        })
-
-    console.log('submit Create')
-    }
-
+    
     render(){
-        const {notificationNum, index, classes, open, saveReply} = this.props
+        const {notificationNum, index, classes, open, saveReply, handleReplyChange} = this.props
         
         return (
             
@@ -79,7 +57,7 @@ class RepliesComponent extends Component {
                                             label={"Enter your reply here"}
                                             rows={3}
                                             multiline
-                                            onChange={this.handleChange}
+                                            onChange={handleReplyChange}
                                             // error={errors[key] && errors.length > 0}
                                             helperText={''}
                                         /> 
@@ -99,7 +77,7 @@ class RepliesComponent extends Component {
                                             className={classes.menuButton}
                                             color="default"
                                             endIcon={ICONS_MAPPING.create}
-                                            onClick={() => saveReply(index, notificationNum, this.state.currentReply)}>
+                                            onClick={() => saveReply(index, notificationNum)}>
                                             Send
                                         </Button>
                                     </TableCell>

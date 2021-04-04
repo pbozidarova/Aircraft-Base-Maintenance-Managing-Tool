@@ -31,6 +31,7 @@ class Utils {
     }
 
     allocateCorrectErrorMessage(serverError, handleInfo, messageVar){
+        console.log('here')
         let errorToShow = serverError.response == null 
         ? {error: MESSAGES.errorNonExistant + messageVar} 
         : {error: serverError.response.data.message}

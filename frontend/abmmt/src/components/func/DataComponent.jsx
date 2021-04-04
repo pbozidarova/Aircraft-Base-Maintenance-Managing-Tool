@@ -48,14 +48,15 @@ class DataComponentAccordion extends Component{
             open: false,
             fetchedReplies: [],
             currentReply: '',
+
         }
 
         this.isSelected = this.isSelected.bind(this)
-        this.handleChange = this.handleChange.bind(this)
         this.handleChangePage = this.handleChangePage.bind(this)
         this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this)
         this.handleOpenState = this.handleOpenState.bind(this)
-    
+        this.saveReply = this.saveReply.bind(this)
+        this.handleReplyChange = this.handleReplyChange.bind(this)
     }
  
 
@@ -64,12 +65,13 @@ class DataComponentAccordion extends Component{
         return this.props.selectedId === currentRow;
     }
 
-    handleChange(event){
+    handleReplyChange(event){
         this.setState(
             {   ...this.state,
                 currentReply : event.target.value
             }) 
     }
+
 
     handleChangePage = (event, newPage) => {
         this.setState({page: newPage});
@@ -99,6 +101,26 @@ class DataComponentAccordion extends Component{
         ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, MESSAGES.allData ));
 
     }
+
+    saveReply(index, notificationNum){
+        
+        BackendService.createOne('replies', notificationNum, {description: this.state.currentReply})
+        .then(() => {
+            this.handleOpenState(index)
+                     
+             this.fetchAndExpand(index, notificationNum)
+            // this.props.handleInfo({success : MESSAGES.successCreated});
+        }
+        ).catch(e => {
+            // console.log(e.response)
+            Utils.allocateCorrectErrorMessage(e, this.props.handleInfo)
+
+        })
+
+    console.log('submit Create')
+    }
+
+  
 
     render(){
         const { classes } = this.props;
@@ -179,10 +201,12 @@ class DataComponentAccordion extends Component{
                                 <RepliesComponent
                                     index={index}
                                     notificationNum={notificationNum}
-                                    saveReply={this.saveReply}
                                     open={this.state.open}
+                                    saveReply={this.saveReply}
+                                    handleReplyChange={this.handleReplyChange}
                                     fetchedReplies={this.state.fetchedReplies}
                                     classes={this.props.classes}
+                                    handleInfo={this.handleInfo}
                                 />
                             </TableRow>
                         }
