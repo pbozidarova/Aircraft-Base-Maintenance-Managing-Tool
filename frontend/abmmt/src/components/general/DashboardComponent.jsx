@@ -29,11 +29,11 @@ class DashboardComponent extends Component {
         return (
         <Grid container spacing={4}>
             
-            {Object.keys(DASHBOARD_CARDS).map(card => {
+            {Object.keys(DASHBOARD_CARDS).map((card, index) => {
              { console.log(DASHBOARD_CARDS[card])}
-               return <Grid item xs={12} md={4} lg={4}> 
+               return <Grid key={`grid_${index}`} item xs={12} md={4} lg={4}> 
                 
-                  <Card className={classes.root}>
+                  <Card className={classes.root} key={index}>
                     <CardActionArea onClick={() => Utils.redirectTo( this.props, `/${card}`)}>
                       <CardMedia
                         className={classes.media}
@@ -60,58 +60,8 @@ class DashboardComponent extends Component {
                   </Card>
                 </Grid>
             })}
-           
-            
             
         </Grid>
-
-          //   <Grid container spacing={3}>
-            
-          //   { this.state.loading && <CircularProgress color="secondary"/> }
-
-          //   <Grid item xs={12} md={5} lg={6}>
-          //     <Paper className={fixedHeightPaper}>
-          //       <DataComponent 
-          //               tableRows={this.state.maintenance}
-          //               tableHeader = {MAINTENANCE_HEADER_DATA}
-          //               selectedId={this.state.maintenance[0]}
-          //               selectRow={this.selectMaintenance} 
-          //               handleInfo={this.props.handleInfo}
-          //           />       
-                 
-          //     </Paper>
-          //   </Grid>
-            
-
-          //   <Grid item xs={12} md={7} lg={6}>
-          //     <Paper className={fixedHeightPaper}>
-          //       <DataComponent 
-          //               tableRows={this.state.notifications}
-          //               tableHeader = {NOTIFICATIONS_HEADER_DATA}
-          //               selectedId={this.state.notifications[0]}
-          //               selectRow={this.selectNotification} 
-          //               handleInfo={this.props.handleInfo}
-          //           />
-
-          //     </Paper>
-          //   </Grid>
-
-          //   {/* <Grid item xs={12} md={5} lg={6}>
-          //     <Paper className={classes.paper, classes.fixedHeightDash}>
-          //     <DataComponent 
-          //               tableRows={this.state.tasks}
-          //               tableHeader = {TASKS_HEADER_DATA}
-          //               selectedId={this.state.tasks[0]}
-          //               selectRow={this.selectFacility} 
-          //           />
-                  
-          //     </Paper>
-          //   </Grid> */}
-            
-           
-            
-           
-          // </Grid>
   
         )
     }

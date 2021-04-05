@@ -53,7 +53,9 @@ class FacilityComponent extends Component {
                     console.log(response.data);
                     this.setState({
                         facilities : response.data._embedded.facilityViewDtoList
-                    }, () => Utils.successMessage(this.props.handleInfo, MESSAGES.allData));
+                    },  
+                    () => Utils.infoMessage(this.props.handleInfo, MESSAGES.allData)
+                    );
                 }
             ).catch(e => Utils.errorMessage(e, this.props.handleInfo, MESSAGES.allData ));
     }

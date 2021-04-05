@@ -39,11 +39,11 @@ class LoginComponent extends Component{
             .executeAuthnetication(this.state.username, this.state.password)
             .then(response => {
                 console.log(response.data.token);
+                console.log(this.props)
                 AuthenticationService.registerSuccessfullLogin(this.state.username, response.data.token)
                 
-                this.props.fetchOpenNotificationsCount();
-
                 Utils.redirectTo(this.props, '/home')
+                this.props.fetchOpenNotifCount();
 
                 Utils.successMessage(this.props.handleInfo, MESSAGES.successLogingIn)
             }).catch((e) => {

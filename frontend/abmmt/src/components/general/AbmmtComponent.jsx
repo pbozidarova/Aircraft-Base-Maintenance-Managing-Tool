@@ -35,7 +35,7 @@ class AbmmtComponent extends Component {
 
     this.Alert = this.Alert.bind(this);
     this.handleInfo = this.handleInfo.bind(this);
-    this.fetchOpenNotificationsCount = this.fetchOpenNotificationsCount.bind(this);
+    this.fetchOpenNotifCount = this.fetchOpenNotifCount.bind(this);
   }
 
   Alert(props) {
@@ -46,10 +46,10 @@ class AbmmtComponent extends Component {
     this.setState({...this.state, infoPanel : msg})
   }
 
-  fetchOpenNotificationsCount(){
+  fetchOpenNotifCount(){
     BackendService.fetchOpenNotificationsCount()
         .then(response => {
-            // console.log(response)
+            console.log(response.data)
             this.setState({openNotifications: response.data})
         });
   }
@@ -63,7 +63,7 @@ class AbmmtComponent extends Component {
       <div className={classes.abmmt}>
           <CssBaseline />
           <Router>
-            <AppBarDrawerComponent handleInfo={this.handleInfo} openNotifications={this.state.openNotifications}/>        
+            <AppBarDrawerComponent handleInfo={this.handleInfo} openNotifications={this.state.openNotifications} />        
     
             <main className={classes.content}>
               <div className={classes.appBarSpacer} />
@@ -80,7 +80,7 @@ class AbmmtComponent extends Component {
 
                     {/* Here are the components between which we are switching */}
                     <Grid item xs={12}>
-                      <SwitchComponent  handleInfo={this.handleInfo} fetchOpenNotificationsCount={this.fetchOpenNotificationsCount}/>
+                      <SwitchComponent handleInfo={this.handleInfo} fetchOpenNotifCount={this.fetchOpenNotifCount}/>
                     </Grid>
                   </Grid>        
                 </Container>

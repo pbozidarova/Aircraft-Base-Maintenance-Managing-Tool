@@ -35,14 +35,7 @@ import { MESSAGES } from '../../Constanst.js';
         }
         
         this.handleDrawerOpen = this.handleDrawerOpen.bind(this)
-        this.handleDrawerClose = this.handleDrawerClose.bind(this)
-        // this.openNotifications = this.openNotifications.bind(this)
-        
-    }
-
-    componentDidMount(){
-        // this.openNotifications();
-        
+        this.handleDrawerClose = this.handleDrawerClose.bind(this)        
     }
 
     redirectTo(urlParam){
@@ -57,23 +50,13 @@ import { MESSAGES } from '../../Constanst.js';
         this.setState({ open : false })
     };
 
-    // openNotifications(){
-    //     BackendService.fetchOpenNotificationsCount()
-    //         .then(response => {
-    //             // console.log(response)
-    //             this.setState({openNotifications: response.data})
-    //         });
-    // }
-
-
-    // [open, setOpen] = React.useState(true);
       
     render(){
         const { classes, handleInfo, openNotifications } = this.props;
         const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
         const drawerWidth = 240;
         const isUserLoggedIn = AuthenticationService.isUserLoggedIn();
-        console.log(this.props)
+    
         return(
         <>
                 <AppBar position="absolute" className={clsx(classes.appBar, this.state.open && classes.appBarShift)}>

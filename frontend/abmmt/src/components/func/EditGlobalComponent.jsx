@@ -39,7 +39,7 @@ class EditGlobalComponent extends Component {
         
       }
       componentDidMount(){
-         this.refreshSelectMenusOptions();
+        //  this.refreshSelectMenusOptions();
       }
 
       refreshSelectMenusOptions(){
