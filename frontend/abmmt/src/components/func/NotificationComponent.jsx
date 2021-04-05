@@ -62,7 +62,7 @@ class NotificationComponent extends Component {
             response => {
                 this.setState({
                     loading : false, 
-                    notifications : response.data
+                    notifications : response.data._embedded[key]
                 }, () => Utils.infoMessage(this.props.handleInfo, title));
             }
         ).catch(e => Utils.errorMessage(e, this.props.handleInfo, title))

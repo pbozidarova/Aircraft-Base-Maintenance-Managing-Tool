@@ -101,15 +101,17 @@ public class NotificationServiceImpl implements NotificationService {
         return this.notificationRepository
                 .findAll()
                 .stream()
-                .map(notificationEntity -> {
-                    NotificationViewDto notificationViewDto = this.modelMapper.map(notificationEntity, NotificationViewDto.class);
-
-                    notificationViewDto
-                            .setAuthor(this.serviceUtil.userViewStringBuild(notificationEntity.getAuthor()));
-
-                    return notificationViewDto;
-                })
+                .map(this::buildNotifView)
                 .collect(Collectors.toList());
+    }
+
+    private NotificationViewDto buildNotifView(NotificationEntity notificationEntity){
+        NotificationViewDto notificationViewDto = this.modelMapper.map(notificationEntity, NotificationViewDto.class);
+
+        notificationViewDto
+                .setAuthor(this.serviceUtil.userViewStringBuild(notificationEntity.getAuthor()));
+
+        return notificationViewDto;
     }
 
     @Override
@@ -118,7 +120,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         return this.notificationRepository.findAllByAuthor(userEntity)
                 .stream()
-                .map(i -> this.modelMapper.map(i, NotificationViewDto.class))
+                .map(this::buildNotifView)
                 .collect(Collectors.toList());
     }
 
@@ -128,7 +130,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         return this.notificationRepository.findAllByMaintenance(maintenanceEntity)
                 .stream()
-                .map(i -> this.modelMapper.map(i, NotificationViewDto.class))
+                .map(this::buildNotifView)
                 .collect(Collectors.toList());
     }
 
@@ -138,7 +140,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         return this.notificationRepository.findAllByTask(taskEntity)
                 .stream()
-                .map(n -> this.modelMapper.map(n, NotificationViewDto.class))
+                .map(this::buildNotifView)
                 .collect(Collectors.toList());
 
     }
