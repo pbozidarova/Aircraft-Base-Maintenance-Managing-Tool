@@ -109,7 +109,7 @@ export const styles = ( theme ) => ({
       flexDirection: 'column',
     },
     fixedHeight: {
-      height: 500,
+      height: 550,
     },
     fixedHeightMin: {
       height: 300,

@@ -45,13 +45,16 @@ class DataComponentAccordion extends Component{
         this.state = {
             page: 0,
             rowsPerPage: 5,
+            selected: '',
             open: false,
             fetchedReplies: [],
             currentReply: '',
+            
 
         }
 
         this.isSelected = this.isSelected.bind(this)
+        this.selectRow = this.selectRow.bind(this)
         this.handleChangePage = this.handleChangePage.bind(this)
         this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this)
         this.handleOpenState = this.handleOpenState.bind(this)
@@ -60,9 +63,12 @@ class DataComponentAccordion extends Component{
     }
  
 
-    isSelected(currentRow) {
-        
-        return this.props.selectedId === currentRow;
+    isSelected(selectedRowId) {
+        return this.props.selectedId === selectedRowId;
+    }
+
+    selectRow(selectedRowId) {      
+        this.setState({selected: selectedRowId})
     }
 
     handleReplyChange(event){
@@ -107,22 +113,16 @@ class DataComponentAccordion extends Component{
         .then(() => {
             this.handleOpenState(index)
                      
-             this.fetchAndExpand(index, notificationNum)
-            // this.props.handleInfo({success : MESSAGES.successCreated});
+            this.fetchAndExpand(index, notificationNum)
         }
         ).catch(e => {
-            // console.log(e.response)
             Utils.errorMessage(e, this.props.handleInfo)
 
         })
-
-    console.log('submit Create')
     }
 
-  
-
     render(){
-        const { classes } = this.props;
+        const { classes, selectRow } = this.props;
 
         return(
             <div>
@@ -148,18 +148,18 @@ class DataComponentAccordion extends Component{
                 {this.props.tableRows.length > 0 && this.props.tableRows
                 .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
                 .map((tableRow, index) => {
+                    let rowID = Object.entries(tableRow)[0][1]
+                    console.log(rowID)
                     let notificationNum = tableRow.notificationNum;
-                    
                     return (   
                         <>
                         <TableRow  size="small"
                             hover
-                            onClick={() => this.props.selectRow(tableRow)}
+                            onClick={() => selectRow(tableRow)}
                             tabIndex={-1}
                             key={index}
-                            selected={this.isSelected(notificationNum)}
+                            selected={this.isSelected(rowID)}
                         >   
-                            
                             {this.props.tableHeader.notificationNum &&
                             //load the arrow button only if the parent component is the Notifications component
                             <TableCell >

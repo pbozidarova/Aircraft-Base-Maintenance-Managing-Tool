@@ -40,7 +40,7 @@ class Utils {
         ? {error: MESSAGES.errorNonExistant + messageVar} 
         : {error: serverError.response.data.message}
 
-        // handleInfo(errorToShow);
+        handleInfo(errorToShow);
     }
    
       

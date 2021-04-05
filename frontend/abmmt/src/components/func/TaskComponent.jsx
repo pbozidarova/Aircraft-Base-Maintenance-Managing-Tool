@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import BackendService from '../../api/CommonAPI.js'
-import {TASKS_HEADER_DATA, TASKS_BOOLEAN_FIELDS, TASKS_DISABLED_FIELDS, MESSAGES} from '../../Constanst.js'
+import {TASKS_HEADER_DATA, TASKS_BOOLEAN_FIELDS, TASK_EDIT_FIELDS, MESSAGES} from '../../Constanst.js'
 import Utils from '../Utils.js'
 import { withRouter } from 'react-router';
 
@@ -104,15 +104,9 @@ class TaskComponent extends Component{
         
         this.setState({ errors: 
              { 
-                // companyNum: /^[N]\d{5}$/.test(selectedUser.companyNum) ? '' : "Follow the pattern N plus 5 digits!" ,
-                // firstName:  selectedUser.firstName != 'First Name' && selectedUser.firstName.length > 2 ? '' : "The first name must contain more than 2 digits!" ,
-                // lastName:  selectedUser.lastName != 'Last Name' && selectedUser.lastName.length > 2 ? '' : "The last name must contain more than 2 digits!",
-                // email: /^\S+@\S+$/.test(selectedUser.email)  ? '' : "Please provide a valid email!",
-                // facility: this.props.selectedUser.facility.length > 2 ? '' : "Please select a facility!",
-                
-                // authority: this.props.selectedUser.roles.length > 0 ? '' : "At least one authority must be checked!",
-                // role: this.props.selectedUser.roles.length > 0 ? '' : "At least one role must be checked!",
-  
+                taskNum: selected.taskNum.length > 5 ? '' : "The task number length must be more than 5 symbols." ,
+                code: selected.code.length == 3 ? '' : "The functional code length must equal 3 symbols." ,
+                description: selected.description.length > 10 ? '' : "The description length must be more than 10 symbols." ,
              }
         }, () => submit(selected.taskNum, selected) );
     
@@ -127,10 +121,8 @@ class TaskComponent extends Component{
                     
                 }).catch(e => {
                     Utils.errorMessage(e, this.props.handleInfo )
-                    // this.props.handleInfo({error : e.response.data.message});
-                    // this.props.handleInfo({error : e});
                 })
-            console.log('submit Update')
+        
         }
       }
   
@@ -144,8 +136,6 @@ class TaskComponent extends Component{
                 ).catch(e => {
                     Utils.errorMessage(e, this.props.handleInfo )
                 })
-  
-            console.log('submit Create')
         }
       }
 
@@ -185,8 +175,9 @@ class TaskComponent extends Component{
                         handleInfo={this.handleInfo}
                         labels = {TASKS_HEADER_DATA} 
                         booleanFields = {TASKS_BOOLEAN_FIELDS}
-                        disabledFields={TASKS_DISABLED_FIELDS}
+                        editFields={TASK_EDIT_FIELDS}
                         errors={this.state.errors}
+                        feedback={MESSAGES.taskEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
                         submitUpdate={this.submitUpdate}
                         submitCreate={this.submitCreate}

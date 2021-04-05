@@ -26,6 +26,10 @@ export const MESSAGES = {
     allTasks: "You are reviewing all the tasks that our highly trained maintenance staff is capable of performing on an aircraft! ",
     successCreated : "Successfully created! ",
     successUpdated : "Successfully updated! ",
+
+    taskEditInfo: "You are not allowed to edit the task number! Your name will be automaticaly added to the preparing team. The status of the task is OK whenever the three checkboxes are checked and NOT_OK in any other case!",
+    
+
     pleaseWait: "Please wait!",
     errorNonExistant : "Does not exist! ",
     errorExist : "Already exist such company number or email! ",
@@ -170,9 +174,10 @@ export const TASKS_HEADER_DATA = {
     preparedBy: "Prepared by",
     status: "Status",
 }
-export const TASKS_DISABLED_FIELDS = {
-    // taskNum: 'Task Number',
-    // code : 'Code',
+export const TASK_EDIT_FIELDS = {
+    taskNum: 'Task Number',
+    code : 'Code',
+    description : 'Description',
     // preparedBy: "Prepared by",
     // status: "Status",
 }
