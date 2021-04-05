@@ -22,6 +22,10 @@ import { withStyles } from '@material-ui/core/styles';
 
 
 class SwitchComponent extends Component {
+
+  shouldComponentUpdate(){
+    return false
+  }
   
   render(){
     // console.log(this.props)
@@ -45,7 +49,7 @@ class SwitchComponent extends Component {
                                   component={() => (<UsersComponent handleInfo={this.props.handleInfo} />)} />
             
               <AuthenticatedRoute path="/logout" component={() => (<LogoutComponent handleInfo={this.props.handleInfo} />)}/>
-              <Route path="/login" component={() => (<LoginComponent handleInfo={this.props.handleInfo} 
+              <Route path="/login" component={() => (<LoginComponent handleInfo={this.props.handleInfo} infoPanel={this.state.infoPanel}
                                                                      fetchOpenNotifCount={this.props.fetchOpenNotifCount}/>)}/>
               <Route component={ErrorComponent}/>
           </Switch>      
