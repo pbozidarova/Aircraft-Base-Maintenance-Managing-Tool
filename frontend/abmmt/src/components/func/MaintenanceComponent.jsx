@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import BackendService from '../../api/CommonAPI.js'
-import {MAINTENANCE_HEADER_DATA, MAINTENANCE_BOOLEAN_FIELDS, MAINTENANCE_DISABLED_FIELDS, MESSAGES} from '../../Constanst.js'
+import {MAINTENANCE_HEADER_DATA, MAINTENANCE_BOOLEAN_FIELDS, MAINTENANCE_EDIT_FIELDS, MESSAGES} from '../../Constanst.js'
 import Utils from '../Utils.js'
 import { withRouter } from 'react-router';
 
@@ -26,6 +26,7 @@ class MaintenanceComponent extends Component {
         this.state = {
             maintenance : [],
             selected: {},
+            selectedId: '',
             loading: true,       
             errors: {},     
         }
@@ -33,7 +34,6 @@ class MaintenanceComponent extends Component {
         this.refreshMaintenance = this.refreshMaintenance.bind(this)
         this.selectMaintenance = this.selectMaintenance.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.handleInfo = this.handleInfo.bind(this);
 
         this.validateAndSubmit = this.validateAndSubmit.bind(this);
         this.submitUpdate = this.submitUpdate.bind(this)
@@ -78,8 +78,8 @@ class MaintenanceComponent extends Component {
         ).catch(e => Utils.errorMessage(e, this.props.handleInfo, MESSAGES.allData ));
     }
    
-    selectMaintenance(maintenance) {      
-        this.setState({selected: maintenance})
+    selectMaintenance(maintenance, selectedId) {      
+        this.setState({...this.state, selected: maintenance, selectedId})
     }
     handleChange(event){
         let eName = event.target.name
@@ -100,7 +100,8 @@ class MaintenanceComponent extends Component {
         
         this.setState({ errors: 
              { 
-                // companyNum: /^[N]\d{5}$/.test(selectedUser.companyNum) ? '' : "Follow the pattern N plus 5 digits!" ,
+
+                maintenanceNum: selected.maintenanceNum.length > 5 ? '' : "The maintenance number length must be more than 5 symbols." ,
                 // firstName:  selectedUser.firstName != 'First Name' && selectedUser.firstName.length > 2 ? '' : "The first name must contain more than 2 digits!" ,
                 // lastName:  selectedUser.lastName != 'Last Name' && selectedUser.lastName.length > 2 ? '' : "The last name must contain more than 2 digits!",
                 // email: /^\S+@\S+$/.test(selectedUser.email)  ? '' : "Please provide a valid email!",
@@ -122,7 +123,6 @@ class MaintenanceComponent extends Component {
                     Utils.successMessage(this.props.handleInfo, MESSAGES.successUpdated)
                 }).catch(e => {
                     Utils.errorMessage(e, this.props.handleInfo )
-                    // this.props.handleInfo({error : e});
                 })
             console.log('submit Update')
         }
@@ -144,12 +144,8 @@ class MaintenanceComponent extends Component {
       }
 
 
-    handleInfo(msg){
-        this.setState({...this.state, infoPanel : msg})
-    }
-
     render(){
-        const { classes } = this.props;
+        const { classes, handleInfo } = this.props;
         const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
         return(
@@ -163,7 +159,7 @@ class MaintenanceComponent extends Component {
                     <DataComponent 
                         tableRows={this.state.maintenance} 
                         tableHeader={MAINTENANCE_HEADER_DATA}
-                        selectedId={this.state.selected.maintenanceNum}
+                        selectedId={this.state.selectedId}
                         selectRow={this.selectMaintenance} 
                     />
                 </Paper>
@@ -174,13 +170,14 @@ class MaintenanceComponent extends Component {
                   {this.state.selected.maintenanceNum && 
                     <EditGlobalComponent
                         selected={this.state.selected} 
-                        selectedId={this.state.selected.maintenanceNum}
+                        selectedId={this.state.selectedId}
                         handleChange={this.handleChange} 
                         handleInfo={this.handleInfo}
                         labels = {MAINTENANCE_HEADER_DATA} 
                         booleanFields = {MAINTENANCE_BOOLEAN_FIELDS}
-                        disabledFields={MAINTENANCE_DISABLED_FIELDS}
+                        editFields={MAINTENANCE_EDIT_FIELDS}
                         errors={this.state.errors}
+                        feedback={MESSAGES.taskEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
                         submitUpdate={this.submitUpdate}
                         submitCreate={this.submitCreate}

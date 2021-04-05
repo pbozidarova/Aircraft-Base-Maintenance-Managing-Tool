@@ -25,6 +25,7 @@ class TaskComponent extends Component{
         this.state = {
             tasks : [],
             selected: {},
+            selectedId: '',
             loading: true,       
             errors: {},     
         }
@@ -32,7 +33,6 @@ class TaskComponent extends Component{
         this.refreshTasks = this.refreshTasks.bind(this)
         this.selectTask = this.selectTask.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.handleInfo = this.handleInfo.bind(this);
 
         this.validateAndSubmit = this.validateAndSubmit.bind(this);
         this.submitUpdate = this.submitUpdate.bind(this)
@@ -50,7 +50,7 @@ class TaskComponent extends Component{
         
         Utils.infoMessage(this.props.handleInfo, MESSAGES.pleaseWait);
 
-        //Check if the user wants to render all the tasks of it is coming from a HATEOAS link and requires partial fetch
+        //Check if the user wants to render all the tasks or a HATEOAS link requires partial fetch
         shouldFetchPartialData ? this.partialFetch(shouldFetchPartialData.href, shouldFetchPartialData.title, key) 
                                : this.fetchAll("tasks", key)
         
@@ -81,8 +81,8 @@ class TaskComponent extends Component{
 
     }
    
-    selectTask(task) {      
-        this.setState({selected: task})
+    selectTask(task, selectedId) {      
+        this.setState({...this.state, selected: task, selectedId})
     }
 
     handleChange(event){
@@ -140,12 +140,8 @@ class TaskComponent extends Component{
       }
 
 
-    handleInfo(msg){
-        this.setState({...this.state, infoPanel : msg})
-    }
-
     render(){
-        const { classes } = this.props;
+        const { classes, handleInfo } = this.props;
         const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
         return(
@@ -159,7 +155,7 @@ class TaskComponent extends Component{
                     <DataComponent 
                         tableRows={this.state.tasks} 
                         tableHeader={TASKS_HEADER_DATA}
-                        selectedId={this.state.selected.taskNum}
+                        selectedId={this.state.selectedId}
                         selectRow={this.selectTask} 
                     />
                 </Paper>
@@ -170,9 +166,10 @@ class TaskComponent extends Component{
                   {this.state.selected.taskNum && 
                     <EditGlobalComponent
                         selected={this.state.selected} 
-                        selectedId={this.state.selected.taskNum}
+                        selectedId={this.state.selectedId}
                         handleChange={this.handleChange} 
-                        handleInfo={this.handleInfo}
+                        
+                        handleInfo={handleInfo}
                         labels = {TASKS_HEADER_DATA} 
                         booleanFields = {TASKS_BOOLEAN_FIELDS}
                         editFields={TASK_EDIT_FIELDS}

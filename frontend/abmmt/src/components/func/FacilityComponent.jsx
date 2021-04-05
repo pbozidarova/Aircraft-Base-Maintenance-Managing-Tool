@@ -24,6 +24,7 @@ class FacilityComponent extends Component {
         this.state = {
             facilities : [],
             selected: {},
+            selectedId: '',
             loading: true,       
             errors: {},     
         }
@@ -60,8 +61,8 @@ class FacilityComponent extends Component {
             ).catch(e => Utils.errorMessage(e, this.props.handleInfo, MESSAGES.allData ));
     }
 
-    selectFacility(facility) {      
-        this.setState({selected: facility})
+    selectFacility(facility, selectedId) {      
+        this.setState({...this.state, selected: facility, selectedId})
     }
 
     handleChange(event){
@@ -139,7 +140,7 @@ class FacilityComponent extends Component {
                     <DataComponent 
                         tableRows={this.state.facilities}
                         tableHeader = {FACILITIES_HEADER_DATA}
-                        selectedId={this.state.selected.name}
+                        selectedId={this.state.selectedId}
                         selectRow={this.selectFacility} 
                     />
 
@@ -150,7 +151,7 @@ class FacilityComponent extends Component {
                   {this.state.selected.name && 
                     <EditGlobalComponent
                     selected={this.state.selected} 
-                    selectedId={this.state.selected.name}
+                    selectedId={this.state.selectedId}
                     handleChange={this.handleChange} 
                     handleInfo={this.handleInfo}
                     labels = {FACILITIES_HEADER_DATA} 

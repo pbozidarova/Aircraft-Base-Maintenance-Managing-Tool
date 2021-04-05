@@ -28,7 +28,10 @@ export const MESSAGES = {
     successUpdated : "Successfully updated! ",
 
     taskEditInfo: "You are not allowed to edit the task number! Your name will be automaticaly added to the preparing team. The status of the task is OK whenever the three checkboxes are checked and NOT_OK in any other case!",
-    
+    // taskMaintenanceTooltip: "Check in which maintenance the task is performed",
+    // taskNotifTooltip: "Check notifications for this task",
+
+
 
     pleaseWait: "Please wait!",
     errorNonExistant : "Does not exist! ",
@@ -137,7 +140,11 @@ export const MAINTENANCE_HEADER_DATA = {
     responsibleEngineer: 'Responsible Engineer'
 }
 export const MAINTENANCE_BOOLEAN_FIELDS = {}
-export const MAINTENANCE_DISABLED_FIELDS ={}
+export const MAINTENANCE_EDIT_FIELDS ={
+    maintenanceNum: 'Maintenance Number',
+    startDate: 'Start Date',
+    endDate: 'End Date',
+}
 
 //NOTIFICATIONS--------------------------------------------
 export const NOTIFICATIONS_HEADER_DATA = {
@@ -146,17 +153,16 @@ export const NOTIFICATIONS_HEADER_DATA = {
     status: 'Status',
     classification: 'Classification',
     dueDate: 'Due date',
-    // maintenanceNum: 'Maintenance Number',
-    // taskNum: 'Task Number'
-
-    // aircraftRegistration: 'Aircraft Registration',
-    // startDate: 'Start Date',
-    // endDate: 'End Date',
-    // facility: 'Facility',
-    // responsibleEngineer: 'Responsible Engineer'
 }
-export const NOTIFICATIONS_BOOLEAN_FIELDS = {}
-export const NOTIFICATIONS_DISABLED_FIELDS ={}
+export const NOTIFICATIONS_BOOLEAN_FIELDS = {
+    
+}
+export const NOTIFICATION_EDIT_FIELDS ={
+    notificationNum: 'Notification Number',
+
+    status: 'Status',
+    classification: 'Classification',
+}
 export const REPLIES_HEADER_DATA ={
     description: 'Description',
     author: 'Author',
@@ -171,8 +177,8 @@ export const TASKS_HEADER_DATA = {
     taskNum: 'Task Number',
     code : 'Code',
     description : 'Description',
-    preparedBy: "Prepared by",
-    status: "Status",
+    preparedBy: 'Prepared by',
+    status: 'Status',
 }
 export const TASK_EDIT_FIELDS = {
     taskNum: 'Task Number',

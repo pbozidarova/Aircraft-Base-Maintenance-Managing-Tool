@@ -24,6 +24,7 @@ class AircraftComponent extends Component {
         this.state = {
             aircraft : [],
             selected: {},
+            selectedId: '',
             loading: true,       
             errors: {},     
         }
@@ -55,8 +56,8 @@ class AircraftComponent extends Component {
             ).catch(e => Utils.errorMessage(e, this.props.handleInfo, MESSAGES.allData ));
     }
   
-    selectAircraft(aircraft) {      
-        this.setState({selected: aircraft})
+    selectAircraft(aircraft, selectedId) {      
+        this.setState({...this.state, selected: aircraft, selectedId})
     }
 
     handleChange(event){
@@ -131,7 +132,7 @@ class AircraftComponent extends Component {
                     <DataComponent 
                         tableRows={this.state.aircraft}
                         tableHeader = {AIRCRAFT_HEADER_DATA}
-                        selectedId={this.state.selected.aircraftRegistration}
+                        selectedId={this.state.selectedId}
                         selectRow={this.selectAircraft} 
                     />
 
@@ -142,7 +143,7 @@ class AircraftComponent extends Component {
                   {this.state.selected.aircraftRegistration && 
                     <EditGlobalComponent 
                         selected={this.state.selected} 
-                        selectedId={this.state.selected.aircraftRegistration}
+                        selectedId={this.state.selectedId}
                         handleChange={this.handleChange} 
                         handleInfo={this.handleInfo}
                         labels = {AIRCRAFT_HEADER_DATA} 

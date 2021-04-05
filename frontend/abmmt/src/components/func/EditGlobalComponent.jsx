@@ -5,7 +5,6 @@ import {MESSAGES} from '../../Constanst.js'
 
 import MuiAlert from '@material-ui/lab/Alert';
 
-
 import CreateUpdateBtnGroup from './CreateUpdateBtnGroup'
 
 import TextField from '@material-ui/core/TextField';
@@ -127,6 +126,7 @@ class EditGlobalComponent extends Component {
                       id={key}
                       name={key}
                       label={labels[key]}
+                      type={key.includes('Date') && 'date'}
                       defaultValue={selected[key]}
                       // disabled={disabledFields[key]}
                       rows={key =='description' ? 4 : 1}

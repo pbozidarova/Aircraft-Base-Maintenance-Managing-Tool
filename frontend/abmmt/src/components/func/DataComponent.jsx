@@ -54,7 +54,6 @@ class DataComponentAccordion extends Component{
         }
 
         this.isSelected = this.isSelected.bind(this)
-        this.selectRow = this.selectRow.bind(this)
         this.handleChangePage = this.handleChangePage.bind(this)
         this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this)
         this.handleOpenState = this.handleOpenState.bind(this)
@@ -64,12 +63,13 @@ class DataComponentAccordion extends Component{
  
 
     isSelected(selectedRowId) {
+        console.log(this.props.selectedId)
         return this.props.selectedId === selectedRowId;
     }
 
-    selectRow(selectedRowId) {      
-        this.setState({selected: selectedRowId})
-    }
+    // selectRow(selectedRowId) {      
+    //     this.setState({selected: selectedRowId})
+    // }
 
     handleReplyChange(event){
         this.setState(
@@ -148,17 +148,16 @@ class DataComponentAccordion extends Component{
                 {this.props.tableRows.length > 0 && this.props.tableRows
                 .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
                 .map((tableRow, index) => {
-                    let rowID = Object.entries(tableRow)[0][1]
-                    console.log(rowID)
+                    // let rowID = Object.entries(tableRow)[0][1]
                     let notificationNum = tableRow.notificationNum;
                     return (   
                         <>
                         <TableRow  size="small"
                             hover
-                            onClick={() => selectRow(tableRow)}
+                            onClick={() => selectRow(tableRow, index)}
                             tabIndex={-1}
                             key={index}
-                            selected={this.isSelected(rowID)}
+                            selected={this.isSelected(index)}
                         >   
                             {this.props.tableHeader.notificationNum &&
                             //load the arrow button only if the parent component is the Notifications component

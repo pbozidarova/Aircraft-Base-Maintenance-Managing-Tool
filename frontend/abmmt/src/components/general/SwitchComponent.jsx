@@ -48,7 +48,7 @@ class SwitchComponent extends Component {
                                   component={() => (<UsersComponent handleInfo={this.props.handleInfo} />)} />
             
               <AuthenticatedRoute path="/logout" component={() => (<LogoutComponent handleInfo={this.props.handleInfo} />)}/>
-              <Route path="/login" component={() => (<LoginComponent handleInfo={this.props.handleInfo} infoPanel={this.state.infoPanel}
+              <Route path="/login" component={() => (<LoginComponent handleInfo={this.props.handleInfo} 
                                                                      fetchOpenNotifCount={this.props.fetchOpenNotifCount}/>)}/>
               <Route component={ErrorComponent}/>
           </Switch>      

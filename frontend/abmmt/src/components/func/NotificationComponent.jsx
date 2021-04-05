@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import BackendService from '../../api/CommonAPI.js'
-import {NOTIFICATIONS_HEADER_DATA, NOTIFICATIONS_BOOLEAN_FIELDS, NOTIFICATIONS_DISABLED_FIELDS, MESSAGES} from '../../Constanst.js'
+import {NOTIFICATIONS_HEADER_DATA, NOTIFICATIONS_BOOLEAN_FIELDS, NOTIFICATION_EDIT_FIELDS, MESSAGES} from '../../Constanst.js'
 import Utils from '../Utils.js'
 import { withRouter } from 'react-router';
 
@@ -26,6 +26,7 @@ class NotificationComponent extends Component {
         this.state = {
             notifications : [],
             selected: {},
+            selectedId: '',
             loading: true,       
             errors: {},     
         }
@@ -80,8 +81,8 @@ class NotificationComponent extends Component {
 
     }
    
-    selectNotification(notification) {      
-        this.setState({selected: notification})
+    selectNotification(notification, selectedId) {      
+        this.setState({...this.state, selected: notification, selectedId})
     }
     
     handleChange(event){
@@ -164,7 +165,7 @@ class NotificationComponent extends Component {
                     <DataComponent
                         tableRows={this.state.notifications} 
                         tableHeader={NOTIFICATIONS_HEADER_DATA}
-                        selectedId={this.state.selected.notificationNum}
+                        selectedId={this.state.selectedId}
                         selectRow={this.selectNotification} 
                         handleInfo={this.handleInfo}
                     />
@@ -176,12 +177,12 @@ class NotificationComponent extends Component {
                   {this.state.selected.notificationNum && 
                     <EditGlobalComponent
                         selected={this.state.selected} 
-                        selectedId={this.state.selected.notificationNum}
+                        selectedId={this.state.selectedId}
                         handleChange={this.handleChange} 
                         handleInfo={this.handleInfo}
                         labels = {NOTIFICATIONS_HEADER_DATA} 
                         booleanFields = {NOTIFICATIONS_BOOLEAN_FIELDS}
-                        disabledFields={NOTIFICATIONS_DISABLED_FIELDS}
+                        editFields={NOTIFICATION_EDIT_FIELDS}
                         errors={this.state.errors}
                         validateAndSubmit={this.validateAndSubmit}
                         submitUpdate={this.submitUpdate}
