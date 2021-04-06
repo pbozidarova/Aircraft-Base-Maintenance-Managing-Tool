@@ -36,18 +36,24 @@ class NotificationComponent extends Component {
         ComponentsStateService.refreshData = ComponentsStateService.refreshData.bind(this)
         this.setState = this.setState.bind(this)
 
-        // this.refreshNotifications = this.refreshNotifications.bind(this)
+        this.refreshNotifications = this.refreshNotifications.bind(this)
         this.selectNotification = this.selectNotification.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.handleInfo = this.handleInfo.bind(this);
+        // this.handleInfo = this.handleInfo.bind(this);
 
         this.validateAndSubmit = this.validateAndSubmit.bind(this);
-        this.submitUpdate = this.submitUpdate.bind(this)
-        this.submitCreate = this.submitCreate.bind(this)
+        // this.submitUpdate = this.submitUpdate.bind(this)
+        // this.submitCreate = this.submitCreate.bind(this)
     }
     
     componentDidMount(){
-        
+       this.refreshNotifications();
+
+        this.selectNotification(Utils.emptyObj(NOTIFICATIONS_HEADER_DATA))
+    }
+   
+    refreshNotifications(){
+ 
         let keyState = 'notifications'
         let keyResponse = 'notificationViewDtoList'
         let shouldFetchPartialData = this.props.location.fetchDataFromURL
@@ -59,10 +65,8 @@ class NotificationComponent extends Component {
                                             shouldFetchPartialData, 
                                             this.setState,
                                             this.props.handleInfo);
-
-        this.selectNotification(Utils.emptyObj(NOTIFICATIONS_HEADER_DATA))
     }
-   
+
     selectNotification(notification, selectedId) {      
         this.setState({...this.state, selected: notification, selectedId})
     }
@@ -96,41 +100,41 @@ class NotificationComponent extends Component {
                 // role: this.props.selectedUser.roles.length > 0 ? '' : "At least one role must be checked!",
   
              }
-        }, () => submit(selected.notificationNum, selected) );
+        }, () => submit(this.state.errors, "notifications", selected.notificationNum, selected, this.refreshNotifications, this.props.handleInfo) );
     
       }
   
-      submitUpdate(notificationNum, selected){
-        if(Utils.formIsValid(this.state.errors)) {
-            BackendService.updateOne("notifications", notificationNum, selected)
-                .then((r) => {                        
-                    this.refreshNotifications()
-                    Utils.successMessage(this.props.handleInfo, MESSAGES.successUpdated)
-                }).catch(e => {
-                    Utils.errorMessage(e, this.props.handleInfo )
-                    // this.props.handleInfo({error : e});
-                })
-            console.log('submit Update')
-        }
-      }
+    //   submitUpdate(notificationNum, selected){
+    //     if(Utils.formIsValid(this.state.errors)) {
+    //         BackendService.updateOne("notifications", notificationNum, selected)
+    //             .then((r) => {                        
+    //                 this.refreshNotifications()
+    //                 Utils.successMessage(this.props.handleInfo, MESSAGES.successUpdated)
+    //             }).catch(e => {
+    //                 Utils.errorMessage(e, this.props.handleInfo )
+    //                 // this.props.handleInfo({error : e});
+    //             })
+    //         console.log('submit Update')
+    //     }
+    //   }
   
-      submitCreate(notificationNum, selected){  
-        if(Utils.formIsValid(this.state.errors)) {
-            BackendService.createOne("notifications", notificationNum, selected)
-                .then(() => {                        
-                    this.refreshNotifications()
-                    Utils.successMessage(this.props.handleInfo, MESSAGES.successCreated)
-                }
-                ).catch(e => {
-                    Utils.errorMessage(e, this.props.handleInfo )
-                })
-        }
-      }
+    //   submitCreate(notificationNum, selected){  
+    //     if(Utils.formIsValid(this.state.errors)) {
+    //         BackendService.createOne("notifications", notificationNum, selected)
+    //             .then(() => {                        
+    //                 this.refreshNotifications()
+    //                 Utils.successMessage(this.props.handleInfo, MESSAGES.successCreated)
+    //             }
+    //             ).catch(e => {
+    //                 Utils.errorMessage(e, this.props.handleInfo )
+    //             })
+    //     }
+    //   }
 
 
-    handleInfo(msg){
-        this.setState({...this.state, infoPanel : msg})
-    }
+    // handleInfo(msg){
+    //     this.setState({...this.state, infoPanel : msg})
+    // }
 
     render(){
         const { classes } = this.props;
@@ -149,7 +153,7 @@ class NotificationComponent extends Component {
                         tableHeader={NOTIFICATIONS_HEADER_DATA}
                         selectedId={this.state.selectedId}
                         selectRow={this.selectNotification} 
-                        handleInfo={this.handleInfo}
+                        handleInfo={this.props.handleInfo}
                     />
                 </Paper>
                </Grid>
@@ -161,14 +165,14 @@ class NotificationComponent extends Component {
                         selected={this.state.selected} 
                         selectedId={this.state.selectedId}
                         handleChange={this.handleChange} 
-                        handleInfo={this.handleInfo}
+                        handleInfo={this.props.handleInfo}
                         labels = {NOTIFICATIONS_HEADER_DATA} 
                         booleanFields = {NOTIFICATIONS_BOOLEAN_FIELDS}
                         editFields={NOTIFICATION_EDIT_FIELDS}
                         errors={this.state.errors}
                         validateAndSubmit={this.validateAndSubmit}
-                        submitUpdate={this.submitUpdate}
-                        submitCreate={this.submitCreate}
+                        // submitUpdate={this.submitUpdate}
+                        // submitCreate={this.submitCreate}
                     />
                   }
                 </Paper>

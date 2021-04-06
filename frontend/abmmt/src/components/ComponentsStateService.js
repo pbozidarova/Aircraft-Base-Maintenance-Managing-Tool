@@ -8,7 +8,7 @@ class ComponentsStateService {
         console.log(this)  
         // let shouldFetchPartialData = this.props.location.fetchDataFromURL
         
-        // this.infoMessage(this.props.handleInfo, MESSAGES.pleaseWait);
+        Utils.infoMessage(handleInfo, MESSAGES.pleaseWait);
 
         //Check if the user wants to render all the tasks or a HATEOAS link requires partial fetch
         shouldFetchPartialData ? partialFetch(keyState, keyResponse, setState, shouldFetchPartialData.href, shouldFetchPartialData.title, handleInfo) 
@@ -43,11 +43,11 @@ class ComponentsStateService {
         .catch(e => setState({loading : false,}, Utils.errorMessage(e, handleInfo, title)))
     }
 
-    submitUpdate(errors, entity, selectedNum, selected, refreshTasks, handleInfo){
+    submitUpdate(errors, entity, selectedNum, selected, refreshData, handleInfo){
         if(Utils.formIsValid(errors)) {
             BackendService.updateOne(entity, selectedNum, selected)
                 .then((r) => {                        
-                    refreshTasks()
+                    refreshData()
                     Utils.successMessage(handleInfo, MESSAGES.successUpdated)
                     
                 }).catch(e => {
@@ -57,11 +57,11 @@ class ComponentsStateService {
         }
       }
   
-      submitCreate(errors, entity, selectedNum, selected, refreshTasks, handleInfo){  
+      submitCreate(errors, entity, selectedNum, selected, refreshData, handleInfo){  
         if(Utils.formIsValid(errors)) {
             BackendService.createOne(entity, selectedNum, selected)
                 .then(() => {                        
-                    refreshTasks()
+                    refreshData()
                     Utils.successMessage(handleInfo, MESSAGES.successCreated)
                 }
                 ).catch(e => {

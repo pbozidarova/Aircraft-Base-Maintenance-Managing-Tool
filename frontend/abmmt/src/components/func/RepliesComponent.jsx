@@ -21,7 +21,7 @@ class RepliesComponent extends Component {
         
         return (
             
-            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
                 <Collapse in={open[index]} timeout="auto" unmountOnExit>
                     <Box margin={1}>
                          <Table size="small" aria-label="replies" component={Paper}>

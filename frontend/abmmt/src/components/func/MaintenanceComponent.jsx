@@ -35,16 +35,21 @@ class MaintenanceComponent extends Component {
         ComponentsStateService.refreshData = ComponentsStateService.refreshData.bind(this)
         this.setState = this.setState.bind(this)
 
-        // this.refreshMaintenance = this.refreshMaintenance.bind(this)
+        this.refreshMaintenance = this.refreshMaintenance.bind(this)
         this.selectMaintenance = this.selectMaintenance.bind(this)
         this.handleChange = this.handleChange.bind(this)
 
         this.validateAndSubmit = this.validateAndSubmit.bind(this);
-        this.submitUpdate = this.submitUpdate.bind(this)
-        this.submitCreate = this.submitCreate.bind(this)
+    
     }
     
     componentDidMount(){
+       this.refreshMaintenance();
+
+        this.selectMaintenance(Utils.emptyObj(MAINTENANCE_HEADER_DATA))
+    }
+
+    refreshMaintenance(){
         let keyState = 'maintenance'
         let keyResponse = 'maintenanceViewDtoList'
         let shouldFetchPartialData = this.props.location.fetchDataFromURL
@@ -56,10 +61,7 @@ class MaintenanceComponent extends Component {
                                             shouldFetchPartialData, 
                                             this.setState,
                                             this.props.handleInfo);
-
-        this.selectMaintenance(Utils.emptyObj(MAINTENANCE_HEADER_DATA))
     }
-
    
     selectMaintenance(maintenance, selectedId) {      
         this.setState({...this.state, selected: maintenance, selectedId})
@@ -91,36 +93,10 @@ class MaintenanceComponent extends Component {
                 startDate: selected.startDate.length > 2 && Date.parse(selected.startDate) < Date.parse(selected.endDate) ? '' : "The date is mandatory and it must be lower than the end data!",
                 endDate: selected.endDate.length > 2 && Date.parse(selected.startDate) < Date.parse(selected.endDate) ? '' : "The date is mandatory and it must be bigger than the start data!",  
              }
-        }, () => submit(selected.maintenanceNum, selected) );
+        }, () => submit(this.state.errors, "maintenance", selected.maintenanceNum, selected, this.refreshMaintenance, this.props.handleInfo) );
     
       }
-  
-      submitUpdate(maintenanceNum, selected){
-        if(Utils.formIsValid(this.state.errors)) {
-            BackendService.updateOne("maintenance", maintenanceNum, selected)
-                .then((r) => {                        
-                    this.refreshMaintenance()
-                    Utils.successMessage(this.props.handleInfo, MESSAGES.successUpdated)
-                }).catch(e => {
-                    Utils.errorMessage(e, this.props.handleInfo )
-                })
-        }
-      }
-  
-      submitCreate(maintenanceNum, selected){  
-        if(Utils.formIsValid(this.state.errors)) {
-            BackendService.createOne("maintenance", maintenanceNum, selected)
-                .then(() => {                        
-                    this.refreshMaintenance()
-                    Utils.successMessage(this.props.handleInfo, MESSAGES.successCreated)
-                }
-                ).catch(e => {
-                    Utils.errorMessage(e, this.props.handleInfo )
-                })
-  
-        }
-      }
-
+     
 
     render(){
         const { classes, handleInfo } = this.props;
@@ -150,15 +126,14 @@ class MaintenanceComponent extends Component {
                         selected={this.state.selected} 
                         selectedId={this.state.selectedId}
                         handleChange={this.handleChange} 
-                        handleInfo={this.handleInfo}
+                        handleInfo={this.props.handleInfo}
                         labels = {MAINTENANCE_HEADER_DATA} 
                         booleanFields = {MAINTENANCE_BOOLEAN_FIELDS}
                         editFields={MAINTENANCE_EDIT_FIELDS}
                         errors={this.state.errors}
                         feedback={MESSAGES.maintenanceEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
-                        submitUpdate={this.submitUpdate}
-                        submitCreate={this.submitCreate}
+                        
                     />
                   }
                 </Paper>

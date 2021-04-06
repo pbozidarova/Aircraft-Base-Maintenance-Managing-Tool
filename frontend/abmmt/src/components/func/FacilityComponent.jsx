@@ -32,18 +32,23 @@ class FacilityComponent extends Component {
 
         ComponentsStateService.refreshData = ComponentsStateService.refreshData.bind(this)
         this.setState = this.setState.bind(this)
-        // this.refreshFacilities = this.refreshFacilities.bind(this)
+        this.refreshFacilities = this.refreshFacilities.bind(this)
+        
         this.selectFacility = this.selectFacility.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleInfo = this.handleInfo.bind(this);
 
-        this.validateAndSubmit = this.validateAndSubmit.bind(this);
-        this.submitUpdate = this.submitUpdate.bind(this)
-        this.submitCreate = this.submitCreate.bind(this)
-    
+        this.validateAndSubmit = this.validateAndSubmit.bind(this);    
     }
    
     componentDidMount(){
+       this.refreshFacilities();
+
+        this.selectFacility(Utils.emptyObj(FACILITIES_HEADER_DATA));
+
+    }
+
+    refreshFacilities(){
         let keyState = 'facilities'
         let keyResponse = 'facilityViewDtoList'
         let shouldFetchPartialData = false
@@ -55,11 +60,7 @@ class FacilityComponent extends Component {
                                             shouldFetchPartialData, 
                                             this.setState,
                                             this.props.handleInfo);
-
-        this.selectFacility(Utils.emptyObj(FACILITIES_HEADER_DATA));
-
     }
-
     
 
     selectFacility(facility, selectedId) {      
@@ -70,8 +71,7 @@ class FacilityComponent extends Component {
         this.setState(
             {   ...this.state,
                 selected: {...this.state.selected, [event.target.name] : event.target.value}
-            }
-        , console.log(this.state)) 
+            }) 
     }
 
     validateAndSubmit(submit){
@@ -89,40 +89,11 @@ class FacilityComponent extends Component {
                 // role: this.props.selectedUser.roles.length > 0 ? '' : "At least one role must be checked!",
   
              }
-        }, () => submit(selected.name, selected) );
+        }, () => submit( this.state.errors, "facilities", selected.name, selected, this.refreshFacilities, this.props.handleInfo) );
     
       }
 
-      submitUpdate(name, selected){
-        if(Utils.formIsValid(this.state.errors)) {
-            BackendService.updateOne("facilities", name, selected)
-                .then((r) => {                        
-                    this.refreshFacilities()
-                    this.props.handleInfo({success : MESSAGES.successUpdated});
-                }).catch(e => {
-                    Utils.errorMessage(e, this.props.handleInfo, name)
-
-                    // this.props.handleInfo({error : e});
-                })
-            console.log('submit Update')
-        }
-      }
-
-      submitCreate(name, selected){  
-        if(Utils.formIsValid(this.state.errors)) {
-            BackendService.createOne("facilities", name, selected)
-                .then(() => {                        
-                    this.refreshFacilities()
-                    Utils.successMessage(this.props.handleInfo, MESSAGES.successCreated)
-                }
-                ).catch(e => {
-                    Utils.errorMessage(e, this.props.handleInfo, name)
-                })
-  
-            console.log('submit Create')
-        }
-      }
-
+    
       handleInfo(msg){
         this.setState({...this.state, infoPanel : msg})
     }
@@ -161,8 +132,7 @@ class FacilityComponent extends Component {
                     errors={this.state.errors}
                     feedback={MESSAGES.facilitiesEditInfo}
                     validateAndSubmit={this.validateAndSubmit}
-                    submitUpdate={this.submitUpdate}
-                    submitCreate={this.submitCreate}
+ 
                     />
                   }
                 </Paper>

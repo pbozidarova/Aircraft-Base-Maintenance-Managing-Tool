@@ -78,7 +78,6 @@ class TaskComponent extends Component{
             {   ...this.state,
                 selected: {...this.state.selected, ...updatePair}
             })
-        
     }
 
     validateAndSubmit(submit){
@@ -130,8 +129,7 @@ class TaskComponent extends Component{
                         errors={this.state.errors}
                         feedback={MESSAGES.taskEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
-                        // submitUpdate={this.submitUpdate}
-                        // submitCreate={this.submitCreate}
+                    
                     />
                   }
                 </Paper>

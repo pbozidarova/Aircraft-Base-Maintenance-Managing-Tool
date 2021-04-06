@@ -32,18 +32,21 @@ class AircraftComponent extends Component {
         ComponentsStateService.refreshData = ComponentsStateService.refreshData.bind(this)
         this.setState = this.setState.bind(this)
         
-        // this.refreshAircraft = this.refreshAircraft.bind(this)
+        this.refreshAircraft = this.refreshAircraft.bind(this)
         this.selectAircraft = this.selectAircraft.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.handleInfo = this.handleInfo.bind(this);
 
         this.validateAndSubmit = this.validateAndSubmit.bind(this);
-        this.submitUpdate = this.submitUpdate.bind(this)
-        this.submitCreate = this.submitCreate.bind(this)
     
     }
    
     componentDidMount(){
+        this.refreshAircraft();
+
+        this.selectAircraft(Utils.emptyObj(AIRCRAFT_HEADER_DATA))
+    }
+
+    refreshAircraft(){
         let keyState = 'aircraft'
         let keyResponse = 'aircraftViewDtoList'
         let shouldFetchPartialData = false
@@ -55,8 +58,6 @@ class AircraftComponent extends Component {
                                             shouldFetchPartialData, 
                                             this.setState,
                                             this.props.handleInfo);
-
-           this.selectAircraft(Utils.emptyObj(AIRCRAFT_HEADER_DATA))
     }
   
     selectAircraft(aircraft, selectedId) {      
@@ -86,40 +87,9 @@ class AircraftComponent extends Component {
                 // role: this.props.selectedUser.roles.length > 0 ? '' : "At least one role must be checked!",
   
              }
-        }, () => submit(selected.aircraftRegistration, selected) );
+        }, () => submit(this.state.errors, "aircraft", selected.aircraftRegistration, selected, this.refreshAircraft, this.props.handleInfo) );
     
       }
-
-      submitUpdate(aircraftRegistration, selected){
-        if(Utils.formIsValid(this.state.errors)) {
-            BackendService.updateOne("aircraft", aircraftRegistration, selected)
-                .then((r) => {                        
-                    this.refreshAircraft()
-                    Utils.successMessage(this.props.handleInfo, MESSAGES.successUpdated)
-                }).catch(e => {
-                    Utils.errorMessage(e, this.props.handleInfo )
-                    // this.props.handleInfo({error : e});
-                })
-            console.log('submit Update')
-        }
-      }
-
-      submitCreate(aircraftRegistration, selected){  
-        if(Utils.formIsValid(this.state.errors)) {
-            BackendService.createOne("aircraft", aircraftRegistration, selected)
-                .then(() => {                        
-                    this.refreshAircraft()
-                    Utils.successMessage(this.props.handleInfo, MESSAGES.successCreated)
-                }
-                ).catch(e => {
-                    Utils.errorMessage(e, this.props.handleInfo )
-                })
-        }
-      }
-
-      handleInfo(msg){
-        this.setState({...this.state, infoPanel : msg})
-    }
 
     render(){
         const { classes } = this.props;
@@ -148,15 +118,14 @@ class AircraftComponent extends Component {
                         selected={this.state.selected} 
                         selectedId={this.state.selectedId}
                         handleChange={this.handleChange} 
-                        handleInfo={this.handleInfo}
+                        handleInfo={this.props.handleInfo}
                         labels = {AIRCRAFT_HEADER_DATA} 
                         booleanFields = {AIRCRAFT_BOOLEAN_FIELDS}
                         editFields={AIRCRAFT_EDIT_FIELDS}
                         errors={this.state.errors}
                         feedback={MESSAGES.facilitiesEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
-                        submitUpdate={this.submitUpdate}
-                        submitCreate={this.submitCreate}
+                      
                     />
                   }
                 </Paper>
