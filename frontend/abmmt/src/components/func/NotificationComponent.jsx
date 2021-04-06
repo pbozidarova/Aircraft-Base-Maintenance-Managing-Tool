@@ -110,39 +110,7 @@ class NotificationComponent extends Component {
         }, () => submit(this.state.errors, "notifications", selected.notificationNum, selected, refreshData, this.props.handleInfo) );
     
       }
-  
-    //   submitUpdate(notificationNum, selected){
-    //     if(Utils.formIsValid(this.state.errors)) {
-    //         BackendService.updateOne("notifications", notificationNum, selected)
-    //             .then((r) => {                        
-    //                 this.refreshNotifications()
-    //                 Utils.successMessage(this.props.handleInfo, MESSAGES.successUpdated)
-    //             }).catch(e => {
-    //                 Utils.errorMessage(e, this.props.handleInfo )
-    //                 // this.props.handleInfo({error : e});
-    //             })
-    //         console.log('submit Update')
-    //     }
-    //   }
-  
-    //   submitCreate(notificationNum, selected){  
-    //     if(Utils.formIsValid(this.state.errors)) {
-    //         BackendService.createOne("notifications", notificationNum, selected)
-    //             .then(() => {                        
-    //                 this.refreshNotifications()
-    //                 Utils.successMessage(this.props.handleInfo, MESSAGES.successCreated)
-    //             }
-    //             ).catch(e => {
-    //                 Utils.errorMessage(e, this.props.handleInfo )
-    //             })
-    //     }
-    //   }
-
-
-    // handleInfo(msg){
-    //     this.setState({...this.state, infoPanel : msg})
-    // }
-
+      
     render(){
         const { classes } = this.props;
         const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
@@ -181,8 +149,6 @@ class NotificationComponent extends Component {
                         feedback={MESSAGES.notificationsEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
                         refreshData={this.refreshNotifications}
-                        // submitUpdate={this.submitUpdate}
-                        // submitCreate={this.submitCreate}
                     />
                   }
                 </Paper>

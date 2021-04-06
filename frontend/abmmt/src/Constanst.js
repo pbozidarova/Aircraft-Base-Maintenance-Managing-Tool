@@ -37,6 +37,8 @@ export const MESSAGES = {
     
     facilitiesEditInfo: "You are not allowed to edit the facility name!",
 
+    aircraftEditInfo: "You are not allowed to edit the aircraft registration!",
+
 
     pleaseWait: "Please wait!",
     errorNonExistant : "Does not exist! ",

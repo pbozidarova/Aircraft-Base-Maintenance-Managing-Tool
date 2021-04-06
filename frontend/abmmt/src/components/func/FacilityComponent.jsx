@@ -87,11 +87,11 @@ class FacilityComponent extends Component {
         
         this.setState({ errors: 
              { 
-                name: selected.name != FACILITIES_HEADER_DATA.name && selected.name.length > 2 ? '' : "The facility name must be longer than 2 symbols!" ,
+                name:  selected.name.length > 2 ? '' : "The facility name must be longer than 2 symbols!" ,
                 city:  selected.city.length > 2 ? '' : "The facility city must be longer than 2 symbols!" ,
                 country:  selected.country.length > 2 ? '' : "The facility country must be longer than 2 symbols!" ,
                 capacity:  selected.capacity > 0 ? '' : "The facility capacity must be a positive digit!" ,
-                manager: selected.manager != FACILITIES_HEADER_DATA.manager && selected.manager.length > 2 ? '' : "Please select a facility manager!" ,
+                manager: selected.manager.length > 2 ? '' : "Please select a facility manager!" ,
   
              }
         }, () => submit( this.state.errors, 

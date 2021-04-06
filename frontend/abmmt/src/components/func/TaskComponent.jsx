@@ -68,8 +68,8 @@ class TaskComponent extends Component{
         this.setState({...this.state, selected: task, selectedId})
     }
 
-    handleChange(event){
-        let eName = event.target.name
+    handleChange(event, key){
+        let eName =  key || event.target.name
         let eValue = event.target.value
         let eCheked = event.target.checked
         

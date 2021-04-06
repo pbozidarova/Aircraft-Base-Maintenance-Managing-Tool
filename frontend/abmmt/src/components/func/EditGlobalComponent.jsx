@@ -111,7 +111,7 @@ class EditGlobalComponent extends Component {
                         label={labels[key]}  
                         margin="normal" 
                         variant="outlined"
-                        onChange={handleChange} 
+                        onChange={(e)=> handleChange(e, key)} 
                         error={isError(key)}
                         helperText={errors[key]}/>
                   )}

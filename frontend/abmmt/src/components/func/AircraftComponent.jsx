@@ -35,6 +35,7 @@ class AircraftComponent extends Component {
         this.refreshAircraft = this.refreshAircraft.bind(this)
         this.selectAircraft = this.selectAircraft.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.handleAutocompleteChange = this.handleAutocompleteChange.bind(this)
 
         this.validateAndSubmit = this.validateAndSubmit.bind(this);
     
@@ -64,28 +65,40 @@ class AircraftComponent extends Component {
         this.setState({...this.state, selected: aircraft, selectedId})
     }
 
-    handleChange(event){
+    handleChange(event, key){
+
+        let eName =  key || event.target.name
+        let eValue = event.target.value
+        
         this.setState(
             {   ...this.state,
-                selected: {...this.state.selected, [event.target.name] : event.target.value}
-            })
+                selected: {...this.state.selected, [eName] : eValue}
+            },console.log(this.state))
         
     }
+
+    handleAutocompleteChange(event, value, key){
+        console.log(value)
+        this.setState(
+            {   ...this.state,
+                selected: {...this.state.selected, [key] : value}
+            }, console.log(this.state)) 
+    }
+
 
     validateAndSubmit(submit, refreshData){
         const { selected } = this.state;
         
         this.setState({ errors: 
              { 
-                // companyNum: /^[N]\d{5}$/.test(selectedUser.companyNum) ? '' : "Follow the pattern N plus 5 digits!" ,
-                // firstName:  selectedUser.firstName != 'First Name' && selectedUser.firstName.length > 2 ? '' : "The first name must contain more than 2 digits!" ,
-                // lastName:  selectedUser.lastName != 'Last Name' && selectedUser.lastName.length > 2 ? '' : "The last name must contain more than 2 digits!",
-                // email: /^\S+@\S+$/.test(selectedUser.email)  ? '' : "Please provide a valid email!",
-                // facility: this.props.selectedUser.facility.length > 2 ? '' : "Please select a facility!",
-                
-                // authority: this.props.selectedUser.roles.length > 0 ? '' : "At least one authority must be checked!",
-                // role: this.props.selectedUser.roles.length > 0 ? '' : "At least one role must be checked!",
-  
+                aircraftRegistration : selected.aircraftRegistration.length > 2 ? '' : "The aircraft registration must be longer than 2 symbols!",
+                serialNumber : selected.serialNumber.length > 2 ? '' : "The serial Number must be longer than 2 symbols!",
+                aircraftType : selected.aircraftType.length > 2 ? '' : "The aircraft type must be longer than 2 symbols!",
+                aircraftModel : selected.aircraftModel.length > 2 ? '' : "The aircraft model must be longer than 2 symbols!",
+                operatorName: selected.operatorName.length > 2 ? '' : "The operatoor name must be longer than 2 symbols!",
+                operatorICAOCode : selected.operatorICAOCode.length == 3 ? '' : "The operator ICAO code must equal 3 symbols!",
+                engineManufacturer : selected.engineManufacturer.length > 2 ? '' : "The engine manufacturer must be longer than 2 symbols!",
+                engineModelSeries : selected.engineModelSeries.length > 2 ? '' : "The engine model series must be longer than 2 symbols!",
              }
         }, () => submit(this.state.errors, 
                         "aircraft", 
@@ -123,6 +136,7 @@ class AircraftComponent extends Component {
                         selected={this.state.selected} 
                         selectedId={this.state.selectedId}
                         handleChange={this.handleChange} 
+                        handleAutocompleteChange={this.handleAutocompleteChange}
                         handleInfo={this.props.handleInfo}
                         labels = {AIRCRAFT_HEADER_DATA} 
                         booleanFields = {AIRCRAFT_BOOLEAN_FIELDS}
