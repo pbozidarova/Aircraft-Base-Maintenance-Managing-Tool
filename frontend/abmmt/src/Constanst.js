@@ -30,7 +30,10 @@ export const MESSAGES = {
     taskEditInfo: "You are not allowed to edit the task number! Your name will be automaticaly added to the preparing team. The status of the task is OK whenever the three checkboxes are checked and NOT_OK in any other case!",
     // taskMaintenanceTooltip: "Check in which maintenance the task is performed",
     // taskNotifTooltip: "Check notifications for this task",
-
+    
+    maintenanceEditInfo: "You are not allowed to edit the maintenance number! The status of the maintenance could be UPCOMING, OPENED or CLOSED based on the dates specified!",
+    
+    notificationsEditInfo: "You are not allowed to edit the notification number! The status of the maintenance could be UPCOMING, OPENED or CLOSED based on the dates specified!",
 
 
     pleaseWait: "Please wait!",
@@ -107,6 +110,8 @@ export const GLOBAL_SELECT_FIELDS = {
     aircraftRegistration: ['aircraft', 'aircraftRegistration'],
     manager: ['users', 'companyNum', 'lastName', 'firstName'],
     responsibleEngineer: 'users',
+    // maintenanceNum: 'maintenanceNum',
+    // taskNum: 'taskNum'
     //TODO!!!!
     // authory: "Authority",
     // role: "Role"
@@ -153,15 +158,18 @@ export const NOTIFICATIONS_HEADER_DATA = {
     status: 'Status',
     classification: 'Classification',
     dueDate: 'Due date',
+    maintenanceNum: 'Maintenance Number',
+    taskNum: 'Task Number'
 }
 export const NOTIFICATIONS_BOOLEAN_FIELDS = {
     
 }
 export const NOTIFICATION_EDIT_FIELDS ={
     notificationNum: 'Notification Number',
-
     status: 'Status',
     classification: 'Classification',
+    dueDate: 'Due date',
+
 }
 export const REPLIES_HEADER_DATA ={
     description: 'Description',

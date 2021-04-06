@@ -2,8 +2,8 @@ import {MESSAGES} from '../Constanst.js'
 
 class Utils {
     redirectTo(props, urlParam, fetchDataFromURL){
-
-        props.history.push({pathname: urlParam, fetchDataFromURL: fetchDataFromURL})
+        console.log(fetchDataFromURL)
+        props.history.push({pathname: urlParam, fetchDataFromURL})
     }
 
     formIsValid(errors){
@@ -42,7 +42,9 @@ class Utils {
 
         handleInfo(errorToShow);
     }
-   
+
+
+    
       
 }
 

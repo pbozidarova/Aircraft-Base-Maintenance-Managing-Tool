@@ -12,6 +12,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import BackendService from '../../api/CommonAPI.js'
@@ -32,6 +33,8 @@ class EditGlobalComponent extends Component {
               aircraftRegistration: {},
               manager: {},
               responsibleEngineer: {},
+              maintenanceNum: {},
+              taskNum: {},
               //TODO!!!!
               authority: {},
               role: {}
@@ -84,14 +87,13 @@ class EditGlobalComponent extends Component {
     render(){
       const { classes } = this.props;
       const { selected, booleanFields, feedback, editFields, labels, handleChange, errors, selectedId, validateAndSubmit, submitUpdate, submitCreate} = this.props;        
-
+      let isError = (key) => errors[key] && errors[key].length > 0
       return (
           <MuiThemeProvider key={selectedId} > 
           <this.Alert severity="info" >{feedback} </this.Alert>
-          {console.log(selected) ||
-          Object.keys(GLOBAL_SELECT_FIELDS).map(key => {                                              
-            // console.log(key)
-            // console.log(key + ' ' + selected[key])
+          
+          {Object.keys(GLOBAL_SELECT_FIELDS).map(key => {                                              
+ 
             return (
               this.props.labels[key] &&
               <FormControl 
@@ -99,7 +101,7 @@ class EditGlobalComponent extends Component {
                 error={errors[key] && errors.length > 0}
                 helperText={errors[key]}
                 >
-                <InputLabel htmlFor={key}>Select {this.props.labels[key]}</InputLabel>
+                <InputLabel htmlFor={key} error={isError(key)}>Select {labels[key]}</InputLabel>
                 <Select
                     native
                     value={selected[key]}
@@ -111,12 +113,12 @@ class EditGlobalComponent extends Component {
                     {Object.values(this.state[key]).map(f => <option value={f}>{f}</option>)}
                     
                 </Select>
-                {/* <FormHelperText>{this.state.errors[key]}</FormHelperText> */}
+                {isError(key) && <FormHelperText error={true}>{errors[key] }</FormHelperText> }
               </FormControl> 
             )    
         })}
 
-          {Object.keys(this.props.labels).map(key => {
+          {Object.keys(labels).map(key => {
               return (
                      booleanFields[key] == null && 
                      GLOBAL_SELECT_FIELDS[key] == null &&
@@ -132,7 +134,7 @@ class EditGlobalComponent extends Component {
                       rows={key =='description' ? 4 : 1}
                       multiline={key =='description'}
                       onChange={handleChange}
-                      error={errors[key] && errors[key].length > 0}
+                      error={isError(key)}
                       helperText={errors[key]}
                   /> 
               )    

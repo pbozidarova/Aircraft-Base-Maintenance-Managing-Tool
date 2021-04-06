@@ -51,7 +51,8 @@ class DataComponentAccordion extends Component{
             currentReply: '',
             
 
-        }
+        }  
+
 
         this.isSelected = this.isSelected.bind(this)
         this.handleChangePage = this.handleChangePage.bind(this)
@@ -63,7 +64,6 @@ class DataComponentAccordion extends Component{
  
 
     isSelected(selectedRowId) {
-        console.log(this.props.selectedId)
         return this.props.selectedId === selectedRowId;
     }
 
@@ -122,8 +122,8 @@ class DataComponentAccordion extends Component{
     }
 
     render(){
-        const { classes, selectRow } = this.props;
-
+        const { classes, selectRow, tableHeader, tableRows } = this.props;
+        const { page, rowsPerPage } = this.state
         return(
             <div>
             <TableContainer>
@@ -133,20 +133,20 @@ class DataComponentAccordion extends Component{
                     <TableRow size="small"  className={classes.tableRow}>
                         
                         {//load an empty cell in the table header only if the parent component is the Notifications component
-                        this.props.tableHeader.notificationNum && <TableCell  />}
+                        tableHeader.notificationNum && <TableCell  />}
                     
-                        { this.props.tableRows[0] && 
-                            Object.keys(this.props.tableRows[0])
+                        {tableRows[0] && 
+                            Object.keys(tableRows[0])
                                 .map(key => 
                                     <TableCell size="small" className={classes.tableCell} key={key} > 
-                                        {this.props.tableHeader[key]} 
+                                        {tableHeader[key]} 
                                     </TableCell>)
                         }
                     </TableRow>
                 </TableHead>
                 
-                {this.props.tableRows.length > 0 && this.props.tableRows
-                .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
+                {tableRows.length > 0 && tableRows
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((tableRow, index) => {
                     // let rowID = Object.entries(tableRow)[0][1]
                     let notificationNum = tableRow.notificationNum;
@@ -159,7 +159,7 @@ class DataComponentAccordion extends Component{
                             key={index}
                             selected={this.isSelected(index)}
                         >   
-                            {this.props.tableHeader.notificationNum &&
+                            {tableHeader.notificationNum &&
                             //load the arrow button only if the parent component is the Notifications component
                             <TableCell >
                                 <IconButton aria-label="expand row" size="small" 
@@ -169,7 +169,7 @@ class DataComponentAccordion extends Component{
                             </TableCell>
                             }
                             
-                            {Object.keys(this.props.tableHeader)
+                            {Object.keys(tableHeader)
                                 .map(key => <TableCell  size="small" 
                                                         className={classes.tableCell} 
                                                         key={key} align="right">{tableRow[key]}</TableCell>)}
@@ -193,7 +193,7 @@ class DataComponentAccordion extends Component{
                             </TableCell>}
                         </TableRow>     
 
-                        {this.props.tableHeader.notificationNum &&
+                        {tableHeader.notificationNum &&
                         //load the replies block only if the parent component is the Notifications component                        
                             <TableRow>
                                 <RepliesComponent
@@ -220,9 +220,9 @@ class DataComponentAccordion extends Component{
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
-                count={this.props.tableRows.length}
-                rowsPerPage={this.state.rowsPerPage}
-                page={this.state.page}
+                count={tableRows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
                 onChangePage={this.handleChangePage}
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
             />

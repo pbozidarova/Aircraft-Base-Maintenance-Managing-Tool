@@ -102,14 +102,11 @@ class MaintenanceComponent extends Component {
              { 
 
                 maintenanceNum: selected.maintenanceNum.length > 5 ? '' : "The maintenance number length must be more than 5 symbols." ,
-                // firstName:  selectedUser.firstName != 'First Name' && selectedUser.firstName.length > 2 ? '' : "The first name must contain more than 2 digits!" ,
-                // lastName:  selectedUser.lastName != 'Last Name' && selectedUser.lastName.length > 2 ? '' : "The last name must contain more than 2 digits!",
-                // email: /^\S+@\S+$/.test(selectedUser.email)  ? '' : "Please provide a valid email!",
-                // facility: this.props.selectedUser.facility.length > 2 ? '' : "Please select a facility!",
-                
-                // authority: this.props.selectedUser.roles.length > 0 ? '' : "At least one authority must be checked!",
-                // role: this.props.selectedUser.roles.length > 0 ? '' : "At least one role must be checked!",
-  
+                facility: selected.facility.length > 2 ? '' : "Please select a facility!",
+                aircraftRegistration: selected.aircraftRegistration.length > 2 ? '' : "Please select an aircraft!",
+                responsibleEngineer: selected.responsibleEngineer.length > 2 ? '' : "Please select an responsibleEngineer!",
+                startDate: selected.startDate.length > 2 && Date.parse(selected.startDate) < Date.parse(selected.endDate) ? '' : "The date is mandatory and it must be lower than the end data!",
+                endDate: selected.endDate.length > 2 && Date.parse(selected.startDate) < Date.parse(selected.endDate) ? '' : "The date is mandatory and it must be bigger than the start data!",  
              }
         }, () => submit(selected.maintenanceNum, selected) );
     
@@ -177,7 +174,7 @@ class MaintenanceComponent extends Component {
                         booleanFields = {MAINTENANCE_BOOLEAN_FIELDS}
                         editFields={MAINTENANCE_EDIT_FIELDS}
                         errors={this.state.errors}
-                        feedback={MESSAGES.taskEditInfo}
+                        feedback={MESSAGES.maintenanceEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
                         submitUpdate={this.submitUpdate}
                         submitCreate={this.submitCreate}
