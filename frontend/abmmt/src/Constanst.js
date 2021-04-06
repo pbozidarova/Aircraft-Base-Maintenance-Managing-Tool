@@ -33,7 +33,7 @@ export const MESSAGES = {
     
     maintenanceEditInfo: "You are not allowed to edit the maintenance number! The status of the maintenance could be UPCOMING, OPENED or CLOSED based on the dates specified!",
     
-    notificationsEditInfo: "You are not allowed to edit the notification number! The status of the maintenance could be UPCOMING, OPENED or CLOSED based on the dates specified!",
+    notificationsEditInfo: "The notification number is automaticaly composed of a unique number, maintenace and a task number!",
     
     facilitiesEditInfo: "You are not allowed to edit the facility name!",
 
@@ -101,8 +101,8 @@ export const FETCH_DATA_KEY = {
     manager: 'userViewDtoList',
     responsibleEngineer: 'userViewDtoList',
     tasks : 'taskViewDtoList',
-    maintenance: 'maintenanceViewDtoList',
-    notifications: 'notificationViewDtoList',  
+    maintenanceNum: 'maintenanceViewDtoList',
+    taskNum: 'taskViewDtoList',  
     
 }
 
@@ -112,8 +112,9 @@ export const GLOBAL_SELECT_FIELDS = {
     aircraftRegistration: ['aircraft', 'aircraftRegistration'],
     manager: ['users', 'companyNum', 'lastName', 'firstName'],
     responsibleEngineer: 'users',
-    // maintenanceNum: 'maintenanceNum',
-    // taskNum: 'taskNum'
+    maintenanceNum: ['maintenance', 'maintenanceNum'],
+    taskNum: ['tasks', 'taskNum']
+
     //TODO!!!!
     // authory: "Authority",
     // role: "Role"
@@ -167,7 +168,7 @@ export const NOTIFICATIONS_BOOLEAN_FIELDS = {
     
 }
 export const NOTIFICATION_EDIT_FIELDS ={
-    notificationNum: 'Notification Number',
+    // notificationNum: 'Notification Number',
     status: 'Status',
     classification: 'Classification',
     dueDate: 'Due date',

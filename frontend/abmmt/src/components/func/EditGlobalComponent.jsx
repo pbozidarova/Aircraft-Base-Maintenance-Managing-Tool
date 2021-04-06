@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { styles } from '../UseStyles.js'
 import Utils from '../Utils.js'
-import {MESSAGES} from '../../Constanst.js'
+import {ICONS_MAPPING, MESSAGES} from '../../Constanst.js'
 
 import MuiAlert from '@material-ui/lab/Alert';
 
@@ -18,6 +18,7 @@ import Select from '@material-ui/core/Select';
 import BackendService from '../../api/CommonAPI.js'
 
 import PropTypes from 'prop-types';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
 import { FETCH_DATA_KEY, GLOBAL_SELECT_FIELDS } from '../../Constanst.js';
@@ -86,35 +87,36 @@ class EditGlobalComponent extends Component {
   
     render(){
       const { classes } = this.props;
-      const { selected, booleanFields, feedback, editFields, labels, handleChange, errors, selectedId, validateAndSubmit, submitUpdate, submitCreate} = this.props;        
+      const { selected, booleanFields, feedback, editFields, labels, handleChange, handleAutocompleteChange, errors, selectedId, validateAndSubmit, refreshData} = this.props;        
       let isError = (key) => errors[key] && errors[key].length > 0
+      let isOptional = (Object.keys(labels).includes('aircraftRegistration') && Object.keys(labels).includes('serialNumber')) ||
+                        (Object.keys(labels).includes('taskNum') && Object.keys(labels).includes('code')) 
+
       return (
           <MuiThemeProvider key={selectedId} > 
           <this.Alert severity="info" >{feedback} </this.Alert>
           
           {Object.keys(GLOBAL_SELECT_FIELDS).map(key => {                                              
- 
             return (
               this.props.labels[key] &&
-              <FormControl 
-                className={classes.formControl} 
-                error={errors[key] && errors.length > 0}
-                helperText={errors[key]}
-                >
-                <InputLabel htmlFor={key} error={isError(key)}>Select {labels[key]}</InputLabel>
-                <Select
-                    native
-                    value={selected[key]}
-                    onChange={handleChange}
-                    id={key}
-                    name={key}
-                    >
-                    <option aria-label="None" value="" />
-                    {Object.values(this.state[key]).map(f => <option value={f}>{f}</option>)}
-                    
-                </Select>
-                {isError(key) && <FormHelperText error={true}>{errors[key] }</FormHelperText> }
-              </FormControl> 
+              <Autocomplete
+                id="free-solo-demo"
+                size="small"
+                freeSolo={isOptional}
+                value={selected[key]}
+                onChange={(e, v) => handleAutocompleteChange(e, v, key)}
+                options={Object.values(this.state[key])}
+                renderInput={(params) => (
+                  <TextField {...params} 
+                        label={labels[key]}  
+                        margin="normal" 
+                        variant="outlined"
+                        onChange={handleChange} 
+                        error={isError(key)}
+                        helperText={errors[key]}/>
+                  )}
+                
+              />
             )    
         })}
 
@@ -126,6 +128,8 @@ class EditGlobalComponent extends Component {
                     // key !== "facility" &&
                   <TextField
                       id={key}
+                      size="small"
+                      margin="normal" variant="outlined"
                       name={key}
                       label={labels[key]}
                       type={key.includes('Date') && 'date'}
@@ -161,6 +165,7 @@ class EditGlobalComponent extends Component {
           
            <CreateUpdateBtnGroup
             validateAndSubmit={validateAndSubmit}
+            refreshData={refreshData}
             // submitUpdate={submitUpdate}
             // submitCreate={submitCreate}
             classes={classes}

@@ -36,6 +36,7 @@ class FacilityComponent extends Component {
         
         this.selectFacility = this.selectFacility.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.handleAutocompleteChange = this.handleAutocompleteChange.bind(this)
         this.handleInfo = this.handleInfo.bind(this);
 
         this.validateAndSubmit = this.validateAndSubmit.bind(this);    
@@ -74,22 +75,31 @@ class FacilityComponent extends Component {
             }) 
     }
 
-    validateAndSubmit(submit){
+    handleAutocompleteChange(event, value, key){
+        this.setState(
+            {   ...this.state,
+                selected: {...this.state.selected, [key] : value}
+            }) 
+    }
+
+    validateAndSubmit(submit, refreshData){
         const { selected } = this.state;
         
         this.setState({ errors: 
              { 
-                // companyNum: /^[N]\d{5}$/.test(selectedUser.companyNum) ? '' : "Follow the pattern N plus 5 digits!" ,
-                // firstName:  selectedUser.firstName != 'First Name' && selectedUser.firstName.length > 2 ? '' : "The first name must contain more than 2 digits!" ,
-                // lastName:  selectedUser.lastName != 'Last Name' && selectedUser.lastName.length > 2 ? '' : "The last name must contain more than 2 digits!",
-                // email: /^\S+@\S+$/.test(selectedUser.email)  ? '' : "Please provide a valid email!",
-                // facility: this.props.selectedUser.facility.length > 2 ? '' : "Please select a facility!",
-                
-                // authority: this.props.selectedUser.roles.length > 0 ? '' : "At least one authority must be checked!",
-                // role: this.props.selectedUser.roles.length > 0 ? '' : "At least one role must be checked!",
+                name: selected.name != FACILITIES_HEADER_DATA.name && selected.name.length > 2 ? '' : "The facility name must be longer than 2 symbols!" ,
+                city:  selected.city.length > 2 ? '' : "The facility city must be longer than 2 symbols!" ,
+                country:  selected.country.length > 2 ? '' : "The facility country must be longer than 2 symbols!" ,
+                capacity:  selected.capacity > 0 ? '' : "The facility capacity must be a positive digit!" ,
+                manager: selected.manager != FACILITIES_HEADER_DATA.manager && selected.manager.length > 2 ? '' : "Please select a facility manager!" ,
   
              }
-        }, () => submit( this.state.errors, "facilities", selected.name, selected, this.refreshFacilities, this.props.handleInfo) );
+        }, () => submit( this.state.errors, 
+                          "facilities", 
+                          selected.name, 
+                          selected, 
+                          refreshData, 
+                          this.props.handleInfo) );
     
       }
 
@@ -125,6 +135,7 @@ class FacilityComponent extends Component {
                     selected={this.state.selected} 
                     selectedId={this.state.selectedId}
                     handleChange={this.handleChange} 
+                    handleAutocompleteChange={this.handleAutocompleteChange} 
                     handleInfo={this.handleInfo}
                     labels = {FACILITIES_HEADER_DATA} 
                     booleanFields = {FACILITIES_BOOLEAN_FIELDS}
@@ -132,7 +143,7 @@ class FacilityComponent extends Component {
                     errors={this.state.errors}
                     feedback={MESSAGES.facilitiesEditInfo}
                     validateAndSubmit={this.validateAndSubmit}
- 
+                    refreshData={this.refreshFacilities}
                     />
                   }
                 </Paper>

@@ -11,7 +11,7 @@ class CreateUpdateBtnGroup extends Component {
 
     render(){
         const { classes } = this.props;
-        const {validateAndSubmit, submitUpdate, submitCreate} = this.props;        
+        const {validateAndSubmit, refreshData, submitCreate} = this.props;        
         return(
             <ButtonGroup row >  
               <Button 
@@ -20,7 +20,7 @@ class CreateUpdateBtnGroup extends Component {
                   color="primary"
                   startIcon={ICONS_MAPPING.update}
 
-                  onClick={() => {validateAndSubmit(ComponentsStateService.submitUpdate);}}
+                  onClick={() => {validateAndSubmit(ComponentsStateService.submitUpdate, refreshData);}}
                   >
                   Update
               </Button>
@@ -30,7 +30,7 @@ class CreateUpdateBtnGroup extends Component {
                   className={classes.menuButton}
                   color="default"
                   endIcon={ICONS_MAPPING.create}
-                  onClick={() => {validateAndSubmit(ComponentsStateService.submitCreate); }}
+                  onClick={() => {validateAndSubmit(ComponentsStateService.submitCreate, refreshData); }}
                   >
                   Create
               </Button>

@@ -38,6 +38,7 @@ class TaskComponent extends Component{
 
         this.selectTask = this.selectTask.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.handleAutocompleteChange = this.handleAutocompleteChange.bind(this)
 
         this.validateAndSubmit = this.validateAndSubmit.bind(this);
         
@@ -80,7 +81,14 @@ class TaskComponent extends Component{
             })
     }
 
-    validateAndSubmit(submit){
+    handleAutocompleteChange(event, value, key){
+        this.setState(
+            {   ...this.state,
+                selected: {...this.state.selected, [key] : value}
+            }) 
+      }
+
+    validateAndSubmit(submit, refreshData){
         const { selected } = this.state;
         
         this.setState({ errors: 
@@ -89,7 +97,7 @@ class TaskComponent extends Component{
                 code: selected.code.length == 3 ? '' : "The functional code length must equal 3 symbols." ,
                 description: selected.description.length > 10 ? '' : "The description length must be more than 10 symbols." ,
              }
-        }, () => submit(this.state.errors, "tasks", selected.taskNum, selected, this.refreshTasks, this.props.handleInfo) );
+        }, () => submit(this.state.errors, "tasks", selected.taskNum, selected, refreshData, this.props.handleInfo) );
     
       }
   
@@ -121,7 +129,7 @@ class TaskComponent extends Component{
                         selected={this.state.selected} 
                         selectedId={this.state.selectedId}
                         handleChange={this.handleChange} 
-                        
+                        handleAutocompleteChange={this.handleAutocompleteChange}
                         handleInfo={handleInfo}
                         labels = {TASKS_HEADER_DATA} 
                         booleanFields = {TASKS_BOOLEAN_FIELDS}
@@ -129,7 +137,7 @@ class TaskComponent extends Component{
                         errors={this.state.errors}
                         feedback={MESSAGES.taskEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
-                    
+                        refreshData={this.refreshTasks}
                     />
                   }
                 </Paper>

@@ -2,7 +2,6 @@ import {MESSAGES} from '../Constanst.js'
 
 class Utils {
     redirectTo(props, urlParam, fetchDataFromURL){
-        console.log(fetchDataFromURL)
         props.history.push({pathname: urlParam, fetchDataFromURL})
     }
 

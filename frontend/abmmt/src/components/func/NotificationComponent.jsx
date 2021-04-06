@@ -39,7 +39,7 @@ class NotificationComponent extends Component {
         this.refreshNotifications = this.refreshNotifications.bind(this)
         this.selectNotification = this.selectNotification.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        // this.handleInfo = this.handleInfo.bind(this);
+        this.handleAutocompleteChange = this.handleAutocompleteChange.bind(this);
 
         this.validateAndSubmit = this.validateAndSubmit.bind(this);
         // this.submitUpdate = this.submitUpdate.bind(this)
@@ -85,7 +85,14 @@ class NotificationComponent extends Component {
         
     }
 
-    validateAndSubmit(submit){
+    handleAutocompleteChange(event, value, key){
+      this.setState(
+          {   ...this.state,
+              selected: {...this.state.selected, [key] : value}
+          }) 
+    }
+
+    validateAndSubmit(submit, refreshData){
         const { selected } = this.state;
         
         this.setState({ errors: 
@@ -100,7 +107,7 @@ class NotificationComponent extends Component {
                 // role: this.props.selectedUser.roles.length > 0 ? '' : "At least one role must be checked!",
   
              }
-        }, () => submit(this.state.errors, "notifications", selected.notificationNum, selected, this.refreshNotifications, this.props.handleInfo) );
+        }, () => submit(this.state.errors, "notifications", selected.notificationNum, selected, refreshData, this.props.handleInfo) );
     
       }
   
@@ -165,12 +172,15 @@ class NotificationComponent extends Component {
                         selected={this.state.selected} 
                         selectedId={this.state.selectedId}
                         handleChange={this.handleChange} 
+                        handleAutocompleteChange={this.handleAutocompleteChange}
                         handleInfo={this.props.handleInfo}
                         labels = {NOTIFICATIONS_HEADER_DATA} 
                         booleanFields = {NOTIFICATIONS_BOOLEAN_FIELDS}
                         editFields={NOTIFICATION_EDIT_FIELDS}
                         errors={this.state.errors}
+                        feedback={MESSAGES.notificationsEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
+                        refreshData={this.refreshNotifications}
                         // submitUpdate={this.submitUpdate}
                         // submitCreate={this.submitCreate}
                     />

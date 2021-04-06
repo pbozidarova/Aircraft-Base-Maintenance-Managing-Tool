@@ -72,9 +72,10 @@ public class TaskServiceImpl implements TaskService {
     public String createPrepTeamString(TaskEntity taskEntity){
         StringBuilder preparedBy = new StringBuilder();
         taskEntity.getPreparedBy()
-                .forEach(u -> preparedBy.append(this.serviceUtil.userViewStringBuild(u)));
+                .forEach(u -> preparedBy.append(this.serviceUtil.userViewStringBuild(u))
+                                        .append(", "));
 
-        return preparedBy.toString().replaceAll(", $", "");
+        return preparedBy.toString(); //.replaceAll(", $", "");
     }
 
     public String createCorrectStatus(TaskEntity taskEntity){

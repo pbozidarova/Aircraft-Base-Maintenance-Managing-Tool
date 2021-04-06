@@ -61,8 +61,8 @@ class EditUserComponent extends Component {
         this.setState({ errors: 
              { 
                 companyNum: /^[N]\d{5}$/.test(selectedUser.companyNum) ? '' : "Follow the pattern N plus 5 digits!" ,
-                firstName:  selectedUser.firstName != 'First Name' && selectedUser.firstName.length > 2 ? '' : "The first name must contain more than 2 digits!" ,
-                lastName:  selectedUser.lastName != 'Last Name' && selectedUser.lastName.length > 2 ? '' : "The last name must contain more than 2 digits!",
+                firstName:  selectedUser.firstName != 'First Name' && selectedUser.firstName.length > 2 ? '' : "The first name must be longer than 2 symbols!" ,
+                lastName:  selectedUser.lastName != 'Last Name' && selectedUser.lastName.length > 2 ? '' : "The last name must be longer than 2 symbols!",
                 email: /^\S+@\S+$/.test(selectedUser.email)  ? '' : "Please provide a valid email!",
                 facility: selectedUser.facility.length > 2 ? '' : "Please select a facility!",
                 

@@ -38,7 +38,7 @@ class MaintenanceComponent extends Component {
         this.refreshMaintenance = this.refreshMaintenance.bind(this)
         this.selectMaintenance = this.selectMaintenance.bind(this)
         this.handleChange = this.handleChange.bind(this)
-
+        this.handleAutocompleteChange = this.handleAutocompleteChange.bind(this)
         this.validateAndSubmit = this.validateAndSubmit.bind(this);
     
     }
@@ -80,20 +80,31 @@ class MaintenanceComponent extends Component {
         
     }
 
-    validateAndSubmit(submit){
+    handleAutocompleteChange(event, value, key){
+      this.setState(
+          {   ...this.state,
+              selected: {...this.state.selected, [key] : value}
+          }) 
+    }
+
+    validateAndSubmit(submit, refreshMaintenance){
         const { selected } = this.state;
         
         this.setState({ errors: 
              { 
-
-                maintenanceNum: selected.maintenanceNum.length > 5 ? '' : "The maintenance number length must be more than 5 symbols." ,
+                maintenanceNum:  /^\d{7}$/.test(selected.maintenanceNum) ? '' : "The maintenance number length must equal 7 numbers." ,
                 facility: selected.facility.length > 2 ? '' : "Please select a facility!",
                 aircraftRegistration: selected.aircraftRegistration.length > 2 ? '' : "Please select an aircraft!",
-                responsibleEngineer: selected.responsibleEngineer.length > 2 ? '' : "Please select an responsibleEngineer!",
+                responsibleEngineer: selected.responsibleEngineer.length > 2 ? '' : "Please select a responsibleEngineer!",
                 startDate: selected.startDate.length > 2 && Date.parse(selected.startDate) < Date.parse(selected.endDate) ? '' : "The date is mandatory and it must be lower than the end data!",
                 endDate: selected.endDate.length > 2 && Date.parse(selected.startDate) < Date.parse(selected.endDate) ? '' : "The date is mandatory and it must be bigger than the start data!",  
              }
-        }, () => submit(this.state.errors, "maintenance", selected.maintenanceNum, selected, this.refreshMaintenance, this.props.handleInfo) );
+        }, () => submit(this.state.errors, 
+                        "maintenance", 
+                        selected.maintenanceNum, 
+                        selected, 
+                        refreshMaintenance, 
+                        this.props.handleInfo) );
     
       }
      
@@ -126,6 +137,7 @@ class MaintenanceComponent extends Component {
                         selected={this.state.selected} 
                         selectedId={this.state.selectedId}
                         handleChange={this.handleChange} 
+                        handleAutocompleteChange={this.handleAutocompleteChange} 
                         handleInfo={this.props.handleInfo}
                         labels = {MAINTENANCE_HEADER_DATA} 
                         booleanFields = {MAINTENANCE_BOOLEAN_FIELDS}
@@ -133,7 +145,7 @@ class MaintenanceComponent extends Component {
                         errors={this.state.errors}
                         feedback={MESSAGES.maintenanceEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
-                        
+                        refreshData={this.refreshMaintenance}
                     />
                   }
                 </Paper>

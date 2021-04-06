@@ -72,7 +72,7 @@ class AircraftComponent extends Component {
         
     }
 
-    validateAndSubmit(submit){
+    validateAndSubmit(submit, refreshData){
         const { selected } = this.state;
         
         this.setState({ errors: 
@@ -87,7 +87,12 @@ class AircraftComponent extends Component {
                 // role: this.props.selectedUser.roles.length > 0 ? '' : "At least one role must be checked!",
   
              }
-        }, () => submit(this.state.errors, "aircraft", selected.aircraftRegistration, selected, this.refreshAircraft, this.props.handleInfo) );
+        }, () => submit(this.state.errors, 
+                        "aircraft", 
+                        selected.aircraftRegistration, 
+                        selected, 
+                        refreshData, 
+                        this.props.handleInfo) );
     
       }
 
@@ -125,7 +130,7 @@ class AircraftComponent extends Component {
                         errors={this.state.errors}
                         feedback={MESSAGES.facilitiesEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
-                      
+                        refreshData={this.refreshAircraft}
                     />
                   }
                 </Paper>

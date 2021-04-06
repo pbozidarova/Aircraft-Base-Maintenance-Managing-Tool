@@ -21,6 +21,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -48,7 +49,7 @@ public class MaintenanceServiceImpl implements MaintenanceService {
         maintenanceToUpdate
                 .setAircraft(this.aircraftService.getAircraftByRegistration(maintenanceDataForUpdate.getAircraftRegistration()))
                 .setFacility(this.facilityService.getFacilityByName(maintenanceDataForUpdate.getFacility()))
-                .setStatus(MaintenanceStatusEnum.valueOf(maintenanceDataForUpdate.getStatus()))
+                .setStatus(allocateCorrectMaintenanceStatus(maintenanceDataForUpdate.getStartDate(), maintenanceToUpdate.getEndDate()))
                 .setResponsibleEngineer(responsibleEngineer)
                 .setId(maintenanceExisting.getId())
                 .setUpdatedOn(LocalDateTime.now());
@@ -66,12 +67,19 @@ public class MaintenanceServiceImpl implements MaintenanceService {
         maintenanceToCreate
                 .setAircraft(this.aircraftService.getAircraftByRegistration(maintenanceNew.getAircraftRegistration()))
                 .setFacility(this.facilityService.getFacilityByName(maintenanceNew.getFacility()))
-                .setStatus(MaintenanceStatusEnum.valueOf(maintenanceNew.getStatus()))
+                .setStatus(allocateCorrectMaintenanceStatus(maintenanceNew.getStartDate(), maintenanceNew.getEndDate()))
                 .setResponsibleEngineer(responsibleEngineer)
                 .setCreatedOn(LocalDateTime.now());
 
         return this.modelMapper.map(this.maintenanceRepository.save(maintenanceToCreate), MaintenanceViewDto.class);
+    }
 
+    private MaintenanceStatusEnum allocateCorrectMaintenanceStatus(LocalDate startDate, LocalDate endDate){
+        MaintenanceStatusEnum status = MaintenanceStatusEnum.UPCOMING;
+        if (LocalDate.now().isAfter(startDate)) status = MaintenanceStatusEnum.OPENED;
+        if (LocalDate.now().isAfter(endDate)) status = MaintenanceStatusEnum.CLOSED;
+
+        return status;
     }
 
     @Override
