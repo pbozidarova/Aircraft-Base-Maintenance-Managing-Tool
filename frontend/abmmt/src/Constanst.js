@@ -34,6 +34,8 @@ export const MESSAGES = {
     maintenanceEditInfo: "You are not allowed to edit the maintenance number! The status of the maintenance could be UPCOMING, OPENED or CLOSED based on the dates specified!",
     
     notificationsEditInfo: "You are not allowed to edit the notification number! The status of the maintenance could be UPCOMING, OPENED or CLOSED based on the dates specified!",
+    
+    facilitiesEditInfo: "You are not allowed to edit the facility name!",
 
 
     pleaseWait: "Please wait!",
@@ -211,7 +213,14 @@ export const FACILITIES_HEADER_DATA = {
     
 }
 export const FACILITIES_BOOLEAN_FIELDS = {}
-export const FACILITIES_DISABLED_FIELDS ={}
+export const FACILITY_EDIT_FIELDS = FACILITIES_HEADER_DATA
+// {
+//     name: 'Name',
+//     city: 'City',
+//     country: 'Country',
+//     capacity: 'Capacity',
+//     manager: 'Manager',
+// }
 
 //AIRCRAFT--------------------------------------------
 export const AIRCRAFT_HEADER_DATA = {
@@ -226,5 +235,5 @@ export const AIRCRAFT_HEADER_DATA = {
     
 }
 export const AIRCRAFT_BOOLEAN_FIELDS ={}
-export const AIRCRAFT_DISABLED_FIELDS ={}
+export const AIRCRAFT_EDIT_FIELDS = AIRCRAFT_HEADER_DATA
 

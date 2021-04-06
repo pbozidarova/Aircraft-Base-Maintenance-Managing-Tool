@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import BackendService from '../../../api/CommonAPI.js'
 import {USERS_BOOLEAN_FIELDS, USERS_HEADER_DATA, MESSAGES} from '../../../Constanst.js'
 import Utils from '../../Utils.js'
+import ComponentsStateService from '../../ComponentsStateService.js'
 
 import { styles } from '../../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
@@ -31,7 +32,10 @@ class UsersComponent extends Component {
             role: {},
         }
 
-        this.refreshUsers = this.refreshUsers.bind(this)
+        ComponentsStateService.refreshData = ComponentsStateService.refreshData.bind(this)
+        this.setState = this.setState.bind(this)
+
+        // this.refreshUsers = this.refreshUsers.bind(this)
         this.selectUser = this.selectUser.bind(this)
         this.handleAuthorityRoleChange = this.handleAuthorityRoleChange.bind(this)
         this.handleChange = this.handleChange.bind(this)    
@@ -39,45 +43,22 @@ class UsersComponent extends Component {
     }
    
     componentDidMount(){
-        this.refreshUsers();
+        let keyState = 'users'
+        let keyResponse = 'userViewDtoList'
+        let shouldFetchPartialData = this.props.location.fetchDataFromURL
+
+        ComponentsStateService.refreshData( keyState, 
+                                            keyResponse, 
+                                            ComponentsStateService.fetchAll, 
+                                            ComponentsStateService.partialFetch, 
+                                            shouldFetchPartialData, 
+                                            this.setState,
+                                            this.props.handleInfo);
+
         this.selectUser(Utils.emptyObj(USERS_HEADER_DATA))
     }
 
-    refreshUsers(){
-        let key = 'userViewDtoList'
-        let shouldFetchPartialData = this.props.location.fetchDataFromURL
-        
-        shouldFetchPartialData ? this.partialFetch(shouldFetchPartialData.href, shouldFetchPartialData.title, key) 
-                               : this.fetchAll("users", key)
-    }
-
-    partialFetch(hateoasUrl, title, key){
-        BackendService.fetchDataFrom(hateoasUrl)
-        .then(
-            response => {
-                console.log(response)
-                this.setState({
-                    users : response.data._embedded[key]
-                }, () => Utils.allocateCorrectSuccessMessage(this.props.handleInfo, title));
-            }
-        ).catch(e => Utils.allocateCorrectErrorMessage(e, this.props.handleInfo, title))
-    
-    }
-    
-    fetchAll(urlParam, key){
-        BackendService.getAll(urlParam)
-            .then(response => {    
-                console.log(response)
-
-                    this.setState( {
-                        ...this.state, 
-                        users:  response.data._embedded[key]
-                    }, () => this.props.handleInfo({success : MESSAGES.successLoaded + MESSAGES.allData}))
-                }).catch(e => {
-                    Utils.allocateCorrectErrorMessage(e, MESSAGES.allData, this.props.handleInfo)
-                });
-    }
-
+  
     selectUser( user) {
         let authorityObj = user.roles.includes('ADMIN') ? 'ADMIN' : 'USER'
         let roleObj = user.roles.includes('ENGINEER') ? 'ENGINEER' : 'MECHANIC'

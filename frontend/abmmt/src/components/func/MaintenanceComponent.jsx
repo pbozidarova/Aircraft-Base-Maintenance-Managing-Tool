@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import BackendService from '../../api/CommonAPI.js'
 import {MAINTENANCE_HEADER_DATA, MAINTENANCE_BOOLEAN_FIELDS, MAINTENANCE_EDIT_FIELDS, MESSAGES} from '../../Constanst.js'
 import Utils from '../Utils.js'
+import ComponentsStateService from '../ComponentsStateService.js'
 import { withRouter } from 'react-router';
 
 import DataComponent from './DataComponent'
@@ -31,7 +32,10 @@ class MaintenanceComponent extends Component {
             errors: {},     
         }
 
-        this.refreshMaintenance = this.refreshMaintenance.bind(this)
+        ComponentsStateService.refreshData = ComponentsStateService.refreshData.bind(this)
+        this.setState = this.setState.bind(this)
+
+        // this.refreshMaintenance = this.refreshMaintenance.bind(this)
         this.selectMaintenance = this.selectMaintenance.bind(this)
         this.handleChange = this.handleChange.bind(this)
 
@@ -41,42 +45,21 @@ class MaintenanceComponent extends Component {
     }
     
     componentDidMount(){
-        this.refreshMaintenance();
+        let keyState = 'maintenance'
+        let keyResponse = 'maintenanceViewDtoList'
+        let shouldFetchPartialData = this.props.location.fetchDataFromURL
+
+        ComponentsStateService.refreshData( keyState, 
+                                            keyResponse, 
+                                            ComponentsStateService.fetchAll, 
+                                            ComponentsStateService.partialFetch, 
+                                            shouldFetchPartialData, 
+                                            this.setState,
+                                            this.props.handleInfo);
+
         this.selectMaintenance(Utils.emptyObj(MAINTENANCE_HEADER_DATA))
     }
 
-    refreshMaintenance(){
-        let key = 'maintenanceViewDtoList'
-
-        let shouldFetchPartialData = this.props.location.fetchDataFromURL
-        
-        shouldFetchPartialData ? this.partialFetch(shouldFetchPartialData.href, shouldFetchPartialData.title, key) 
-                               : this.fetchAll("maintenance", key)
-    }
-
-    partialFetch(hateoasUrl, title, key){
-        BackendService.fetchDataFrom(hateoasUrl)
-        .then(
-            response => {
-                this.setState({
-                    loading : false, 
-                    maintenance : response.data._embedded[key]
-                }, () => Utils.infoMessage(this.props.handleInfo, title));
-            }
-        ).catch(e => Utils.errorMessage(e, this.props.handleInfo, title))
-    }
-
-    fetchAll(urlParam, key){
-        BackendService.getAll(urlParam)
-        .then(
-            response => {
-                this.setState({
-                    loading : false, 
-                    maintenance : response.data._embedded[key]
-                }, () => Utils.infoMessage(this.props.handleInfo, MESSAGES.allData));
-            }
-        ).catch(e => Utils.errorMessage(e, this.props.handleInfo, MESSAGES.allData ));
-    }
    
     selectMaintenance(maintenance, selectedId) {      
         this.setState({...this.state, selected: maintenance, selectedId})
@@ -121,7 +104,6 @@ class MaintenanceComponent extends Component {
                 }).catch(e => {
                     Utils.errorMessage(e, this.props.handleInfo )
                 })
-            console.log('submit Update')
         }
       }
   
@@ -136,7 +118,6 @@ class MaintenanceComponent extends Component {
                     Utils.errorMessage(e, this.props.handleInfo )
                 })
   
-            console.log('submit Create')
         }
       }
 

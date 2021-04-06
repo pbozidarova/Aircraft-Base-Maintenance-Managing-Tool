@@ -161,8 +161,8 @@ class EditGlobalComponent extends Component {
           
            <CreateUpdateBtnGroup
             validateAndSubmit={validateAndSubmit}
-            submitUpdate={submitUpdate}
-            submitCreate={submitCreate}
+            // submitUpdate={submitUpdate}
+            // submitCreate={submitCreate}
             classes={classes}
             />
               

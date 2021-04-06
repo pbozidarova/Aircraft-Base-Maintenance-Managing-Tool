@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import BackendService from '../../api/CommonAPI.js'
 import {NOTIFICATIONS_HEADER_DATA, NOTIFICATIONS_BOOLEAN_FIELDS, NOTIFICATION_EDIT_FIELDS, MESSAGES} from '../../Constanst.js'
 import Utils from '../Utils.js'
+import ComponentsStateService from '../ComponentsStateService.js'
+
 import { withRouter } from 'react-router';
 
 import DataComponent from './DataComponent'
@@ -31,7 +33,10 @@ class NotificationComponent extends Component {
             errors: {},     
         }
 
-        this.refreshNotifications = this.refreshNotifications.bind(this)
+        ComponentsStateService.refreshData = ComponentsStateService.refreshData.bind(this)
+        this.setState = this.setState.bind(this)
+
+        // this.refreshNotifications = this.refreshNotifications.bind(this)
         this.selectNotification = this.selectNotification.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleInfo = this.handleInfo.bind(this);
@@ -42,43 +47,20 @@ class NotificationComponent extends Component {
     }
     
     componentDidMount(){
-        this.refreshNotifications();
-        this.selectNotification(Utils.emptyObj(NOTIFICATIONS_HEADER_DATA))
-    }
-
-    refreshNotifications(){
-        Utils.infoMessage(this.props.handleInfo, MESSAGES.pleaseWait);
         
-        let key = 'notificationViewDtoList'
+        let keyState = 'notifications'
+        let keyResponse = 'notificationViewDtoList'
         let shouldFetchPartialData = this.props.location.fetchDataFromURL
 
-        shouldFetchPartialData ? this.partialFetch(shouldFetchPartialData.href, shouldFetchPartialData.title, key) 
-                               : this.fetchAll("notifications", key)
-    }
+        ComponentsStateService.refreshData( keyState, 
+                                            keyResponse, 
+                                            ComponentsStateService.fetchAll, 
+                                            ComponentsStateService.partialFetch, 
+                                            shouldFetchPartialData, 
+                                            this.setState,
+                                            this.props.handleInfo);
 
-    partialFetch(hateoasUrl, title, key){
-        BackendService.fetchDataFrom(hateoasUrl)
-        .then(
-            response => {
-                this.setState({
-                    loading : false, 
-                    notifications : response.data._embedded[key]
-                }, () => Utils.infoMessage(this.props.handleInfo, title));
-            }
-        ).catch(e => Utils.errorMessage(e, this.props.handleInfo, title))
-    }
-
-    fetchAll(urlParam, key){
-        BackendService.getAll(urlParam)
-        .then(
-            response => {
-                this.setState({
-                    loading : false, 
-                    notifications : response.data
-                }, () => {Utils.successMessage(this.props.handleInfo, MESSAGES.allData)});
-            }
-        ).catch(e => {Utils.errorMessage(e, this.props.handleInfo, MESSAGES.allData )});
-
+        this.selectNotification(Utils.emptyObj(NOTIFICATIONS_HEADER_DATA))
     }
    
     selectNotification(notification, selectedId) {      

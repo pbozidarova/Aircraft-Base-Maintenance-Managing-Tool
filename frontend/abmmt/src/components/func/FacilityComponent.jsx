@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import BackendService from '../../api/CommonAPI.js'
-import {FACILITIES_HEADER_DATA, FACILITIES_BOOLEAN_FIELDS, FACILITIES_DISABLED_FIELDS, MESSAGES} from '../../Constanst.js'
+import {FACILITIES_HEADER_DATA, FACILITIES_BOOLEAN_FIELDS, FACILITY_EDIT_FIELDS, MESSAGES} from '../../Constanst.js'
 import Utils from '../Utils.js'
+import ComponentsStateService from '../ComponentsStateService.js'
 
 import { styles } from '../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
@@ -29,7 +30,9 @@ class FacilityComponent extends Component {
             errors: {},     
         }
 
-        this.refreshFacilities = this.refreshFacilities.bind(this)
+        ComponentsStateService.refreshData = ComponentsStateService.refreshData.bind(this)
+        this.setState = this.setState.bind(this)
+        // this.refreshFacilities = this.refreshFacilities.bind(this)
         this.selectFacility = this.selectFacility.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleInfo = this.handleInfo.bind(this);
@@ -41,25 +44,23 @@ class FacilityComponent extends Component {
     }
    
     componentDidMount(){
-        this.refreshFacilities();
+        let keyState = 'facilities'
+        let keyResponse = 'facilityViewDtoList'
+        let shouldFetchPartialData = false
+
+        ComponentsStateService.refreshData( keyState, 
+                                            keyResponse, 
+                                            ComponentsStateService.fetchAll, 
+                                            ComponentsStateService.partialFetch, 
+                                            shouldFetchPartialData, 
+                                            this.setState,
+                                            this.props.handleInfo);
+
         this.selectFacility(Utils.emptyObj(FACILITIES_HEADER_DATA));
 
     }
 
-    refreshFacilities(){
-        
-        BackendService.getAll('facilities')
-            .then(
-                response => {
-                    console.log(response.data);
-                    this.setState({
-                        facilities : response.data._embedded.facilityViewDtoList
-                    },  
-                    () => Utils.infoMessage(this.props.handleInfo, MESSAGES.allData)
-                    );
-                }
-            ).catch(e => Utils.errorMessage(e, this.props.handleInfo, MESSAGES.allData ));
-    }
+    
 
     selectFacility(facility, selectedId) {      
         this.setState({...this.state, selected: facility, selectedId})
@@ -156,8 +157,9 @@ class FacilityComponent extends Component {
                     handleInfo={this.handleInfo}
                     labels = {FACILITIES_HEADER_DATA} 
                     booleanFields = {FACILITIES_BOOLEAN_FIELDS}
-                    disabledFields={FACILITIES_DISABLED_FIELDS}
+                    editFields={FACILITY_EDIT_FIELDS}
                     errors={this.state.errors}
+                    feedback={MESSAGES.facilitiesEditInfo}
                     validateAndSubmit={this.validateAndSubmit}
                     submitUpdate={this.submitUpdate}
                     submitCreate={this.submitCreate}

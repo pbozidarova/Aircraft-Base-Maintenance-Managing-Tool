@@ -4,6 +4,7 @@ import {ICONS_MAPPING} from '../../Constanst.js'
 import { styles } from '../UseStyles.js'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import ComponentsStateService from '../ComponentsStateService.js'
 
 
 class CreateUpdateBtnGroup extends Component {
@@ -19,7 +20,7 @@ class CreateUpdateBtnGroup extends Component {
                   color="primary"
                   startIcon={ICONS_MAPPING.update}
 
-                  onClick={() => {validateAndSubmit(submitUpdate);}}
+                  onClick={() => {validateAndSubmit(ComponentsStateService.submitUpdate);}}
                   >
                   Update
               </Button>
@@ -29,7 +30,7 @@ class CreateUpdateBtnGroup extends Component {
                   className={classes.menuButton}
                   color="default"
                   endIcon={ICONS_MAPPING.create}
-                  onClick={() => {validateAndSubmit(submitCreate); }}
+                  onClick={() => {validateAndSubmit(ComponentsStateService.submitCreate); }}
                   >
                   Create
               </Button>

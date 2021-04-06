@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import BackendService from '../../api/CommonAPI.js'
-import {AIRCRAFT_HEADER_DATA, AIRCRAFT_BOOLEAN_FIELDS, AIRCRAFT_DISABLED_FIELDS, MESSAGES} from '../../Constanst.js'
+import {AIRCRAFT_HEADER_DATA, AIRCRAFT_BOOLEAN_FIELDS, AIRCRAFT_EDIT_FIELDS, MESSAGES} from '../../Constanst.js'
 import Utils from '../Utils.js'
- 
+import ComponentsStateService from '../ComponentsStateService.js'
 
 import { styles } from '../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
@@ -29,7 +29,10 @@ class AircraftComponent extends Component {
             errors: {},     
         }
 
-        this.refreshAircraft = this.refreshAircraft.bind(this)
+        ComponentsStateService.refreshData = ComponentsStateService.refreshData.bind(this)
+        this.setState = this.setState.bind(this)
+        
+        // this.refreshAircraft = this.refreshAircraft.bind(this)
         this.selectAircraft = this.selectAircraft.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleInfo = this.handleInfo.bind(this);
@@ -41,19 +44,19 @@ class AircraftComponent extends Component {
     }
    
     componentDidMount(){
-           this.refreshAircraft();
-           this.selectAircraft(Utils.emptyObj(AIRCRAFT_HEADER_DATA))
-    }
+        let keyState = 'aircraft'
+        let keyResponse = 'aircraftViewDtoList'
+        let shouldFetchPartialData = false
 
-    refreshAircraft(){
-        
-        BackendService.getAll('aircraft')
-            .then(response => {
-                    this.setState({
-                        aircraft : response.data._embedded.aircraftViewDtoList
-                    }, () => Utils.successMessage(this.props.handleInfo, MESSAGES.allData));
-                }
-            ).catch(e => Utils.errorMessage(e, this.props.handleInfo, MESSAGES.allData ));
+        ComponentsStateService.refreshData( keyState, 
+                                            keyResponse, 
+                                            ComponentsStateService.fetchAll, 
+                                            ComponentsStateService.partialFetch, 
+                                            shouldFetchPartialData, 
+                                            this.setState,
+                                            this.props.handleInfo);
+
+           this.selectAircraft(Utils.emptyObj(AIRCRAFT_HEADER_DATA))
     }
   
     selectAircraft(aircraft, selectedId) {      
@@ -148,8 +151,9 @@ class AircraftComponent extends Component {
                         handleInfo={this.handleInfo}
                         labels = {AIRCRAFT_HEADER_DATA} 
                         booleanFields = {AIRCRAFT_BOOLEAN_FIELDS}
-                        disabledFields={AIRCRAFT_DISABLED_FIELDS}
+                        editFields={AIRCRAFT_EDIT_FIELDS}
                         errors={this.state.errors}
+                        feedback={MESSAGES.facilitiesEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
                         submitUpdate={this.submitUpdate}
                         submitCreate={this.submitCreate}

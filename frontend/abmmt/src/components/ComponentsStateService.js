@@ -1,8 +1,10 @@
 import BackendService from '../api/CommonAPI.js'
 import Utils from './Utils.js'
+import {MESSAGES} from '../Constanst.js'
+
 class ComponentsStateService {
 
-    refreshTasks(keyState, keyResponse, fetchAll, partialFetch, shouldFetchPartialData, setState, handleInfo){ 
+    refreshData(keyState, keyResponse, fetchAll, partialFetch, shouldFetchPartialData, setState, handleInfo){ 
         console.log(this)  
         // let shouldFetchPartialData = this.props.location.fetchDataFromURL
         
@@ -21,12 +23,9 @@ class ComponentsStateService {
                 setState({
                     loading : false, 
                     [urlParam] : response.data._embedded[keyResponse]
-                }
-                //  , this.infoMessage(this.props.handleInfo, MESSAGES.allTasks + MESSAGES.initialAdvice)
-                );
+                }, () => {Utils.successMessage(handleInfo, MESSAGES.allData)});
             }
-        )
-        .catch(e => this.props.handleInfo({error: e}));
+        ).catch(e => {Utils.errorMessage(e, handleInfo, MESSAGES.allData )});
     }
 
     partialFetch(keyState, keyResponse, setState, hateoasUrl, title, handleInfo){
@@ -43,6 +42,33 @@ class ComponentsStateService {
         )
         .catch(e => setState({loading : false,}, Utils.errorMessage(e, handleInfo, title)))
     }
+
+    submitUpdate(errors, entity, selectedNum, selected, refreshTasks, handleInfo){
+        if(Utils.formIsValid(errors)) {
+            BackendService.updateOne(entity, selectedNum, selected)
+                .then((r) => {                        
+                    refreshTasks()
+                    Utils.successMessage(handleInfo, MESSAGES.successUpdated)
+                    
+                }).catch(e => {
+                    Utils.errorMessage(e, handleInfo )
+                })
+        
+        }
+      }
+  
+      submitCreate(errors, entity, selectedNum, selected, refreshTasks, handleInfo){  
+        if(Utils.formIsValid(errors)) {
+            BackendService.createOne(entity, selectedNum, selected)
+                .then(() => {                        
+                    refreshTasks()
+                    Utils.successMessage(handleInfo, MESSAGES.successCreated)
+                }
+                ).catch(e => {
+                    Utils.errorMessage(e, handleInfo )
+                })
+        }
+      }
 
 }
     export default new ComponentsStateService();

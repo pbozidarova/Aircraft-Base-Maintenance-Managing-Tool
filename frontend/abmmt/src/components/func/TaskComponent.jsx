@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import BackendService from '../../api/CommonAPI.js'
 import {TASKS_HEADER_DATA, TASKS_BOOLEAN_FIELDS, TASK_EDIT_FIELDS, MESSAGES} from '../../Constanst.js'
 import Utils from '../Utils.js'
-import ComponentsStateService from '../ComponentsStateSerive.js'
+import ComponentsStateService from '../ComponentsStateService.js'
 import { withRouter } from 'react-router';
 
 import DataComponent from './DataComponent'
@@ -31,76 +31,38 @@ class TaskComponent extends Component{
             errors: {},     
         }
 
-        ComponentsStateService.refreshTasks = ComponentsStateService.refreshTasks.bind(this)
+        ComponentsStateService.refreshData = ComponentsStateService.refreshData.bind(this)
         this.setState = this.setState.bind(this)
-        // Utils.fetchAll = Utils.fetchAll.bind(this)
+        
+        this.refreshTasks = this.refreshTasks.bind(this)
 
-        // this.refreshTasks = this.refreshTasks.bind(this)
         this.selectTask = this.selectTask.bind(this)
         this.handleChange = this.handleChange.bind(this)
 
         this.validateAndSubmit = this.validateAndSubmit.bind(this);
-        this.submitUpdate = this.submitUpdate.bind(this)
-        this.submitCreate = this.submitCreate.bind(this)
+        
     }
     
     componentDidMount(){
+        this.refreshTasks();
+
+        this.selectTask(Utils.emptyObj(TASKS_HEADER_DATA))
+    }
+   
+    refreshTasks(){
         let keyState = 'tasks'
         let keyResponse = 'taskViewDtoList'
         let shouldFetchPartialData = this.props.location.fetchDataFromURL
 
-        ComponentsStateService.refreshTasks( keyState, 
-                            keyResponse, 
-                            ComponentsStateService.fetchAll, 
-                            ComponentsStateService.partialFetch, 
-                            shouldFetchPartialData, 
-                            this.setState,
-                            this.props.handleInfo);
-
-        this.selectTask(Utils.emptyObj(TASKS_HEADER_DATA))
+        ComponentsStateService.refreshData( keyState, 
+                                            keyResponse, 
+                                            ComponentsStateService.fetchAll, 
+                                            ComponentsStateService.partialFetch, 
+                                            shouldFetchPartialData, 
+                                            this.setState,
+                                            this.props.handleInfo);
     }
 
-    // refreshTasks(){   
-    //     let key = 'taskViewDtoList'
-    //     let shouldFetchPartialData = this.props.location.fetchDataFromURL
-        
-    //     Utils.infoMessage(this.props.handleInfo, MESSAGES.pleaseWait);
-
-    //     //Check if the user wants to render all the tasks or a HATEOAS link requires partial fetch
-    //     shouldFetchPartialData ? this.partialFetch(shouldFetchPartialData.href, shouldFetchPartialData.title, key) 
-    //                            : this.fetchAll("tasks", key)
-        
-    // }
-
-    // partialFetch(hateoasUrl, title, key){
-    //     BackendService.fetchDataFrom(hateoasUrl)
-    //     .then(
-    //         response => {
-    //             console.log(response)
-    //             this.setState({
-    //                 loading : false, 
-    //                 tasks : response.data._embedded[key]
-    //             }, () => Utils.successMessage(this.props.handleInfo, title));
-    //         }
-    //     ).catch(e => Utils.errorMessage(e, this.props.handleInfo, title))
-    // }
-
-    // fetchAll(urlParam, key){
-    //     console.log('kolko da raboti')
-    //     BackendService.getAll(urlParam)
-    //     .then(
-    //         response => {
-    //             this.setState({
-    //                 loading : false, 
-    //                 tasks : response.data._embedded[key]
-    //             }, 
-    //             () => Utils.infoMessage(this.props.handleInfo, MESSAGES.allTasks + MESSAGES.initialAdvice)
-    //             );
-    //         }
-    //     ).catch(e => Utils.errorMessage(e, this.props.handleInfo ));
-
-    // }
-   
     selectTask(task, selectedId) {      
         this.setState({...this.state, selected: task, selectedId})
     }
@@ -128,38 +90,10 @@ class TaskComponent extends Component{
                 code: selected.code.length == 3 ? '' : "The functional code length must equal 3 symbols." ,
                 description: selected.description.length > 10 ? '' : "The description length must be more than 10 symbols." ,
              }
-        }, () => submit(selected.taskNum, selected) );
+        }, () => submit(this.state.errors, "tasks", selected.taskNum, selected, this.refreshTasks, this.props.handleInfo) );
     
       }
   
-      submitUpdate(taskNum, selected){
-        if(Utils.formIsValid(this.state.errors)) {
-            BackendService.updateOne("tasks", taskNum, selected)
-                .then((r) => {                        
-                    this.refreshTasks()
-                    Utils.successMessage(this.props.handleInfo, MESSAGES.successUpdated)
-                    
-                }).catch(e => {
-                    Utils.errorMessage(e, this.props.handleInfo )
-                })
-        
-        }
-      }
-  
-      submitCreate(taskNum, selected){  
-        if(Utils.formIsValid(this.state.errors)) {
-            BackendService.createOne("tasks", taskNum, selected)
-                .then(() => {                        
-                    this.refreshTasks()
-                    Utils.successMessage(this.props.handleInfo, MESSAGES.successCreated)
-                }
-                ).catch(e => {
-                    Utils.errorMessage(e, this.props.handleInfo )
-                })
-        }
-      }
-
-
     render(){
         const { classes, handleInfo } = this.props;
         const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
@@ -196,8 +130,8 @@ class TaskComponent extends Component{
                         errors={this.state.errors}
                         feedback={MESSAGES.taskEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
-                        submitUpdate={this.submitUpdate}
-                        submitCreate={this.submitCreate}
+                        // submitUpdate={this.submitUpdate}
+                        // submitCreate={this.submitCreate}
                     />
                   }
                 </Paper>

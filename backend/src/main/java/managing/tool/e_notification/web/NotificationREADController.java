@@ -22,19 +22,29 @@ public class NotificationREADController {
     private final NotificationService notificationService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<NotificationViewDto>> findAllIssues(){
-        return ResponseEntity.ok()
-                .body(this.notificationService.findAllNotifications());
+    public ResponseEntity<CollectionModel<EntityModel<NotificationViewDto>>> findAllIssues(){
+
+        List<EntityModel<NotificationViewDto>> allNotifications = this.notificationService
+                .findAllNotifications()
+                .stream()
+                .map(EntityModel::of)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(CollectionModel.of(allNotifications));
     }
 
     
     @GetMapping("/user/{companyNum}")
-    public ResponseEntity<List<NotificationViewDto>> findAllIssuesRaisedBy(@PathVariable String companyNum){
+    public ResponseEntity<CollectionModel<EntityModel<NotificationViewDto>>> findAllIssuesRaisedBy(@PathVariable String companyNum){
 
-        List<NotificationViewDto> issues = this.notificationService
-                .findAllNotificationsByAuthor(companyNum);
+        List<EntityModel<NotificationViewDto>> notificationsByAuthor = this.notificationService
+                .findAllNotificationsByAuthor(companyNum)
+                .stream()
+                .map(EntityModel::of)
+                .collect(Collectors.toList());
 
-        return ResponseEntity.ok().body(issues);
+        return ResponseEntity.ok(CollectionModel.of(notificationsByAuthor));
+
     }
 
     @GetMapping("/open")
