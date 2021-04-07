@@ -28,7 +28,7 @@ public class NotificationCUDController {
 
     @PutMapping("/{notificationNum}/update")
     public ResponseEntity<NotificationViewDto> updateNotification(
-            @PathVariable String notificationNum, @RequestBody NotificationViewDto notificationDataForUpdate ){
+            @PathVariable String notificationNum, @RequestBody NotificationViewDto notificationDataForUpdate ) throws NotFoundInDb {
 
         if(!this.notificationService.notificationExists(notificationNum)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, notificationNum), "notificationNum");

@@ -25,7 +25,7 @@ public class UserCUDController {
 
     @PutMapping("/{companyNum}/update")
     public ResponseEntity<UserViewDto> updateSingleUser(
-            @PathVariable String companyNum, @RequestBody UserViewDto userDataForUpdate ){
+            @PathVariable String companyNum, @RequestBody UserViewDto userDataForUpdate ) throws NotFoundInDb, FoundInDb {
 
         if(!this.userService.userExists(companyNum)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, companyNum), "companyNum");
@@ -41,7 +41,7 @@ public class UserCUDController {
 
     @PutMapping("/{companyNum}/create")
     public ResponseEntity<UserViewDto> createSingleUser(
-            @PathVariable String companyNum, @RequestBody UserViewDto userNew ){
+            @PathVariable String companyNum, @RequestBody UserViewDto userNew ) throws FoundInDb {
 
         if(this.userService.userExists(companyNum)){
             throw new FoundInDb(String.format(FOUNDERROR, companyNum), "companyNum");

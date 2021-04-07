@@ -26,7 +26,7 @@ class AuthenticateController {
     private final UserDetailsServiceImpl userDetailsServiceimpl;
 
     @PostMapping(value = "/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws NotFoundInDb {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(

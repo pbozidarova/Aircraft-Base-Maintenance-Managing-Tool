@@ -58,11 +58,13 @@ class ComponentsStateService {
       submitCreate(errors, entity, selectedNum, selected, refreshData, handleInfo){  
         if(Utils.formIsValid(errors)) {
             BackendService.createOne(entity, selectedNum, selected)
-                .then(() => {                        
+                .then((response) => {        
+                    console.log(response)                
                     refreshData()
                     Utils.successMessage(handleInfo, MESSAGES.successCreated)
                 }
                 ).catch(e => {
+                    console.log(e)
                     Utils.errorMessage(e, handleInfo )
                 })
         }

@@ -36,7 +36,7 @@ public class FacilityCUDController {
     @PutMapping("/{name}/update")
     public ResponseEntity<FacilityViewDto> updateSingleTask(
             @RequestHeader("authorization") String jwt,
-            @PathVariable String name, @RequestBody FacilityViewDto facilityDataForUpdate ){
+            @PathVariable String name, @RequestBody FacilityViewDto facilityDataForUpdate )  {
 
         if(!this.facilityService.facilityExists(name)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, name), "name");
@@ -50,7 +50,7 @@ public class FacilityCUDController {
     @PutMapping("/{name}/create")
     public ResponseEntity<FacilityViewDto> createSingleTask(
             @RequestHeader("authorization") String jwt,
-            @PathVariable String name, @RequestBody FacilityViewDto facilityNew ){
+            @PathVariable String name, @RequestBody FacilityViewDto facilityNew )  {
 
         if(this.facilityService.facilityExists(name)){
             throw new FoundInDb(String.format(FOUNDERROR, name), "name");

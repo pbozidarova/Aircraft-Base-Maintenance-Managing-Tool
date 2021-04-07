@@ -33,7 +33,7 @@ public class AircraftCUDController {
     @PutMapping("/{registration}/update")
     public ResponseEntity<AircraftViewDto> updateSingleTask(
             @RequestHeader("authorization") String jwt,
-            @PathVariable String registration, @RequestBody AircraftViewDto aircraftDataForUpdate ){
+            @PathVariable String registration, @RequestBody AircraftViewDto aircraftDataForUpdate ) throws NotFoundInDb {
 
         if(!this.aircraftService.aircraftExists(registration)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, registration), "registration");
@@ -47,7 +47,7 @@ public class AircraftCUDController {
     @PutMapping("/{registration}/create")
     public ResponseEntity<AircraftViewDto> createSingleTask(
             @RequestHeader("authorization") String jwt,
-            @PathVariable String registration, @RequestBody AircraftViewDto aircraftNew ){
+            @PathVariable String registration, @RequestBody AircraftViewDto aircraftNew ) throws FoundInDb {
 
         if(this.aircraftService.aircraftExists(registration)){
             throw new FoundInDb(String.format(FOUNDERROR, registration), "registration");

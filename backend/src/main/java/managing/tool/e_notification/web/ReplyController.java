@@ -33,7 +33,7 @@ public class ReplyController {
     @PutMapping("/{notificationNum}/create")
     public ResponseEntity<ReplyViewDto> createReplyForNotification(
             @RequestHeader("authorization") String jwt,
-            @PathVariable String notificationNum, @RequestBody ReplyResponseDto replyToCreate ){
+            @PathVariable String notificationNum, @RequestBody ReplyResponseDto replyToCreate ) throws NotFoundInDb {
 
         if(!this.notificationService.notificationExists(notificationNum)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, notificationNum), "notificationNum");

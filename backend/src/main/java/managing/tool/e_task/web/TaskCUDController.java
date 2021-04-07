@@ -25,7 +25,7 @@ public class TaskCUDController {
     @PutMapping("/{taskNum}/update")
     public ResponseEntity<TaskViewDto> updateSingleTask(
             @RequestHeader("authorization") String jwt,
-            @PathVariable String taskNum, @RequestBody TaskViewDto taskDataForUpdate ){
+            @PathVariable String taskNum, @RequestBody TaskViewDto taskDataForUpdate ) throws NotFoundInDb {
 
         if(!this.taskService.taskExists(taskNum)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, taskNum), "taskNum");
@@ -39,7 +39,7 @@ public class TaskCUDController {
     @PutMapping("/{taskNum}/create")
     public ResponseEntity<TaskViewDto> createSingleTask(
             @RequestHeader("authorization") String jwt,
-            @PathVariable String taskNum, @RequestBody TaskViewDto taskNew ){
+            @PathVariable String taskNum, @RequestBody TaskViewDto taskNew ) throws FoundInDb {
 
         if(this.taskService.taskExists(taskNum)){
             throw new FoundInDb(String.format(FOUNDERROR, taskNum), "taskNum");

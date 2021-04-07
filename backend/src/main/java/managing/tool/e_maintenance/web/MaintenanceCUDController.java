@@ -26,7 +26,7 @@ public class MaintenanceCUDController {
     @PutMapping("/{maintenanceNum}/update")
     public ResponseEntity<MaintenanceViewDto> updateSingleMaintenance(
             @RequestHeader("authorization") String jwt,
-            @PathVariable String maintenanceNum, @RequestBody MaintenanceViewDto maintenanceDataForUpdate ){
+            @PathVariable String maintenanceNum, @RequestBody MaintenanceViewDto maintenanceDataForUpdate ) throws NotFoundInDb {
 
         if(!this.maintenanceService.maintenanceExists(maintenanceNum)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, maintenanceNum), "taskNum");
@@ -40,7 +40,7 @@ public class MaintenanceCUDController {
     @PutMapping("/{maintenanceNum}/create")
     public ResponseEntity<MaintenanceViewDto> createSingleMaintenance(
             @RequestHeader("authorization") String jwt,
-            @PathVariable String maintenanceNum, @RequestBody MaintenanceViewDto maintenanceNew ){
+            @PathVariable String maintenanceNum, @RequestBody MaintenanceViewDto maintenanceNew ) throws FoundInDb {
 
         if(this.maintenanceService.maintenanceExists(maintenanceNum)){
             throw new FoundInDb(String.format(FOUNDERROR, maintenanceNum), "maintenanceNum");

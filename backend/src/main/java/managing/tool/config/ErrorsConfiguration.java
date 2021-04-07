@@ -1,13 +1,10 @@
 package managing.tool.config;
 
-import managing.tool.exception.CustomGlobalRuntimeExp;
-import managing.tool.exception.NotFoundInDb;
+import managing.tool.exception.CustomGlobalCaughtExp;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
-import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Map;
@@ -26,8 +23,8 @@ public class ErrorsConfiguration {
 
                 Throwable error = getError(webRequest);
 
-                if (error instanceof CustomGlobalRuntimeExp) {
-                    CustomGlobalRuntimeExp myException = (CustomGlobalRuntimeExp) error;
+                if (error instanceof CustomGlobalCaughtExp) {
+                    CustomGlobalCaughtExp myException = (CustomGlobalCaughtExp) error;
 
                     attributes.put("message", myException.getMessage());
                     attributes.put("causedBy", myException.getCausedBy());
