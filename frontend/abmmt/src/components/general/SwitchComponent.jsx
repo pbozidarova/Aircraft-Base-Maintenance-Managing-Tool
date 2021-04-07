@@ -39,7 +39,8 @@ class SwitchComponent extends Component {
               <AuthenticatedRoute path="/maintenance" 
                                   component={() => (<MaintenanceComponent handleInfo={this.props.handleInfo}/> )} />
               <AuthenticatedRoute path="/notifications" 
-                                  component={() => (<NotificationComponent handleInfo={this.props.handleInfo}/> )} />
+                                  component={() => (<NotificationComponent handleInfo={this.props.handleInfo} 
+                                                                            fetchOpenNotifCount={this.props.fetchOpenNotifCount} /> )} />
               <AuthenticatedRoute path="/aircraft" 
                                   component={() => (<AircraftComponent handleInfo={this.props.handleInfo}/>)} />
               <AuthenticatedRoute path="/facilities" 

@@ -58,6 +58,8 @@ class NotificationComponent extends Component {
         let keyResponse = 'notificationViewDtoList'
         let shouldFetchPartialData = this.props.location.fetchDataFromURL
 
+        this.props.fetchOpenNotifCount();
+
         ComponentsStateService.refreshData( keyState, 
                                             keyResponse, 
                                             ComponentsStateService.fetchAll, 
@@ -152,6 +154,7 @@ class NotificationComponent extends Component {
                         feedback={MESSAGES.notificationsEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
                         refreshData={this.refreshNotifications}
+                        
                     />
                   }
                 </Paper>
