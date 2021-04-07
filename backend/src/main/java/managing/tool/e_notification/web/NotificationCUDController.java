@@ -33,9 +33,6 @@ public class NotificationCUDController {
         if(!this.notificationService.notificationExists(notificationNum)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, notificationNum), "notificationNum");
         }
-//        if(this.notificationService.emailExistsForAnotherUser(userDataForUpdate.getEmail(), companyNum)){
-//            throw new FoundInDb(String.format(FOUNDERROR, userDataForUpdate.getEmail()), "email");
-//        }
 
         NotificationViewDto notificationUpdated = this.notificationService.updateNotification(notificationDataForUpdate);
 
@@ -44,13 +41,14 @@ public class NotificationCUDController {
 
     @PutMapping("/{notificationNum}/create")
     public ResponseEntity<NotificationViewDto> createNotification(
-            @PathVariable String notificationNum, @RequestBody NotificationViewDto notificationNewData ){
+            @RequestHeader("authorization") String jwt,
+            @RequestBody NotificationViewDto notificationNewData ){
 
-        if(this.notificationService.notificationExists(notificationNum)){
-            throw new FoundInDb(String.format(FOUNDERROR, notificationNum), "notificationNum");
-        }
+//        if(this.notificationService.notificationExists(notificationNum)){
+//            throw new FoundInDb(String.format(FOUNDERROR, notificationNum), "notificationNum");
+//        }
 
-        NotificationViewDto notificationCreated = this.notificationService.createNotification(notificationNewData);
+        NotificationViewDto notificationCreated = this.notificationService.createNotification(notificationNewData,jwt);
         return new ResponseEntity<>(notificationCreated, HttpStatus.OK);
     }
 

@@ -33,7 +33,7 @@ export const MESSAGES = {
     
     maintenanceEditInfo: "You are not allowed to edit the maintenance number! The status of the maintenance could be UPCOMING, OPENED or CLOSED based on the dates specified!",
     
-    notificationsEditInfo: "The notification number is automaticaly composed of a unique number, maintenace and a task number!",
+    notificationsEditInfo: "The notification number is automaticaly composed of a unique number, maintenace and a task number! You are not allowed to close a notification without classifying it!",
     
     facilitiesEditInfo: "You are not allowed to edit the facility name!",
 
@@ -115,8 +115,9 @@ export const GLOBAL_SELECT_FIELDS = {
     manager: ['users', 'companyNum', 'lastName', 'firstName'],
     responsibleEngineer: 'users',
     maintenanceNum: ['maintenance', 'maintenanceNum'],
-    taskNum: ['tasks', 'taskNum']
-
+    taskNum: ['tasks', 'taskNum'],
+    status: 'status',
+    classification: 'classification'
     //TODO!!!!
     // authory: "Authority",
     // role: "Role"

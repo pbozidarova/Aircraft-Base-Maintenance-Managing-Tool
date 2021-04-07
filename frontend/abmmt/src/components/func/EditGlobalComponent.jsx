@@ -36,9 +36,13 @@ class EditGlobalComponent extends Component {
               responsibleEngineer: {},
               maintenanceNum: {},
               taskNum: {},
+              status: ['OPENED', 'PROGRESSING', 'CLOSED'],
+              classification: ['CLARIFICATION', 'IMPROVEMENT', 'MISTAKE', 'REFUSED'],
               //TODO!!!!
               authority: {},
-              role: {}
+              role: {},
+
+
           }
 
         this.refreshSelectMenusOptions = this.refreshSelectMenusOptions.bind(this);
@@ -60,7 +64,7 @@ class EditGlobalComponent extends Component {
             let keyState = GLOBAL_SELECT_FIELDS[select][0]
             let keyValues = GLOBAL_SELECT_FIELDS[select].slice(1)
             
-            select != 'responsibleEngineer' &&
+            !['responsibleEngineer', 'status', 'classification'].includes( select )  &&
                       
             BackendService.getAll(keyState)
               .then(response => {              

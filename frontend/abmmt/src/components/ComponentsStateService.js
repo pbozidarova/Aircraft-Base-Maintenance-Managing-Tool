@@ -19,7 +19,6 @@ class ComponentsStateService {
         BackendService.getAll(urlParam)
         .then(
             response => {
-                console.log(response)
                 setState({
                     loading : false, 
                     [urlParam] : response.data._embedded[keyResponse]
@@ -32,7 +31,6 @@ class ComponentsStateService {
         BackendService.fetchDataFrom(hateoasUrl)
         .then(
             response => {
-                console.log(response)
                 setState({
                     loading : false, 
                     [keyState] : response.data._embedded[keyResponse]

@@ -19,19 +19,14 @@ import managing.tool.e_user.model.RoleEnum;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
 import managing.tool.util.ServiceUtil;
-import org.apache.tomcat.jni.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,7 +64,8 @@ public class NotificationServiceImpl implements NotificationService {
                     NotificationStatusEnum randomStatus = statusEnums[random.nextInt(statusEnumLength)];
                     MaintenanceEntity randomMaintenance = this.maintenanceService.getRandomMaintenance();
                     TaskEntity randomTask = this.taskService.getRandomTask();
-                    String notificationNum = String.format("N%s_%s_%s",
+
+                    String notificationNum = notificationNumberBuilder(
                             this.notificationRepository.count()+1,
                             randomMaintenance.getMaintenanceNum(),
                             randomTask.getTaskNum());
@@ -87,9 +83,12 @@ public class NotificationServiceImpl implements NotificationService {
                         NotificationClassificationEnum randomClassification = classificationEnum[random.nextInt(classificationEnumLength)];
                         notificationEntity.setClassification(randomClassification);
                     }
+
                     this.notificationRepository.save(notificationEntity);
                 });
     }
+
+
 
     @Override
     public boolean notificationsExist() {
@@ -164,12 +163,35 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public NotificationViewDto updateNotification(NotificationViewDto notificationViewDto) {
-        return null;
+        NotificationEntity notificationToUpdate = this.notificationRepository.findByNotificationNum(notificationViewDto.getNotificationNum());
+
+        String notificationNumber = notificationNumberBuilder(
+                Long.parseLong(notificationViewDto.getNotificationNum().split("_")[0].replace("N", "")),
+                notificationViewDto.getMaintenanceNum(),
+                notificationViewDto.getTaskNum());
+
+        notificationToUpdate.setNotificationNum(notificationNumber);
+
+        buildNotificationEntity(notificationToUpdate, notificationViewDto);
+        return  this.modelMapper.map(this.notificationRepository.save(notificationToUpdate), NotificationViewDto.class);
     }
 
+
     @Override
-    public NotificationViewDto createNotification(NotificationViewDto notificationViewDto) {
-        return null;
+    public NotificationViewDto createNotification(NotificationViewDto notificationViewDto, String token) {
+        NotificationEntity notificationToCreate = new NotificationEntity();
+        UserEntity author = this.serviceUtil.identifyingUserFromToken(token);
+        notificationToCreate.setAuthor(author);
+
+        String newNotificationNumber = notificationNumberBuilder(
+                this.notificationRepository.count()+1,
+                notificationViewDto.getMaintenanceNum(),
+                notificationViewDto.getTaskNum()
+        );
+        notificationToCreate.setNotificationNum(newNotificationNumber);
+        buildNotificationEntity(notificationToCreate, notificationViewDto);
+
+        return this.modelMapper.map(this.notificationRepository.save(notificationToCreate), NotificationViewDto.class);
     }
 
     @Override
@@ -204,5 +226,28 @@ public class NotificationServiceImpl implements NotificationService {
         this.notificationRepository.findByNotificationNum(notificationNum).getReplies().add(replySaved);
 
         return this.modelMapper.map(reply, ReplyViewDto.class);
+    }
+
+    private void buildNotificationEntity(NotificationEntity notification, NotificationViewDto notificationViewDto) {
+        MaintenanceEntity maintenanceEntity = this.maintenanceService.findByMaintenanceNum(notificationViewDto.getMaintenanceNum());
+        TaskEntity taskEntity = this.taskService.findTaskByTaskNumber(notificationViewDto.getTaskNum());
+        LocalDate dueDateToUpdate = LocalDate.parse(notificationViewDto.getDueDate(), DateTimeFormatter.ofPattern("yyyy-M-dd"));
+        NotificationStatusEnum status = NotificationStatusEnum.valueOf(notificationViewDto.getStatus());
+
+        notification.setMaintenance(maintenanceEntity)
+                .setTask(taskEntity)
+                .setStatus(status)
+                .setDueDate( dueDateToUpdate )
+                .setUpdatedOn(LocalDateTime.now());
+
+        if(status.equals(NotificationStatusEnum.CLOSED)) {
+            NotificationClassificationEnum classification = NotificationClassificationEnum.valueOf(notificationViewDto.getClassification());
+            notification.setClassification(classification);
+        }
+
+    }
+
+    private String notificationNumberBuilder(long count, String maintenanceNum, String taskNum){
+        return String.format("N%s_%s_%s", count, maintenanceNum, taskNum);
     }
 }

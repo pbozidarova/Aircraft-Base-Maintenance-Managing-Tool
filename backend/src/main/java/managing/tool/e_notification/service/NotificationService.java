@@ -25,7 +25,7 @@ public interface NotificationService {
     Boolean notificationExists(String notificationNum);
     Integer openNotificationsOfLoggedInUser(String jwt);
     NotificationViewDto updateNotification(NotificationViewDto notificationViewDto);
-    NotificationViewDto createNotification(NotificationViewDto notificationViewDto);
+    NotificationViewDto createNotification(NotificationViewDto notificationViewDto, String token);
 
     List<ReplyViewDto> getCommunication(String notificationNum);
 

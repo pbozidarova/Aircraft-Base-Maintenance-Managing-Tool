@@ -142,7 +142,7 @@ class AircraftComponent extends Component {
                         booleanFields = {AIRCRAFT_BOOLEAN_FIELDS}
                         editFields={AIRCRAFT_EDIT_FIELDS}
                         errors={this.state.errors}
-                        feedback={MESSAGES.facilitiesEditInfo}
+                        feedback={MESSAGES.aircraftEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
                         refreshData={this.refreshAircraft}
                     />
