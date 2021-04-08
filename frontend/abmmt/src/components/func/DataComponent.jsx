@@ -49,7 +49,7 @@ class DataComponentAccordion extends Component{
             open: false,
             fetchedReplies: [],
             currentReply: '',
-            
+            attachment: '',
 
         }  
 
@@ -59,6 +59,7 @@ class DataComponentAccordion extends Component{
         this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this)
         this.handleOpenState = this.handleOpenState.bind(this)
         this.saveReply = this.saveReply.bind(this)
+        this.handleAttachment = this.handleAttachment.bind(this)
         this.handleReplyChange = this.handleReplyChange.bind(this)
     }
  
@@ -76,6 +77,16 @@ class DataComponentAccordion extends Component{
             {   ...this.state,
                 currentReply : event.target.value
             }) 
+    }
+
+    handleAttachment(event){
+        
+        let file = event ? event.target.files[0] : null;
+
+        this.setState({
+            ...this.state,
+            attachment: file
+        })
     }
 
     handleChangePage = (event, newPage) => {
@@ -108,11 +119,15 @@ class DataComponentAccordion extends Component{
     }
 
     saveReply(index, notificationNum){
-        
-        BackendService.createOne('replies', notificationNum, {description: this.state.currentReply})
+        // let replyObj = {description: this.state.currentReply, attachment: this.state.attachment}
+        let formData = new FormData();
+        formData.append('description', this.state.currentReply);
+        formData.append('attachment', this.state.attachment);
+
+        BackendService.createReply('replies', notificationNum, formData )
         .then(() => {
             this.handleOpenState(index)
-                     
+            this.handleAttachment()  
             this.fetchAndExpand(index, notificationNum)
         }
         ).catch(e => {
@@ -200,8 +215,10 @@ class DataComponentAccordion extends Component{
                                     index={index}
                                     notificationNum={notificationNum}
                                     open={this.state.open}
+                                    attachment={this.state.attachment && this.state.attachment.name}
                                     saveReply={this.saveReply}
                                     handleReplyChange={this.handleReplyChange}
+                                    handleAttachment={this.handleAttachment}
                                     fetchedReplies={this.state.fetchedReplies}
                                     classes={this.props.classes}
                                     handleInfo={this.handleInfo}

@@ -43,7 +43,6 @@ class AuthenticationService {
             (config) => {
                 if(this.isUserLoggedIn){
                     config.headers.authorization = token;
-                    
                 }
                 return config;
             }

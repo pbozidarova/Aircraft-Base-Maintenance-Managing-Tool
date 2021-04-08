@@ -21,6 +21,11 @@ class BackendService {
         return axios.put(`${BACKEND_URL}/${entity}/${num}/create`, putObj);
     }
 
+    createReply(entity, num, putObj){
+        return axios.post(`${BACKEND_URL}/${entity}/${num}/create`, putObj, );
+    }
+
+
     fetchOpenNotificationsCount(){
         return axios.get(`${BACKEND_URL}/notifications/open`)
     }

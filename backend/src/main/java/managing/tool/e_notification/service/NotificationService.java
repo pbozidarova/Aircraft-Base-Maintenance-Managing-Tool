@@ -5,6 +5,7 @@ import managing.tool.e_notification.model.ReplyEntity;
 import managing.tool.e_notification.model.dto.NotificationViewDto;
 import managing.tool.e_notification.model.dto.ReplyResponseDto;
 import managing.tool.e_notification.model.dto.ReplyViewDto;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -30,5 +31,5 @@ public interface NotificationService {
 
     List<ReplyViewDto> getCommunication(String notificationNum);
 
-    ReplyViewDto createReply(String notificationNum, String jwt, ReplyResponseDto reply) throws IOException;
+    ReplyViewDto createReply(String notificationNum, String jwt, ReplyResponseDto reply, MultipartFile attachment) throws IOException;
 }

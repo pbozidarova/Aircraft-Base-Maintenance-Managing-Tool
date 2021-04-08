@@ -218,10 +218,10 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public ReplyViewDto createReply(String notificationNum, String jwt, ReplyResponseDto reply) throws IOException {
+    public ReplyViewDto createReply(String notificationNum, String jwt, ReplyResponseDto reply, MultipartFile attachment) throws IOException {
         ReplyEntity replyToCreate = new ReplyEntity();
 
-        MultipartFile attachment = reply.getImg();
+//        Optional<MultipartFile> attachment = Optional.ofNullable(atta);
         String url = cloudinaryService.uploadImage(attachment);
 
         UserEntity author = this.serviceUtil.identifyingUserFromToken(jwt);

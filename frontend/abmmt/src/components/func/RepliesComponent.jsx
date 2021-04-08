@@ -10,14 +10,17 @@ import TableHead from '@material-ui/core/TableHead';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
+import Chip from '@material-ui/core/Chip';
 import Collapse from '@material-ui/core/Collapse';
 import TextField from '@material-ui/core/TextField';
+
+import Link from '@material-ui/core/Link';
 
 class RepliesComponent extends Component {
 
     
     render(){
-        const {notificationNum, index, classes, open, saveReply, handleReplyChange} = this.props
+        const {notificationNum, index, classes, open, attachment, saveReply, handleReplyChange, handleAttachment} = this.props
         
         return (
             
@@ -44,13 +47,23 @@ class RepliesComponent extends Component {
                                                 {Object.keys(reply)
                                                        .map(key => <TableCell 
                                                                     colSpan={key=='description' ? 4 : 1}>
-                                                                        {reply[key]}
+                                                                        
+                                                                        { key != 'attachment'  ?  reply[key] : 
+                                                                            <Button 
+                                                                            startIcon={ICONS_MAPPING.attach}
+                                                                            target="_blank" 
+                                                                            href={reply[key]}
+                                                                            disabled={!reply[key]}
+                                                                            color="secondary"
+                                                                            >Attachment</Button>
+                                                                        } 
+                                                                       
                                                                     </TableCell>)}
                                            </TableRow>
                                     })
                                 }
                                 <TableRow >
-                                    <TableCell colSpan={4} >
+                                    <TableCell colSpan={6} >
                                         <TextField
                                             fullWidth
                                             label={"Enter your reply here"}
@@ -58,7 +71,7 @@ class RepliesComponent extends Component {
                                             multiline
                                             onChange={handleReplyChange}
                                             // error={errors[key] && errors.length > 0}
-                                            helperText={''}
+                                            helperText={attachment}
                                         /> 
                                     </TableCell>
                                     <TableCell  align="right">
@@ -66,12 +79,15 @@ class RepliesComponent extends Component {
                                             variant="contained" 
                                             className={classes.menuButton}
                                             color="default"
+                                            component="label"
                                             endIcon={ICONS_MAPPING.attach}>
+                                                
                                             Attach
                                             <input
                                                 type="file"
-                                                
-                                                // hidden
+                                                onChange={handleAttachment}
+                                                style={{ display: 'none' }}
+
                                             />
                                         </Button>
                                     </TableCell>

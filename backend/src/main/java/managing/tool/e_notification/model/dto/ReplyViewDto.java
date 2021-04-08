@@ -8,7 +8,7 @@ public class ReplyViewDto {
     private String author;
     private String title;
     private String createdOn;
-    private String img;
+    private String attachment;
 
     public String getDescription() {
         return description;
@@ -46,12 +46,12 @@ public class ReplyViewDto {
         return this;
     }
 
-    public String getImg() {
-        return img;
+    public String getAttachment() {
+        return attachment;
     }
 
-    public ReplyViewDto setImg(String img) {
-        this.img = img;
+    public ReplyViewDto setAttachment(String attachment) {
+        this.attachment = attachment;
         return this;
     }
 }

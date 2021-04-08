@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ReplyResponseDto {
 
     private String description;
-    private MultipartFile img;
+    private MultipartFile attachment;
 
     public String getDescription() {
         return description;
@@ -16,12 +16,12 @@ public class ReplyResponseDto {
         return this;
     }
 
-    public MultipartFile getImg() {
-        return img;
+    public MultipartFile getAttachment() {
+        return attachment;
     }
 
-    public ReplyResponseDto setImg(MultipartFile img) {
-        this.img = img;
+    public ReplyResponseDto setAttachment(MultipartFile attachment) {
+        this.attachment = attachment;
         return this;
     }
 }

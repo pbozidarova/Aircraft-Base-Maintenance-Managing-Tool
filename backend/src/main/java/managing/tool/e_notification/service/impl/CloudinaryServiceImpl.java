@@ -21,12 +21,14 @@ public class CloudinaryServiceImpl implements CloudinaryService {
 
   @Override
   public String uploadImage(MultipartFile multipartFile) throws IOException {
+    if(multipartFile == null) return "";
+
     File file = File.createTempFile(TEMP_FILE, multipartFile.getOriginalFilename());
     multipartFile.transferTo(file);
 
     return this.cloudinary
         .uploader()
-        .upload(file, Collections.emptyMap())
+        .upload(file, Collections.singletonMap("resource_type", "auto"))
         .get(URL)
         .toString();
   }
