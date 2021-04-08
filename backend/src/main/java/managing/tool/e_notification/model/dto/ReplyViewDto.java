@@ -1,11 +1,14 @@
 package managing.tool.e_notification.model.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class ReplyViewDto {
 
     private String description;
     private String author;
     private String title;
     private String createdOn;
+    private String img;
 
     public String getDescription() {
         return description;
@@ -40,6 +43,15 @@ public class ReplyViewDto {
 
     public ReplyViewDto setCreatedOn(String createdOn) {
         this.createdOn = createdOn;
+        return this;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public ReplyViewDto setImg(String img) {
+        this.img = img;
         return this;
     }
 }

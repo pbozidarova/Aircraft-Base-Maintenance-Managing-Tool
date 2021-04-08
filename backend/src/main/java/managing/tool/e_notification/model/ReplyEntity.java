@@ -11,6 +11,7 @@ public class ReplyEntity extends BaseEntity {
 
     private String description;
     private UserEntity author;
+    private String attachment;
 //    private NotificationEntity notification;
 
     public ReplyEntity() {
@@ -37,7 +38,17 @@ public class ReplyEntity extends BaseEntity {
         return this;
     }
 
-//    @ManyToOne
+    @Column(name="attachment")
+    public String getAttachment() {
+        return attachment;
+    }
+
+    public ReplyEntity setAttachment(String attachment) {
+        this.attachment = attachment;
+        return this;
+    }
+
+    //    @ManyToOne
 //    public NotificationEntity getNotification() {
 //        return notification;
 //    }

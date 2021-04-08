@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 import static managing.tool.constants.GlobalConstants.NOTFOUNDERROR;
@@ -33,7 +34,7 @@ public class ReplyController {
     @PutMapping("/{notificationNum}/create")
     public ResponseEntity<ReplyViewDto> createReplyForNotification(
             @RequestHeader("authorization") String jwt,
-            @PathVariable String notificationNum, @RequestBody ReplyResponseDto replyToCreate ) throws NotFoundInDb {
+            @PathVariable String notificationNum, @RequestBody ReplyResponseDto replyToCreate ) throws IOException {
 
         if(!this.notificationService.notificationExists(notificationNum)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, notificationNum), "notificationNum");

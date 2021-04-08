@@ -68,6 +68,11 @@ class RepliesComponent extends Component {
                                             color="default"
                                             endIcon={ICONS_MAPPING.attach}>
                                             Attach
+                                            <input
+                                                type="file"
+                                                
+                                                // hidden
+                                            />
                                         </Button>
                                     </TableCell>
                                     <TableCell>

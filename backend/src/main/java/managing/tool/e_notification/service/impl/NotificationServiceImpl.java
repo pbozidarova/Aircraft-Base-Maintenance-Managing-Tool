@@ -9,6 +9,7 @@ import managing.tool.e_notification.model.dto.NotificationViewDto;
 import managing.tool.e_notification.model.dto.ReplyResponseDto;
 import managing.tool.e_notification.model.dto.ReplyViewDto;
 import managing.tool.e_notification.repository.NotificationRepository;
+import managing.tool.e_notification.service.CloudinaryService;
 import managing.tool.e_notification.service.NotificationService;
 import managing.tool.e_maintenance.model.MaintenanceEntity;
 import managing.tool.e_maintenance.service.MaintenanceService;
@@ -22,7 +23,9 @@ import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -40,6 +43,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final ModelMapper modelMapper;
     private final ReplyService replyService;
     private final Random random;
+    private final CloudinaryService cloudinaryService;
     private final ServiceUtil serviceUtil;
 
     @Override
@@ -214,12 +218,16 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public ReplyViewDto createReply(String notificationNum, String jwt, ReplyResponseDto reply) {
-
+    public ReplyViewDto createReply(String notificationNum, String jwt, ReplyResponseDto reply) throws IOException {
         ReplyEntity replyToCreate = new ReplyEntity();
+
+        MultipartFile attachment = reply.getImg();
+        String url = cloudinaryService.uploadImage(attachment);
+
         UserEntity author = this.serviceUtil.identifyingUserFromToken(jwt);
         replyToCreate.setDescription(reply.getDescription())
                 .setAuthor(author)
+                .setAttachment(url)
                 .setCreatedOn(LocalDateTime.now());
 
         ReplyEntity replySaved = this.replyService.saveReply(replyToCreate);

@@ -6,6 +6,7 @@ import managing.tool.e_notification.model.dto.NotificationViewDto;
 import managing.tool.e_notification.model.dto.ReplyResponseDto;
 import managing.tool.e_notification.model.dto.ReplyViewDto;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,5 +30,5 @@ public interface NotificationService {
 
     List<ReplyViewDto> getCommunication(String notificationNum);
 
-    ReplyViewDto createReply(String notificationNum, String jwt, ReplyResponseDto reply);
+    ReplyViewDto createReply(String notificationNum, String jwt, ReplyResponseDto reply) throws IOException;
 }

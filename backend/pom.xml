@@ -91,6 +91,12 @@
             <artifactId>spring-security-core</artifactId>
             <version>5.3.2.RELEASE</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary</artifactId>
+            <version>1.0.14</version>
+        </dependency>
     </dependencies>
 
     <build>

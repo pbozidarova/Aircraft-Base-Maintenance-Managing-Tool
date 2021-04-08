@@ -6,6 +6,7 @@ import managing.tool.constants.GlobalConstants;
 import managing.tool.e_notification.model.ReplyEntity;
 import managing.tool.e_notification.model.dto.ReplySeedDto;
 import managing.tool.e_notification.repository.ReplyRepository;
+import managing.tool.e_notification.service.CloudinaryService;
 import managing.tool.e_notification.service.ReplyService;
 import managing.tool.e_user.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -27,7 +28,6 @@ public class ReplyServiceImpl implements ReplyService {
     private final ReplyRepository replyRepository;
     private final ModelMapper modelMapper;
     private final Gson gson;
-    private final Random random;
 
     @Override
     public void seedReplies() throws FileNotFoundException {
