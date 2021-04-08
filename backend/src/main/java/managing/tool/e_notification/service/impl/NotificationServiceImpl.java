@@ -1,6 +1,7 @@
 package managing.tool.e_notification.service.impl;
 
 import lombok.AllArgsConstructor;
+import managing.tool.e_base.BaseEntity;
 import managing.tool.e_notification.model.NotificationClassificationEnum;
 import managing.tool.e_notification.model.NotificationEntity;
 import managing.tool.e_notification.model.NotificationStatusEnum;
@@ -204,6 +205,7 @@ public class NotificationServiceImpl implements NotificationService {
                         .findByNotificationNum(notificationNum)
                         .getReplies()
                         .stream()
+                        .sorted(Comparator.comparing(BaseEntity::getCreatedOn))
                         .map(reply -> {
                             ReplyViewDto replyViewDto = this.modelMapper.map(reply, ReplyViewDto.class);
 
@@ -212,7 +214,6 @@ public class NotificationServiceImpl implements NotificationService {
                                         .setTitle(reply.getAuthor().getRoles().contains(RoleEnum.ADMIN)
                                                             ? RoleEnum.ADMIN.toString()
                                                             : RoleEnum.MECHANIC.toString());
-
                             return replyViewDto;
                         }).collect(Collectors.toList());
     }
