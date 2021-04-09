@@ -13,23 +13,30 @@ import managing.tool.e_maintenance.model.dto.MaintenanceViewDto;
 import managing.tool.e_maintenance.repository.MaintenanceRepository;
 import managing.tool.e_maintenance.service.MaintenanceService;
 import managing.tool.e_task.model.TaskEntity;
+import managing.tool.e_task.service.TaskSeedService;
 import managing.tool.e_task.service.TaskService;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
 import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 
+import javax.transaction.Transactional;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Transactional
 @Service
 @AllArgsConstructor
 public class MaintenanceServiceImpl implements MaintenanceService {
     private final MaintenanceRepository maintenanceRepository;
+    private final TaskSeedService taskService;
     private final ModelMapper modelMapper;
     private final UserService userService;
     private final AircraftService aircraftService;
@@ -57,6 +64,7 @@ public class MaintenanceServiceImpl implements MaintenanceService {
         return this.modelMapper.map(this.maintenanceRepository.save(maintenanceToUpdate), MaintenanceViewDto.class);
     }
 
+    @Transactional
     @Override
     public MaintenanceViewDto createMaintenance(MaintenanceViewDto maintenanceNew, String jwt) {
         MaintenanceEntity maintenanceToCreate = this.modelMapper.map(maintenanceNew, MaintenanceEntity.class);
@@ -74,6 +82,17 @@ public class MaintenanceServiceImpl implements MaintenanceService {
         return this.modelMapper.map(this.maintenanceRepository.save(maintenanceToCreate), MaintenanceViewDto.class);
     }
 
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    @Override
+    public void allocateRandomTasksToMaintenance(String maintenanceNum) {
+        Set<TaskEntity> randomTasks = this.taskService.getRandomTaskList();
+        MaintenanceEntity maintenance = this.findByMaintenanceNum(maintenanceNum);
+
+        maintenance.setTasks(new HashSet<>(randomTasks));
+        this.maintenanceRepository.saveAndFlush(maintenance);
+    }
+
+
     private MaintenanceStatusEnum allocateCorrectMaintenanceStatus(LocalDate startDate, LocalDate endDate){
         MaintenanceStatusEnum status = MaintenanceStatusEnum.UPCOMING;
         if (LocalDate.now().isAfter(startDate)) status = MaintenanceStatusEnum.OPENED;
@@ -82,6 +101,7 @@ public class MaintenanceServiceImpl implements MaintenanceService {
         return status;
     }
 
+    @Cacheable("maintenance")
     @Override
     public List<MaintenanceViewDto> findAllMaintenanceEvents() {
 
@@ -90,6 +110,11 @@ public class MaintenanceServiceImpl implements MaintenanceService {
                 .stream()
                 .map(this::buildMaintenanceVMRelationalStrings)
                 .collect(Collectors.toList());
+    }
+
+    @CacheEvict(cacheNames = "maintenance", allEntries = true)
+    public void evictCachedMaintenance() {
+
     }
 
     @Override

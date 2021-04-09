@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
+
 
 @Repository
 public interface MaintenanceRepository extends JpaRepository<MaintenanceEntity, Long> {

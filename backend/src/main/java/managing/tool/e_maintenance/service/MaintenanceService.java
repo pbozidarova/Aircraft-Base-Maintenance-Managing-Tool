@@ -2,15 +2,19 @@ package managing.tool.e_maintenance.service;
 
 import managing.tool.e_maintenance.model.MaintenanceEntity;
 import managing.tool.e_maintenance.model.dto.MaintenanceViewDto;
+import managing.tool.e_task.model.dto.TaskViewDto;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface MaintenanceService {
     MaintenanceViewDto updateMaintenance(MaintenanceViewDto maintenanceDataForUpdate, String jwt);
     MaintenanceViewDto createMaintenance(MaintenanceViewDto maintenanceNew, String jwt);
+    void allocateRandomTasksToMaintenance(String maintenanceNum);
 
     List<MaintenanceViewDto> findAllMaintenanceEvents();
+    void evictCachedMaintenance();
     MaintenanceViewDto findMaintenanceByNum(String maintenanceNum );
 
     MaintenanceEntity findByMaintenanceNum(String maintenanceNum);

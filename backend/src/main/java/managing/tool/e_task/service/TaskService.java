@@ -24,7 +24,7 @@ public interface TaskService {
     List<MaintenanceViewDto> findAllMaintenanceByTask(String taskNum);
 
     TaskEntity findTaskByTaskNumber(String taskNum);
-    Set<TaskEntity> getRandomTaskList();
+
 
 
     Boolean taskExists(String taskNum);

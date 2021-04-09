@@ -106,12 +106,14 @@ class EditGlobalComponent extends Component {
               <Autocomplete
                 id="free-solo-demo"
                 size="small"
-                freeSolo={isOptional}
+                // freeSolo={isOptional}
+                freeSolo={true}
                 value={selected[key]}
                 onChange={(e, v) => handleAutocompleteChange(e, v, key)}
                 options={Object.values(this.state[key])}
                 renderInput={(params) => (
                   <TextField {...params} 
+                        name={key}
                         label={labels[key]}  
                         margin="normal" 
                         variant="outlined"

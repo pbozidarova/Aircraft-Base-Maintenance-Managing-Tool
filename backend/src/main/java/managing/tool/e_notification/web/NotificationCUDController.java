@@ -33,7 +33,7 @@ public class NotificationCUDController {
         if(!this.notificationService.notificationExists(notificationNum)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, notificationNum), "notificationNum");
         }
-
+        this.notificationService.evictCachedNotifications();
         NotificationViewDto notificationUpdated = this.notificationService.updateNotification(notificationDataForUpdate);
 
         return new ResponseEntity<>(notificationUpdated, HttpStatus.OK);
@@ -47,7 +47,7 @@ public class NotificationCUDController {
 //        if(this.notificationService.notificationExists(notificationNum)){
 //            throw new FoundInDb(String.format(FOUNDERROR, notificationNum), "notificationNum");
 //        }
-
+        this.notificationService.evictCachedNotifications();
         NotificationViewDto notificationCreated = this.notificationService.createNotification(notificationNewData,jwt);
         return new ResponseEntity<>(notificationCreated, HttpStatus.OK);
     }

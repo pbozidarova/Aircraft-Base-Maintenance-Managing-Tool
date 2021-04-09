@@ -108,19 +108,7 @@ public class TaskServiceImpl implements TaskService {
         return this.taskRepository.findByTaskNum(taskNum);
     }
 
-    @Override
-    public Set<TaskEntity> getRandomTaskList() {
-        Set<TaskEntity> randomTaskList = new HashSet<>();
-        int maxRandomNumber = (int) this.taskRepository.count() / 5; //below 400
-        int randomListLength = this.random.nextInt(maxRandomNumber);
 
-        for (int i = 0; i < randomListLength; i++) {
-            long randomId = random.nextInt(maxRandomNumber) + 1;
-            TaskEntity task = this.taskRepository.getOne(randomId);
-            randomTaskList.add(task);
-        }
-        return randomTaskList;
-    }
 
     @Override
     public Boolean taskExists(String taskNum) {

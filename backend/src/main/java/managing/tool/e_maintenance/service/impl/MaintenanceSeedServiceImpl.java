@@ -13,6 +13,7 @@ import managing.tool.e_maintenance.model.dto.MaintenanceSeedDto;
 import managing.tool.e_maintenance.repository.MaintenanceRepository;
 import managing.tool.e_maintenance.service.MaintenanceSeedService;
 import managing.tool.e_task.model.TaskEntity;
+import managing.tool.e_task.service.TaskSeedService;
 import managing.tool.e_task.service.TaskService;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
@@ -34,7 +35,7 @@ public class MaintenanceSeedServiceImpl implements MaintenanceSeedService {
     private final AircraftService aircraftService;
     private final FacilityService facilityService;
     private final UserService userService;
-    private final TaskService taskService;
+    private final TaskSeedService taskService;
 
 
     @Override

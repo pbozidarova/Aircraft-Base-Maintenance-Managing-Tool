@@ -28,7 +28,6 @@ import static managing.tool.constants.GlobalConstants.TASKS_MOCK_DATA_PATH;
 public class TaskSeedServiceImpl implements TaskSeedService {
     private final TaskRepository taskRepository;
     private final UserService userService;
-    private final MaintenanceService maintenanceService;
     private final ModelMapper modelMapper;
     private final Gson gson;
     private final Random random;
@@ -67,5 +66,17 @@ public class TaskSeedServiceImpl implements TaskSeedService {
         return this.taskRepository.count() > 0;
     }
 
+    @Override
+    public Set<TaskEntity> getRandomTaskList() {
+        Set<TaskEntity> randomTaskList = new HashSet<>();
+        int maxRandomNumber = (int) this.taskRepository.count() / 5; //below 400
+        int randomListLength = this.random.nextInt(maxRandomNumber);
 
+        for (int i = 0; i < randomListLength; i++) {
+            long randomId = random.nextInt(maxRandomNumber) + 1;
+            TaskEntity task = this.taskRepository.getOne(randomId);
+            randomTaskList.add(task);
+        }
+        return randomTaskList;
+    }
 }

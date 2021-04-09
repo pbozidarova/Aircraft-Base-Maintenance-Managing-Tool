@@ -70,13 +70,13 @@ class MaintenanceComponent extends Component {
         let eName = event.target.name
         let eValue = event.target.value
         let eCheked = event.target.checked
-        
         let updatePair = eCheked ? {[eName] : eCheked }: {[eName]: eValue}
+        console.log(updatePair)
     
         this.setState(
             {   ...this.state,
                 selected: {...this.state.selected, ...updatePair}
-            })
+            }, () => console.log(this.state))
         
     }
 
@@ -92,7 +92,7 @@ class MaintenanceComponent extends Component {
         
         this.setState({ errors: 
              { 
-                maintenanceNum:  /^\d{7}$/.test(selected.maintenanceNum) ? '' : "The maintenance number length must equal 7 numbers." ,
+                maintenanceNum:  selected.maintenanceNum.length == 7 ? '' : "The maintenance number length must equal 7 numbers." ,
                 facility: selected.facility.length > 2 ? '' : "Please select a facility!",
                 aircraftRegistration: selected.aircraftRegistration.length > 2 ? '' : "Please select an aircraft!",
                 responsibleEngineer: selected.responsibleEngineer.length > 2 ? '' : "Please select a responsibleEngineer!",

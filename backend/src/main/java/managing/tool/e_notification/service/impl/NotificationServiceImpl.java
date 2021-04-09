@@ -22,6 +22,8 @@ import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
 import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -100,6 +102,7 @@ public class NotificationServiceImpl implements NotificationService {
         return this.notificationRepository.count() > 0;
     }
 
+    @Cacheable("notifications")
     @Override
     public List<NotificationViewDto> findAllNotifications() {
         return this.notificationRepository
@@ -107,6 +110,11 @@ public class NotificationServiceImpl implements NotificationService {
                 .stream()
                 .map(this::buildNotifView)
                 .collect(Collectors.toList());
+    }
+
+    @CacheEvict(cacheNames = "notifications", allEntries = true)
+    public void evictCachedNotifications(){
+
     }
 
     private NotificationViewDto buildNotifView(NotificationEntity notificationEntity){

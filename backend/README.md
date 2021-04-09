@@ -42,7 +42,7 @@ This **MAINTENANCE** consists of multiple technical **TASKS** and while performi
    A huge technical event that consists of many tasks.
    - EventNum - identification specific for an event;
    - StartDate - when the project begins
-   - StartEnd - when the project ends
+   - EndDate - when the project ends
    - Status - whether the project is upcoming, already opened or closed;
    - Facility - where the project is taking place;
    - Aircraft - which aircraft is the subject of the event;
@@ -127,4 +127,10 @@ This **MAINTENANCE** consists of multiple technical **TASKS** and while performi
 
 
 ###Caching
- The reading the tasks are cached  
+ The fetching of all tasks, notifications and maintenance is cached. The cach is evicted when update/create is initiated for this entity.
+ 
+###Events
+Post creating of maintenance initiates a transaction of less than 400 random tasks, that are going to be performed in this event.
+
+###Scheduling
+Once a day the program checks if the end date of a project has been passed and changes the status to OPENED or CLOSED.

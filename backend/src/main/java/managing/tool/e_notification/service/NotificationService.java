@@ -18,6 +18,7 @@ public interface NotificationService {
     boolean notificationsExist();
 
     List<NotificationViewDto> findAllNotifications();
+    void evictCachedNotifications();
     List<NotificationViewDto> findAllNotificationsByAuthor(String companyNum);
     List<NotificationViewDto> findAllNotificationByMaintenance(String maintenanceNum);
 

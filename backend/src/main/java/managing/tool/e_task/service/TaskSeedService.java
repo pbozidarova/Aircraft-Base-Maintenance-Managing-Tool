@@ -11,6 +11,6 @@ public interface TaskSeedService {
 
     void seedTasks() throws FileNotFoundException;
     boolean areTasksUploaded();
-
+    Set<TaskEntity> getRandomTaskList();
 
 }
