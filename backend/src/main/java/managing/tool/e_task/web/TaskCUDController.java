@@ -31,6 +31,7 @@ public class TaskCUDController {
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, taskNum), "taskNum");
         }
 
+        this.taskService.evictCachedTasks();
         TaskViewDto taskUpdated = this.taskService.updateTask(taskDataForUpdate, jwt);
 
         return new ResponseEntity<>(taskUpdated, HttpStatus.OK);
@@ -45,6 +46,7 @@ public class TaskCUDController {
             throw new FoundInDb(String.format(FOUNDERROR, taskNum), "taskNum");
         }
 
+        this.taskService.evictCachedTasks();
         TaskViewDto task = this.taskService.createTask(taskNew, jwt);
 
         return new ResponseEntity<>(task, HttpStatus.OK);

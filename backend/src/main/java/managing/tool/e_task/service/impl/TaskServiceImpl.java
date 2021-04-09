@@ -12,6 +12,8 @@ import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
 import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +34,7 @@ public class TaskServiceImpl implements TaskService {
     private final Random random;
     private final ServiceUtil serviceUtil;
 
+    @Cacheable("tasks")
     @Override
     public List<TaskViewDto> findAllTasks() {
         return this.taskRepository
@@ -39,6 +42,11 @@ public class TaskServiceImpl implements TaskService {
                 .stream()
                 .map(this::buildTaskVMRelationalStrings)
                 .collect(Collectors.toList());
+    }
+
+    @CacheEvict(cacheNames = "tasks", allEntries = true)
+    public void evictCachedTasks(){
+
     }
 
     @Override
