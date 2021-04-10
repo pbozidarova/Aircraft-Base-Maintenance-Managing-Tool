@@ -102,7 +102,7 @@ class EditGlobalComponent extends Component {
           
           {Object.keys(GLOBAL_SELECT_FIELDS).map(key => {                                              
             return (
-              this.props.labels[key] &&
+              this.props.editFields[key] &&
               <Autocomplete
                 id="free-solo-demo"
                 size="small"

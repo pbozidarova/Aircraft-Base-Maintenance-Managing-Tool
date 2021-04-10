@@ -121,11 +121,11 @@ export const FETCH_DATA_KEY = {
 
 export const GLOBAL_SELECT_FIELDS = {
     //allocate select fields and request mapping for the backend
-    facility: ['facilities', 'name'],
-    aircraftRegistration: ['aircraft', 'aircraftRegistration'],
-    manager: ['users', 'companyNum', 'lastName', 'firstName'],
-    responsibleEngineer: 'users',
     maintenanceNum: ['maintenance', 'maintenanceNum'],
+    aircraftRegistration: ['aircraft', 'aircraftRegistration'],
+    facility: ['facilities', 'name'],
+    responsibleEngineer: 'users',
+    manager: ['users', 'companyNum', 'lastName', 'firstName'],
     taskNum: ['tasks', 'taskNum'],
     status: 'status',
     classification: 'classification'
@@ -164,6 +164,9 @@ export const MAINTENANCE_HEADER_DATA = {
 export const MAINTENANCE_BOOLEAN_FIELDS = {}
 export const MAINTENANCE_EDIT_FIELDS ={
     maintenanceNum: 'Maintenance Number',
+    aircraftRegistration: 'Aircraft Registration',
+    facility: 'Facility',
+    responsibleEngineer: 'Responsible Engineer',
     startDate: 'Start Date',
     endDate: 'End Date',
 }
