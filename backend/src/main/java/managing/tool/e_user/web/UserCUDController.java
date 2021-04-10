@@ -25,7 +25,7 @@ public class UserCUDController {
 
     @PutMapping("/{companyNum}/update")
     public ResponseEntity<UserViewDto> updateSingleUser(
-            @PathVariable String companyNum, @RequestBody UserViewDto userDataForUpdate ) throws NotFoundInDb, FoundInDb {
+            @PathVariable String companyNum, @RequestBody UserViewDto userDataForUpdate )  {
 
         if(!this.userService.userExists(companyNum)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, companyNum), "companyNum");

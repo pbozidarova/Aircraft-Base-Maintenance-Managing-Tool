@@ -9,7 +9,6 @@ public class CustomGlobalCaughtExp extends RuntimeException {
 
     public CustomGlobalCaughtExp(String message, String causedBy){
         super(message);
-//        this.message = message;
         this.causedBy = causedBy;
     }
 
@@ -21,6 +20,8 @@ public class CustomGlobalCaughtExp extends RuntimeException {
         this.causedBy = causedBy;
         return this;
     }
+
+
 
     @Override
     public synchronized Throwable fillInStackTrace() {

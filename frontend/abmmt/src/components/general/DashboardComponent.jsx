@@ -30,7 +30,6 @@ class DashboardComponent extends Component {
         <Grid container spacing={4}>
             
             {Object.keys(DASHBOARD_CARDS).map((card, index) => {
-             { console.log(DASHBOARD_CARDS[card])}
                return <Grid key={`grid_${index}`} item xs={12} md={4} lg={4}> 
                 
                   <Card className={classes.root} key={index}>
