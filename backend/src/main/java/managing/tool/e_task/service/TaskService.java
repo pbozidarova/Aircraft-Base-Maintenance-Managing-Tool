@@ -2,6 +2,7 @@ package managing.tool.e_task.service;
 
 import managing.tool.e_maintenance.model.dto.MaintenanceViewDto;
 import managing.tool.e_task.model.TaskEntity;
+import managing.tool.e_task.model.dto.TaskCreateDto;
 import managing.tool.e_task.model.dto.TaskViewDto;
 import managing.tool.e_user.model.dto.UserViewDto;
 
@@ -13,7 +14,7 @@ public interface TaskService {
 
     TaskViewDto findTask(String taskNum);
     TaskViewDto updateTask(TaskViewDto taskViewDto, String jwt);
-    TaskViewDto createTask(TaskViewDto taskViewDto, String jwt);
+    TaskViewDto createTask(TaskCreateDto taskViewDto, String jwt);
 
     List<TaskViewDto> findAllTasks();
 

@@ -19,7 +19,6 @@ public class GlobalUncaughtExceptionAdvice extends ResponseEntityExceptionHandle
 
     private static Logger LOGGER = LoggerFactory.getLogger(GlobalUncaughtExceptionAdvice.class);
 
-
     @Override
     public void uncaughtException(Thread t, Throwable e) {
         LOGGER.error("Unhandled exception caught!", e);

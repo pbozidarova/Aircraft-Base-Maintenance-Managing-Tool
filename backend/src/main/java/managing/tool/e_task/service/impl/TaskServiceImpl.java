@@ -5,6 +5,7 @@ import managing.tool.e_maintenance.model.dto.MaintenanceViewDto;
 import managing.tool.e_maintenance.service.MaintenanceService;
 import managing.tool.e_task.model.TaskStatusEnum;
 import managing.tool.e_task.model.TaskEntity;
+import managing.tool.e_task.model.dto.TaskCreateDto;
 import managing.tool.e_task.model.dto.TaskViewDto;
 import managing.tool.e_task.repository.TaskRepository;
 import managing.tool.e_task.service.TaskService;
@@ -149,7 +150,7 @@ public class TaskServiceImpl implements TaskService {
 
 
     @Override
-    public TaskViewDto createTask(TaskViewDto taskNew, String token) {
+    public TaskViewDto createTask(TaskCreateDto taskNew, String token) {
         TaskEntity taskToCreate = this.modelMapper.map(taskNew, TaskEntity.class);
 
         Set<UserEntity> creatingTeam = preparingTeam(new HashSet<>(), token);

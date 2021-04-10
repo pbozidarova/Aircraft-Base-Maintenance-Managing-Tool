@@ -19,6 +19,7 @@ public interface NotificationService {
 
     List<NotificationViewDto> findAllNotifications();
     void evictCachedNotifications();
+    void defineOverdueNotifications();
     List<NotificationViewDto> findAllNotificationsByAuthor(String companyNum);
     List<NotificationViewDto> findAllNotificationByMaintenance(String maintenanceNum);
 

@@ -20,10 +20,14 @@ import managing.tool.e_task.service.TaskService;
 import managing.tool.e_user.model.RoleEnum;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
+import managing.tool.exception.GlobalUncaughtExceptionAdvice;
 import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +37,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,6 +53,8 @@ public class NotificationServiceImpl implements NotificationService {
     private final Random random;
     private final CloudinaryService cloudinaryService;
     private final ServiceUtil serviceUtil;
+
+    private static Logger LOGGER = LoggerFactory.getLogger(NotificationServiceImpl.class);
 
     @Override
     public void generateMockupNotificationsOnInitialLaunch() {
@@ -115,6 +122,28 @@ public class NotificationServiceImpl implements NotificationService {
     @CacheEvict(cacheNames = "notifications", allEntries = true)
     public void evictCachedNotifications(){
 
+    }
+
+    @Override
+    @Scheduled(cron = "@daily")
+//    @Scheduled(cron = "*/2 * * * * *") // used for testing
+    public void defineOverdueNotifications() {
+        StringBuilder notificationsOverdueLog = new StringBuilder();
+
+        AtomicInteger count = new AtomicInteger();
+        this.notificationRepository.findAll()
+                .forEach(notification -> {
+                    boolean dueDateHasPassed = notification.getDueDate().compareTo(LocalDate.now()) < 0;
+                    if(dueDateHasPassed){
+                        count.getAndIncrement();
+                        notificationsOverdueLog.append( String.format("Notification with number %s is overdue. Its due date was %s!" , notification.getNotificationNum(), notification.getDueDate()))
+                                                .append(System.lineSeparator());
+                    }
+                });
+
+        notificationsOverdueLog.append(String.format("A total of %s notification(s) are overdue!", count));
+
+        LOGGER.info(notificationsOverdueLog.toString());
     }
 
     private NotificationViewDto buildNotifView(NotificationEntity notificationEntity){

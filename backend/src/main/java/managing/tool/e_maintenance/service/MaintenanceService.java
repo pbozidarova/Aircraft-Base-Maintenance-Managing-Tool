@@ -12,6 +12,7 @@ public interface MaintenanceService {
     MaintenanceViewDto updateMaintenance(MaintenanceViewDto maintenanceDataForUpdate, String jwt);
     MaintenanceViewDto createMaintenance(MaintenanceViewDto maintenanceNew, String jwt);
     void allocateRandomTasksToMaintenance(String maintenanceNum);
+    void recalculateMaintenanceStatus();
 
     List<MaintenanceViewDto> findAllMaintenanceEvents();
     void evictCachedMaintenance();

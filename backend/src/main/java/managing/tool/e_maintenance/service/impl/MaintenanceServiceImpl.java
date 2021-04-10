@@ -12,6 +12,7 @@ import managing.tool.e_maintenance.model.MaintenanceStatusEnum;
 import managing.tool.e_maintenance.model.dto.MaintenanceViewDto;
 import managing.tool.e_maintenance.repository.MaintenanceRepository;
 import managing.tool.e_maintenance.service.MaintenanceService;
+import managing.tool.e_notification.service.impl.NotificationServiceImpl;
 import managing.tool.e_task.model.TaskEntity;
 import managing.tool.e_task.service.TaskSeedService;
 import managing.tool.e_task.service.TaskService;
@@ -19,8 +20,11 @@ import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
 import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 
@@ -43,6 +47,9 @@ public class MaintenanceServiceImpl implements MaintenanceService {
     private final FacilityService facilityService;
     private final ServiceUtil serviceUtil;
     private final Random random;
+
+    private static Logger LOGGER = LoggerFactory.getLogger(MaintenanceServiceImpl.class);
+
 
     @Override
     public MaintenanceViewDto updateMaintenance(MaintenanceViewDto maintenanceDataForUpdate, String jwt) {
@@ -181,7 +188,32 @@ public class MaintenanceServiceImpl implements MaintenanceService {
                 .setResponsibleEngineer(this.serviceUtil.userViewStringBuild(maintenanceEntity.getResponsibleEngineer()));
 
         return maintenanceViewModel;
+    }
 
+    @Override
+    @Scheduled(cron = "0 01 */1 * * *")
+//    @Scheduled(cron = "*/2 * * * * *") //for testing
+    public void recalculateMaintenanceStatus(){
+        this.maintenanceRepository
+                .findAll()
+                .forEach(maintenance -> {
+                    LocalDate startDate = maintenance.getStartDate();
+                    LocalDate endDate = maintenance.getEndDate();
+
+                    boolean startDateHasPassed = startDate.isBefore(LocalDate.now());
+                    boolean endDateHasPassed = endDate.isBefore(LocalDate.now());
+
+                    //Start date is later than today
+                    if(!startDateHasPassed) {
+                        maintenance.setStatus(MaintenanceStatusEnum.UPCOMING);
+                    }else if(startDateHasPassed && !endDateHasPassed){
+                        maintenance.setStatus(MaintenanceStatusEnum.OPENED);
+                    }else if(startDateHasPassed && endDateHasPassed){
+                        maintenance.setStatus((MaintenanceStatusEnum.CLOSED));
+                    }
+                });
+
+        LOGGER.info("The maintenance statuses have been recalculated!");
     }
 
 }
