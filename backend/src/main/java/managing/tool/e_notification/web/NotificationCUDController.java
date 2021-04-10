@@ -1,6 +1,8 @@
 package managing.tool.e_notification.web;
 
 import lombok.AllArgsConstructor;
+import managing.tool.aop.TrackCreation;
+import managing.tool.aop.TrackUpdating;
 import managing.tool.e_notification.model.dto.NotificationViewDto;
 import managing.tool.e_notification.service.NotificationService;
 import managing.tool.e_user.model.dto.UserViewDto;
@@ -26,6 +28,7 @@ public class NotificationCUDController {
 
     private final NotificationService notificationService;
 
+    @TrackUpdating(updatingMethod = "updateNotification")
     @PutMapping("/{notificationNum}/update")
     public ResponseEntity<NotificationViewDto> updateNotification(
             @PathVariable String notificationNum, @RequestBody NotificationViewDto notificationDataForUpdate ) throws NotFoundInDb {
@@ -38,7 +41,7 @@ public class NotificationCUDController {
 
         return new ResponseEntity<>(notificationUpdated, HttpStatus.OK);
     }
-
+    @TrackCreation(creatingMethod = "createNotification")
     @PutMapping("/{notificationNum}/create")
     public ResponseEntity<NotificationViewDto> createNotification(
             @RequestHeader("authorization") String jwt,

@@ -142,4 +142,4 @@ At 01:00 on every day-of-month the program prints a list with all overdue notifi
 Once a day the program checks the start and end dates of every project and changes accordingly the status to UPCOMING, OPENED or CLOSED.
 
 ###AOP
-Count the create and update instances for each entity.
+Using the annotations @TrackCreation and @TrackUpdating the program tracks how many times a create or update method have been called, checks the count of the successful ones and logs it.

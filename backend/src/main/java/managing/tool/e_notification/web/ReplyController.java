@@ -2,6 +2,7 @@ package managing.tool.e_notification.web;
 
 
 import lombok.AllArgsConstructor;
+import managing.tool.aop.TrackCreation;
 import managing.tool.e_notification.model.dto.ReplyResponseDto;
 import managing.tool.e_notification.model.dto.ReplyViewDto;
 import managing.tool.e_notification.service.NotificationService;
@@ -32,6 +33,7 @@ public class ReplyController {
         return ResponseEntity.ok().body(communication);
     }
 
+    @TrackCreation(creatingMethod = "createReplyForNotification")
     @RequestMapping(value = "/{notificationNum}/create",
             method = RequestMethod.POST,
             consumes = {"multipart/form-data"})

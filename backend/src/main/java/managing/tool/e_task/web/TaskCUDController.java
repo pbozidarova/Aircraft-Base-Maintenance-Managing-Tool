@@ -1,5 +1,7 @@
 package managing.tool.e_task.web;
 
+import managing.tool.aop.TrackCreation;
+import managing.tool.aop.TrackUpdating;
 import managing.tool.e_task.model.dto.TaskCreateDto;
 import managing.tool.e_task.model.dto.TaskViewDto;
 import managing.tool.e_task.service.TaskService;
@@ -23,9 +25,9 @@ public class TaskCUDController {
         this.taskService = taskService;
     }
 
-
+    @TrackUpdating(updatingMethod = "updateTask")
     @PutMapping("/{taskNum}/update")
-    public ResponseEntity<TaskViewDto> updateSingleTask(
+    public ResponseEntity<TaskViewDto> updateTask(
             @RequestHeader("authorization") String jwt,
             @PathVariable String taskNum, @RequestBody TaskViewDto taskDataForUpdate ) throws NotFoundInDb {
 
@@ -39,8 +41,9 @@ public class TaskCUDController {
         return new ResponseEntity<>(taskUpdated, HttpStatus.OK);
     }
 
+    @TrackCreation(creatingMethod = "createTask")
     @PutMapping("/{taskNum}/create")
-    public ResponseEntity<TaskViewDto> createSingleTask(
+    public ResponseEntity<TaskViewDto> createTask(
             @RequestHeader("authorization") String jwt,
             @PathVariable String taskNum, @RequestBody TaskCreateDto taskNew ) throws FoundInDb {
 

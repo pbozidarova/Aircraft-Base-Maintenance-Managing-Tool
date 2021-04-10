@@ -17,19 +17,50 @@ public class UpdatingAspect {
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdatingAspect.class);
     private final EntityChangeConfig config;
 
-    @After(value = "@annotation(TrackUpdating)")
-    public void trackUpdating(TrackUpdating TrackUpdating) throws Throwable {
-        String updatingID = TrackUpdating.updating();
-        config.setUpdatingCount( config.getUpdatingCount() +1 );
+    @Around(value = "@annotation(TrackUpdating)")
+    public void trackUpdating(ProceedingJoinPoint pjp, TrackUpdating TrackUpdating) throws Throwable {
+        String updatingMethod = TrackUpdating.updatingMethod();
+        try{
+            pjp.proceed();
+            config.setUpdatingPerformedCount( config.getUpdatingPerformedCount() +1 );
+            config.setUpdatingTotalCount(config.getUpdatingTotalCount() + 1);
 
-        LOGGER.info(String.format("A total of %d updating requests have been made! %s", config.getUpdatingCount(), updatingID));
+            LOGGER.info( logString(updatingMethod, config.getUpdatingPerformedCount(),config.getUpdatingTotalCount()));
+
+        }catch (Throwable errorThrown){
+//            LOGGER.error("An error prevented the updating method to proceed.", errorThrown);
+            config.setUpdatingTotalCount(config.getUpdatingTotalCount() + 1);
+            LOGGER.info( logString(updatingMethod, config.getUpdatingPerformedCount(),config.getUpdatingTotalCount()));
+            throw errorThrown;
+        }
     }
 
-    @After(value = "@annotation(TrackCreation)")
-    public void trackCreating(TrackCreation TrackCreation) throws Throwable {
-        String creatingID = TrackCreation.creating();
-        config.setCreatingCount( config.getCreatingCount() +1 );
+    @Around(value = "@annotation(TrackCreation)")
+    public void trackCreating(ProceedingJoinPoint pjp, TrackCreation TrackCreation) throws Throwable {
+        String creatingMethod = TrackCreation.creatingMethod();
 
-        LOGGER.info(String.format("A total of %d creating requests have been made! %s", config.getCreatingCount(), creatingID));
+        try{
+            pjp.proceed();
+            config.setCreatingPerformedCount( config.getCreatingPerformedCount() +1 );
+            config.setCreatingTotalCount(config.getCreatingTotalCount() + 1);
+
+            LOGGER.info( logString(creatingMethod, config.getCreatingPerformedCount(),config.getCreatingTotalCount()));
+
+        }catch (Throwable errorThrown){
+//            LOGGER.error("An error prevented the updating method to proceed.", errorThrown);
+            config.setUpdatingTotalCount(config.getUpdatingTotalCount() + 1);
+            LOGGER.info( logString(creatingMethod, config.getUpdatingPerformedCount(),config.getUpdatingTotalCount()));
+            throw errorThrown;
+        }
+    }
+
+    private String logString(String methodName, int performed, int total){
+        return String.format("Method %s has been performed. A total of %d update request%s have been made of which %d %s successful! ",
+                methodName,
+                total,
+                total == 1 ? "" : "s",
+                performed,
+                performed == 1 ? "has" : "have"
+        );
     }
 }

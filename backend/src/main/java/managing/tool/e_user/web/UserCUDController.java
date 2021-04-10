@@ -1,6 +1,8 @@
 package managing.tool.e_user.web;
 
 import lombok.AllArgsConstructor;
+import managing.tool.aop.TrackCreation;
+import managing.tool.aop.TrackUpdating;
 import managing.tool.e_facility.service.FacilityService;
 import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.service.UserCreateUpdateService;
@@ -23,8 +25,9 @@ public class UserCUDController {
     private final UserCreateUpdateService userCreateUpdateService;
     private final FacilityService facilityService;
 
+    @TrackUpdating(updatingMethod = "updateUser")
     @PutMapping("/{companyNum}/update")
-    public ResponseEntity<UserViewDto> updateSingleUser(
+    public ResponseEntity<UserViewDto> updateUser(
             @PathVariable String companyNum, @RequestBody UserViewDto userDataForUpdate )  {
 
         if(!this.userService.userExists(companyNum)){
@@ -39,8 +42,9 @@ public class UserCUDController {
         return new ResponseEntity<>(userUpdated, HttpStatus.OK);
     }
 
+    @TrackCreation(creatingMethod = "createUser")
     @PutMapping("/{companyNum}/create")
-    public ResponseEntity<UserViewDto> createSingleUser(
+    public ResponseEntity<UserViewDto> createUser(
             @PathVariable String companyNum, @RequestBody UserViewDto userNew ) throws FoundInDb {
 
         if(this.userService.userExists(companyNum)){

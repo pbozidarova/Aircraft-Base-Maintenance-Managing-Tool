@@ -1,6 +1,8 @@
 package managing.tool.e_maintenance.web;
 
 import lombok.AllArgsConstructor;
+import managing.tool.aop.TrackCreation;
+import managing.tool.aop.TrackUpdating;
 import managing.tool.constants.GlobalConstants;
 import managing.tool.e_maintenance.event.MaintenanceEventPublisher;
 import managing.tool.e_maintenance.model.dto.MaintenanceViewDto;
@@ -27,8 +29,9 @@ public class MaintenanceCUDController {
     private final MaintenanceService maintenanceService;
     private final MaintenanceEventPublisher publisher;
 
+    @TrackUpdating(updatingMethod = "updateMaintenance")
     @PutMapping("/{maintenanceNum}/update")
-    public ResponseEntity<MaintenanceViewDto> updateSingleMaintenance(
+    public ResponseEntity<MaintenanceViewDto> updateMaintenance(
             @RequestHeader("authorization") String jwt,
             @PathVariable String maintenanceNum, @RequestBody MaintenanceViewDto maintenanceDataForUpdate ) throws NotFoundInDb {
 
@@ -42,9 +45,10 @@ public class MaintenanceCUDController {
         return new ResponseEntity<>(maintenanceUpdated, HttpStatus.OK);
     }
 
+    @TrackCreation(creatingMethod = "createMaintenance")
     @Transactional
     @PutMapping("/{maintenanceNum}/create")
-    public ResponseEntity<MaintenanceViewDto> createSingleMaintenance(
+    public ResponseEntity<MaintenanceViewDto> createMaintenance(
             @RequestHeader("authorization") String jwt,
             @PathVariable String maintenanceNum, @RequestBody MaintenanceViewDto maintenanceNew ) throws FoundInDb {
 

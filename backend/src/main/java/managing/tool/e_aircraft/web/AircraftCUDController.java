@@ -32,7 +32,7 @@ public class AircraftCUDController {
 
     private final AircraftService aircraftService;
 
-    @TrackUpdating(updating = "updateAircraft")
+    @TrackUpdating(updatingMethod = "updateAircraft")
     @PutMapping("/{registration}/update")
     public ResponseEntity<AircraftViewDto> updateAircraft(
             @RequestHeader("authorization") String jwt,
@@ -47,7 +47,7 @@ public class AircraftCUDController {
         return new ResponseEntity<>(aircraftUpdated, HttpStatus.OK);
     }
 
-    @TrackCreation(creating = "creteAircraft")
+    @TrackCreation(creatingMethod = "creteAircraft")
     @PutMapping("/{registration}/create")
     public ResponseEntity<AircraftViewDto> creteAircraft(
             @RequestHeader("authorization") String jwt,

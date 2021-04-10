@@ -1,6 +1,8 @@
 package managing.tool.e_facility.web;
 
 import lombok.AllArgsConstructor;
+import managing.tool.aop.TrackCreation;
+import managing.tool.aop.TrackUpdating;
 import managing.tool.constants.GlobalConstants;
 import managing.tool.e_facility.model.dto.FacilityViewDto;
 import managing.tool.e_facility.service.FacilityService;
@@ -33,8 +35,9 @@ public class FacilityCUDController {
 
     private final FacilityService facilityService;
 
+    @TrackUpdating(updatingMethod = "updateFacility")
     @PutMapping("/{name}/update")
-    public ResponseEntity<FacilityViewDto> updateSingleTask(
+    public ResponseEntity<FacilityViewDto> updateFacility(
             @RequestHeader("authorization") String jwt,
             @PathVariable String name, @RequestBody FacilityViewDto facilityDataForUpdate )  {
 
@@ -47,8 +50,9 @@ public class FacilityCUDController {
         return new ResponseEntity<>(facilityUpdated, HttpStatus.OK);
     }
 
+    @TrackCreation(creatingMethod = "createFacility")
     @PutMapping("/{name}/create")
-    public ResponseEntity<FacilityViewDto> createSingleTask(
+    public ResponseEntity<FacilityViewDto> createFacility(
             @RequestHeader("authorization") String jwt,
             @PathVariable String name, @RequestBody FacilityViewDto facilityNew )  {
 
