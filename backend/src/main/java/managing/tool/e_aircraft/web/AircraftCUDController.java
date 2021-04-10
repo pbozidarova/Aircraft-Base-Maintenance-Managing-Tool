@@ -1,6 +1,8 @@
 package managing.tool.e_aircraft.web;
 
 import lombok.AllArgsConstructor;
+import managing.tool.aop.TrackCreation;
+import managing.tool.aop.TrackUpdating;
 import managing.tool.e_aircraft.model.dto.AircraftViewDto;
 import managing.tool.e_aircraft.service.AircraftService;
 import managing.tool.e_maintenance.web.MaintenanceReadController;
@@ -30,10 +32,11 @@ public class AircraftCUDController {
 
     private final AircraftService aircraftService;
 
+    @TrackUpdating(updating = "updateAircraft")
     @PutMapping("/{registration}/update")
-    public ResponseEntity<AircraftViewDto> updateSingleTask(
+    public ResponseEntity<AircraftViewDto> updateAircraft(
             @RequestHeader("authorization") String jwt,
-            @PathVariable String registration, @RequestBody AircraftViewDto aircraftDataForUpdate ) throws NotFoundInDb {
+            @PathVariable String registration, @RequestBody AircraftViewDto aircraftDataForUpdate ) {
 
         if(!this.aircraftService.aircraftExists(registration)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, registration), "registration");
@@ -44,10 +47,11 @@ public class AircraftCUDController {
         return new ResponseEntity<>(aircraftUpdated, HttpStatus.OK);
     }
 
+    @TrackCreation(creating = "creteAircraft")
     @PutMapping("/{registration}/create")
-    public ResponseEntity<AircraftViewDto> createSingleTask(
+    public ResponseEntity<AircraftViewDto> creteAircraft(
             @RequestHeader("authorization") String jwt,
-            @PathVariable String registration, @RequestBody AircraftViewDto aircraftNew ) throws FoundInDb {
+            @PathVariable String registration, @RequestBody AircraftViewDto aircraftNew )  {
 
         if(this.aircraftService.aircraftExists(registration)){
             throw new FoundInDb(String.format(FOUNDERROR, registration), "registration");
