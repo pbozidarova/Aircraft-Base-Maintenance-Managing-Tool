@@ -23,7 +23,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class UserCUDController {
     private final UserService userService;
     private final UserCreateUpdateService userCreateUpdateService;
-    private final FacilityService facilityService;
 
     @TrackUpdating(updatingMethod = "updateUser")
     @PutMapping("/{companyNum}/update")

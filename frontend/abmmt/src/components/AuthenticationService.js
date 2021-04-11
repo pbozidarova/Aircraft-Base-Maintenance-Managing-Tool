@@ -5,7 +5,7 @@ class AuthenticationService {
 
 
     constructor(){
-        this.myInterceptor = '';
+        this.myInterceptor = null;
     }
 
     executeAuthnetication(username, password){
@@ -21,21 +21,21 @@ class AuthenticationService {
         sessionStorage.setItem(SESSION_ATTRIBUTE_NAME, username)
             
         this.myInterceptor = this.setupAxiosInterceptors( this.createToken(token) )
-        console.log(this.myInterceptor)
     }
 
     createToken(token){
-        console.log("create token " + token)
         return 'Bearer ' + token;
     }
 
     logout(){
         axios.interceptors.request.eject(this.myInterceptor);
+        this.myInterceptor = null;
         sessionStorage.removeItem(SESSION_ATTRIBUTE_NAME)
     }
 
     isUserLoggedIn(){
-        return sessionStorage.getItem(SESSION_ATTRIBUTE_NAME);
+        return this.myInterceptor != null;
+        // return sessionStorage.getItem(SESSION_ATTRIBUTE_NAME);
     }
 
     isMechanic(){
