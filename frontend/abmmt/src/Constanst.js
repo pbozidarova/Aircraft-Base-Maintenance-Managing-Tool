@@ -185,6 +185,8 @@ export const NOTIFICATIONS_BOOLEAN_FIELDS = {
     
 }
 export const NOTIFICATION_EDIT_FIELDS ={
+    maintenanceNum: 'Maintenance Number',
+    taskNum: 'Task Number',
     // notificationNum: 'Notification Number',
     status: 'Status',
     classification: 'Classification',

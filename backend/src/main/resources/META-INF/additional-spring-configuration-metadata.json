@@ -4,5 +4,10 @@
       "name": "cloudinary.cloud-name",
       "type": "java.lang.String",
       "description": "Description for cloudinary.cloud-name."
-  }
-] }
+    },
+    {
+      "name": "JWT_SECRET",
+      "type": "java.lang.String",
+      "description": "Description for JWT_SECRET."
+    }
+  ] }

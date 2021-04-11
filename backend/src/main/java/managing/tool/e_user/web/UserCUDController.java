@@ -45,7 +45,7 @@ public class UserCUDController {
     @TrackCreation(creatingMethod = "createUser")
     @PutMapping("/{companyNum}/create")
     public ResponseEntity<UserViewDto> createUser(
-            @PathVariable String companyNum, @RequestBody UserViewDto userNew ) throws FoundInDb {
+            @PathVariable String companyNum, @RequestBody UserViewDto userNew ) {
 
         if(this.userService.userExists(companyNum)){
             throw new FoundInDb(String.format(FOUNDERROR, companyNum), "companyNum");

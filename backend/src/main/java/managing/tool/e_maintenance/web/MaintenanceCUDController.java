@@ -5,9 +5,9 @@ import managing.tool.aop.TrackCreation;
 import managing.tool.aop.TrackUpdating;
 import managing.tool.constants.GlobalConstants;
 import managing.tool.e_maintenance.event.MaintenanceEventPublisher;
+import managing.tool.e_maintenance.model.dto.MaintenanceRequestDto;
 import managing.tool.e_maintenance.model.dto.MaintenanceViewDto;
 import managing.tool.e_maintenance.service.MaintenanceService;
-import managing.tool.e_task.service.TaskService;
 import managing.tool.exception.FoundInDb;
 import managing.tool.exception.NotFoundInDb;
 import org.springframework.http.HttpStatus;
@@ -33,7 +33,7 @@ public class MaintenanceCUDController {
     @PutMapping("/{maintenanceNum}/update")
     public ResponseEntity<MaintenanceViewDto> updateMaintenance(
             @RequestHeader("authorization") String jwt,
-            @PathVariable String maintenanceNum, @RequestBody MaintenanceViewDto maintenanceDataForUpdate ) throws NotFoundInDb {
+            @PathVariable String maintenanceNum, @RequestBody MaintenanceRequestDto maintenanceDataForUpdate ) throws NotFoundInDb {
 
         if(!this.maintenanceService.maintenanceExists(maintenanceNum)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, maintenanceNum), "taskNum");
@@ -50,7 +50,7 @@ public class MaintenanceCUDController {
     @PutMapping("/{maintenanceNum}/create")
     public ResponseEntity<MaintenanceViewDto> createMaintenance(
             @RequestHeader("authorization") String jwt,
-            @PathVariable String maintenanceNum, @RequestBody MaintenanceViewDto maintenanceNew ) throws FoundInDb {
+            @PathVariable String maintenanceNum, @RequestBody MaintenanceRequestDto maintenanceNew ) throws FoundInDb {
 
         if(this.maintenanceService.maintenanceExists(maintenanceNum)){
             throw new FoundInDb(String.format(FOUNDERROR, maintenanceNum), "maintenanceNum");

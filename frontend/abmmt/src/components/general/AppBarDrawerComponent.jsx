@@ -78,7 +78,9 @@ import { MESSAGES } from '../../Constanst.js';
                     {isUserLoggedIn && <Button 
                         variant="contained" 
                         // className={classes.menuButton}
-                        onClick={  () => {Utils.infoMessage(handleInfo, MESSAGES.successLogOut ); this.redirectTo("/logout"); AuthenticationService.logout()}}>
+                        onClick={  () => {Utils.infoMessage(handleInfo, MESSAGES.successLogOut ); 
+                                            this.redirectTo("/logout"); 
+                                            AuthenticationService.logout()}}>
                         Logout
                     </Button>}
 

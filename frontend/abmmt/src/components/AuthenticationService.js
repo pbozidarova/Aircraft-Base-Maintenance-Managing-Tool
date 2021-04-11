@@ -3,6 +3,11 @@ import axios from 'axios'
 
 class AuthenticationService {
 
+
+    constructor(){
+        this.myInterceptor = '';
+    }
+
     executeAuthnetication(username, password){
         return axios.post(`${BACKEND_URL}/authenticate`, 
         {
@@ -14,15 +19,18 @@ class AuthenticationService {
     registerSuccessfullLogin(username, token){
         console.log('registerSuccessfullLogin');
         sessionStorage.setItem(SESSION_ATTRIBUTE_NAME, username)
-
-        this.setupAxiosInterceptors( this.createToken(token) )
+            
+        this.myInterceptor = this.setupAxiosInterceptors( this.createToken(token) )
+        console.log(this.myInterceptor)
     }
 
     createToken(token){
+        console.log("create token " + token)
         return 'Bearer ' + token;
     }
 
     logout(){
+        axios.interceptors.request.eject(this.myInterceptor);
         sessionStorage.removeItem(SESSION_ATTRIBUTE_NAME)
     }
 
@@ -38,16 +46,18 @@ class AuthenticationService {
         return false;
     }
 
-    setupAxiosInterceptors(token){
-        axios.interceptors.request.use(
+    setupAxiosInterceptors = (token) => {
+       return axios.interceptors.request.use(
             (config) => {
                 if(this.isUserLoggedIn){
                     config.headers.authorization = token;
                 }
                 return config;
             }
-        )
+        )               
     }
+
+   
 }
 
 export default new AuthenticationService()

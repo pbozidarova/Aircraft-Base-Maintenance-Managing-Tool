@@ -25,12 +25,12 @@ public class UpdatingAspect {
             config.setUpdatingPerformedCount( config.getUpdatingPerformedCount() +1 );
             config.setUpdatingTotalCount(config.getUpdatingTotalCount() + 1);
 
-            LOGGER.info( logString(updatingMethod, config.getUpdatingPerformedCount(),config.getUpdatingTotalCount()));
+            LOGGER.info( logString(updatingMethod, "updating", config.getUpdatingPerformedCount(),config.getUpdatingTotalCount()));
 
         }catch (Throwable errorThrown){
 //            LOGGER.error("An error prevented the updating method to proceed.", errorThrown);
             config.setUpdatingTotalCount(config.getUpdatingTotalCount() + 1);
-            LOGGER.info( logString(updatingMethod, config.getUpdatingPerformedCount(),config.getUpdatingTotalCount()));
+            LOGGER.info( logString(updatingMethod, "updating", config.getUpdatingPerformedCount(),config.getUpdatingTotalCount()));
             throw errorThrown;
         }
     }
@@ -44,20 +44,21 @@ public class UpdatingAspect {
             config.setCreatingPerformedCount( config.getCreatingPerformedCount() +1 );
             config.setCreatingTotalCount(config.getCreatingTotalCount() + 1);
 
-            LOGGER.info( logString(creatingMethod, config.getCreatingPerformedCount(),config.getCreatingTotalCount()));
+            LOGGER.info( logString(creatingMethod, "creating", config.getCreatingPerformedCount(), config.getCreatingTotalCount()));
 
         }catch (Throwable errorThrown){
 //            LOGGER.error("An error prevented the updating method to proceed.", errorThrown);
-            config.setUpdatingTotalCount(config.getUpdatingTotalCount() + 1);
-            LOGGER.info( logString(creatingMethod, config.getUpdatingPerformedCount(),config.getUpdatingTotalCount()));
+            config.setCreatingTotalCount(config.getCreatingTotalCount() + 1);
+            LOGGER.info( logString(creatingMethod, "creating", config.getCreatingPerformedCount(), config.getCreatingTotalCount()));
             throw errorThrown;
         }
     }
 
-    private String logString(String methodName, int performed, int total){
-        return String.format("Method %s has been performed. A total of %d update request%s have been made of which %d %s successful! ",
+    private String logString(String methodName, String requestType, int performed, int total){
+        return String.format("Method %s has been performed. A total of %d %s request%s have been made of which %d %s been successful! ",
                 methodName,
                 total,
+                requestType,
                 total == 1 ? "" : "s",
                 performed,
                 performed == 1 ? "has" : "have"

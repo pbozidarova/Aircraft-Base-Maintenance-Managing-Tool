@@ -49,7 +49,6 @@ class AbmmtComponent extends Component {
   fetchOpenNotifCount(){
     BackendService.fetchOpenNotificationsCount()
         .then(response => {
-            console.log(response.data)
             this.setState({openNotifications: response.data})
         });
   }

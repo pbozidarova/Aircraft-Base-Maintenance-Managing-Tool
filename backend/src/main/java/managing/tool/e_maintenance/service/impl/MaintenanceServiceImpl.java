@@ -1,21 +1,17 @@
 package managing.tool.e_maintenance.service.impl;
 
 import lombok.AllArgsConstructor;
-import managing.tool.e_aircraft.model.AircraftEntity;
-import managing.tool.e_aircraft.repository.AircraftRepository;
 import managing.tool.e_aircraft.service.AircraftService;
 import managing.tool.e_facility.model.FacilityEntity;
-import managing.tool.e_facility.repository.FacilityRepository;
 import managing.tool.e_facility.service.FacilityService;
 import managing.tool.e_maintenance.model.MaintenanceEntity;
 import managing.tool.e_maintenance.model.MaintenanceStatusEnum;
+import managing.tool.e_maintenance.model.dto.MaintenanceRequestDto;
 import managing.tool.e_maintenance.model.dto.MaintenanceViewDto;
 import managing.tool.e_maintenance.repository.MaintenanceRepository;
 import managing.tool.e_maintenance.service.MaintenanceService;
-import managing.tool.e_notification.service.impl.NotificationServiceImpl;
 import managing.tool.e_task.model.TaskEntity;
 import managing.tool.e_task.service.TaskSeedService;
-import managing.tool.e_task.service.TaskService;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
 import managing.tool.util.ServiceUtil;
@@ -26,10 +22,8 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 
 import javax.transaction.Transactional;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -52,7 +46,7 @@ public class MaintenanceServiceImpl implements MaintenanceService {
 
 
     @Override
-    public MaintenanceViewDto updateMaintenance(MaintenanceViewDto maintenanceDataForUpdate, String jwt) {
+    public MaintenanceViewDto updateMaintenance(MaintenanceRequestDto maintenanceDataForUpdate, String jwt) {
         MaintenanceEntity maintenanceToUpdate = this.modelMapper.map(maintenanceDataForUpdate, MaintenanceEntity.class);
 
         MaintenanceEntity maintenanceExisting = this.maintenanceRepository
@@ -73,7 +67,7 @@ public class MaintenanceServiceImpl implements MaintenanceService {
 
     @Transactional
     @Override
-    public MaintenanceViewDto createMaintenance(MaintenanceViewDto maintenanceNew, String jwt) {
+    public MaintenanceViewDto createMaintenance(MaintenanceRequestDto maintenanceNew, String jwt) {
         MaintenanceEntity maintenanceToCreate = this.modelMapper.map(maintenanceNew, MaintenanceEntity.class);
 
         UserEntity responsibleEngineer = this.userService

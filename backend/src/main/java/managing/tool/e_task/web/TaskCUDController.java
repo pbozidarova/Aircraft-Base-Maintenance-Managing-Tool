@@ -10,6 +10,8 @@ import managing.tool.exception.NotFoundInDb;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import static managing.tool.constants.GlobalConstants.*;
@@ -29,7 +31,10 @@ public class TaskCUDController {
     @PutMapping("/{taskNum}/update")
     public ResponseEntity<TaskViewDto> updateTask(
             @RequestHeader("authorization") String jwt,
+//            @AuthenticationPrincipal UserDetails principal,
             @PathVariable String taskNum, @RequestBody TaskViewDto taskDataForUpdate ) throws NotFoundInDb {
+
+//        System.out.println(principal.getUsername());
 
         if(!this.taskService.taskExists(taskNum)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, taskNum), "taskNum");
