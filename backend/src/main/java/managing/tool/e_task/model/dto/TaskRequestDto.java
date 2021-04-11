@@ -2,7 +2,7 @@ package managing.tool.e_task.model.dto;
 
 import managing.tool.e_task.model.TaskEntity;
 
-public class TaskCreateDto {
+public class TaskRequestDto {
     private String taskNum;
     private String code;
     private String description;
@@ -12,14 +12,14 @@ public class TaskCreateDto {
     private boolean isQualityAssured;
 
 
-    public TaskCreateDto() {
+    public TaskRequestDto() {
     }
 
     public String getTaskNum() {
         return taskNum;
     }
 
-    public TaskCreateDto setTaskNum(String taskNum) {
+    public TaskRequestDto setTaskNum(String taskNum) {
         this.taskNum = taskNum;
         return this;
     }
@@ -28,7 +28,7 @@ public class TaskCreateDto {
         return code;
     }
 
-    public TaskCreateDto setCode(String code) {
+    public TaskRequestDto setCode(String code) {
         this.code = code;
         return this;
     }
@@ -37,7 +37,7 @@ public class TaskCreateDto {
         return description;
     }
 
-    public TaskCreateDto setDescription(String description) {
+    public TaskRequestDto setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -47,7 +47,7 @@ public class TaskCreateDto {
         return isToolingAvailable;
     }
 
-    public TaskCreateDto setToolingAvailable(boolean toolingAvailable) {
+    public TaskRequestDto setToolingAvailable(boolean toolingAvailable) {
         isToolingAvailable = toolingAvailable;
         return this;
     }
@@ -56,7 +56,7 @@ public class TaskCreateDto {
         return isJobCardsPrepared;
     }
 
-    public TaskCreateDto setJobCardsPrepared(boolean jobCardsPrepared) {
+    public TaskRequestDto setJobCardsPrepared(boolean jobCardsPrepared) {
         isJobCardsPrepared = jobCardsPrepared;
         return this;
     }
@@ -65,14 +65,14 @@ public class TaskCreateDto {
         return isQualityAssured;
     }
 
-    public TaskCreateDto setQualityAssured(boolean qualityAssured) {
+    public TaskRequestDto setQualityAssured(boolean qualityAssured) {
         isQualityAssured = qualityAssured;
         return this;
     }
 
 
-    public static TaskCreateDto asDTO(TaskEntity taskEntity) {
-        return new TaskCreateDto().
+    public static TaskRequestDto asDTO(TaskEntity taskEntity) {
+        return new TaskRequestDto().
                 setTaskNum(taskEntity.getTaskNum());
 
     }

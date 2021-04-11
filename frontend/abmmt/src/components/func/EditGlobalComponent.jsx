@@ -39,8 +39,8 @@ class EditGlobalComponent extends Component {
               status: ['OPENED', 'PROGRESSING', 'CLOSED'],
               classification: ['CLARIFICATION', 'IMPROVEMENT', 'MISTAKE', 'REFUSED'],
               //TODO!!!!
-              authority: {},
-              role: {},
+              authority: ['ADMIN', 'USER'],
+              role: ['MECHANIC', 'ENGINEER'],
 
 
           }
@@ -64,7 +64,7 @@ class EditGlobalComponent extends Component {
             let keyState = GLOBAL_SELECT_FIELDS[select][0]
             let keyValues = GLOBAL_SELECT_FIELDS[select].slice(1)
             
-            !['responsibleEngineer', 'status', 'classification'].includes( select )  &&
+            !['responsibleEngineer', 'status', 'classification', 'role', 'authority'].includes( select )  &&
                       
             BackendService.getAll(keyState)
               .then(response => {              
@@ -106,7 +106,7 @@ class EditGlobalComponent extends Component {
             return (
               this.props.editFields[key] &&
               <Autocomplete
-                id="free-solo-demo"
+                id={key}
                 size="small"
                 // freeSolo={isOptional}
                 // freeSolo={true}
@@ -116,7 +116,7 @@ class EditGlobalComponent extends Component {
                 renderInput={(params) => (
                   <TextField {...params} 
                         name={key}
-                        label={labels[key]}  
+                        label={editFields[key]}  
                         margin="normal" 
                         variant="outlined"
                         onChange={(e)=> handleChange(e, key)} 
@@ -139,7 +139,7 @@ class EditGlobalComponent extends Component {
                       size="small"
                       margin="normal" variant="outlined"
                       name={key}
-                      label={labels[key]}
+                      label={labels[key] }
                       type={key.includes('Date') && 'date'}
                       defaultValue={selected[key]}
                       // disabled={disabledFields[key]}
@@ -161,7 +161,7 @@ class EditGlobalComponent extends Component {
                       control={
                         <Checkbox
                           checked={selected[a]}
-                          onChange={handleChange}
+                          onChange={(e) => handleChange(e)}
                           name={a}
                           color="primary"
                         />

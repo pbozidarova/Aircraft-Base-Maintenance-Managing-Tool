@@ -45,6 +45,7 @@ export const MESSAGES = {
 
     aircraftEditInfo: "You are not allowed to edit the aircraft registration!",
 
+    usersEditInfo: "",
 
     pleaseWait: "Please wait!",
     errorNonExistant : "Does not exist! ",
@@ -128,10 +129,10 @@ export const GLOBAL_SELECT_FIELDS = {
     manager: ['users', 'companyNum', 'lastName', 'firstName'],
     taskNum: ['tasks', 'taskNum'],
     status: 'status',
-    classification: 'classification'
+    classification: 'classification',
     //TODO!!!!
-    // authory: "Authority",
-    // role: "Role"
+    authority: "Authority",
+    role: "Role"
 }
 
 //USERS--------------------------------------------
@@ -143,12 +144,22 @@ export const USERS_HEADER_DATA = {
     facility: "Facility",
     roles : 'Roles',
 }
+export const USERS_EDIT_FIELDS = {
+    companyNum: 'Company Number',
+    firstName : 'First Name',
+    lastName : 'Last Name',
+    email : 'Email',
+    facility: "Facility",
+    authority: "Authority",
+    role: "Role"
+    
+}
 export const USERS_BOOLEAN_FIELDS = {
-    USER : 'User',
-    ADMIN: 'Admin',
-    MECHANIC: 'Mechanic',
-    ENGINEER: 'Engineer',
-    roles: 'Roles'
+    // USER : 'User',
+    // ADMIN: 'Admin',
+    // MECHANIC: 'Mechanic',
+    // ENGINEER: 'Engineer',
+    // roles: 'Roles'
 }
 
 //MAINTENANCE--------------------------------------------

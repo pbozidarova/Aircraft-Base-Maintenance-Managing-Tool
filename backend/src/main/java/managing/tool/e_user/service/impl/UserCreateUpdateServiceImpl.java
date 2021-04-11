@@ -48,9 +48,7 @@ public class UserCreateUpdateServiceImpl implements UserCreateUpdateService {
         );
 
         allocateRoles(userEntity, userViewDto.getRoles());
-
         userEntity.setUpdatedOn(LocalDateTime.now());
-
 
         return this.modelMapper.map(this.userRepository.save( userEntity) , UserViewDto.class);
     }
@@ -79,7 +77,7 @@ public class UserCreateUpdateServiceImpl implements UserCreateUpdateService {
 
         allocateRoles(user, userViewDto.getRoles());
 
-        user.setUpdatedOn(LocalDateTime.now());
+//        user.setUpdatedOn(LocalDateTime.now());
         user.setCreatedOn(LocalDateTime.now());
 
         this.userRepository.save(user);

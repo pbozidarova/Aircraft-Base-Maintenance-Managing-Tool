@@ -12,7 +12,6 @@ public class ServiceUtil {
     private final JwtUtil jwtUtil;
     private final UserService userService;
 
-
     public UserEntity identifyingUserFromToken(String token){
         String companyNum = this.jwtUtil.extractUsername(token.replace("Bearer ", ""));
         return this.userService.findByCompanyNum(companyNum);

@@ -125,21 +125,21 @@ This **MAINTENANCE** consists of multiple technical **TASKS** and while performi
       
       localhost:3200/aircraft/all
 
-###Security
+### Security
     
 
-###Exception Handling
+### Exception Handling
     
-###Caching
+### Caching
  The fetching of all tasks, notifications and maintenance is cached. The cach is evicted when update/create is initiated for this entity.
  
-###Events
+### Events
 Post creating of maintenance initiates a transaction of less than 400 random tasks, that are going to be performed in this event.
 
-###Scheduling
+### Scheduling
 At 01:00 on every day-of-month the program prints a list with all overdue notifications.
 
 Once a day the program checks the start and end dates of every project and changes accordingly the status to UPCOMING, OPENED or CLOSED.
 
-###AOP
+### AOP
 Using the annotations @TrackCreation and @TrackUpdating the program tracks how many times a create or update method have been called, checks the count of the successful ones and logs it.

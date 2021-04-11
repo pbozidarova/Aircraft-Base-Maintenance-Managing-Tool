@@ -2,19 +2,16 @@ package managing.tool.e_task.service;
 
 import managing.tool.e_maintenance.model.dto.MaintenanceViewDto;
 import managing.tool.e_task.model.TaskEntity;
-import managing.tool.e_task.model.dto.TaskCreateDto;
+import managing.tool.e_task.model.dto.TaskRequestDto;
 import managing.tool.e_task.model.dto.TaskViewDto;
-import managing.tool.e_user.model.dto.UserViewDto;
 
-import java.io.FileNotFoundException;
 import java.util.List;
-import java.util.Set;
 
 public interface TaskService {
 
     TaskViewDto findTask(String taskNum);
-    TaskViewDto updateTask(TaskViewDto taskViewDto, String jwt);
-    TaskViewDto createTask(TaskCreateDto taskViewDto, String jwt);
+    TaskViewDto updateTask(TaskRequestDto taskViewDto, String jwt);
+    TaskViewDto createTask(TaskRequestDto taskViewDto, String jwt);
 
     List<TaskViewDto> findAllTasks();
 

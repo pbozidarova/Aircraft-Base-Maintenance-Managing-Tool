@@ -44,7 +44,7 @@ class MaintenanceComponent extends Component {
     }
     
     componentDidMount(){
-       this.refreshMaintenance();
+        this.refreshMaintenance();
 
         this.selectMaintenance(Utils.emptyObj(MAINTENANCE_HEADER_DATA))
     }
@@ -66,17 +66,17 @@ class MaintenanceComponent extends Component {
     selectMaintenance(maintenance, selectedId) {      
         this.setState({...this.state, selected: maintenance, selectedId})
     }
+    
     handleChange(event){
         let eName = event.target.name
         let eValue = event.target.value
         let eCheked = event.target.checked
         let updatePair = eCheked ? {[eName] : eCheked }: {[eName]: eValue}
-        console.log(updatePair)
-    
+            
         this.setState(
             {   ...this.state,
                 selected: {...this.state.selected, ...updatePair}
-            }, () => console.log(this.state))
+            })
         
     }
 

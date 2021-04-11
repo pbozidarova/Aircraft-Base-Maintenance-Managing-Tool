@@ -5,7 +5,7 @@ import managing.tool.e_maintenance.model.dto.MaintenanceViewDto;
 import managing.tool.e_maintenance.service.MaintenanceService;
 import managing.tool.e_task.model.TaskStatusEnum;
 import managing.tool.e_task.model.TaskEntity;
-import managing.tool.e_task.model.dto.TaskCreateDto;
+import managing.tool.e_task.model.dto.TaskRequestDto;
 import managing.tool.e_task.model.dto.TaskViewDto;
 import managing.tool.e_task.repository.TaskRepository;
 import managing.tool.e_task.service.TaskService;
@@ -18,7 +18,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -135,7 +134,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskViewDto updateTask(TaskViewDto taskDataForUpdate, String token) {
+    public TaskViewDto updateTask(TaskRequestDto taskDataForUpdate, String token) {
         TaskEntity taskToUpdate = this.modelMapper.map(taskDataForUpdate, TaskEntity.class);
 
         TaskEntity taskExisting = this.taskRepository.findByTaskNum(taskDataForUpdate.getTaskNum());
@@ -150,7 +149,7 @@ public class TaskServiceImpl implements TaskService {
 
 
     @Override
-    public TaskViewDto createTask(TaskCreateDto taskNew, String token) {
+    public TaskViewDto createTask(TaskRequestDto taskNew, String token) {
         TaskEntity taskToCreate = this.modelMapper.map(taskNew, TaskEntity.class);
 
         Set<UserEntity> creatingTeam = preparingTeam(new HashSet<>(), token);
