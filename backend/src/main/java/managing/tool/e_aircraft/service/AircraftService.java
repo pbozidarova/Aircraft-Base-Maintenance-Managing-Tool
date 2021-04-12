@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface AircraftService {
 
-    AircraftViewDto updateAircraft(AircraftViewDto aircraftDataForUpdate, String jwt);
-    AircraftViewDto createAircraft(AircraftViewDto aircraftNew, String jwt);
+    AircraftViewDto updateAircraft(String registration, AircraftViewDto aircraftDataForUpdate, String jwt);
+    AircraftViewDto createAircraft(String registration, AircraftViewDto aircraftNew, String jwt);
 
     List<AircraftViewDto> findAll();
     AircraftEntity getAircraftByRegistration(String registration);

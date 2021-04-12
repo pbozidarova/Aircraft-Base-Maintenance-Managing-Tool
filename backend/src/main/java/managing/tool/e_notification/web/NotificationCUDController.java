@@ -31,25 +31,20 @@ public class NotificationCUDController {
     @TrackUpdating(updatingMethod = "updateNotification")
     @PutMapping("/{notificationNum}/update")
     public ResponseEntity<NotificationViewDto> updateNotification(
-            @PathVariable String notificationNum, @RequestBody NotificationViewDto notificationDataForUpdate ) throws NotFoundInDb {
+            @PathVariable String notificationNum, @RequestBody NotificationViewDto notificationDataForUpdate ) {
 
-        if(!this.notificationService.notificationExists(notificationNum)){
-            throw new NotFoundInDb(String.format(NOTFOUNDERROR, notificationNum), "notificationNum");
-        }
         this.notificationService.evictCachedNotifications();
-        NotificationViewDto notificationUpdated = this.notificationService.updateNotification(notificationDataForUpdate);
+        NotificationViewDto notificationUpdated = this.notificationService.updateNotification(notificationNum, notificationDataForUpdate);
 
         return new ResponseEntity<>(notificationUpdated, HttpStatus.OK);
     }
+
     @TrackCreation(creatingMethod = "createNotification")
     @PutMapping("/{notificationNum}/create")
     public ResponseEntity<NotificationViewDto> createNotification(
             @RequestHeader("authorization") String jwt,
             @RequestBody NotificationViewDto notificationNewData ){
 
-//        if(this.notificationService.notificationExists(notificationNum)){
-//            throw new FoundInDb(String.format(FOUNDERROR, notificationNum), "notificationNum");
-//        }
         this.notificationService.evictCachedNotifications();
         NotificationViewDto notificationCreated = this.notificationService.createNotification(notificationNewData,jwt);
         return new ResponseEntity<>(notificationCreated, HttpStatus.OK);

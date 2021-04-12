@@ -66,7 +66,8 @@ class NotificationComponent extends Component {
                                             ComponentsStateService.partialFetch, 
                                             shouldFetchPartialData, 
                                             this.setState,
-                                            this.props.handleInfo);
+                                            this.props.handleInfo,
+                                            "allNotificationsRenderedInfo");
     }
 
     selectNotification(notification, selectedId) {      
@@ -104,12 +105,12 @@ class NotificationComponent extends Component {
              {
                  
                 maintenanceNum:  /^\d{7}$/.test(selected.maintenanceNum) ? '' : "The maintenance number length must equal 7 numbers." ,
-                taskNum: selected.taskNum.length > 5 ? '' : "Please select a task number!" ,
-                status: selected.status.length > 5 ? '' : "Please select status!" ,
+                taskNum: selected.taskNum && selected.taskNum.length > 5 ? '' : "Please select a task number!" ,
+                status: selected.status && selected.status.length > 5 ? '' : "Please select status!" ,
                 classification: (selected.status == 'CLOSED' && selected.classification) || 
                                 (selected.status != 'CLOSED' && selected.classification == null) 
                                 ? '' : "You are not allowed to close a notification without classifying it! In order to classify the notification, you need to first close it!" ,
-                dueDate: selected.dueDate.length > 2  ? '' : "The due date is mandatory!",
+                dueDate: selected.dueDate && selected.dueDate.length > 2  ? '' : "The due date is mandatory!",
   
              }
         }, () => submit(this.state.errors, "notifications", selected.notificationNum, selected, refreshData, this.props.handleInfo) );

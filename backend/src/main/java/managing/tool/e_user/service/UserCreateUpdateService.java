@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public interface UserCreateUpdateService {
 
-    UserViewDto updateUser(UserViewDto userViewDto);
-    UserViewDto createUser(UserViewDto userViewDto);
+    UserViewDto updateUser(String companyNum, UserViewDto userRequestUpdateData);
+    UserViewDto createUser(String companyNum, UserViewDto userRequestCreateData);
 
 //    Optional<UserDetailsDto> findUserDetails(String companyNum);
 //

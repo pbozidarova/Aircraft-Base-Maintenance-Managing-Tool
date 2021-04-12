@@ -12,7 +12,7 @@ import TaskComponent from '../func/TaskComponent'
 import MaintenanceComponent from '../func/MaintenanceComponent'
 import NotificationComponent from '../func/NotificationComponent'
 
-import UsersComponent from '../func/user/UsersComponent'
+import UsersComponent from '../func/UsersComponent'
 import ErrorComponent from './ErrorComponent'
 import AuthenticatedRoute from './AuthenticatedRoute'
 

@@ -4,25 +4,22 @@ import {MESSAGES} from '../Constanst.js'
 
 class ComponentsStateService {
 
-    refreshData(keyState, keyResponse, fetchAll, partialFetch, shouldFetchPartialData, setState, handleInfo){ 
-        console.log(this)  
-        // let shouldFetchPartialData = this.props.location.fetchDataFromURL
-        
+    refreshData(keyState, keyResponse, fetchAll, partialFetch, shouldFetchPartialData, setState, handleInfo, renderedInfo){         
         Utils.infoMessage(handleInfo, MESSAGES.pleaseWait);
 
         //Check if the user wants to render all the tasks or a HATEOAS link requires partial fetch
         shouldFetchPartialData ? partialFetch(keyState, keyResponse, setState, shouldFetchPartialData.href, shouldFetchPartialData.title, handleInfo) 
-                               : fetchAll(keyState, keyResponse, setState, handleInfo)
+                               : fetchAll(keyState, keyResponse, setState, handleInfo, renderedInfo)
     }
 
-    fetchAll(urlParam, keyResponse, setState, handleInfo){
+    fetchAll(urlParam, keyResponse, setState, handleInfo, renderedInfo){
         BackendService.getAll(urlParam)
         .then(
             response => {
                 setState({
                     loading : false, 
                     [urlParam] : response.data._embedded[keyResponse]
-                }, () => {Utils.successMessage(handleInfo, MESSAGES.allData)});
+                }, () => {Utils.successMessage(handleInfo, MESSAGES[renderedInfo])});
             }
         ).catch(e => {Utils.errorMessage(e, handleInfo, MESSAGES.allData )});
     }

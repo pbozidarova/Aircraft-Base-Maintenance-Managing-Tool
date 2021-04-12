@@ -11,15 +11,19 @@ import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.repository.UserRepository;
 import managing.tool.e_user.service.RoleService;
 import managing.tool.e_user.service.UserCreateUpdateService;
+import managing.tool.e_user.service.UserService;
+import managing.tool.exception.FoundInDb;
+import managing.tool.exception.NotFoundInDb;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import static managing.tool.constants.GlobalConstants.*;
 
 @Service
 @AllArgsConstructor
@@ -27,30 +31,64 @@ public class UserCreateUpdateServiceImpl implements UserCreateUpdateService {
 
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
+    private final UserService userService;
     private final FacilityService facilityService;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserViewDto updateUser(UserViewDto userViewDto) {
-        UserEntity userEntity = this.modelMapper.map(userViewDto, UserEntity.class);
+    public UserViewDto updateUser(String companyNum, UserViewDto userRequestUpdateData) {
+        if(!this.userService.userExists(companyNum)){
+            throw new NotFoundInDb(String.format(NOTFOUNDERROR, companyNum), "companyNum");
+        }
+        if(this.userService.emailExistsForAnotherUser(userRequestUpdateData.getEmail(), companyNum)){
+            throw new FoundInDb(String.format(FOUNDERROR, userRequestUpdateData.getEmail()), "email");
+        }
+        //SELECT FIELDS VALIDATION
+        validateIfFacilityExists(userRequestUpdateData.getFacility());
+        validateIfRolesExist(userRequestUpdateData.getRoles());
 
+
+        UserEntity userNewData = this.modelMapper.map(userRequestUpdateData, UserEntity.class);
         UserEntity existingUser =  this.userRepository
-                .findByCompanyNum(userViewDto.getCompanyNum());
+                .findByCompanyNum(userRequestUpdateData.getCompanyNum());
+        FacilityEntity facilityEntity = this
+                .facilityService.getFacilityByName(userRequestUpdateData.getFacility());
 
-        userEntity.setId(existingUser.getId());
-        userEntity.setPassword(existingUser.getPassword());
+        userNewData.setPassword(existingUser.getPassword())
+                .setFacility(facilityEntity)
+                .setId(existingUser.getId())
+                .setUpdatedOn(LocalDateTime.now());
 
-        FacilityEntity facilityEntity = this.facilityService.getFacilityByName(userViewDto.getFacility());
+        allocateRoles(userNewData, userRequestUpdateData.getRoles());
 
-        userEntity.setFacility(
-                this.facilityService.getFacilityByName(userViewDto.getFacility())
-        );
+        return this.modelMapper.map(this.userRepository.save(userNewData) , UserViewDto.class);
+    }
 
-        allocateRoles(userEntity, userViewDto.getRoles());
-        userEntity.setUpdatedOn(LocalDateTime.now());
 
-        return this.modelMapper.map(this.userRepository.save( userEntity) , UserViewDto.class);
+    @Override
+    public UserViewDto createUser(String companyNum, UserViewDto userRequestCreateData) {
+        if(this.userService.userExists(companyNum)){
+            throw new FoundInDb(String.format(FOUNDERROR, companyNum), "companyNum");
+        }
+        if(this.userService.emailExists(userRequestCreateData.getEmail())){
+            throw new FoundInDb(String.format(FOUNDERROR, userRequestCreateData.getEmail()), "email");
+        }
+
+        //SELECT FIELDS VALIDATION
+        validateIfFacilityExists(userRequestCreateData.getFacility());
+        validateIfRolesExist(userRequestCreateData.getRoles());
+
+        UserEntity user =  this.modelMapper.map(userRequestCreateData, UserEntity.class );
+
+        user.setPassword(passwordEncoder.encode(GlobalConstants.DUMMY_PASS))
+                .setFacility(this.facilityService.getFacilityByName(userRequestCreateData.getFacility()))
+                .setCreatedOn(LocalDateTime.now());
+
+        allocateRoles(user, userRequestCreateData.getRoles());
+
+        return this.modelMapper.map( this.userRepository.save(user), UserViewDto.class);
+
     }
 
     private void allocateRoles(UserEntity user, String rolesString) {
@@ -65,25 +103,29 @@ public class UserCreateUpdateServiceImpl implements UserCreateUpdateService {
         user.setRoles(roleSet);
     }
 
-    @Override
-    public UserViewDto createUser(UserViewDto userViewDto) {
-        UserEntity user =  this.modelMapper.map(userViewDto, UserEntity.class );
-
-        user.setPassword(passwordEncoder.encode(GlobalConstants.DUMMY_PASS));
-
-        user.setFacility(
-                this.facilityService.getFacilityByName(userViewDto.getFacility())
-        );
-
-        allocateRoles(user, userViewDto.getRoles());
-
-//        user.setUpdatedOn(LocalDateTime.now());
-        user.setCreatedOn(LocalDateTime.now());
-
-        this.userRepository.save(user);
-
-        return this.modelMapper.map(user, UserViewDto.class);
+    private void validateIfRolesExist(String roles){
+        Arrays.stream(roles.split(", "))
+                .forEach(role -> {
+                    System.out.println(role);
+                    if(!this.roleService.roleExists(RoleEnum.valueOf(role))){
+                        throw new NotFoundInDb(
+                                String.format(NOTFOUND_SELECT_ERROR, role, "role"),
+                                "role"
+                        );
+                    }
+                });
 
     }
+
+    private void validateIfFacilityExists(String facility) {
+        if(!this.facilityService.facilityExists(facility)){
+            throw new NotFoundInDb(
+                    String.format(NOTFOUND_SELECT_ERROR, facility, "facility"),
+                    "facility"
+            );
+        }
+    }
+
+
 
 }

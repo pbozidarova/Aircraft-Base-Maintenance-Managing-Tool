@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {MESSAGES} from '../../Constanst.js'
-
+import clsx from 'clsx';
 import {Button, TextField } from '@material-ui/core'
 import SaveIcon from '@material-ui/icons/Save'
 import AuthenticationService from '../AuthenticationService.js'
@@ -10,6 +10,10 @@ import Divider from '@material-ui/core/Divider';
 import Utils from '../Utils.js'
 import { withRouter } from 'react-router';
 import { MuiThemeProvider } from '@material-ui/core/styles';
+
+import PropTypes from 'prop-types';
+import { styles } from '../UseStyles.js'
+import { withStyles } from '@material-ui/core/styles';
 
 class LoginComponent extends Component{
 
@@ -33,7 +37,7 @@ class LoginComponent extends Component{
             }
         )
     }
-
+  
     loginClicked(){
         AuthenticationService
             .executeAuthnetication(this.state.username, this.state.password)
@@ -55,13 +59,15 @@ class LoginComponent extends Component{
     }
 
     render() {
-        console.log('omg')
+        const { classes } = this.props;
+        const fixedHeightPaper = clsx(classes.paper, classes.fixedHeightMin);
         return(
-            <Grid container>
+          
+            <Grid container spacing={3}>
 
                 <Grid item xs={12} md={5} lg={5}>
 
-                    <Paper className="{fixedHeightPaper}">
+                    <Paper className={fixedHeightPaper}>
                         
                             <TextField 
                                 type="text" 
@@ -100,10 +106,14 @@ class LoginComponent extends Component{
                     </Paper>
                 </Grid>
             </Grid> 
-            
+        
         )
     }
 
 }
 
-export default withRouter(LoginComponent);
+LoginComponent.propTypes = {
+    classes: PropTypes.object.isRequired,
+  };
+  
+  export default withStyles(styles)(withRouter(LoginComponent));

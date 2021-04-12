@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import BackendService from '../../../api/CommonAPI.js'
-import {  MESSAGES } from '../../../Constanst.js';
-import { styles } from '../../UseStyles.js'
-import Utils from '../../Utils.js';
-import CreateUpdateBtnGroup from '../CreateUpdateBtnGroup'
+import BackendService from '../../api/CommonAPI.js'
+import {  MESSAGES } from '../../Constanst.js';
+import { styles } from '../UseStyles.js'
+import Utils from '../Utils.js';
+import CreateUpdateBtnGroup from '../func/CreateUpdateBtnGroup'
 
 import TextField from '@material-ui/core/TextField';
 import Radio from '@material-ui/core/Radio';

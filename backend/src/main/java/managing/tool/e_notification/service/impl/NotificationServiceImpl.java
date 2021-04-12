@@ -21,6 +21,7 @@ import managing.tool.e_user.model.RoleEnum;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
 import managing.tool.exception.GlobalUncaughtExceptionAdvice;
+import managing.tool.exception.NotFoundInDb;
 import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -39,6 +40,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
+import static managing.tool.constants.GlobalConstants.NOTFOUNDERROR;
+import static managing.tool.constants.GlobalConstants.NOTFOUND_SELECT_ERROR;
 
 @Service
 @Transactional
@@ -200,38 +204,96 @@ public class NotificationServiceImpl implements NotificationService {
     public Integer openNotificationsOfLoggedInUser(String token) {
         UserEntity userEntity = this.serviceUtil.identifyingUserFromToken(token);
 
-        return this.notificationRepository.countNotificationEntitiesByAuthorAndStatus(userEntity, NotificationStatusEnum.OPENED);
+        return this.notificationRepository
+                .countNotificationEntitiesByAuthorAndStatus(userEntity, NotificationStatusEnum.OPENED)
+              +
+                this.notificationRepository.countNotificationEntitiesByAuthorAndStatus(userEntity, NotificationStatusEnum.PROGRESSING);
     }
 
     @Override
-    public NotificationViewDto updateNotification(NotificationViewDto notificationViewDto) {
-        NotificationEntity notificationToUpdate = this.notificationRepository.findByNotificationNum(notificationViewDto.getNotificationNum());
+    public NotificationViewDto updateNotification(String notificationNum, NotificationViewDto notificationDataForUpdate) {
+        if(!this.notificationExists(notificationNum)){
+            throw new NotFoundInDb(String.format(NOTFOUNDERROR, notificationNum), "notificationNum");
+        }
+
+        //VALIDATE SELECT VALUES!
+        validateIfMaintenanceExists(notificationDataForUpdate.getMaintenanceNum());
+        validateIfTaskExists(notificationDataForUpdate.getTaskNum());
+        validateStatus(notificationDataForUpdate.getStatus());
+        validateClassification(notificationDataForUpdate.getClassification());
+
+        NotificationEntity notificationToUpdate = this.notificationRepository.findByNotificationNum(notificationDataForUpdate.getNotificationNum());
 
         String notificationNumber = notificationNumberBuilder(
-                Long.parseLong(notificationViewDto.getNotificationNum().split("_")[0].replace("N", "")),
-                notificationViewDto.getMaintenanceNum(),
-                notificationViewDto.getTaskNum());
+                Long.parseLong(notificationDataForUpdate.getNotificationNum().split("_")[0].replace("N", "")),
+                notificationDataForUpdate.getMaintenanceNum(),
+                notificationDataForUpdate.getTaskNum());
 
         notificationToUpdate.setNotificationNum(notificationNumber);
 
-        buildNotificationEntity(notificationToUpdate, notificationViewDto);
+        buildNotificationEntity(notificationToUpdate, notificationDataForUpdate);
         return  this.modelMapper.map(this.notificationRepository.save(notificationToUpdate), NotificationViewDto.class);
     }
 
+    private void validateStatus(String status) {
+        if(Arrays.stream(NotificationStatusEnum.values()).collect(Collectors.toList()).contains(status.toUpperCase())) {
+            throw new NotFoundInDb(
+                    String.format(NOTFOUND_SELECT_ERROR, status, "status"),
+                    "status"
+            );
+        }
+    }
+
+    private void validateClassification(String classification) {
+        if(classification == null) return;
+
+        if(Arrays.stream(NotificationStatusEnum.values()).collect(Collectors.toList()).contains(classification.toUpperCase())) {
+            throw new NotFoundInDb(
+                    String.format(NOTFOUND_SELECT_ERROR, classification, "classification"),
+                    "classification"
+            );
+        }
+    }
+
+
+
+    private void validateIfMaintenanceExists(String maintenanceNum) {
+        if(!this.maintenanceService.maintenanceExists(maintenanceNum)){
+            throw new NotFoundInDb(
+                    String.format(NOTFOUND_SELECT_ERROR, maintenanceNum, "maintenance"),
+                    "maintenance number"
+            );
+        }
+    }
+
+    private void validateIfTaskExists(String taskNum) {
+        if(!this.taskService.taskExists(taskNum)){
+            throw new NotFoundInDb(
+                    String.format(NOTFOUND_SELECT_ERROR, taskNum, "task"),
+                    "task number"
+            );
+        }
+    }
+
+
 
     @Override
-    public NotificationViewDto createNotification(NotificationViewDto notificationViewDto, String token) {
+    public NotificationViewDto createNotification(NotificationViewDto notificationNewData, String token) {
+        //VALIDATE SELECT VALUES!
+        validateIfMaintenanceExists(notificationNewData.getMaintenanceNum());
+        validateIfTaskExists(notificationNewData.getTaskNum());
+
         NotificationEntity notificationToCreate = new NotificationEntity();
         UserEntity author = this.serviceUtil.identifyingUserFromToken(token);
         notificationToCreate.setAuthor(author);
 
         String newNotificationNumber = notificationNumberBuilder(
                 this.notificationRepository.count()+1,
-                notificationViewDto.getMaintenanceNum(),
-                notificationViewDto.getTaskNum()
+                notificationNewData.getMaintenanceNum(),
+                notificationNewData.getTaskNum()
         );
         notificationToCreate.setNotificationNum(newNotificationNumber);
-        buildNotificationEntity(notificationToCreate, notificationViewDto);
+        buildNotificationEntity(notificationToCreate, notificationNewData);
 
         return this.modelMapper.map(this.notificationRepository.save(notificationToCreate), NotificationViewDto.class);
     }
@@ -256,14 +318,17 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public ReplyViewDto createReply(String notificationNum, String jwt, ReplyResponseDto reply, MultipartFile attachment) throws IOException {
+    public ReplyViewDto createReply(String notificationNum, String jwt, String reply, MultipartFile attachment) throws IOException {
+        if(!this.notificationExists(notificationNum)){
+            throw new NotFoundInDb(String.format(NOTFOUNDERROR, notificationNum), "notificationNum");
+        }
+
         ReplyEntity replyToCreate = new ReplyEntity();
 
-//        Optional<MultipartFile> attachment = Optional.ofNullable(atta);
         String url = cloudinaryService.uploadImage(attachment);
 
         UserEntity author = this.serviceUtil.identifyingUserFromToken(jwt);
-        replyToCreate.setDescription(reply.getDescription())
+        replyToCreate.setDescription(reply)
                 .setAuthor(author)
                 .setAttachment(url)
                 .setCreatedOn(LocalDateTime.now());

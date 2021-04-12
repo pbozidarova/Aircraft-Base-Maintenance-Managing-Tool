@@ -38,11 +38,7 @@ public class AircraftCUDController {
             @RequestHeader("authorization") String jwt,
             @PathVariable String registration, @RequestBody AircraftViewDto aircraftDataForUpdate ) {
 
-        if(!this.aircraftService.aircraftExists(registration)){
-            throw new NotFoundInDb(String.format(NOTFOUNDERROR, registration), "registration");
-        }
-
-        AircraftViewDto aircraftUpdated = this.aircraftService.updateAircraft(aircraftDataForUpdate, jwt);
+        AircraftViewDto aircraftUpdated = this.aircraftService.updateAircraft(registration, aircraftDataForUpdate, jwt);
 
         return new ResponseEntity<>(aircraftUpdated, HttpStatus.OK);
     }
@@ -53,11 +49,7 @@ public class AircraftCUDController {
             @RequestHeader("authorization") String jwt,
             @PathVariable String registration, @RequestBody AircraftViewDto aircraftNew )  {
 
-        if(this.aircraftService.aircraftExists(registration)){
-            throw new FoundInDb(String.format(FOUNDERROR, registration), "registration");
-        }
-
-        AircraftViewDto aircraftCreated = this.aircraftService.createAircraft(aircraftNew, jwt);
+        AircraftViewDto aircraftCreated = this.aircraftService.createAircraft(registration, aircraftNew, jwt);
 
         return new ResponseEntity<>(aircraftCreated, HttpStatus.OK);
     }

@@ -68,9 +68,6 @@ class DataComponentAccordion extends Component{
         return this.props.selectedId === selectedRowId;
     }
 
-    // selectRow(selectedRowId) {      
-    //     this.setState({selected: selectedRowId})
-    // }
 
     handleReplyChange(event){
         this.setState(
@@ -128,6 +125,7 @@ class DataComponentAccordion extends Component{
         .then(() => {
             this.handleOpenState(index)
             this.handleAttachment()  
+            this.setState({...this.state, currentReply: ''})
             this.fetchAndExpand(index, notificationNum)
         }
         ).catch(e => {

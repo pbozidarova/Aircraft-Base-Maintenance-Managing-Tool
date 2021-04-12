@@ -29,7 +29,12 @@ export const MESSAGES = {
     successLogOut: "Successfully logged out! We are expecting you again soon!",
     successLoaded: "Successfully loaded! ",
     allData: "All data!",
-    allTasks: "You are reviewing all the tasks that our highly trained maintenance staff is capable of performing on an aircraft! ",
+    allTasksRendredInfo: "A list with all the tasks that our highly trained maintenance staff is capable of performing on an aircraft! ",
+    allUsersRenderedInfo: "A list with all the employees in our company!",
+    allAircraftRenderedInfo: "A list with all the aircraft that we can service!",
+    allMaintenanceRenderedInfo: "A list with all the maintenance in our company!",
+    allNotificationsRenderedInfo: "A list with all the notifications ever raised!",
+    allFacilitiesRenderedInfo: "A list with all the facilities where we service aircraft!",
     successCreated : "Successfully created! ",
     successUpdated : "Successfully updated! ",
 
@@ -45,7 +50,7 @@ export const MESSAGES = {
 
     aircraftEditInfo: "You are not allowed to edit the aircraft registration!",
 
-    usersEditInfo: "",
+    usersEditInfo: "You are not allowed to edit the company number!",
 
     pleaseWait: "Please wait!",
     errorNonExistant : "Does not exist! ",

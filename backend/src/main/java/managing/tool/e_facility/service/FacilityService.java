@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface FacilityService {
 
-    FacilityViewDto updateFacility(FacilityViewDto facilityDataForUpdate, String jwt);
-    FacilityViewDto createFacility(FacilityViewDto facilityNew, String jwt);
+    FacilityViewDto updateFacility(String name, FacilityViewDto facilityDataForUpdate, String jwt);
+    FacilityViewDto createFacility(String name, FacilityViewDto facilityNew, String jwt);
 
     List<UserViewDto> findAllUsersByFacilityName(String name);
 

@@ -42,7 +42,6 @@ class EditGlobalComponent extends Component {
               authority: ['ADMIN', 'USER'],
               role: ['MECHANIC', 'ENGINEER'],
 
-
           }
 
         this.refreshSelectMenusOptions = this.refreshSelectMenusOptions.bind(this);
@@ -93,10 +92,6 @@ class EditGlobalComponent extends Component {
       const { classes } = this.props;
       const { selected, booleanFields, feedback, editFields, labels, handleChange, handleAutocompleteChange, errors, selectedId, validateAndSubmit, refreshData} = this.props;        
       let isError = (key) => errors[key] && errors[key].length > 0
-      let isOptional = (key) => (Object.keys(labels).includes('aircraftRegistration') && Object.keys(labels).includes('serialNumber')) ||
-                        (Object.keys(labels).includes('taskNum') && Object.keys(labels).includes('code')) ||
-                        (key == 'maintenanceNum' && Object.keys(labels).includes('maintenanceNum'))  ||
-                        false;
 
       return (
           <MuiThemeProvider key={selectedId} > 
@@ -108,8 +103,6 @@ class EditGlobalComponent extends Component {
               <Autocomplete
                 id={key}
                 size="small"
-                // freeSolo={isOptional}
-                // freeSolo={true}
                 value={selected[key]}
                 onChange={(e, v) => handleAutocompleteChange(e, v, key)}
                 options={Object.values(this.state[key])}

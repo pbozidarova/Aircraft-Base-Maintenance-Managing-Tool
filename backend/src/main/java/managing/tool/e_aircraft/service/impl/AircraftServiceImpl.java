@@ -7,6 +7,8 @@ import managing.tool.e_aircraft.service.AircraftService;
 import managing.tool.e_aircraft.model.dto.AircraftSeedDto;
 import managing.tool.e_aircraft.model.AircraftEntity;
 import managing.tool.e_aircraft.repository.AircraftRepository;
+import managing.tool.exception.FoundInDb;
+import managing.tool.exception.NotFoundInDb;
 import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static managing.tool.constants.GlobalConstants.AIRCRAFT_MOCK_DATA_PATH;
+import static managing.tool.constants.GlobalConstants.*;
 
 @Service
 @AllArgsConstructor
@@ -31,19 +33,26 @@ public class AircraftServiceImpl implements AircraftService {
     //private final ServiceUtil util;
 
     @Override
-    public AircraftViewDto updateAircraft(AircraftViewDto aircraftDataForUpdate, String jwt) {
-        AircraftEntity aircraftNewData = this.modelMapper.map(aircraftDataForUpdate, AircraftEntity.class);
+    public AircraftViewDto updateAircraft(String registration, AircraftViewDto aircraftDataForUpdate, String jwt) {
+        if(!this.aircraftExists(registration)){
+            throw new NotFoundInDb(String.format(NOTFOUNDERROR, registration), "registration");
+        }
 
+        AircraftEntity aircraftNewData = this.modelMapper.map(aircraftDataForUpdate, AircraftEntity.class);
         AircraftEntity aircraftExisting = this.aircraftRepository.findByAircraftRegistration(aircraftDataForUpdate.getAircraftRegistration());
 
-        aircraftNewData.setId(aircraftExisting.getId());
-        aircraftNewData.setUpdatedOn(LocalDateTime.now());
+        aircraftNewData.setId(aircraftExisting.getId())
+                        .setUpdatedOn(LocalDateTime.now());
 
         return this.modelMapper.map(this.aircraftRepository.save(aircraftNewData), AircraftViewDto.class);
     }
 
     @Override
-    public AircraftViewDto createAircraft(AircraftViewDto aircraftNew, String jwt) {
+    public AircraftViewDto createAircraft(String registration, AircraftViewDto aircraftNew, String jwt) {
+        if(this.aircraftExists(registration)){
+            throw new FoundInDb(String.format(FOUNDERROR, registration), "registration");
+        }
+
         AircraftEntity aircraftToCreate = this.modelMapper.map(aircraftNew, AircraftEntity.class);
         aircraftToCreate.setCreatedOn(LocalDateTime.now());
 

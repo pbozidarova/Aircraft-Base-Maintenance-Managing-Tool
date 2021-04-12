@@ -60,7 +60,8 @@ class FacilityComponent extends Component {
                                             ComponentsStateService.partialFetch, 
                                             shouldFetchPartialData, 
                                             this.setState,
-                                            this.props.handleInfo);
+                                            this.props.handleInfo,
+                                            "allFacilitiesRenderedInfo");
     }
     
 

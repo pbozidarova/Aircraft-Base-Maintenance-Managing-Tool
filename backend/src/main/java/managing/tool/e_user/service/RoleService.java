@@ -6,5 +6,5 @@ import managing.tool.e_user.model.RoleEnum;
 public interface RoleService {
 
     RoleEntity findByName(RoleEnum role);
-
+    Boolean roleExists(RoleEnum role);
 }

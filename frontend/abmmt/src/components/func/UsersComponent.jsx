@@ -1,23 +1,21 @@
 import React, {Component} from 'react'
-import BackendService from '../../../api/CommonAPI.js'
-import {USERS_BOOLEAN_FIELDS, USERS_HEADER_DATA, USERS_EDIT_FIELDS, MESSAGES} from '../../../Constanst.js'
-import Utils from '../../Utils.js'
-import ComponentsStateService from '../../ComponentsStateService.js'
+import {USERS_BOOLEAN_FIELDS, USERS_HEADER_DATA, USERS_EDIT_FIELDS, MESSAGES} from '../../Constanst.js'
+import Utils from '../Utils.js'
+import ComponentsStateService from '../ComponentsStateService.js'
 
-import { styles } from '../../UseStyles.js'
+import { styles } from '../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router';
 
-import EditUserComponent from './UserEditComponent'
 
-import DataComponent from '../DataComponent'
+import DataComponent from './DataComponent'
 
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import EditGlobalComponent from '../EditGlobalComponent.jsx'
+import EditGlobalComponent from './EditGlobalComponent.jsx'
 
 
 class UsersComponent extends Component {
@@ -66,7 +64,8 @@ class UsersComponent extends Component {
                                             ComponentsStateService.partialFetch, 
                                             shouldFetchPartialData, 
                                             this.setState,
-                                            this.props.handleInfo);
+                                            this.props.handleInfo,
+                                            "allUsersRenderedInfo");
     }
 
   
@@ -76,10 +75,9 @@ class UsersComponent extends Component {
         
         this.setState({
             ...this.state,
-            selected: user, 
+            selected: { ...user, authority: authorityObj, role: roleObj },
             selectedId,
-            authority: authorityObj,
-            role: roleObj
+            
         }, () => console.log(this.state))
         
     }
@@ -88,14 +86,11 @@ class UsersComponent extends Component {
         let eName = event.target.name
         let eValue = event.target.value
         let updateAuthortyAndRoles = this.updateAuthortyAndRoles(eName, eValue);
-        let eCheked = event.target.checked
-        
-        // let updatePair = eCheked ? {[eName] : eCheked }: {[eName]: eValue}
-        
+                
         this.setState(
             {   ...this.state,
-                selected: {...this.state.selected, roles: updateAuthortyAndRoles},
-                [eName] : eValue
+                selected: {...this.state.selected, roles: updateAuthortyAndRoles, [eName] : eValue},
+                
             }, console.log(this.state))
     }
 
@@ -111,52 +106,25 @@ class UsersComponent extends Component {
     }
 
     updateAuthortyAndRoles(eName, eValue){
-        let returningAuthortyAndRolesString;
+        let returningAuthortyAndRolesString = "";
         console.log(eName + ' ' + eValue)
-        if(eName.includes('authority')) {
-            returningAuthortyAndRolesString += eValue.includes('ADMIN') ? 'ADMIN' : 'USER'
+
+
+        if('authority'.includes(eName)) {
+            returningAuthortyAndRolesString += 'ADMIN'.includes(eValue) ? 'ADMIN' : 'USER'
         } else {
-            returningAuthortyAndRolesString += this.state.authority
+            returningAuthortyAndRolesString += this.state.selected.authority
         }
         
-        if(eName.includes('role')) {
-            returningAuthortyAndRolesString += eValue.includes('ENGINEER') ? ', ENGINEER' : ', MECHANIC'
+        if('role'.includes(eName)) {
+            returningAuthortyAndRolesString += 'ENGINEER'.includes(eValue) ? ', ENGINEER' : ', MECHANIC'
         } else {
-            returningAuthortyAndRolesString += `, ${this.state.role}`
+            returningAuthortyAndRolesString += `, ${this.state.selected.role}`
         }
+        console.log(returningAuthortyAndRolesString)
 
         return returningAuthortyAndRolesString;
     }
-
-    // handleAuthorityRoleChange(event){
-        
-    //     let eName = event.target.name
-    //     let eValue = event.target.value
-    //     let updateAuthortyAndRoles = '';
-
-    //     console.log(eName + ' ' + eValue)
-    //     if(eName.includes('authority')) {
-    //         updateAuthortyAndRoles += eValue.includes('ADMIN') ? 'ADMIN' : 'USER'
-    //     } else {
-    //         updateAuthortyAndRoles += this.state.authority
-    //     }
-        
-    //     if(eName.includes('role')) {
-    //         updateAuthortyAndRoles += eValue.includes('ENGINEER') ? ', ENGINEER' : ', MECHANIC'
-    //     } else {
-    //         updateAuthortyAndRoles += `, ${this.state.role}`
-    //     }
-        
-    //     console.log(updateAuthortyAndRoles)
-        
-    //     this.setState({
-    //         ...this.state,
-    //         selected: {...this.state.selected, roles: updateAuthortyAndRoles},
-    //         [eName] : eValue
-    //     })        
-    // }
-
-   
 
     validateAndSubmit(submit, refreshUsers){
         const { selected } = this.state;
@@ -167,10 +135,9 @@ class UsersComponent extends Component {
                 firstName:  selected.firstName != 'First Name' && selected.firstName.length > 2 ? '' : "The first name must be longer than 2 symbols!" ,
                 lastName:  selected.lastName != 'Last Name' && selected.lastName.length > 2 ? '' : "The last name must be longer than 2 symbols!",
                 email: /^\S+@\S+$/.test(selected.email)  ? '' : "Please provide a valid email!",
-                facility: selected.facility.length > 2 ? '' : "Please select a facility!",
-                
-                authority: selected.roles.length > 0 ? '' : "At least one authority must be checked!",
-                role: selected.roles.length > 0 ? '' : "At least one role must be checked!",
+                facility: selected.facility && selected.facility.length > 2 ? '' : "Please select a facility!",
+                authority: selected.authority && selected.authority.length > 0 ? '' : "At least one authority must be selected!",
+                role: selected.role && selected.role.length > 0 ? '' : "At least one role must be selected!",
 
              }
         }, () => submit(this.state.errors, 
@@ -219,20 +186,8 @@ class UsersComponent extends Component {
                         feedback={MESSAGES.usersEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
                         refreshData={this.refreshUsers}
-                        authority={this.state.authority}
-                        role={this.state.role}
+                       
                     />
-                    // <EditUserComponent 
-                    //     selectedUser={this.state.selected} 
-                    //     handleChange={this.handleChange} 
-                    //     handleAuthorityRoleChange={this.handleAuthorityRoleChange} 
-                    //     handleInfo={this.props.handleInfo}
-                    //     refreshUsers={this.refreshUsers} 
-                    //     labels = {USERS_HEADER_DATA} 
-                    //     booleanFields = {USERS_BOOLEAN_FIELDS}
-                    //     authority={this.state.authority} 
-                    //     role={this.state.role}
-                    // />
                   }
                 </Paper>
               </Grid>

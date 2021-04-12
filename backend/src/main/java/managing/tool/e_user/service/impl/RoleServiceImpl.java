@@ -23,8 +23,12 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleEntity findByName(RoleEnum role) {
-
         return this.roleRepository.findByName(role);
+    }
+
+    @Override
+    public Boolean roleExists(RoleEnum role) {
+        return this.findByName(role) != null;
     }
 
 

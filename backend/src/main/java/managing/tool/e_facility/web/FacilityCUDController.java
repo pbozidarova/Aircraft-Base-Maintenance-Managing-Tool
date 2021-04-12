@@ -41,11 +41,7 @@ public class FacilityCUDController {
             @RequestHeader("authorization") String jwt,
             @PathVariable String name, @RequestBody FacilityViewDto facilityDataForUpdate )  {
 
-        if(!this.facilityService.facilityExists(name)){
-            throw new NotFoundInDb(String.format(NOTFOUNDERROR, name), "name");
-        }
-
-        FacilityViewDto facilityUpdated = this.facilityService.updateFacility(facilityDataForUpdate, jwt);
+        FacilityViewDto facilityUpdated = this.facilityService.updateFacility(name, facilityDataForUpdate, jwt);
 
         return new ResponseEntity<>(facilityUpdated, HttpStatus.OK);
     }
@@ -56,11 +52,7 @@ public class FacilityCUDController {
             @RequestHeader("authorization") String jwt,
             @PathVariable String name, @RequestBody FacilityViewDto facilityNew )  {
 
-        if(this.facilityService.facilityExists(name)){
-            throw new FoundInDb(String.format(FOUNDERROR, name), "name");
-        }
-
-        FacilityViewDto facilityCreated = this.facilityService.createFacility(facilityNew, jwt);
+        FacilityViewDto facilityCreated = this.facilityService.createFacility(name, facilityNew, jwt);
 
         return new ResponseEntity<>(facilityCreated, HttpStatus.OK);
     }

@@ -12,6 +12,8 @@ import managing.tool.e_facility.repository.FacilityRepository;
 import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.repository.UserRepository;
 import managing.tool.e_user.service.UserService;
+import managing.tool.exception.FoundInDb;
+import managing.tool.exception.NotFoundInDb;
 import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static managing.tool.constants.GlobalConstants.*;
+
 @Service
 @AllArgsConstructor
 public class FacilityServiceImpl implements FacilityService {
@@ -34,10 +38,16 @@ public class FacilityServiceImpl implements FacilityService {
     private final ServiceUtil serviceUtil;
 
     @Override
-    public FacilityViewDto updateFacility(FacilityViewDto facilityDataForUpdate, String jwt) {
+    public FacilityViewDto updateFacility(String name, FacilityViewDto facilityDataForUpdate, String jwt) {
+        if(!this.facilityExists(name)){
+            throw new NotFoundInDb(String.format(NOTFOUNDERROR, name), "name");
+        }
+
+        String companyNumOfManager = this.serviceUtil.companyNumFromUserString(facilityDataForUpdate.getManager());
+        validateIfManagerExist(companyNumOfManager);
+
         FacilityEntity facilityToBeUpdated = this.modelMapper.map(facilityDataForUpdate, FacilityEntity.class);
         FacilityEntity facilityExisting = this.facilityRepository.findByName(facilityDataForUpdate.getName());
-        String companyNumOfManager = this.serviceUtil.companyNumFromUserString(facilityDataForUpdate.getManager());
 
         facilityToBeUpdated.setManager(this.userService.findByCompanyNum(companyNumOfManager))
                 .setEmployees(facilityExisting.getEmployees())
@@ -47,13 +57,19 @@ public class FacilityServiceImpl implements FacilityService {
         return this.modelMapper.map(this.facilityRepository.save(facilityToBeUpdated), FacilityViewDto.class);
     }
 
+
     @Override
-    public FacilityViewDto createFacility(FacilityViewDto facilityNew, String jwt) {
-        FacilityEntity facilityToBeCreated = this.modelMapper.map(facilityNew, FacilityEntity.class);
+    public FacilityViewDto createFacility(String name, FacilityViewDto facilityNew, String jwt) {
+        if(this.facilityExists(name)){
+            throw new FoundInDb(String.format(FOUNDERROR, name), "name");
+        }
         String companyNumOfManager = this.serviceUtil.companyNumFromUserString(facilityNew.getManager());
+        validateIfManagerExist(companyNumOfManager);
+
+        FacilityEntity facilityToBeCreated = this.modelMapper.map(facilityNew, FacilityEntity.class);
 
         facilityToBeCreated.setManager(this.userService.findByCompanyNum(companyNumOfManager))
-                .setCreatedOn(LocalDateTime.now());
+                           .setCreatedOn(LocalDateTime.now());
 
         return this.modelMapper.map(this.facilityRepository.save(facilityToBeCreated), FacilityViewDto.class);
     }
@@ -106,6 +122,14 @@ public class FacilityServiceImpl implements FacilityService {
         return this.facilityRepository.findByName(name) != null ;
     }
 
+    private void validateIfManagerExist(String companyNumOfManager) {
+        if(!this.userService.userExists(companyNumOfManager)){
+            throw new NotFoundInDb(
+                    String.format(NOTFOUND_SELECT_ERROR, companyNumOfManager, "employee from the manager's list!"),
+                    "companyNumOfManager"
+            );
+        }
+    }
 
 
 }

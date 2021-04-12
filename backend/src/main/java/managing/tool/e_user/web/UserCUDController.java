@@ -27,16 +27,9 @@ public class UserCUDController {
     @TrackUpdating(updatingMethod = "updateUser")
     @PutMapping("/{companyNum}/update")
     public ResponseEntity<UserViewDto> updateUser(
-            @PathVariable String companyNum, @RequestBody UserViewDto userDataForUpdate )  {
+            @PathVariable String companyNum, @RequestBody UserViewDto userRequestUpdateData )  {
 
-        if(!this.userService.userExists(companyNum)){
-            throw new NotFoundInDb(String.format(NOTFOUNDERROR, companyNum), "companyNum");
-        }
-        if(this.userService.emailExistsForAnotherUser(userDataForUpdate.getEmail(), companyNum)){
-            throw new FoundInDb(String.format(FOUNDERROR, userDataForUpdate.getEmail()), "email");
-        }
-
-        UserViewDto userUpdated = this.userCreateUpdateService.updateUser(userDataForUpdate);
+        UserViewDto userUpdated = this.userCreateUpdateService.updateUser(companyNum, userRequestUpdateData);
 
         return new ResponseEntity<>(userUpdated, HttpStatus.OK);
     }
@@ -44,16 +37,11 @@ public class UserCUDController {
     @TrackCreation(creatingMethod = "createUser")
     @PutMapping("/{companyNum}/create")
     public ResponseEntity<UserViewDto> createUser(
-            @PathVariable String companyNum, @RequestBody UserViewDto userNew ) {
+            @PathVariable String companyNum, @RequestBody UserViewDto userRequestCreateData ) {
 
-        if(this.userService.userExists(companyNum)){
-            throw new FoundInDb(String.format(FOUNDERROR, companyNum), "companyNum");
-        }
-        if(this.userService.emailExists(userNew.getEmail())){
-            throw new FoundInDb(String.format(FOUNDERROR, userNew.getEmail()), "email");
-        }
 
-        UserViewDto userCreated = this.userCreateUpdateService.createUser(userNew);
+        UserViewDto userCreated = this.userCreateUpdateService.createUser( companyNum, userRequestCreateData);
+
         return new ResponseEntity<>(userCreated, HttpStatus.OK);
     }
 

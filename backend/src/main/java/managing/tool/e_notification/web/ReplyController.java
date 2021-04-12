@@ -41,16 +41,9 @@ public class ReplyController {
             @RequestHeader("authorization") String jwt,
             @PathVariable String notificationNum,
             @RequestPart(value="attachment", required=false) MultipartFile attachment,
-            @RequestPart("description") String description ) throws IOException {
+            @RequestPart("description") String reply ) throws IOException {
 
-        if(!this.notificationService.notificationExists(notificationNum)){
-            throw new NotFoundInDb(String.format(NOTFOUNDERROR, notificationNum), "notificationNum");
-        }
-
-        ReplyResponseDto replyToCreate = new ReplyResponseDto();
-        replyToCreate.setDescription(description);
-
-        ReplyViewDto replyCreated = this.notificationService.createReply(notificationNum, jwt, replyToCreate, attachment);
+        ReplyViewDto replyCreated = this.notificationService.createReply(notificationNum, jwt, reply, attachment);
 
         return new ResponseEntity<>(replyCreated, HttpStatus.OK);
     }

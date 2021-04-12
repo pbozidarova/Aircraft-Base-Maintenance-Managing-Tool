@@ -28,10 +28,10 @@ public interface NotificationService {
     NotificationEntity findByNotificationNum(String notificationNum);
     Boolean notificationExists(String notificationNum);
     Integer openNotificationsOfLoggedInUser(String jwt);
-    NotificationViewDto updateNotification(NotificationViewDto notificationViewDto);
+    NotificationViewDto updateNotification(String notificationNum, NotificationViewDto notificationViewDto);
     NotificationViewDto createNotification(NotificationViewDto notificationViewDto, String token);
 
     List<ReplyViewDto> getCommunication(String notificationNum);
 
-    ReplyViewDto createReply(String notificationNum, String jwt, ReplyResponseDto reply, MultipartFile attachment) throws IOException;
+    ReplyViewDto createReply(String notificationNum, String jwt, String reply, MultipartFile attachment) throws IOException;
 }
