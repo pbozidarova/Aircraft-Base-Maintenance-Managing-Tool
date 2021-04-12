@@ -177,15 +177,15 @@ public class UserServiceImplTest {
         Assertions.assertEquals(2, testService.findAll().size());
     }
 
-    @Test
-    void saveUserTest(){
-        Mockito.when(mockedUserRepository.saveAndFlush(existingUser))
-                .thenReturn(existingUser);
+//    @Test
+//    void saveUserTest(){
+//        Mockito.when(mockedUserRepository.saveAndFlush(existingUser))
+//                .thenReturn(existingUser);
 
-        testService.saveUser(existingUser);
+    //    testService.saveUser(existingUser);
 
 //        Assertions.assertEquals(1, mockedUserRepository.count());
-    }
+  //  }
 
 
 }

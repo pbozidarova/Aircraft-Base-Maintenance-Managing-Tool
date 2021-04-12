@@ -64,7 +64,7 @@ public class MaintenanceServiceImpl implements MaintenanceService {
         String companyNum = maintenanceDataForUpdate.getResponsibleEngineer().split(" - ")[0];
 
         //VALIDATE SELECT FIELDS!
-        userValidationService.validateIfUserExist(companyNum);
+        userValidationService.validateIfUserExists(companyNum);
         facilityValidationService.validateIfFacilityExists(maintenanceDataForUpdate.getFacility());
         aircraftValidationService.validateIfAircraftExists(maintenanceDataForUpdate.getAircraftRegistration());
 
@@ -95,7 +95,7 @@ public class MaintenanceServiceImpl implements MaintenanceService {
         String companyNum = maintenanceNew.getResponsibleEngineer().split(" - ")[0];
 
         //VALIDATE SELECT FIELDS!
-        userValidationService.validateIfUserExist(companyNum);
+        userValidationService.validateIfUserExists(companyNum);
         facilityValidationService.validateIfFacilityExists(maintenanceNew.getFacility());
         aircraftValidationService.validateIfAircraftExists(maintenanceNew.getAircraftRegistration());
 

@@ -9,6 +9,8 @@ import managing.tool.exception.NotFoundInDb;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
+
 import static managing.tool.constants.GlobalConstants.NOTFOUND_SELECT_ERROR;
 
 @Service
@@ -19,8 +21,7 @@ public class UserValidationServiceImpl implements UserValidationService {
 
 
     @Override
-    public void validateIfUserExist(String companyNumOfManager) {
-        System.out.println(companyNumOfManager);
+    public void validateIfUserExists(String companyNumOfManager) {
         if(!this.userService.userExists(companyNumOfManager)){
             throw new NotFoundInDb(
                     String.format(NOTFOUND_SELECT_ERROR, companyNumOfManager, "employee from the list!"),
@@ -34,7 +35,7 @@ public class UserValidationServiceImpl implements UserValidationService {
         Arrays.stream(roles.split(", "))
                 .forEach(role -> {
                     System.out.println(role);
-                    if(!this.roleService.roleExists(RoleEnum.valueOf(role))){
+                    if(!this.roleService.roleExists(role)){
                         throw new NotFoundInDb(
                                 String.format(NOTFOUND_SELECT_ERROR, role, "role"),
                                 "role"

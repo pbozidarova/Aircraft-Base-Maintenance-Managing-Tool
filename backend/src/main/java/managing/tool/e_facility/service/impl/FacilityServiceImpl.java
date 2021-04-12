@@ -36,7 +36,7 @@ public class FacilityServiceImpl implements FacilityService {
         }
 
         String companyNumOfManager = this.serviceUtil.companyNumFromUserString(facilityDataForUpdate.getManager());
-        userValidationService.validateIfUserExist(companyNumOfManager);
+        userValidationService.validateIfUserExists(companyNumOfManager);
 
         FacilityEntity facilityToBeUpdated = this.modelMapper.map(facilityDataForUpdate, FacilityEntity.class);
         FacilityEntity facilityExisting = this.facilityRepository.findByName(facilityDataForUpdate.getName());
@@ -57,7 +57,7 @@ public class FacilityServiceImpl implements FacilityService {
         }
         //VALIDATE SELECT FIELD
         String companyNumOfManager = this.serviceUtil.companyNumFromUserString(facilityNew.getManager());
-        userValidationService.validateIfUserExist(companyNumOfManager);
+        userValidationService.validateIfUserExists(companyNumOfManager);
 
         FacilityEntity facilityToBeCreated = this.modelMapper.map(facilityNew, FacilityEntity.class);
 

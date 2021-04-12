@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -22,13 +24,14 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public RoleEntity findByName(RoleEnum role) {
-        return this.roleRepository.findByName(role);
+    public RoleEntity findByName(String role) {
+        return this.roleRepository.findByName(RoleEnum.valueOf(role));
     }
 
     @Override
-    public Boolean roleExists(RoleEnum role) {
-        return this.findByName(role) != null;
+    public Boolean roleExists(String role) {
+        return Arrays.stream(RoleEnum.values()).anyMatch(roleEnum -> roleEnum.toString().equals(role));
+//        return this.findByName(role) != null;
     }
 
 

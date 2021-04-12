@@ -27,11 +27,11 @@ public class RoleServiceImplTest {
 
     @Test
     public void findByNameTest(){
-        RoleEnum roleEnum = RoleEnum.valueOf("ADMIN");
+        String roleEnum = "ADMIN";
         RoleEntity role = new RoleEntity();
-        role.setName(roleEnum);
+        role.setName(RoleEnum.valueOf(roleEnum));
 
-        Mockito.when(mockedRoleRepository.findByName(roleEnum))
+        Mockito.when(mockedRoleRepository.findByName(RoleEnum.valueOf(roleEnum)))
                 .thenReturn(role);
 
         RoleEntity roleEntityFound = testService.findByName(roleEnum);
@@ -41,13 +41,10 @@ public class RoleServiceImplTest {
 
     @Test
     public void roleExistsTest(){
-        RoleEnum roleEnum = RoleEnum.valueOf("ADMIN");
-        RoleEntity role = new RoleEntity();
-        role.setName(roleEnum);
+        String roleExisting = "ADMIN";
+        String roleNotExisting = "MADE_UP";
 
-        Mockito.when(mockedRoleRepository.findByName(roleEnum))
-                .thenReturn(role);
-
-        Assertions.assertTrue(this.testService.roleExists(roleEnum));
+        Assertions.assertTrue(this.testService.roleExists(roleExisting));
+        Assertions.assertFalse(this.testService.roleExists(roleNotExisting));
     }
 }

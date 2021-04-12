@@ -40,7 +40,6 @@ public class UserCreateUpdateServiceImpl implements UserCreateUpdateService {
     private final UserValidationService userValidationService;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
-    private final ServiceUtil serviceUtil;
 
     @Override
     public UserViewDto updateUser(String companyNum, UserViewDto userRequestUpdateData) {
@@ -101,7 +100,7 @@ public class UserCreateUpdateServiceImpl implements UserCreateUpdateService {
         Arrays.stream(rolesString.split(", "))
                 .forEach( r -> {
                     RoleEntity role = this.roleService
-                            .findByName(RoleEnum.valueOf(r));
+                            .findByName(r);
                     roleSet.add(role);
                 });
 

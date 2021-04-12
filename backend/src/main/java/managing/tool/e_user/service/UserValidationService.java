@@ -4,6 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 public interface UserValidationService {
-    void validateIfUserExist(String companyNumOfManager);
+    void validateIfUserExists(String companyNumOfManager);
     void validateIfRolesExist(String roles);
 }

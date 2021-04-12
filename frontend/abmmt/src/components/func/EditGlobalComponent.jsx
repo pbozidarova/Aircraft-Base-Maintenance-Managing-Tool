@@ -116,7 +116,6 @@ class EditGlobalComponent extends Component {
                         error={isError(key)}
                         helperText={errors[key]}/>
                   )}
-                
               />
             )    
         })}

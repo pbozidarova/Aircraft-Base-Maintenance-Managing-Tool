@@ -32,8 +32,8 @@ public class UserSeedServiceImpl implements UserSeedService {
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
-    private final Random random;
-    private final FacilitySeedService facilitySeedService;
+//    private final Random random;
+//    private final FacilitySeedService facilitySeedService;
 
     @Override
     public void seedUsers() throws FileNotFoundException {
@@ -45,14 +45,12 @@ public class UserSeedServiceImpl implements UserSeedService {
         UserSeedDto[] dtos = this.gson
                 .fromJson(new FileReader(USERS_MOCK_DATA_PATH), UserSeedDto[].class);
 
-        System.out.println();
-
         Arrays.stream(dtos)
                 .forEach(uDto -> {
                     UserEntity user = this.modelMapper.map(uDto, UserEntity.class);
                     //TODO randomly allocate ADMIN or USER and ENG or MECH
 
-                    RoleEntity role = this.roleService.findByName(RoleEnum.valueOf(uDto.getRole().toUpperCase()));
+                    RoleEntity role = this.roleService.findByName(uDto.getRole().toUpperCase());
                     Set<RoleEntity> roleSet = new HashSet<>();
                     roleSet.add(role);
                     user.setRoles(roleSet);
@@ -68,7 +66,5 @@ public class UserSeedServiceImpl implements UserSeedService {
     public boolean userAreImported() {
         return this.userRepository.count() > 0;
     }
-
-
 
 }
