@@ -26,7 +26,6 @@ public class UserServiceImpl implements UserService {
 
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
-
     private final Random random;
 
 
@@ -34,18 +33,6 @@ public class UserServiceImpl implements UserService {
     public UserViewDto findUser(String companyNum) {
         UserEntity userEntity = this.userRepository.findByCompanyNum(companyNum);
         return this.buildUserVMRelationalStrings(userEntity);
-
-//        UserViewDto userView = this.modelMapper.map(userEntity, UserViewDto.class);
-
-//
-//        userView.setFacility(userEntity.getFacility().getName());
-//
-//        userView.setRoles( userView
-//                .getRoles()
-//                .replace("[", "")
-//                .replace("]", "")
-//        );
-//        return userView;
     }
 
 
@@ -65,6 +52,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserViewDto> findAllUsers() {
+
         return this.userRepository.findAll()
                 .stream()
                 .map(this::buildUserVMRelationalStrings)
@@ -79,7 +67,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean userExists(String companyNum) {
-
         return this.findByCompanyNum(companyNum) != null;
     }
 
