@@ -31,14 +31,8 @@ public class TaskCUDController {
 //            @AuthenticationPrincipal UserDetails principal,
             @PathVariable String taskNum, @RequestBody TaskRequestDto taskDataForUpdate ) throws NotFoundInDb {
 
-//        System.out.println(principal.getUsername());
-
-        if(!this.taskService.taskExists(taskNum)){
-            throw new NotFoundInDb(String.format(NOTFOUNDERROR, taskNum), "taskNum");
-        }
-
         this.taskService.evictCachedTasks();
-        TaskViewDto taskUpdated = this.taskService.updateTask(taskDataForUpdate, jwt);
+        TaskViewDto taskUpdated = this.taskService.updateTask(taskNum, taskDataForUpdate, jwt);
 
         return new ResponseEntity<>(taskUpdated, HttpStatus.OK);
     }
@@ -49,12 +43,8 @@ public class TaskCUDController {
             @RequestHeader("authorization") String jwt,
             @PathVariable String taskNum, @RequestBody TaskRequestDto taskNew ) throws FoundInDb {
 
-        if(this.taskService.taskExists(taskNum)){
-            throw new FoundInDb(String.format(FOUNDERROR, taskNum), "taskNum");
-        }
-
         this.taskService.evictCachedTasks();
-        TaskViewDto task = this.taskService.createTask(taskNew, jwt);
+        TaskViewDto task = this.taskService.createTask(taskNum, taskNew, jwt);
 
         return new ResponseEntity<>(task, HttpStatus.OK);
     }

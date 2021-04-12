@@ -11,6 +11,8 @@ import managing.tool.e_task.repository.TaskRepository;
 import managing.tool.e_task.service.TaskService;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
+import managing.tool.exception.FoundInDb;
+import managing.tool.exception.NotFoundInDb;
 import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
@@ -21,6 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static managing.tool.constants.GlobalConstants.FOUNDERROR;
+import static managing.tool.constants.GlobalConstants.NOTFOUNDERROR;
 
 @Service
 @AllArgsConstructor
@@ -109,7 +114,6 @@ public class TaskServiceImpl implements TaskService {
     }
 
 
-
     @Override
     public Boolean taskExists(String taskNum) {
         return this.findTaskByTaskNumber(taskNum) != null;
@@ -130,11 +134,14 @@ public class TaskServiceImpl implements TaskService {
                 this.taskRepository.findByTaskNum(taskNum),
                 TaskViewDto.class
         );
-
     }
 
     @Override
-    public TaskViewDto updateTask(TaskRequestDto taskDataForUpdate, String token) {
+    public TaskViewDto updateTask(String taskNum, TaskRequestDto taskDataForUpdate, String token) {
+        if(!this.taskExists(taskNum)){
+            throw new NotFoundInDb(String.format(NOTFOUNDERROR, taskNum), "taskNum");
+        }
+
         TaskEntity taskToUpdate = this.modelMapper.map(taskDataForUpdate, TaskEntity.class);
 
         TaskEntity taskExisting = this.taskRepository.findByTaskNum(taskDataForUpdate.getTaskNum());
@@ -149,7 +156,11 @@ public class TaskServiceImpl implements TaskService {
 
 
     @Override
-    public TaskViewDto createTask(TaskRequestDto taskNew, String token) {
+    public TaskViewDto createTask(String taskNum, TaskRequestDto taskNew, String token) {
+        if(this.taskExists(taskNum)){
+            throw new FoundInDb(String.format(FOUNDERROR, taskNum), "taskNum");
+        }
+
         TaskEntity taskToCreate = this.modelMapper.map(taskNew, TaskEntity.class);
 
         Set<UserEntity> creatingTeam = preparingTeam(new HashSet<>(), token);

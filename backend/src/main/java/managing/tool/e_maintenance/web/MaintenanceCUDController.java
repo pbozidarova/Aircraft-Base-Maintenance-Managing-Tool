@@ -35,12 +35,8 @@ public class MaintenanceCUDController {
             @RequestHeader("authorization") String jwt,
             @PathVariable String maintenanceNum, @RequestBody MaintenanceRequestDto maintenanceDataForUpdate ) throws NotFoundInDb {
 
-        if(!this.maintenanceService.maintenanceExists(maintenanceNum)){
-            throw new NotFoundInDb(String.format(NOTFOUNDERROR, maintenanceNum), "taskNum");
-        }
-
         this.maintenanceService.evictCachedMaintenance();
-        MaintenanceViewDto maintenanceUpdated = this.maintenanceService.updateMaintenance(maintenanceDataForUpdate, jwt);
+        MaintenanceViewDto maintenanceUpdated = this.maintenanceService.updateMaintenance(maintenanceNum, maintenanceDataForUpdate, jwt);
 
         return new ResponseEntity<>(maintenanceUpdated, HttpStatus.OK);
     }
@@ -52,13 +48,10 @@ public class MaintenanceCUDController {
             @RequestHeader("authorization") String jwt,
             @PathVariable String maintenanceNum, @RequestBody MaintenanceRequestDto maintenanceNew ) throws FoundInDb {
 
-        if(this.maintenanceService.maintenanceExists(maintenanceNum)){
-            throw new FoundInDb(String.format(FOUNDERROR, maintenanceNum), "maintenanceNum");
-        }
         this.maintenanceService.evictCachedMaintenance();
-
         publisher.publishEvent(maintenanceNum);
-        MaintenanceViewDto maintenanceCreated = this.maintenanceService.createMaintenance(maintenanceNew, jwt);
+
+        MaintenanceViewDto maintenanceCreated = this.maintenanceService.createMaintenance(maintenanceNum, maintenanceNew, jwt);
 
         return new ResponseEntity<>(maintenanceCreated, HttpStatus.OK);
     }

@@ -2,8 +2,10 @@ package managing.tool.e_maintenance.service.impl;
 
 import lombok.AllArgsConstructor;
 import managing.tool.e_aircraft.service.AircraftService;
+import managing.tool.e_aircraft.service.AircraftValidationService;
 import managing.tool.e_facility.model.FacilityEntity;
 import managing.tool.e_facility.service.FacilityService;
+import managing.tool.e_facility.service.FacilityValidationService;
 import managing.tool.e_maintenance.model.MaintenanceEntity;
 import managing.tool.e_maintenance.model.MaintenanceStatusEnum;
 import managing.tool.e_maintenance.model.dto.MaintenanceRequestDto;
@@ -14,6 +16,9 @@ import managing.tool.e_task.model.TaskEntity;
 import managing.tool.e_task.service.TaskSeedService;
 import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
+import managing.tool.e_user.service.UserValidationService;
+import managing.tool.exception.FoundInDb;
+import managing.tool.exception.NotFoundInDb;
 import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -29,6 +34,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static managing.tool.constants.GlobalConstants.FOUNDERROR;
+import static managing.tool.constants.GlobalConstants.NOTFOUNDERROR;
+
 @Transactional
 @Service
 @AllArgsConstructor
@@ -39,6 +47,9 @@ public class MaintenanceServiceImpl implements MaintenanceService {
     private final UserService userService;
     private final AircraftService aircraftService;
     private final FacilityService facilityService;
+    private final FacilityValidationService facilityValidationService;
+    private final UserValidationService userValidationService;
+    private final AircraftValidationService aircraftValidationService;
     private final ServiceUtil serviceUtil;
     private final Random random;
 
@@ -46,13 +57,23 @@ public class MaintenanceServiceImpl implements MaintenanceService {
 
 
     @Override
-    public MaintenanceViewDto updateMaintenance(MaintenanceRequestDto maintenanceDataForUpdate, String jwt) {
+    public MaintenanceViewDto updateMaintenance(String maintenanceNum, MaintenanceRequestDto maintenanceDataForUpdate, String jwt) {
+        if(!this.maintenanceExists(maintenanceNum)){
+            throw new NotFoundInDb(String.format(NOTFOUNDERROR, maintenanceNum), "taskNum");
+        }
+        String companyNum = maintenanceDataForUpdate.getResponsibleEngineer().split(" - ")[0];
+
+        //VALIDATE SELECT FIELDS!
+        userValidationService.validateIfUserExist(companyNum);
+        facilityValidationService.validateIfFacilityExists(maintenanceDataForUpdate.getFacility());
+        aircraftValidationService.validateIfAircraftExists(maintenanceDataForUpdate.getAircraftRegistration());
+
         MaintenanceEntity maintenanceToUpdate = this.modelMapper.map(maintenanceDataForUpdate, MaintenanceEntity.class);
 
         MaintenanceEntity maintenanceExisting = this.maintenanceRepository
                 .findByMaintenanceNum(maintenanceDataForUpdate.getMaintenanceNum());
         UserEntity responsibleEngineer = this.userService
-                .findByCompanyNum(maintenanceDataForUpdate.getResponsibleEngineer().split(" - ")[0]);
+                .findByCompanyNum(companyNum);
 
         maintenanceToUpdate
                 .setAircraft(this.aircraftService.getAircraftByRegistration(maintenanceDataForUpdate.getAircraftRegistration()))
@@ -67,11 +88,21 @@ public class MaintenanceServiceImpl implements MaintenanceService {
 
     @Transactional
     @Override
-    public MaintenanceViewDto createMaintenance(MaintenanceRequestDto maintenanceNew, String jwt) {
+    public MaintenanceViewDto createMaintenance(String maintenanceNum, MaintenanceRequestDto maintenanceNew, String jwt) {
+        if(this.maintenanceExists(maintenanceNum)){
+            throw new FoundInDb(String.format(FOUNDERROR, maintenanceNum), "maintenanceNum");
+        }
+        String companyNum = maintenanceNew.getResponsibleEngineer().split(" - ")[0];
+
+        //VALIDATE SELECT FIELDS!
+        userValidationService.validateIfUserExist(companyNum);
+        facilityValidationService.validateIfFacilityExists(maintenanceNew.getFacility());
+        aircraftValidationService.validateIfAircraftExists(maintenanceNew.getAircraftRegistration());
+
         MaintenanceEntity maintenanceToCreate = this.modelMapper.map(maintenanceNew, MaintenanceEntity.class);
 
         UserEntity responsibleEngineer = this.userService
-                .findByCompanyNum(maintenanceNew.getResponsibleEngineer().split(" - ")[0]);
+                .findByCompanyNum(companyNum);
 
         maintenanceToCreate
                 .setAircraft(this.aircraftService.getAircraftByRegistration(maintenanceNew.getAircraftRegistration()))

@@ -7,8 +7,8 @@ import managing.tool.e_maintenance.model.dto.MaintenanceViewDto;
 import java.util.List;
 
 public interface MaintenanceService {
-    MaintenanceViewDto updateMaintenance(MaintenanceRequestDto maintenanceDataForUpdate, String jwt);
-    MaintenanceViewDto createMaintenance(MaintenanceRequestDto maintenanceNew, String jwt);
+    MaintenanceViewDto updateMaintenance(String maintenanceNum, MaintenanceRequestDto maintenanceDataForUpdate, String jwt);
+    MaintenanceViewDto createMaintenance(String maintenanceNum, MaintenanceRequestDto maintenanceNew, String jwt);
     void allocateRandomTasksToMaintenance(String maintenanceNum);
     void recalculateMaintenanceStatus();
 

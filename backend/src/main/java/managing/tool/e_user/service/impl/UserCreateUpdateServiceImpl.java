@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import managing.tool.constants.GlobalConstants;
 import managing.tool.e_facility.model.FacilityEntity;
 import managing.tool.e_facility.service.FacilityService;
+import managing.tool.e_facility.service.FacilityValidationService;
 import managing.tool.e_user.model.RoleEntity;
 import managing.tool.e_user.model.RoleEnum;
 import managing.tool.e_user.model.UserEntity;
@@ -12,8 +13,10 @@ import managing.tool.e_user.repository.UserRepository;
 import managing.tool.e_user.service.RoleService;
 import managing.tool.e_user.service.UserCreateUpdateService;
 import managing.tool.e_user.service.UserService;
+import managing.tool.e_user.service.UserValidationService;
 import managing.tool.exception.FoundInDb;
 import managing.tool.exception.NotFoundInDb;
+import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,8 +36,11 @@ public class UserCreateUpdateServiceImpl implements UserCreateUpdateService {
     private final UserRepository userRepository;
     private final UserService userService;
     private final FacilityService facilityService;
+    private final FacilityValidationService facilityValidationService;
+    private final UserValidationService userValidationService;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+    private final ServiceUtil serviceUtil;
 
     @Override
     public UserViewDto updateUser(String companyNum, UserViewDto userRequestUpdateData) {
@@ -45,9 +51,8 @@ public class UserCreateUpdateServiceImpl implements UserCreateUpdateService {
             throw new FoundInDb(String.format(FOUNDERROR, userRequestUpdateData.getEmail()), "email");
         }
         //SELECT FIELDS VALIDATION
-        validateIfFacilityExists(userRequestUpdateData.getFacility());
-        validateIfRolesExist(userRequestUpdateData.getRoles());
-
+        facilityValidationService.validateIfFacilityExists(userRequestUpdateData.getFacility());
+        userValidationService.validateIfRolesExist(userRequestUpdateData.getRoles());
 
         UserEntity userNewData = this.modelMapper.map(userRequestUpdateData, UserEntity.class);
         UserEntity existingUser =  this.userRepository
@@ -76,8 +81,8 @@ public class UserCreateUpdateServiceImpl implements UserCreateUpdateService {
         }
 
         //SELECT FIELDS VALIDATION
-        validateIfFacilityExists(userRequestCreateData.getFacility());
-        validateIfRolesExist(userRequestCreateData.getRoles());
+        facilityValidationService.validateIfFacilityExists(userRequestCreateData.getFacility());
+        userValidationService.validateIfRolesExist(userRequestCreateData.getRoles());
 
         UserEntity user =  this.modelMapper.map(userRequestCreateData, UserEntity.class );
 
@@ -103,28 +108,7 @@ public class UserCreateUpdateServiceImpl implements UserCreateUpdateService {
         user.setRoles(roleSet);
     }
 
-    private void validateIfRolesExist(String roles){
-        Arrays.stream(roles.split(", "))
-                .forEach(role -> {
-                    System.out.println(role);
-                    if(!this.roleService.roleExists(RoleEnum.valueOf(role))){
-                        throw new NotFoundInDb(
-                                String.format(NOTFOUND_SELECT_ERROR, role, "role"),
-                                "role"
-                        );
-                    }
-                });
 
-    }
-
-    private void validateIfFacilityExists(String facility) {
-        if(!this.facilityService.facilityExists(facility)){
-            throw new NotFoundInDb(
-                    String.format(NOTFOUND_SELECT_ERROR, facility, "facility"),
-                    "facility"
-            );
-        }
-    }
 
 
 

@@ -93,12 +93,12 @@ class MaintenanceComponent extends Component {
         
         this.setState({ errors: 
              { 
-                maintenanceNum:  selected.maintenanceNum.length == 7 ? '' : "The maintenance number length must equal 7 numbers." ,
-                facility: selected.facility.length > 2 ? '' : "Please select a facility!",
-                aircraftRegistration: selected.aircraftRegistration.length > 2 ? '' : "Please select an aircraft!",
-                responsibleEngineer: selected.responsibleEngineer.length > 2 ? '' : "Please select a responsibleEngineer!",
-                startDate: selected.startDate.length > 2 && Date.parse(selected.startDate) < Date.parse(selected.endDate) ? '' : "The date is mandatory and it must be lower than the end data!",
-                endDate: selected.endDate.length > 2 && Date.parse(selected.startDate) < Date.parse(selected.endDate) ? '' : "The date is mandatory and it must be bigger than the start data!",  
+                maintenanceNum:  selected.maintenanceNum && selected.maintenanceNum.length == 7 ? '' : "The maintenance number length must equal 7 numbers." ,
+                facility: selected.facility && selected.facility.length > 2 ? '' : "Please select a facility!",
+                aircraftRegistration: selected.aircraftRegistration && selected.aircraftRegistration.length > 2 ? '' : "Please select an aircraft!",
+                responsibleEngineer: selected.responsibleEngineer && selected.responsibleEngineer.length > 2 ? '' : "Please select a responsibleEngineer!",
+                startDate: selected.startDate && selected.startDate.length > 2 && Date.parse(selected.startDate) < Date.parse(selected.endDate) ? '' : "The date is mandatory and it must be lower than the end data!",
+                endDate: selected.endDate && selected.endDate.length > 2 && Date.parse(selected.startDate) < Date.parse(selected.endDate) ? '' : "The date is mandatory and it must be bigger than the start data!",  
              }
         }, () => submit(this.state.errors, 
                         "maintenance", 

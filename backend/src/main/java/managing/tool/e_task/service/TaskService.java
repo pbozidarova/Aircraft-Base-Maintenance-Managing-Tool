@@ -10,8 +10,8 @@ import java.util.List;
 public interface TaskService {
 
     TaskViewDto findTask(String taskNum);
-    TaskViewDto updateTask(TaskRequestDto taskViewDto, String jwt);
-    TaskViewDto createTask(TaskRequestDto taskViewDto, String jwt);
+    TaskViewDto updateTask(String taskNum, TaskRequestDto taskViewDto, String jwt);
+    TaskViewDto createTask(String taskNum, TaskRequestDto taskViewDto, String jwt);
 
     List<TaskViewDto> findAllTasks();
 

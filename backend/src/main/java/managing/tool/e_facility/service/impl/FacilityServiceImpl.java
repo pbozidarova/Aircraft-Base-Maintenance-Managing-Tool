@@ -1,29 +1,20 @@
 package managing.tool.e_facility.service.impl;
 
-import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
-import managing.tool.constants.GlobalConstants;
-import managing.tool.e_facility.model.dto.FacilitySeedDto;
 import managing.tool.e_facility.model.FacilityEntity;
 import managing.tool.e_facility.model.dto.FacilityViewDto;
 import managing.tool.e_facility.service.FacilityService;
-import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_facility.repository.FacilityRepository;
 import managing.tool.e_user.model.dto.UserViewDto;
-import managing.tool.e_user.repository.UserRepository;
 import managing.tool.e_user.service.UserService;
+import managing.tool.e_user.service.UserValidationService;
 import managing.tool.exception.FoundInDb;
 import managing.tool.exception.NotFoundInDb;
 import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +26,7 @@ public class FacilityServiceImpl implements FacilityService {
     private final FacilityRepository facilityRepository;
     private final ModelMapper modelMapper;
     private final UserService userService;
+    private final UserValidationService userValidationService;
     private final ServiceUtil serviceUtil;
 
     @Override
@@ -44,7 +36,7 @@ public class FacilityServiceImpl implements FacilityService {
         }
 
         String companyNumOfManager = this.serviceUtil.companyNumFromUserString(facilityDataForUpdate.getManager());
-        validateIfManagerExist(companyNumOfManager);
+        userValidationService.validateIfUserExist(companyNumOfManager);
 
         FacilityEntity facilityToBeUpdated = this.modelMapper.map(facilityDataForUpdate, FacilityEntity.class);
         FacilityEntity facilityExisting = this.facilityRepository.findByName(facilityDataForUpdate.getName());
@@ -63,8 +55,9 @@ public class FacilityServiceImpl implements FacilityService {
         if(this.facilityExists(name)){
             throw new FoundInDb(String.format(FOUNDERROR, name), "name");
         }
+        //VALIDATE SELECT FIELD
         String companyNumOfManager = this.serviceUtil.companyNumFromUserString(facilityNew.getManager());
-        validateIfManagerExist(companyNumOfManager);
+        userValidationService.validateIfUserExist(companyNumOfManager);
 
         FacilityEntity facilityToBeCreated = this.modelMapper.map(facilityNew, FacilityEntity.class);
 
@@ -122,14 +115,6 @@ public class FacilityServiceImpl implements FacilityService {
         return this.facilityRepository.findByName(name) != null ;
     }
 
-    private void validateIfManagerExist(String companyNumOfManager) {
-        if(!this.userService.userExists(companyNumOfManager)){
-            throw new NotFoundInDb(
-                    String.format(NOTFOUND_SELECT_ERROR, companyNumOfManager, "employee from the manager's list!"),
-                    "companyNumOfManager"
-            );
-        }
-    }
 
 
 }
