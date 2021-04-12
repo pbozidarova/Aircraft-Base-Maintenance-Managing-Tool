@@ -38,7 +38,7 @@ public class UserDetailsServiceImplTest {
     }
 
     @Test
-    public void noSuchUser(){
+    void noSuchUser(){
         Assertions.assertThrows(
                 UsernameNotFoundException.class, () -> {
                     testService.loadUserByUsername("throw_error_user");
@@ -79,7 +79,5 @@ public class UserDetailsServiceImplTest {
 
         Assertions.assertTrue(authorities.contains("ROLE_ADMIN"));
         Assertions.assertTrue(authorities.contains("ROLE_ENGINEER"));
-
-
     }
 }
