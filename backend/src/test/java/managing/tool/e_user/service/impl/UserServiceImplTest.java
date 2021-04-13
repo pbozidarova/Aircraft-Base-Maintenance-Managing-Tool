@@ -21,18 +21,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.*;
 
+import static managing.tool.e_user.service.impl.UserMockValues.*;
+
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTest {
-    private final String JWT_STRING = "jwt";
-    private final String VALID_COMPANY_NUM = "N20202";
-    private final String VALID_COMPANY_NUM2 = "N20203";
-    private final String VALID_EMAIL = "p@email.com";
-    private final String VALID_PASSWORD = "1234";
-    private final String VALID_USER_FIRST_NAME = "Petya";
-    private final String VALID_USER_FIRST_NAME2 = "Aleks";
-    private final String ADMIN_STRING = "ADMIN";
-    private final String ENGINEER_STRING = "ENGINEER";
-    private final String FACILITY_NAME = "Facility";
 
     private UserServiceImpl testService;
     private UserEntity existingUser;
@@ -70,6 +62,7 @@ public class UserServiceImplTest {
                 .setFacility(facilityEntity)
                 .setEmail(VALID_EMAIL)
                 .setFirstName(VALID_USER_FIRST_NAME)
+                .setLastName(VALID_USER_LAST_NAME)
                 .setId(1L);
 
         this.userView = new UserViewDto();
@@ -105,7 +98,7 @@ public class UserServiceImplTest {
 
         Assertions.assertEquals(testService.findUser(VALID_COMPANY_NUM).getFirstName(), VALID_USER_FIRST_NAME);
         Assertions.assertTrue(testService.findUser(VALID_COMPANY_NUM).getRoles().contains(ADMIN_STRING));
-        Assertions.assertTrue(testService.findUser(VALID_COMPANY_NUM2).getRoles().contains(ENGINEER_STRING));
+        Assertions.assertTrue(testService.findUser(VALID_COMPANY_NUM).getRoles().contains(ENGINEER_STRING));
 
     }
 
@@ -220,6 +213,15 @@ public class UserServiceImplTest {
                 .identifyingUserFromToken(JWT_STRING)
                 .getCompanyNum()
                 .equals(VALID_COMPANY_NUM));
+    }
+
+    @Test
+    void userViewStringBuildTest(){
+        Assertions.assertTrue(testService.userViewStringBuild(existingUser)
+                                .equals(String.format("%s - %s, %s"
+                                        ,existingUser.getCompanyNum(),
+                                        existingUser.getLastName(),
+                                        existingUser.getFirstName())));
     }
 
     @Test
