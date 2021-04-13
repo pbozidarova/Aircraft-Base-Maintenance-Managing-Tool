@@ -25,10 +25,9 @@ public class AircraftServiceImplTest {
 
 
     private AircraftServiceImpl testService;
-    private AircraftEntity aircraftEx;
+    private AircraftEntity aircraftExisting;
     private AircraftEntity aircraftToBeSaved;
     private AircraftViewDto aircraftRequestData;
-    private String jwt;
 
     @Mock
     AircraftRepository mockedAircraftRepository;
@@ -39,8 +38,8 @@ public class AircraftServiceImplTest {
     void setUp(){
         testService = new AircraftServiceImpl(mockedAircraftRepository, mockedModelMapper);
 
-        aircraftEx = new AircraftEntity();
-        aircraftEx.setAircraftRegistration(VALID_REGISTRATION)
+        aircraftExisting = new AircraftEntity();
+        aircraftExisting.setAircraftRegistration(VALID_REGISTRATION)
                     .setSerialNumber(SERIAL_NUMBER)
                     .setId(1L);
 
@@ -51,26 +50,25 @@ public class AircraftServiceImplTest {
 
         aircraftRequestData = new AircraftViewDto();
         aircraftRequestData.setAircraftRegistration(VALID_REGISTRATION);
-        jwt = JWT_STRING;
     }
 
     @Test
     void findAllTest(){
-        Mockito.when(mockedAircraftRepository.findAll()).thenReturn(List.of(aircraftEx));
+        Mockito.when(mockedAircraftRepository.findAll()).thenReturn(List.of(aircraftExisting));
 
         Assertions.assertEquals(1, testService.findAll().size());
     }
 
     @Test
     void getAircraftByRegistrationTest(){
-        Mockito.when(mockedAircraftRepository.findByAircraftRegistration(VALID_REGISTRATION)).thenReturn(aircraftEx);
+        Mockito.when(mockedAircraftRepository.findByAircraftRegistration(VALID_REGISTRATION)).thenReturn(aircraftExisting);
 
         Assertions.assertEquals(SERIAL_NUMBER, testService.getAircraftByRegistration(VALID_REGISTRATION).getSerialNumber());
     }
 
     @Test
     void aircraftExistsTest(){
-        Mockito.when(mockedAircraftRepository.findByAircraftRegistration(VALID_REGISTRATION)).thenReturn(aircraftEx);
+        Mockito.when(mockedAircraftRepository.findByAircraftRegistration(VALID_REGISTRATION)).thenReturn(aircraftExisting);
 
         Assertions.assertTrue(testService.aircraftExists(VALID_REGISTRATION));
     }
@@ -79,19 +77,19 @@ public class AircraftServiceImplTest {
     void noSuchAircraft(){
         Assertions.assertThrows(
                  NotFoundInDb.class, () -> {
-                    testService.updateAircraft(INVALID_REGISTRATION, aircraftRequestData, jwt);
+                    testService.updateAircraft(INVALID_REGISTRATION, aircraftRequestData, JWT_STRING);
                 });
     }
 
     @Test
     void updateAircraftTest(){
-        Mockito.when(mockedAircraftRepository.findByAircraftRegistration(VALID_REGISTRATION)).thenReturn(aircraftEx);
+        Mockito.when(mockedAircraftRepository.findByAircraftRegistration(VALID_REGISTRATION)).thenReturn(aircraftExisting);
 
         Mockito.when(mockedModelMapper.map(aircraftRequestData, AircraftEntity.class)).thenReturn(aircraftToBeSaved);
         Mockito.when(mockedModelMapper.map(aircraftToBeSaved, AircraftViewDto.class)).thenReturn(aircraftRequestData);
 
         Mockito.when(mockedAircraftRepository.save(aircraftToBeSaved)).thenReturn(aircraftToBeSaved);
-        AircraftViewDto aircraftUpdated = testService.updateAircraft(VALID_REGISTRATION, aircraftRequestData, jwt);
+        AircraftViewDto aircraftUpdated = testService.updateAircraft(VALID_REGISTRATION, aircraftRequestData, JWT_STRING);
 
         Assertions.assertEquals(aircraftUpdated.getAircraftRegistration(), aircraftToBeSaved.getAircraftRegistration());
     }
@@ -99,11 +97,11 @@ public class AircraftServiceImplTest {
 
     @Test
     void aircraftAlreadyExists(){
-        Mockito.when(mockedAircraftRepository.findByAircraftRegistration(VALID_REGISTRATION)).thenReturn(aircraftEx);
+        Mockito.when(mockedAircraftRepository.findByAircraftRegistration(VALID_REGISTRATION)).thenReturn(aircraftExisting);
 
         Assertions.assertThrows(
                 FoundInDb.class, () -> {
-                    testService.createAircraft(VALID_REGISTRATION, aircraftRequestData, jwt);
+                    testService.createAircraft(VALID_REGISTRATION, aircraftRequestData, JWT_STRING);
                 });
     }
 
@@ -115,9 +113,9 @@ public class AircraftServiceImplTest {
         Mockito.when(mockedAircraftRepository.save(aircraftToBeSaved)).thenReturn(aircraftToBeSaved);
         Mockito.when(mockedModelMapper.map(aircraftToBeSaved, AircraftViewDto.class)).thenReturn(aircraftRequestData);
 
-        AircraftViewDto aircraftCtd = testService.createAircraft(VALID_REGISTRATION, aircraftRequestData, jwt);
+        AircraftViewDto aircraftCreated = testService.createAircraft(VALID_REGISTRATION, aircraftRequestData, JWT_STRING);
 
-        Assertions.assertEquals(aircraftToBeSaved.getAircraftRegistration(), aircraftCtd.getAircraftRegistration());
+        Assertions.assertEquals(aircraftToBeSaved.getAircraftRegistration(), aircraftCreated.getAircraftRegistration());
     }
 
 

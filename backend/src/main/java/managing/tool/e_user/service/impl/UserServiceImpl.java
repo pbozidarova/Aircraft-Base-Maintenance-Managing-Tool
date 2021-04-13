@@ -12,6 +12,7 @@ import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.repository.UserRepository;
 import managing.tool.e_user.service.RoleService;
 import managing.tool.e_user.service.UserService;
+import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,12 +28,12 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
     private final Random random;
-
+    private final ServiceUtil serviceUtil;
 
     @Override
     public UserViewDto findUser(String companyNum) {
         UserEntity userEntity = this.userRepository.findByCompanyNum(companyNum);
-        return this.buildUserVMRelationalStrings(userEntity);
+        return serviceUtil.buildUserVMRelationalStrings(userEntity);
     }
 
 
@@ -55,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
         return this.userRepository.findAll()
                 .stream()
-                .map(this::buildUserVMRelationalStrings)
+                .map(serviceUtil::buildUserVMRelationalStrings)
                 .collect(Collectors.toList());
     }
 
@@ -100,19 +101,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private UserViewDto buildUserVMRelationalStrings(UserEntity u){
-        UserViewDto userView = this.modelMapper.map(u, UserViewDto.class);
 
-        userView.setFacility(u.getFacility().getName());
-
-        userView.setRoles( userView
-                .getRoles()
-                .replace("[", "")
-                .replace("]", "")
-        );
-
-        return userView;
-
-    }
 
 }

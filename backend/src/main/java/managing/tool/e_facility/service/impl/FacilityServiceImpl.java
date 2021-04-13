@@ -73,21 +73,8 @@ public class FacilityServiceImpl implements FacilityService {
         return this.facilityRepository.findByName(name)
                 .getEmployees()
                 .stream()
-                .map(employee -> {
-                    UserViewDto userView = this.modelMapper.map(employee, UserViewDto.class);
-
-                    userView.setFacility(employee.getFacility().getName());
-
-                    userView.setRoles( userView
-                            .getRoles()
-                            .replace("[", "")
-                            .replace("]", "")
-                    );
-                    System.out.println();
-                    return userView;
-                })
+                .map(serviceUtil::buildUserVMRelationalStrings)
                 .collect(Collectors.toList());
-
     }
 
     @Override
