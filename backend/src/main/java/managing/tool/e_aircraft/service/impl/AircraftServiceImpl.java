@@ -9,7 +9,6 @@ import managing.tool.e_aircraft.model.AircraftEntity;
 import managing.tool.e_aircraft.repository.AircraftRepository;
 import managing.tool.exception.FoundInDb;
 import managing.tool.exception.NotFoundInDb;
-import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

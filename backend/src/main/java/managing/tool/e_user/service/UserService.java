@@ -14,6 +14,10 @@ public interface UserService {
     UserViewDto findUser(String companyNum);
 //    UserViewDto updateUser(UserViewDto userViewDto);
 //    UserViewDto createUser(UserViewDto userViewDto);
+    UserViewDto buildUserVMRelationalStrings(UserEntity u);
+    UserEntity identifyingUserFromToken(String token);
+    String userViewStringBuild(UserEntity userEntity);
+    String companyNumFromUserString(String userViewStringBuilt);
 
     Optional<UserDetailsDto> findUserDetails(String companyNum);
 
@@ -28,5 +32,7 @@ public interface UserService {
 
     List<UserEntity> findAll();
     void saveUser(UserEntity user);
+
+
 
 }

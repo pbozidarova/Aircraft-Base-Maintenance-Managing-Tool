@@ -8,7 +8,7 @@ import managing.tool.e_user.model.dto.UserDetailsDto;
 import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.repository.UserRepository;
 import managing.tool.exception.NotFoundInDb;
-import managing.tool.util.ServiceUtil;
+import managing.tool.util.JwtUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,12 +35,11 @@ public class UserServiceImplTest {
     @Mock
     private ModelMapper mockedModelMapper;
     @Mock
-    private ServiceUtil mockedServiceUtil;
-
+    private JwtUtil mockedJwtUtil;
 
     @BeforeEach
     public void setUp(){
-        testService = new UserServiceImpl(mockedModelMapper, mockedUserRepository, mockedRandom, mockedServiceUtil);
+        testService = new UserServiceImpl(mockedModelMapper, mockedUserRepository, mockedRandom, mockedJwtUtil);
 
         this.existingUser = new UserEntity();
         FacilityEntity facilityEntity = new FacilityEntity();
@@ -93,8 +92,6 @@ public class UserServiceImplTest {
         Mockito.when(mockedModelMapper.map(existingUser, UserViewDto.class))
                 .thenReturn(userView);
 
-
-
         Assertions.assertEquals(testService.findUser("N20202").getFirstName(), "Petya");
         Assertions.assertTrue(testService.findUser("N20202").getRoles().contains("ADMIN"));
         Assertions.assertTrue(testService.findUser("N20202").getRoles().contains("ENGINEER"));
@@ -125,10 +122,7 @@ public class UserServiceImplTest {
                 .thenReturn(userView);
         Mockito.when(mockedModelMapper.map(existingUser2, UserViewDto.class))
                 .thenReturn(userView);
-//        Mockito.when(mockedServiceUtil.buildUserVMRelationalStrings(existingUser))
-//                .thenReturn(userView);
-//        Mockito.when(mockedServiceUtil.buildUserVMRelationalStrings(existingUser2))
-//                .thenReturn(userView);
+
         Assertions.assertEquals(2, testService.findAllUsers().size());
     }
 

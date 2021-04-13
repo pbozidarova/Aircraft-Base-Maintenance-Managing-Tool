@@ -22,7 +22,6 @@ import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
 import managing.tool.exception.GlobalUncaughtExceptionAdvice;
 import managing.tool.exception.NotFoundInDb;
-import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +55,6 @@ public class NotificationServiceImpl implements NotificationService {
     private final ReplyService replyService;
     private final Random random;
     private final CloudinaryService cloudinaryService;
-    private final ServiceUtil serviceUtil;
 
     private static Logger LOGGER = LoggerFactory.getLogger(NotificationServiceImpl.class);
 
@@ -154,7 +152,7 @@ public class NotificationServiceImpl implements NotificationService {
         NotificationViewDto notificationViewDto = this.modelMapper.map(notificationEntity, NotificationViewDto.class);
 
         notificationViewDto
-                .setAuthor(this.serviceUtil.userViewStringBuild(notificationEntity.getAuthor()));
+                .setAuthor(this.userService.userViewStringBuild(notificationEntity.getAuthor()));
 
         return notificationViewDto;
     }
@@ -202,7 +200,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public Integer openNotificationsOfLoggedInUser(String token) {
-        UserEntity userEntity = this.serviceUtil.identifyingUserFromToken(token);
+        UserEntity userEntity = this.userService.identifyingUserFromToken(token);
 
         return this.notificationRepository
                 .countNotificationEntitiesByAuthorAndStatus(userEntity, NotificationStatusEnum.OPENED)
@@ -284,7 +282,7 @@ public class NotificationServiceImpl implements NotificationService {
         validateIfTaskExists(notificationNewData.getTaskNum());
 
         NotificationEntity notificationToCreate = new NotificationEntity();
-        UserEntity author = this.serviceUtil.identifyingUserFromToken(token);
+        UserEntity author = this.userService.identifyingUserFromToken(token);
         notificationToCreate.setAuthor(author);
 
         String newNotificationNumber = notificationNumberBuilder(
@@ -308,7 +306,7 @@ public class NotificationServiceImpl implements NotificationService {
                         .map(reply -> {
                             ReplyViewDto replyViewDto = this.modelMapper.map(reply, ReplyViewDto.class);
 
-                            replyViewDto.setAuthor(this.serviceUtil.userViewStringBuild(reply.getAuthor()))
+                            replyViewDto.setAuthor(this.userService.userViewStringBuild(reply.getAuthor()))
                                         .setCreatedOn(reply.getCreatedOn().toString().replace("T", " "))
                                         .setTitle(reply.getAuthor().getRoles().contains(RoleEnum.ADMIN)
                                                             ? RoleEnum.ADMIN.toString()
@@ -327,7 +325,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         String url = cloudinaryService.uploadImage(attachment);
 
-        UserEntity author = this.serviceUtil.identifyingUserFromToken(jwt);
+        UserEntity author = this.userService.identifyingUserFromToken(jwt);
         replyToCreate.setDescription(reply)
                 .setAuthor(author)
                 .setAttachment(url)

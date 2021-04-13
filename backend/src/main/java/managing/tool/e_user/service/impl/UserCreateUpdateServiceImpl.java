@@ -16,7 +16,6 @@ import managing.tool.e_user.service.UserService;
 import managing.tool.e_user.service.UserValidationService;
 import managing.tool.exception.FoundInDb;
 import managing.tool.exception.NotFoundInDb;
-import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

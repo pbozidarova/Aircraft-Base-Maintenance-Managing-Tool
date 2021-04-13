@@ -33,31 +33,36 @@ public class TaskSeedServiceImpl implements TaskSeedService {
     private final Random random;
 
     @Override
-    public void seedTasks() throws FileNotFoundException {
+    public void seedTasks() {
         if(areTasksUploaded()){
             return;
         }
 
-        TaskSeedDto[] dtos = this.gson.fromJson(
-                new FileReader(TASKS_MOCK_DATA_PATH), TaskSeedDto[].class
-        );
+        try {
+            TaskSeedDto[] dtos = this.gson.fromJson(
+                    new FileReader(TASKS_MOCK_DATA_PATH), TaskSeedDto[].class
+            );
 
-        Arrays.stream(dtos)
-                .forEach(tDto -> {
-                    TaskEntity task = this.modelMapper.map(tDto, TaskEntity.class);
+            Arrays.stream(dtos)
+                    .forEach(tDto -> {
+                        TaskEntity task = this.modelMapper.map(tDto, TaskEntity.class);
 
-                    UserEntity userEntity = this.userService.getRandomUser();
+                        UserEntity userEntity = this.userService.getRandomUser();
 
-                    task.setPreparedBy(new HashSet<>());
-                    task.getPreparedBy().add(userEntity);
+                        task.setPreparedBy(new HashSet<>());
+                        task.getPreparedBy().add(userEntity);
 
 
-                    task.setToolingAvailable(this.random.nextBoolean());
-                    task.setJobcardsPrepared(this.random.nextBoolean());
-                    task.setQualityAssured(this.random.nextBoolean());
+                        task.setToolingAvailable(this.random.nextBoolean());
+                        task.setJobcardsPrepared(this.random.nextBoolean());
+                        task.setQualityAssured(this.random.nextBoolean());
 
-                    this.taskRepository.save(task);
-                });
+                        this.taskRepository.save(task);
+                    });
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

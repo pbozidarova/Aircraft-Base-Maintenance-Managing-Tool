@@ -19,7 +19,6 @@ import managing.tool.e_user.service.UserService;
 import managing.tool.e_user.service.UserValidationService;
 import managing.tool.exception.FoundInDb;
 import managing.tool.exception.NotFoundInDb;
-import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +49,6 @@ public class MaintenanceServiceImpl implements MaintenanceService {
     private final FacilityValidationService facilityValidationService;
     private final UserValidationService userValidationService;
     private final AircraftValidationService aircraftValidationService;
-    private final ServiceUtil serviceUtil;
     private final Random random;
 
     private static Logger LOGGER = LoggerFactory.getLogger(MaintenanceServiceImpl.class);
@@ -210,7 +208,7 @@ public class MaintenanceServiceImpl implements MaintenanceService {
 
         maintenanceViewModel.setFacility(maintenanceEntity.getFacility().getName())
                 .setAircraftRegistration(maintenanceEntity.getAircraft().getAircraftRegistration())
-                .setResponsibleEngineer(this.serviceUtil.userViewStringBuild(maintenanceEntity.getResponsibleEngineer()));
+                .setResponsibleEngineer(this.userService.userViewStringBuild(maintenanceEntity.getResponsibleEngineer()));
 
         return maintenanceViewModel;
     }

@@ -10,7 +10,6 @@ import managing.tool.e_user.service.UserService;
 import managing.tool.e_user.service.UserValidationService;
 import managing.tool.exception.FoundInDb;
 import managing.tool.exception.NotFoundInDb;
-import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +26,6 @@ public class FacilityServiceImpl implements FacilityService {
     private final ModelMapper modelMapper;
     private final UserService userService;
     private final UserValidationService userValidationService;
-    private final ServiceUtil serviceUtil;
 
     @Override
     public FacilityViewDto updateFacility(String name, FacilityViewDto facilityDataForUpdate, String jwt) {
@@ -35,7 +33,7 @@ public class FacilityServiceImpl implements FacilityService {
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, name), "name");
         }
 
-        String companyNumOfManager = this.serviceUtil.companyNumFromUserString(facilityDataForUpdate.getManager());
+        String companyNumOfManager = this.userService.companyNumFromUserString(facilityDataForUpdate.getManager());
         userValidationService.validateIfUserExists(companyNumOfManager);
 
         FacilityEntity facilityToBeUpdated = this.modelMapper.map(facilityDataForUpdate, FacilityEntity.class);
@@ -56,7 +54,7 @@ public class FacilityServiceImpl implements FacilityService {
             throw new FoundInDb(String.format(FOUNDERROR, name), "name");
         }
         //VALIDATE SELECT FIELD
-        String companyNumOfManager = this.serviceUtil.companyNumFromUserString(facilityNew.getManager());
+        String companyNumOfManager = this.userService.companyNumFromUserString(facilityNew.getManager());
         userValidationService.validateIfUserExists(companyNumOfManager);
 
         FacilityEntity facilityToBeCreated = this.modelMapper.map(facilityNew, FacilityEntity.class);
@@ -73,7 +71,7 @@ public class FacilityServiceImpl implements FacilityService {
         return this.facilityRepository.findByName(name)
                 .getEmployees()
                 .stream()
-                .map(serviceUtil::buildUserVMRelationalStrings)
+                .map(userService::buildUserVMRelationalStrings)
                 .collect(Collectors.toList());
     }
 
@@ -85,7 +83,7 @@ public class FacilityServiceImpl implements FacilityService {
                 .map(f -> {
                     FacilityViewDto facilityViewDto = this.modelMapper.map(f, FacilityViewDto.class);
                     facilityViewDto
-                            .setManager(this.serviceUtil.userViewStringBuild(f.getManager()));
+                            .setManager(this.userService.userViewStringBuild(f.getManager()));
 
                     return facilityViewDto;
                 })

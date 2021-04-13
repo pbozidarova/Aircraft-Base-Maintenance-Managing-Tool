@@ -13,7 +13,6 @@ import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.service.UserService;
 import managing.tool.exception.FoundInDb;
 import managing.tool.exception.NotFoundInDb;
-import managing.tool.util.ServiceUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -35,9 +34,8 @@ public class TaskServiceImpl implements TaskService {
     private final UserService userService;
     private final MaintenanceService maintenanceService;
     private final ModelMapper modelMapper;
-    private final ServiceUtil utils;
     private final Random random;
-    private final ServiceUtil serviceUtil;
+
 
     @Cacheable("tasks")
     @Override
@@ -51,7 +49,6 @@ public class TaskServiceImpl implements TaskService {
 
     @CacheEvict(cacheNames = "tasks", allEntries = true)
     public void evictCachedTasks(){
-
     }
 
     @Override
@@ -63,7 +60,7 @@ public class TaskServiceImpl implements TaskService {
                     MaintenanceViewDto maintenanceViewModel = this.modelMapper.map(maintenanceEntity, MaintenanceViewDto.class);
                     maintenanceViewModel.setFacility(maintenanceEntity.getFacility().getName())
                             .setAircraftRegistration(maintenanceEntity.getAircraft().getAircraftRegistration())
-                            .setResponsibleEngineer(this.serviceUtil.userViewStringBuild(maintenanceEntity.getResponsibleEngineer())
+                            .setResponsibleEngineer(this.userService.userViewStringBuild(maintenanceEntity.getResponsibleEngineer())
                             );
 
                     return maintenanceViewModel;
@@ -85,7 +82,7 @@ public class TaskServiceImpl implements TaskService {
     public String createPrepTeamString(TaskEntity taskEntity){
         StringBuilder preparedBy = new StringBuilder();
         taskEntity.getPreparedBy()
-                .forEach(u -> preparedBy.append(this.serviceUtil.userViewStringBuild(u))
+                .forEach(u -> preparedBy.append(this.userService.userViewStringBuild(u))
                                         .append(", "));
 
         return preparedBy.toString(); //.replaceAll(", $", "");
@@ -173,15 +170,17 @@ public class TaskServiceImpl implements TaskService {
 
 
     private Set<UserEntity> preparingTeam(Set<UserEntity> taskPrepTeam,String token) {
-        taskPrepTeam.add(this.utils.identifyingUserFromToken(token));
+        taskPrepTeam.add(this.userService.identifyingUserFromToken(token));
 
         return taskPrepTeam;
     }
 
     private TaskViewDto buildTaskVMRelationalStrings(TaskEntity taskEntity) {
         TaskViewDto mappedTask = this.modelMapper.map(taskEntity, TaskViewDto.class);
+
         mappedTask.setPreparedBy(createPrepTeamString(taskEntity));
         mappedTask.setStatus(createCorrectStatus(taskEntity));
+
         return mappedTask;
     }
 

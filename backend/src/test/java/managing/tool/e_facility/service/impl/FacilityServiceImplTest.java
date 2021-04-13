@@ -10,7 +10,6 @@ import managing.tool.e_user.service.UserService;
 import managing.tool.e_user.service.UserValidationService;
 import managing.tool.exception.FoundInDb;
 import managing.tool.exception.NotFoundInDb;
-import managing.tool.util.ServiceUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +33,7 @@ public class FacilityServiceImplTest {
     private FacilityEntity facilityExisting;
     private FacilityEntity facilityToBeSaved;
     private UserEntity user;
-    private UserViewDto userViewDto;
+    private UserViewDto userView;
 
     @Mock
     FacilityRepository mockedFacilityRepository;
@@ -44,12 +43,10 @@ public class FacilityServiceImplTest {
     UserService mockedUserService;
     @Mock
     UserValidationService mockedUserValidationService;
-    @Mock
-    ServiceUtil mockedServiceUtil;
 
     @BeforeEach
     void setUp(){
-        testService = new FacilityServiceImpl(mockedFacilityRepository, mockedModelMapper, mockedUserService, mockedUserValidationService, mockedServiceUtil);
+        testService = new FacilityServiceImpl(mockedFacilityRepository, mockedModelMapper, mockedUserService, mockedUserValidationService);
         user = new UserEntity();
 
         facilityRequestData = new FacilityViewDto();
@@ -63,7 +60,7 @@ public class FacilityServiceImplTest {
         facilityToBeSaved.setName(VALID_FACILITY_NAME)
                 .setEmployees(Set.of(user))
                 .setId(1L);
-
+        userView = new UserViewDto();
 
     }
 
@@ -78,7 +75,7 @@ public class FacilityServiceImplTest {
     @Test
     void updateFacilityTest(){
         Mockito.when(mockedFacilityRepository.findByName(VALID_FACILITY_NAME)).thenReturn(facilityExisting);
-        Mockito.when(mockedServiceUtil.companyNumFromUserString("N1234 - ")).thenReturn("N1234");
+        Mockito.when(mockedUserService.companyNumFromUserString("N1234 - ")).thenReturn("N1234");
         Mockito.when(mockedUserService.findByCompanyNum("N1234")).thenReturn(user);
 
         Mockito.when(mockedModelMapper.map(facilityRequestData, FacilityEntity.class)).thenReturn(facilityToBeSaved);
@@ -103,7 +100,7 @@ public class FacilityServiceImplTest {
     @Test
     void createFacilityTest(){
         Mockito.when(mockedFacilityRepository.findByName(VALID_FACILITY_NAME)).thenReturn(null);
-        Mockito.when(mockedServiceUtil.companyNumFromUserString("N1234 - ")).thenReturn("N1234");
+        Mockito.when(mockedUserService.companyNumFromUserString("N1234 - ")).thenReturn("N1234");
         Mockito.when(mockedUserService.findByCompanyNum("N1234")).thenReturn(user);
 
         Mockito.when(mockedModelMapper.map(facilityRequestData, FacilityEntity.class)).thenReturn(facilityToBeSaved);
@@ -120,7 +117,7 @@ public class FacilityServiceImplTest {
     void findAllUsersByFacilityNameTest(){
         Mockito.when(mockedFacilityRepository.findByName(VALID_FACILITY_NAME))
                 .thenReturn(facilityExisting);
-        Mockito.when(mockedServiceUtil.buildUserVMRelationalStrings(user)).thenReturn(userViewDto);
+        Mockito.when(mockedUserService.buildUserVMRelationalStrings(user)).thenReturn(userView);
 
 
         Assertions.assertEquals(1, testService.findAllUsersByFacilityName(VALID_FACILITY_NAME).size());

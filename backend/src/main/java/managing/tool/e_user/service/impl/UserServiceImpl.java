@@ -12,7 +12,7 @@ import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.repository.UserRepository;
 import managing.tool.e_user.service.RoleService;
 import managing.tool.e_user.service.UserService;
-import managing.tool.util.ServiceUtil;
+import managing.tool.util.JwtUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,12 +28,12 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
     private final Random random;
-    private final ServiceUtil serviceUtil;
+    private final JwtUtil jwtUtil;
 
     @Override
     public UserViewDto findUser(String companyNum) {
         UserEntity userEntity = this.userRepository.findByCompanyNum(companyNum);
-        return serviceUtil.buildUserVMRelationalStrings(userEntity);
+        return this.buildUserVMRelationalStrings(userEntity);
     }
 
 
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
         return this.userRepository.findAll()
                 .stream()
-                .map(serviceUtil::buildUserVMRelationalStrings)
+                .map(this::buildUserVMRelationalStrings)
                 .collect(Collectors.toList());
     }
 
@@ -98,6 +98,33 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(UserEntity user) {
         this.userRepository.saveAndFlush(user);
+    }
+
+    public UserViewDto buildUserVMRelationalStrings(UserEntity u){
+        UserViewDto userView = this.modelMapper.map(u, UserViewDto.class);
+
+        userView.setFacility(u.getFacility().getName());
+
+        userView.setRoles( userView
+                .getRoles()
+                .replace("[", "")
+                .replace("]", "")
+        );
+
+        return userView;
+    }
+
+    public UserEntity identifyingUserFromToken(String token){
+        String companyNum = this.jwtUtil.extractUsername(token.replace("Bearer ", ""));
+        return this.findByCompanyNum(companyNum);
+    }
+
+    public String userViewStringBuild(UserEntity userEntity){
+        return String.format("%s - %s, %s",  userEntity.getCompanyNum(), userEntity.getLastName(), userEntity.getFirstName());
+    }
+
+    public String companyNumFromUserString(String userViewStringBuilt){
+        return userViewStringBuilt.split(" - ")[0];
     }
 
 
