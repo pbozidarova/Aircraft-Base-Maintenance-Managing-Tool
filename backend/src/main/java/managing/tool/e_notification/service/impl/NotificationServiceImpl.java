@@ -14,6 +14,7 @@ import managing.tool.e_notification.service.CloudinaryService;
 import managing.tool.e_notification.service.NotificationService;
 import managing.tool.e_maintenance.model.MaintenanceEntity;
 import managing.tool.e_maintenance.service.MaintenanceService;
+import managing.tool.e_notification.service.NotificationValidationService;
 import managing.tool.e_notification.service.ReplyService;
 import managing.tool.e_task.model.TaskEntity;
 import managing.tool.e_task.service.TaskService;
@@ -48,6 +49,7 @@ import static managing.tool.constants.GlobalConstants.NOTFOUND_SELECT_ERROR;
 @AllArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository notificationRepository;
+    private final NotificationValidationService notificationValidationService;
     private final UserService userService;
     private final TaskService taskService;
     private final MaintenanceService maintenanceService;
@@ -193,10 +195,6 @@ public class NotificationServiceImpl implements NotificationService {
         return this.notificationRepository.findByNotificationNum(notificationNum);
     }
 
-    @Override
-    public Boolean notificationExists(String notificationNum) {
-        return  this.findByNotificationNum(notificationNum) != null;
-    }
 
     @Override
     public Integer openNotificationsOfLoggedInUser(String token) {
@@ -210,15 +208,15 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public NotificationViewDto updateNotification(String notificationNum, NotificationViewDto notificationDataForUpdate) {
-        if(!this.notificationExists(notificationNum)){
+        if(!this.notificationValidationService.notificationExists(notificationNum)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, notificationNum), "notificationNum");
         }
 
         //VALIDATE SELECT VALUES!
-        validateIfMaintenanceExists(notificationDataForUpdate.getMaintenanceNum());
-        validateIfTaskExists(notificationDataForUpdate.getTaskNum());
-        validateStatus(notificationDataForUpdate.getStatus());
-        validateClassification(notificationDataForUpdate.getClassification());
+        notificationValidationService.validateIfMaintenanceExists(notificationDataForUpdate.getMaintenanceNum());
+        notificationValidationService.validateIfTaskExists(notificationDataForUpdate.getTaskNum());
+        notificationValidationService.validateStatus(notificationDataForUpdate.getStatus());
+        notificationValidationService.validateClassification(notificationDataForUpdate.getClassification());
 
         NotificationEntity notificationToUpdate = this.notificationRepository.findByNotificationNum(notificationDataForUpdate.getNotificationNum());
 
@@ -233,53 +231,12 @@ public class NotificationServiceImpl implements NotificationService {
         return  this.modelMapper.map(this.notificationRepository.save(notificationToUpdate), NotificationViewDto.class);
     }
 
-    private void validateStatus(String status) {
-        if(Arrays.stream(NotificationStatusEnum.values()).collect(Collectors.toList()).contains(status.toUpperCase())) {
-            throw new NotFoundInDb(
-                    String.format(NOTFOUND_SELECT_ERROR, status, "status"),
-                    "status"
-            );
-        }
-    }
-
-    private void validateClassification(String classification) {
-        if(classification == null) return;
-
-        if(Arrays.stream(NotificationStatusEnum.values()).collect(Collectors.toList()).contains(classification.toUpperCase())) {
-            throw new NotFoundInDb(
-                    String.format(NOTFOUND_SELECT_ERROR, classification, "classification"),
-                    "classification"
-            );
-        }
-    }
-
-
-
-    private void validateIfMaintenanceExists(String maintenanceNum) {
-        if(!this.maintenanceService.maintenanceExists(maintenanceNum)){
-            throw new NotFoundInDb(
-                    String.format(NOTFOUND_SELECT_ERROR, maintenanceNum, "maintenance"),
-                    "maintenance number"
-            );
-        }
-    }
-
-    private void validateIfTaskExists(String taskNum) {
-        if(!this.taskService.taskExists(taskNum)){
-            throw new NotFoundInDb(
-                    String.format(NOTFOUND_SELECT_ERROR, taskNum, "task"),
-                    "task number"
-            );
-        }
-    }
-
-
 
     @Override
     public NotificationViewDto createNotification(NotificationViewDto notificationNewData, String token) {
         //VALIDATE SELECT VALUES!
-        validateIfMaintenanceExists(notificationNewData.getMaintenanceNum());
-        validateIfTaskExists(notificationNewData.getTaskNum());
+        notificationValidationService.validateIfMaintenanceExists(notificationNewData.getMaintenanceNum());
+        notificationValidationService.validateIfTaskExists(notificationNewData.getTaskNum());
 
         NotificationEntity notificationToCreate = new NotificationEntity();
         UserEntity author = this.userService.identifyingUserFromToken(token);
@@ -317,7 +274,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public ReplyViewDto createReply(String notificationNum, String jwt, String reply, MultipartFile attachment) throws IOException {
-        if(!this.notificationExists(notificationNum)){
+        if(!this.notificationValidationService.notificationExists(notificationNum)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, notificationNum), "notificationNum");
         }
 
