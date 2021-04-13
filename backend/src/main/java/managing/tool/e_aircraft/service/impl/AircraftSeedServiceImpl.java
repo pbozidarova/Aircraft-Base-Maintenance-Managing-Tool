@@ -30,23 +30,25 @@ public class AircraftSeedServiceImpl implements AircraftSeedService {
 
 
     @Override
-    public void seedAircraft() throws FileNotFoundException {
+    public void seedAircraft() {
         if(this.aircraftAreImported()){
             return;
         }
+        try {
+            AircraftSeedDto[] dtos =
+                    this.gson
+                            .fromJson(
+                                    new FileReader(AIRCRAFT_MOCK_DATA_PATH), AircraftSeedDto[].class
+                            );
+            Arrays.stream(dtos)
+                    .forEach(aDto -> {
+                        AircraftEntity aircraft = this.modelMapper.map(aDto, AircraftEntity.class);
 
-        AircraftSeedDto[] dtos =
-                this.gson
-                        .fromJson(
-                            new FileReader(AIRCRAFT_MOCK_DATA_PATH), AircraftSeedDto[].class
-                );
-        Arrays.stream(dtos)
-                .forEach(aDto -> {
-                    AircraftEntity aircraft = this.modelMapper.map(aDto, AircraftEntity.class);
-
-                    this.aircraftRepository.save(aircraft);
-                });
-
+                        this.aircraftRepository.save(aircraft);
+                    });
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
     }
 

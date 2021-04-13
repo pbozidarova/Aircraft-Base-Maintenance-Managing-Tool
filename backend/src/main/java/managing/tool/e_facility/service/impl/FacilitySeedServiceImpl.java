@@ -34,29 +34,32 @@ public class FacilitySeedServiceImpl implements FacilitySeedService {
     private final Gson gson;
 
     @Override
-    public void seedFacilities() throws FileNotFoundException {
+    public void seedFacilities() {
         if(areFacilitiesImported()){
             return;
         }
+        try {
+            FacilitySeedDto[] dtos = this.gson.fromJson(
+                    new FileReader(GlobalConstants.FACILITIES_MOCK_DATA_PATH), FacilitySeedDto[].class
+            );
 
-        FacilitySeedDto[] dtos = this.gson.fromJson(
-                new FileReader(GlobalConstants.FACILITIES_MOCK_DATA_PATH), FacilitySeedDto[].class
-        );
-        System.out.println();
-        Arrays.stream(dtos)
-                .forEach(fDto -> {
-                    FacilityEntity facility = this.modelMapper.map(fDto, FacilityEntity.class);
-                    UserEntity user = this.userService.findByCompanyNum(fDto.getManager());
-                    facility.setManager(user);
-                    //TODO Competences
-                    this.facilityRepository.save(facility);
-                });
+            Arrays.stream(dtos)
+                    .forEach(fDto -> {
+                        FacilityEntity facility = this.modelMapper.map(fDto, FacilityEntity.class);
+                        UserEntity user = this.userService.findByCompanyNum(fDto.getManager());
+                        facility.setManager(user);
+                        //TODO Competences
+                        this.facilityRepository.save(facility);
+                    });
 
-        this.userService.findAll()
-                .forEach(user -> {
-                    user.setFacility(this.getRandomFacility());
-                    this.userService.saveUser(user);
-                });
+            this.userService.findAll()
+                    .forEach(user -> {
+                        user.setFacility(this.getRandomFacility());
+                        this.userService.saveUser(user);
+                    });
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -22,7 +22,5 @@ public class AircraftValidationServiceImpl implements AircraftValidationService 
                     "aircraft"
             );
         }
-
-
     }
 }

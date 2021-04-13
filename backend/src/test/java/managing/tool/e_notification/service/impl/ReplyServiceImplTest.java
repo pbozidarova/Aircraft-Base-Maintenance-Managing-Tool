@@ -18,6 +18,8 @@ import java.util.List;
 @ExtendWith(MockitoExtension.class)
 public class ReplyServiceImplTest {
     private ReplyServiceImpl testService;
+    private ReplyEntity reply;
+
     Gson gson;
 
     @Mock
@@ -30,6 +32,9 @@ public class ReplyServiceImplTest {
     @BeforeEach
     void setUp(){
         testService = new ReplyServiceImpl(mockedUserService, mockedReplyRepository, mockedModelMapper, gson);
+
+        reply = new ReplyEntity();
+        reply.setDescription("Very long test description!");
     }
 
     @Test
@@ -45,5 +50,12 @@ public class ReplyServiceImplTest {
         Mockito.when(mockedReplyRepository.findAll()).thenReturn(List.of(replyEntity));
 
         Assertions.assertEquals(1, testService.findAll().size());
+    }
+
+    @Test
+    void replySaveTest(){
+        Mockito.when(mockedReplyRepository.save(reply)).thenReturn(reply);
+
+        Assertions.assertEquals(testService.saveReply(reply).getDescription(), reply.getDescription());
     }
 }

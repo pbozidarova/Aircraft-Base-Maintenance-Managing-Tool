@@ -1,6 +1,7 @@
 package managing.tool.e_user.service.impl;
 
 
+import managing.tool.e_notification.model.ReplyEntity;
 import managing.tool.e_user.model.RoleEntity;
 import managing.tool.e_user.model.RoleEnum;
 import managing.tool.e_user.repository.RoleRepository;
@@ -21,9 +22,10 @@ public class RoleServiceImplTest {
     RoleRepository mockedRoleRepository;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         testService = new RoleServiceImpl(mockedRoleRepository);
     }
+
 
     @Test
     public void findByNameTest(){
@@ -40,11 +42,13 @@ public class RoleServiceImplTest {
     }
 
     @Test
-    public void roleExistsTest(){
+    void roleExistsTest(){
         String roleExisting = "ADMIN";
         String roleNotExisting = "MADE_UP";
 
         Assertions.assertTrue(this.testService.roleExists(roleExisting));
         Assertions.assertFalse(this.testService.roleExists(roleNotExisting));
     }
+
+
 }

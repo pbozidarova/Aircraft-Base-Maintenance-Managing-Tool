@@ -32,34 +32,34 @@ public class UserSeedServiceImpl implements UserSeedService {
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
-//    private final Random random;
-//    private final FacilitySeedService facilitySeedService;
 
     @Override
-    public void seedUsers() throws FileNotFoundException {
+    public void seedUsers() {
         if(this.userAreImported()){
             return;
         }
 
-        //TODO THROW ERROR FROM FILE READER
-        UserSeedDto[] dtos = this.gson
-                .fromJson(new FileReader(USERS_MOCK_DATA_PATH), UserSeedDto[].class);
+        try {
+            UserSeedDto[] dtos = this.gson
+                    .fromJson(new FileReader(USERS_MOCK_DATA_PATH), UserSeedDto[].class);
 
-        Arrays.stream(dtos)
-                .forEach(uDto -> {
-                    UserEntity user = this.modelMapper.map(uDto, UserEntity.class);
-                    //TODO randomly allocate ADMIN or USER and ENG or MECH
+            Arrays.stream(dtos)
+                    .forEach(uDto -> {
+                        UserEntity user = this.modelMapper.map(uDto, UserEntity.class);
+                        //TODO randomly allocate ADMIN or USER and ENG or MECH
 
-                    RoleEntity role = this.roleService.findByName(uDto.getRole().toUpperCase());
-                    Set<RoleEntity> roleSet = new HashSet<>();
-                    roleSet.add(role);
-                    user.setRoles(roleSet);
-                    user.setCompanyNum(uDto.getCompanyNum());
+                        RoleEntity role = this.roleService.findByName(uDto.getRole().toUpperCase());
+                        Set<RoleEntity> roleSet = new HashSet<>();
+                        roleSet.add(role);
+                        user.setRoles(roleSet);
+                        user.setCompanyNum(uDto.getCompanyNum());
 //                    user.setFacility(this.facilitySeedService.getRandomFacility());
-                    user.setPassword(passwordEncoder.encode(GlobalConstants.DUMMY_PASS));
-                    this.userRepository.saveAndFlush(user);
-                });
-
+                        user.setPassword(passwordEncoder.encode(GlobalConstants.DUMMY_PASS));
+                        this.userRepository.saveAndFlush(user);
+                    });
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUser(UserEntity user) {
-        this.userRepository.saveAndFlush(user);
+        this.userRepository.save(user);
     }
 
     public UserViewDto buildUserVMRelationalStrings(UserEntity u){

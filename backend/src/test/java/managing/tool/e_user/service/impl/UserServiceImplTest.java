@@ -23,6 +23,17 @@ import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTest {
+    private final String JWT_STRING = "jwt";
+    private final String VALID_COMPANY_NUM = "N20202";
+    private final String VALID_COMPANY_NUM2 = "N20203";
+    private final String VALID_EMAIL = "p@email.com";
+    private final String VALID_PASSWORD = "1234";
+    private final String VALID_USER_FIRST_NAME = "Petya";
+    private final String VALID_USER_FIRST_NAME2 = "Aleks";
+    private final String ADMIN_STRING = "ADMIN";
+    private final String ENGINEER_STRING = "ENGINEER";
+    private final String FACILITY_NAME = "Facility";
+
     private UserServiceImpl testService;
     private UserEntity existingUser;
     private UserEntity existingUser2;
@@ -43,27 +54,27 @@ public class UserServiceImplTest {
 
         this.existingUser = new UserEntity();
         FacilityEntity facilityEntity = new FacilityEntity();
-        facilityEntity.setName("Facility");
+        facilityEntity.setName(FACILITY_NAME);
         Set<RoleEntity> roles = new HashSet<>();
         RoleEntity role = new RoleEntity();
         RoleEntity authority = new RoleEntity();
-        role.setName(RoleEnum.valueOf("ADMIN"));
-        authority.setName(RoleEnum.valueOf("ENGINEER"));
+        role.setName(RoleEnum.valueOf(ADMIN_STRING));
+        authority.setName(RoleEnum.valueOf(ENGINEER_STRING));
 
         roles.add(role);
         roles.add(authority);
 
-        existingUser.setCompanyNum("N20202")
-                .setPassword("202")
+        existingUser.setCompanyNum(VALID_COMPANY_NUM)
+                .setPassword(VALID_PASSWORD)
                 .setRoles(roles)
                 .setFacility(facilityEntity)
-                .setEmail("p@email.com")
-                .setFirstName("Petya")
+                .setEmail(VALID_EMAIL)
+                .setFirstName(VALID_USER_FIRST_NAME)
                 .setId(1L);
 
         this.userView = new UserViewDto();
-        userView.setCompanyNum("N20202")
-                .setFirstName("Petya")
+        userView.setCompanyNum(VALID_COMPANY_NUM)
+                .setFirstName(VALID_USER_FIRST_NAME)
                 .setFacility(existingUser.getFacility().getName())
                 .setRoles(roles.toString());
 
@@ -74,44 +85,44 @@ public class UserServiceImplTest {
         );
 
         this.existingUser2 = new UserEntity();
-        existingUser2.setCompanyNum("N20203")
-                .setPassword("202")
+        existingUser2.setCompanyNum(VALID_COMPANY_NUM2)
+                .setPassword(VALID_PASSWORD)
                 .setRoles(roles)
-                .setEmail("p@email.com")
+                .setEmail(VALID_EMAIL)
                 .setFacility(facilityEntity)
-                .setFirstName("Aleks");
+                .setFirstName(VALID_USER_FIRST_NAME2);
 
     }
 
     @Test
     void findUserTest(){
 
-        Mockito.when(mockedUserRepository.findByCompanyNum("N20202"))
+        Mockito.when(mockedUserRepository.findByCompanyNum(VALID_COMPANY_NUM))
                 .thenReturn(existingUser);
 
         Mockito.when(mockedModelMapper.map(existingUser, UserViewDto.class))
                 .thenReturn(userView);
 
-        Assertions.assertEquals(testService.findUser("N20202").getFirstName(), "Petya");
-        Assertions.assertTrue(testService.findUser("N20202").getRoles().contains("ADMIN"));
-        Assertions.assertTrue(testService.findUser("N20202").getRoles().contains("ENGINEER"));
+        Assertions.assertEquals(testService.findUser(VALID_COMPANY_NUM).getFirstName(), VALID_USER_FIRST_NAME);
+        Assertions.assertTrue(testService.findUser(VALID_COMPANY_NUM).getRoles().contains(ADMIN_STRING));
+        Assertions.assertTrue(testService.findUser(VALID_COMPANY_NUM2).getRoles().contains(ENGINEER_STRING));
 
     }
 
     @Test
     void findUserDetailsTest(){
         UserDetailsDto userDetailsDto = new UserDetailsDto();
-        Mockito.when(mockedUserRepository.findByCompanyNum("N20202"))
+        Mockito.when(mockedUserRepository.findByCompanyNum(VALID_COMPANY_NUM2))
                 .thenReturn(existingUser);
 
         Mockito.when(mockedModelMapper.map(existingUser, UserDetailsDto.class))
                 .thenReturn(userDetailsDto);
 
-        String rolesString = testService.findUserDetails("N20202").get().getRoles().toString();
+        String rolesString = testService.findUserDetails(VALID_COMPANY_NUM2).get().getRoles().toString();
 
-        Assertions.assertEquals(testService.findUserDetails("N20202"), Optional.of(userDetailsDto));
-        Assertions.assertTrue(rolesString.contains("ADMIN"));
-        Assertions.assertTrue(rolesString.contains("ENGINEER"));
+        Assertions.assertEquals(testService.findUserDetails(VALID_COMPANY_NUM2), Optional.of(userDetailsDto));
+        Assertions.assertTrue(rolesString.contains(ADMIN_STRING));
+        Assertions.assertTrue(rolesString.contains(ENGINEER_STRING));
     }
 
     @Test
@@ -128,34 +139,34 @@ public class UserServiceImplTest {
 
     @Test
     void findByCompanyNumTest(){
-        Mockito.when(mockedUserRepository.findByCompanyNum("N20202"))
+        Mockito.when(mockedUserRepository.findByCompanyNum(VALID_COMPANY_NUM))
                 .thenReturn(existingUser);
 
-        Assertions.assertEquals(testService.findByCompanyNum("N20202").getFirstName(), "Petya");
+        Assertions.assertEquals(testService.findByCompanyNum(VALID_COMPANY_NUM).getFirstName(), VALID_USER_FIRST_NAME);
     }
 
     @Test
     void userExistsTest(){
-        Mockito.when(mockedUserRepository.findByCompanyNum("N20202"))
+        Mockito.when(mockedUserRepository.findByCompanyNum(VALID_COMPANY_NUM))
                 .thenReturn(existingUser);
 
-        Assertions.assertTrue(testService.userExists("N20202"));
+        Assertions.assertTrue(testService.userExists(VALID_COMPANY_NUM));
     }
 
     @Test
     void emailExistsTest(){
-        Mockito.when(mockedUserRepository.findByEmail("p@email.com"))
+        Mockito.when(mockedUserRepository.findByEmail(VALID_EMAIL))
                 .thenReturn(existingUser);
 
-        Assertions.assertTrue(testService.emailExists("p@email.com"));
+        Assertions.assertTrue(testService.emailExists(VALID_EMAIL));
     }
 
     @Test
     void emailExistsForAnotherUserTest(){
-        Mockito.when(mockedUserRepository.findByEmail("p@email.com"))
+        Mockito.when(mockedUserRepository.findByEmail(VALID_EMAIL))
                 .thenReturn(existingUser);
 
-        Assertions.assertTrue(testService.emailExistsForAnotherUser("p@email.com", "N20203"));
+        Assertions.assertTrue(testService.emailExistsForAnotherUser(VALID_EMAIL, VALID_COMPANY_NUM2));
     }
 
 
@@ -168,7 +179,7 @@ public class UserServiceImplTest {
         Mockito.when(mockedUserRepository.getOne(2L))
                 .thenReturn(existingUser);
 
-        Assertions.assertTrue(testService.getRandomUser().getCompanyNum().equals("N20202"));
+        Assertions.assertTrue(testService.getRandomUser().getCompanyNum().equals(VALID_COMPANY_NUM));
 
     }
 
@@ -190,5 +201,32 @@ public class UserServiceImplTest {
 //        Assertions.assertEquals(1, mockedUserRepository.count());
   //  }
 
+    @Test
+    void userSaveTest(){
+//        Mockito.when(mockedUserRepository.save(existingUser)).thenReturn(existingUser);
+
+        testService.saveUser(existingUser);
+        System.out.println(mockedUserRepository.count());
+        Assertions.assertTrue(mockedUserRepository.count() == 1);
+    }
+
+    @Test
+    void identifyingUserFromTokenTest(){
+        Mockito.when(mockedJwtUtil.extractUsername(JWT_STRING)).thenReturn(VALID_COMPANY_NUM);
+
+        Mockito.when(mockedUserRepository.findByCompanyNum(VALID_COMPANY_NUM)).thenReturn(existingUser);
+
+        Assertions.assertTrue(testService
+                .identifyingUserFromToken(JWT_STRING)
+                .getCompanyNum()
+                .equals(VALID_COMPANY_NUM));
+    }
+
+    @Test
+    void companyNumFromUserStringTest(){
+        Assertions.assertTrue(testService
+                .companyNumFromUserString(VALID_COMPANY_NUM + " - ")
+                .equals(VALID_COMPANY_NUM));
+    }
 
 }

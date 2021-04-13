@@ -30,20 +30,24 @@ public class ReplyServiceImpl implements ReplyService {
     private final Gson gson;
 
     @Override
-    public void seedReplies() throws FileNotFoundException {
+    public void seedReplies() {
         if(areRepliesUploaded()){
             return;
         }
 
-        ReplySeedDto[] dtos = this.gson.fromJson(new FileReader(GlobalConstants.REPLIES_MOCK_DATA_PATH), ReplySeedDto[].class);
+        try {
+            ReplySeedDto[] dtos = this.gson.fromJson(new FileReader(GlobalConstants.REPLIES_MOCK_DATA_PATH), ReplySeedDto[].class);
 
-        Arrays.stream(dtos).forEach(dto -> {
-            ReplyEntity replyEntity = this.modelMapper.map(dto, ReplyEntity.class);
-            replyEntity.setAuthor(this.userService.getRandomUser());
-            replyEntity.setCreatedOn(LocalDateTime.now());
+            Arrays.stream(dtos).forEach(dto -> {
+                ReplyEntity replyEntity = this.modelMapper.map(dto, ReplyEntity.class);
+                replyEntity.setAuthor(this.userService.getRandomUser());
+                replyEntity.setCreatedOn(LocalDateTime.now());
 
-            this.replyRepository.save(replyEntity);
-        });
+                this.replyRepository.save(replyEntity);
+            });
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -60,6 +64,5 @@ public class ReplyServiceImpl implements ReplyService {
     public ReplyEntity saveReply(ReplyEntity reply) {
         return this.replyRepository.save(reply);
     }
-
 
 }

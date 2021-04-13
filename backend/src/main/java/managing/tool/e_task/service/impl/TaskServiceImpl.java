@@ -142,9 +142,10 @@ public class TaskServiceImpl implements TaskService {
         TaskEntity taskToUpdate = this.modelMapper.map(taskDataForUpdate, TaskEntity.class);
 
         TaskEntity taskExisting = this.taskRepository.findByTaskNum(taskDataForUpdate.getTaskNum());
-        Set<UserEntity> updatedPrepTeam = preparingTeam(taskExisting.getPreparedBy(), token);
+//        Set<UserEntity> updatedPrepTeam = new HashSet<>();
 
-        taskToUpdate.setPreparedBy(updatedPrepTeam)
+
+        taskToUpdate.setPreparedBy(preparingTeam(taskExisting.getPreparedBy(), token))
                 .setId(taskExisting.getId())
                 .setUpdatedOn(LocalDateTime.now());
 
@@ -169,10 +170,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
 
-    private Set<UserEntity> preparingTeam(Set<UserEntity> taskPrepTeam,String token) {
-        taskPrepTeam.add(this.userService.identifyingUserFromToken(token));
+    private Set<UserEntity> preparingTeam(Set<UserEntity> currentTaskPrepTeam,String token) {
+//        taskPrepTeam.add(this.userService.identifyingUserFromToken(token));
 
-        return taskPrepTeam;
+        Set<UserEntity> newTaskPrepTeam = new HashSet<>();
+        newTaskPrepTeam.add(this.userService.identifyingUserFromToken(token));
+        newTaskPrepTeam.addAll(currentTaskPrepTeam);
+        return newTaskPrepTeam;
     }
 
     private TaskViewDto buildTaskVMRelationalStrings(TaskEntity taskEntity) {
