@@ -8,8 +8,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 class AircraftBaseMaintenanceManagingToolApplicationTests {
 
-//    @Test
-//    void contextLoads() {
-//    }
+    @Test
+    void contextLoads() {
+    }
 
 }
