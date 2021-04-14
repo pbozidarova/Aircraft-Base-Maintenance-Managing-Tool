@@ -10,11 +10,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
 @ExtendWith(MockitoExtension.class)
 public class AircraftValidationServiceImplTest {
+    private final String VALID_VALUE = "Valid value";
 
     private AircraftValidationServiceImpl testService;
 
@@ -34,6 +36,16 @@ public class AircraftValidationServiceImplTest {
                     testService.validateIfAircraftExists("throw_error_aircraft");
                 });
     }
+
+    @Test
+    void validateIfAircraftExistsTestPass(){
+        Mockito.when(mockedAircraftService.aircraftExists(VALID_VALUE)).thenReturn(true);
+
+        testService.validateIfAircraftExists(VALID_VALUE);
+
+        Mockito.verify(mockedAircraftService).aircraftExists(VALID_VALUE);
+    }
+
 
 
 }

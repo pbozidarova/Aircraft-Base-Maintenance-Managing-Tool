@@ -1,6 +1,7 @@
 package managing.tool.e_notification.service.impl;
 
 import managing.tool.e_maintenance.service.MaintenanceService;
+import managing.tool.e_notification.model.NotificationStatusEnum;
 import managing.tool.e_notification.service.NotificationValidationService;
 import managing.tool.e_task.service.TaskService;
 import managing.tool.exception.NotFoundInDb;
@@ -9,11 +10,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @ExtendWith(MockitoExtension.class)
 public class NotificationValidationServiceImplTest {
     private final String INVALID_VALUE = "Invalid value";
+    private final String VALID_VALUE = "Valid value";
+    private final String VALID_STATUS = String.valueOf(NotificationStatusEnum.CLOSED);
 
     private NotificationValidationServiceImpl testService;
 
@@ -34,8 +41,9 @@ public class NotificationValidationServiceImplTest {
                 NotFoundInDb.class, () -> {
                     testService.validateStatus(INVALID_VALUE);
                 });
-
     }
+
+
 
     @Test
     void validateClassificationTest(){
@@ -43,8 +51,8 @@ public class NotificationValidationServiceImplTest {
                 NotFoundInDb.class, () -> {
                     testService.validateClassification(INVALID_VALUE);
                 });
-
     }
+
 
     @Test
     void validateIfMaintenanceExistsTest(){
@@ -54,6 +62,16 @@ public class NotificationValidationServiceImplTest {
                 });
 
     }
+
+    @Test
+    void validateIfMaintenanceExistsPass(){
+        Mockito.when(mockedMaintenanceService.maintenanceExists(VALID_VALUE)).thenReturn(true);
+
+        testService.validateIfMaintenanceExists(VALID_VALUE);
+
+        Mockito.verify(mockedMaintenanceService).maintenanceExists(VALID_VALUE);
+    }
+
     @Test
     void validateIfTaskExistsTest(){
         Assertions.assertThrows(
@@ -61,6 +79,15 @@ public class NotificationValidationServiceImplTest {
                     testService.validateIfTaskExists(INVALID_VALUE);
                 });
 
+    }
+
+    @Test
+    void validateIfTaskExistsPass(){
+        Mockito.when(mockedTaskService.taskExists(VALID_VALUE)).thenReturn(true);
+
+        testService.validateIfTaskExists(VALID_VALUE);
+
+        Mockito.verify(mockedTaskService).taskExists(VALID_VALUE);
     }
 
 }

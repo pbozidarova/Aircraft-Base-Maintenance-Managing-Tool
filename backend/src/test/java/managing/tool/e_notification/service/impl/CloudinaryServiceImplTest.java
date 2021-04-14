@@ -8,6 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -19,7 +21,10 @@ public class CloudinaryServiceImplTest {
     private final String ATTACHMENT_URL = "http://url";
     private static final String TEMP_FILE = "temp-file";
     private static final String URL = "url";
-    private MultipartFile attachment;
+    private MultipartFile attachment = new MockMultipartFile( "file",
+            "hello.txt",
+            MediaType.TEXT_PLAIN_VALUE,
+            "Hello, World!".getBytes());
 
     CloudinaryServiceImpl testService;
 
@@ -28,6 +33,7 @@ public class CloudinaryServiceImplTest {
 
     @BeforeEach
     void setUp(){
+
         testService = new CloudinaryServiceImpl(mockedCloudinary);
     }
 
@@ -39,7 +45,8 @@ public class CloudinaryServiceImplTest {
                 .uploader()
                 .upload(file, Collections.singletonMap("resource_type", "auto"))
                 .get(URL)
-                .toString()).thenReturn(ATTACHMENT_URL);
+                .toString())
+                .thenReturn(ATTACHMENT_URL);
 
         Assertions.assertTrue(testService.uploadImage(attachment).equals(ATTACHMENT_URL));
     }

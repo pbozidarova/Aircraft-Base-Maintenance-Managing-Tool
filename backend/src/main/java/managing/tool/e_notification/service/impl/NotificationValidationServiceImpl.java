@@ -31,6 +31,7 @@ public class NotificationValidationServiceImpl implements NotificationValidation
             );
         }
     }
+
     @Override
     public void validateClassification(String classification) {
         if(classification == null) return;

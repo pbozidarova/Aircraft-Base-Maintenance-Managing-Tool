@@ -76,7 +76,7 @@ public class MaintenanceServiceImpl implements MaintenanceService {
         maintenanceToUpdate
                 .setAircraft(this.aircraftService.getAircraftByRegistration(maintenanceDataForUpdate.getAircraftRegistration()))
                 .setFacility(this.facilityService.getFacilityByName(maintenanceDataForUpdate.getFacility()))
-                .setStatus(allocateCorrectMaintenanceStatus(maintenanceDataForUpdate.getStartDate(), maintenanceToUpdate.getEndDate()))
+                .setStatus(allocateCorrectMaintenanceStatus(maintenanceDataForUpdate.getStartDate(), maintenanceDataForUpdate.getEndDate()))
                 .setResponsibleEngineer(responsibleEngineer)
                 .setId(maintenanceExisting.getId())
                 .setUpdatedOn(LocalDateTime.now());

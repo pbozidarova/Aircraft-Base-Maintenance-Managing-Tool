@@ -146,8 +146,6 @@ public class NotificationServiceImplTest {
         maintenanceEntity = new MaintenanceEntity();
         taskEntity = new TaskEntity();
 
-
-
     }
 
     @Test
@@ -287,6 +285,8 @@ public class NotificationServiceImplTest {
 
 //        String notificationNum, String jwt, String reply, MultipartFile attachment
         ReplyViewDto replyCreated = testService.createReply(NOTIFICATION_NUM, JWT_STRING, REPLY_STRING, attachment);
+
+//        Mockito.verify(mockedReplyService).saveReply(replyEntity);
 
         Assertions.assertEquals(replyCreated.getDescription(), REPLY_STRING);
     }
