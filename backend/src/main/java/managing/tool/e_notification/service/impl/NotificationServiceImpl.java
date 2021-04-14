@@ -195,6 +195,10 @@ public class NotificationServiceImpl implements NotificationService {
         return this.notificationRepository.findByNotificationNum(notificationNum);
     }
 
+    @Override
+    public Boolean notificationExists(String notificationNum) {
+        return this.findByNotificationNum(notificationNum) != null;
+    }
 
     @Override
     public Integer openNotificationsOfLoggedInUser(String token) {
@@ -208,7 +212,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public NotificationViewDto updateNotification(String notificationNum, NotificationViewDto notificationDataForUpdate) {
-        if(!this.notificationValidationService.notificationExists(notificationNum)){
+        if(!this.notificationExists(notificationNum)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, notificationNum), "notificationNum");
         }
 
@@ -274,7 +278,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public ReplyViewDto createReply(String notificationNum, String jwt, String reply, MultipartFile attachment) throws IOException {
-        if(!this.notificationValidationService.notificationExists(notificationNum)){
+        if(!this.notificationExists(notificationNum)){
             throw new NotFoundInDb(String.format(NOTFOUNDERROR, notificationNum), "notificationNum");
         }
 

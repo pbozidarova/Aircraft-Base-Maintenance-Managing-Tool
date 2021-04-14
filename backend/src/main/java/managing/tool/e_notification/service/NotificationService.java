@@ -25,6 +25,7 @@ public interface NotificationService {
 
     List<NotificationViewDto> findAllNotifForTask(String taskNum);
 
+    Boolean notificationExists(String notificationNum);
     NotificationEntity findByNotificationNum(String notificationNum);
     Integer openNotificationsOfLoggedInUser(String jwt);
     NotificationViewDto updateNotification(String notificationNum, NotificationViewDto notificationViewDto);

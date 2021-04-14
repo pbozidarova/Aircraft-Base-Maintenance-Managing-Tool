@@ -18,18 +18,13 @@ import static managing.tool.constants.GlobalConstants.NOTFOUND_SELECT_ERROR;
 @AllArgsConstructor
 public class NotificationValidationServiceImpl implements NotificationValidationService {
 
-    private final NotificationService notificationService;
     private final MaintenanceService maintenanceService;
     private final TaskService taskService;
 
-    @Override
-    public Boolean notificationExists(String notificationNum) {
-        return  notificationService.findByNotificationNum(notificationNum) != null;
-    }
 
     @Override
     public void validateStatus(String status) {
-        if(Arrays.stream(NotificationStatusEnum.values()).collect(Collectors.toList()).contains(status.toUpperCase())) {
+        if(!Arrays.stream(NotificationStatusEnum.values()).collect(Collectors.toList()).contains(status.toUpperCase())) {
             throw new NotFoundInDb(
                     String.format(NOTFOUND_SELECT_ERROR, status, "status"),
                     "status"
@@ -40,7 +35,7 @@ public class NotificationValidationServiceImpl implements NotificationValidation
     public void validateClassification(String classification) {
         if(classification == null) return;
 
-        if(Arrays.stream(NotificationStatusEnum.values()).collect(Collectors.toList()).contains(classification.toUpperCase())) {
+        if(!Arrays.stream(NotificationStatusEnum.values()).collect(Collectors.toList()).contains(classification.toUpperCase())) {
             throw new NotFoundInDb(
                     String.format(NOTFOUND_SELECT_ERROR, classification, "classification"),
                     "classification"
