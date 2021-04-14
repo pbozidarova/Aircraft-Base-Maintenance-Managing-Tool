@@ -23,13 +23,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-//@SpringBootTest
-//@AutoConfigureMockMvc
-//@AutoConfigureTestDatabase
+
+@SpringBootTest
+@AutoConfigureMockMvc
+@AutoConfigureTestDatabase
 ////@RunWith(SpringRunner.class)
 //@ContextConfiguration(classes= AircraftBaseMaintenanceManagingToolApplication.class)
-@WebMvcTest(AircraftReadController.class)
-@ExtendWith(MockitoExtension.class)
+//@WebMvcTest(AircraftReadController.class)
+//@ExtendWith(MockitoExtension.class)
 public class AircraftReadControllerTest {
 
     private static final String AIRCRAFT_REGISTRATION = "LZ_Reg";
@@ -55,5 +56,3 @@ public class AircraftReadControllerTest {
                 .andExpect(status().isOk());
     }
 }
-
-
