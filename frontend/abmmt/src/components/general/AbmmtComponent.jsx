@@ -71,8 +71,8 @@ class AbmmtComponent extends Component {
                   {/* Here is the info panel */}
                     <Grid item xs={12}>
                       <div>
-                          {this.state.infoPanel.info && <this.Alert severity="info" >{this.state.infoPanel.info} </this.Alert>}
-                          {this.state.infoPanel.success && <this.Alert severity="success" >{this.state.infoPanel.success} </this.Alert>}
+                          {this.state.infoPanel.info && <this.Alert severity="info" variant="outlined" >{this.state.infoPanel.info} </this.Alert>}
+                          {this.state.infoPanel.success && <this.Alert severity="success" variant="outlined">{this.state.infoPanel.success} </this.Alert>}
                           {this.state.infoPanel.error && <this.Alert severity="error" >{this.state.infoPanel.error} </this.Alert>}
                       </div>
                     </Grid>

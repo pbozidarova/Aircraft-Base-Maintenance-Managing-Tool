@@ -143,3 +143,6 @@ Once a day the program checks the start and end dates of every project and chang
 
 ### AOP
 Using the annotations @TrackCreation and @TrackUpdating the program tracks how many times a create or update method have been called, checks the count of the successful ones and logs it.
+
+### Interceptor
+The method an url of each request are logged. 

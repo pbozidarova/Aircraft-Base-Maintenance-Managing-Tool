@@ -95,7 +95,7 @@ class EditGlobalComponent extends Component {
 
       return (
           <MuiThemeProvider key={selectedId} > 
-          <this.Alert severity="info" >{feedback} </this.Alert>
+          <this.Alert severity="info"  variant="outlined" >{feedback} </this.Alert>
           
           {Object.keys(GLOBAL_SELECT_FIELDS).map(key => {                                              
             return (

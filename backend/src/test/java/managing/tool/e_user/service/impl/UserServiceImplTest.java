@@ -7,8 +7,7 @@ import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.model.dto.UserDetailsDto;
 import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.repository.UserRepository;
-import managing.tool.exception.NotFoundInDb;
-import managing.tool.util.JwtUtil;
+import managing.tool.authentication.util.JwtUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.*;
 

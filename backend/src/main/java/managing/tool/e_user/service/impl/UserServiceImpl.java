@@ -1,23 +1,16 @@
 package managing.tool.e_user.service.impl;
 
 import lombok.AllArgsConstructor;
-import managing.tool.constants.GlobalConstants;
-import managing.tool.e_facility.model.FacilityEntity;
-import managing.tool.e_facility.service.FacilityService;
 import managing.tool.e_user.model.dto.UserDetailsDto;
 import managing.tool.e_user.model.RoleEntity;
 import managing.tool.e_user.model.UserEntity;
-import managing.tool.e_user.model.RoleEnum;
 import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.repository.UserRepository;
-import managing.tool.e_user.service.RoleService;
 import managing.tool.e_user.service.UserService;
-import managing.tool.util.JwtUtil;
+import managing.tool.authentication.util.JwtUtil;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 

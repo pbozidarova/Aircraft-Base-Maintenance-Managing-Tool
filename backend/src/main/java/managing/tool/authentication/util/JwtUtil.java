@@ -1,4 +1,4 @@
-package managing.tool.util;
+package managing.tool.authentication.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
