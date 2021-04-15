@@ -1,6 +1,7 @@
 package managing.tool.e_aircraft.web;
 
 import managing.tool.AircraftBaseMaintenanceManagingToolApplication;
+import managing.tool.config.WithMockCustomUser;
 import managing.tool.e_aircraft.model.AircraftEntity;
 import managing.tool.e_aircraft.model.dto.AircraftViewDto;
 import managing.tool.e_aircraft.repository.AircraftRepository;
@@ -26,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-//@AutoConfigureTestDatabase
+@AutoConfigureTestDatabase
 ////@RunWith(SpringRunner.class)
 //@ContextConfiguration(classes= AircraftBaseMaintenanceManagingToolApplication.class)
 //@WebMvcTest(AircraftReadController.class)
@@ -50,7 +51,7 @@ public class AircraftReadControllerTest {
     }
 
     @Test
-    @WithMockUser(value = "spring")
+    @WithMockCustomUser(companyNum = "N90909")
     void returnAllAircraft() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(REQUEST_MAPPING_AIRCRAFT +"/all"))
                 .andExpect(status().isOk());
