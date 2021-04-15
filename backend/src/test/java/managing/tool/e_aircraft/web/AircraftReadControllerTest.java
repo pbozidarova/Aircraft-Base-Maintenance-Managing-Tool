@@ -35,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AircraftReadControllerTest {
     private static final String REQUEST_MAPPING_AIRCRAFT = "/aircraft";
     private static final String AIRCRAFT_REGISTRATION = "LZ_Reg";
+    private static final String AIRCRAFT_MODEL = "LZ_Reg";
     private final String JWT_STRING = "jwt";
 
     @Autowired
@@ -45,7 +46,22 @@ public class AircraftReadControllerTest {
     @BeforeEach
     void setUp(){
         AircraftEntity aircraftEntity = new AircraftEntity();
-        aircraftEntity.setAircraftRegistration(AIRCRAFT_REGISTRATION);
+//        operatorName;
+//        operatorICAOCode ;
+//        aircraftType ;
+//        aircraftModel ;
+//        aircraftRegistration ;
+//        serialNumber ;
+//        engineManufacturer ;
+//        engineModelSeries ;
+        aircraftEntity.setOperatorName(AIRCRAFT_MODEL)
+                .setOperatorICAOCode(AIRCRAFT_MODEL)
+                .setAircraftType(AIRCRAFT_MODEL)
+                .setAircraftModel(AIRCRAFT_MODEL)
+                .setAircraftRegistration(AIRCRAFT_REGISTRATION)
+                .setSerialNumber(AIRCRAFT_MODEL)
+                .setEngineManufacturer(AIRCRAFT_MODEL)
+                .setEngineModelSeries(AIRCRAFT_MODEL);
 
         aircraftRepository.save(aircraftEntity);
     }
