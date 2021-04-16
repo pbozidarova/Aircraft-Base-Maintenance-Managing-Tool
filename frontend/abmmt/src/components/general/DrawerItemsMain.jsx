@@ -9,6 +9,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Badge from '@material-ui/core/Badge';
+import Tooltip from '@material-ui/core/Tooltip';
 
 
 
@@ -20,30 +21,34 @@ class DrawerItemsMain extends Component {
             <>
                 {  isUserLoggedIn &&
                 <div>
-                    
+                    <Tooltip title="Dashboard" placement="right">
                     <ListItem button  onClick={() => Utils.redirectTo(this.props, "/home") }>
                         <ListItemIcon>
                             {ICONS_MAPPING.dashboard}
                         </ListItemIcon>
                         <ListItemText primary="Dashboard" />              
                     </ListItem>
+                    </Tooltip>
                     
-                    
+                    <Tooltip title="Maintenance Data" placement="right">
                     <ListItem button onClick={() => Utils.redirectTo(this.props, "/tasks") }>
                         <ListItemIcon>
                              {ICONS_MAPPING.tasks}
                         </ListItemIcon>
                         <ListItemText primary="Maintenance Data" />
                     </ListItem>
+                    </Tooltip>
                     
-                    
+                    <Tooltip title="Maintenance Events" placement="right">
                     <ListItem button onClick={() => Utils.redirectTo(this.props, "/maintenance") }>
                         <ListItemIcon>
                             {ICONS_MAPPING.maintenance}
                         </ListItemIcon>
                         <ListItemText primary="Maintenance Events" />
                     </ListItem>
+                    </Tooltip>
                     
+                    <Tooltip title="Notifications" placement="right">
                     <ListItem button onClick={() => Utils.redirectTo(this.props, "/notifications") }>
                         <ListItemIcon>
                             <Badge badgeContent={this.props.openNotifications} color="secondary">
@@ -52,6 +57,7 @@ class DrawerItemsMain extends Component {
                         </ListItemIcon>
                         <ListItemText primary="Notifications" />
                     </ListItem>
+                    </Tooltip>
                   
                 </div>
              }

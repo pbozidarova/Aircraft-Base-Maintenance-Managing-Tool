@@ -241,6 +241,8 @@ public class NotificationServiceImpl implements NotificationService {
         //VALIDATE SELECT VALUES!
         notificationValidationService.validateIfMaintenanceExists(notificationNewData.getMaintenanceNum());
         notificationValidationService.validateIfTaskExists(notificationNewData.getTaskNum());
+        notificationValidationService.validateStatus(notificationNewData.getStatus());
+        notificationValidationService.validateClassification(notificationNewData.getClassification());
 
         NotificationEntity notificationToCreate = new NotificationEntity();
         UserEntity author = this.userService.identifyingUserFromToken(token);
@@ -308,6 +310,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .setTask(taskEntity)
                 .setStatus(status)
                 .setDueDate( dueDateToUpdate )
+                .setClassification(null)
                 .setUpdatedOn(LocalDateTime.now());
 
         if(status.equals(NotificationStatusEnum.CLOSED)) {

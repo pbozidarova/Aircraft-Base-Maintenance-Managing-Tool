@@ -9,6 +9,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import { ICONS_MAPPING } from '../../Constanst.js';
+import Tooltip from '@material-ui/core/Tooltip';
+
 
 class DrawerItemsSecondary extends Component {
     
@@ -25,27 +27,32 @@ class DrawerItemsSecondary extends Component {
             <>
                 {  isUserLoggedIn &&
                 <div>
+                    <Tooltip title="Aircraft" placement="right">
                     <ListItem button onClick={() => Utils.redirectTo(this.props, "/aircraft") }>
                         <ListItemIcon>
                             {ICONS_MAPPING.aircraft}
                         </ListItemIcon>
                         <ListItemText primary="Aircraft" />
                     </ListItem>
+                    </Tooltip>
 
+                    <Tooltip title="Faclities" placement="right">
                     <ListItem button onClick={() => Utils.redirectTo(this.props, "/facilities") }>
                         <ListItemIcon>
                             {ICONS_MAPPING.facilities}
                         </ListItemIcon>
                         <ListItemText primary="Faclities" />
                     </ListItem>
+                    </Tooltip>
                         
+                    <Tooltip title="Users" placement="right">
                     <ListItem button onClick={() => Utils.redirectTo(this.props, "/users") }>
                         <ListItemIcon>
                             {ICONS_MAPPING.users}
                         </ListItemIcon>
                         <ListItemText primary="Users" />
                     </ListItem>
-                    
+                    </Tooltip>
                 </div>
              }
 

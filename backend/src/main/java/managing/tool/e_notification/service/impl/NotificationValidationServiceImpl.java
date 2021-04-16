@@ -2,6 +2,7 @@ package managing.tool.e_notification.service.impl;
 
 import lombok.AllArgsConstructor;
 import managing.tool.e_maintenance.service.MaintenanceService;
+import managing.tool.e_notification.model.NotificationClassificationEnum;
 import managing.tool.e_notification.model.NotificationStatusEnum;
 import managing.tool.e_notification.service.NotificationService;
 import managing.tool.e_notification.service.NotificationValidationService;
@@ -24,7 +25,11 @@ public class NotificationValidationServiceImpl implements NotificationValidation
 
     @Override
     public void validateStatus(String status) {
-        if(!Arrays.stream(NotificationStatusEnum.values()).collect(Collectors.toList()).contains(status.toUpperCase())) {
+
+        if(!Arrays.stream(NotificationStatusEnum.values())
+                .map(val -> val.toString())
+                .collect(Collectors.toList())
+                .contains(status.toUpperCase())) {
             throw new NotFoundInDb(
                     String.format(NOTFOUND_SELECT_ERROR, status, "status"),
                     "status"
@@ -36,7 +41,10 @@ public class NotificationValidationServiceImpl implements NotificationValidation
     public void validateClassification(String classification) {
         if(classification == null) return;
 
-        if(!Arrays.stream(NotificationStatusEnum.values()).collect(Collectors.toList()).contains(classification.toUpperCase())) {
+        if(!Arrays.stream(NotificationClassificationEnum.values())
+                .map(val -> val.toString())
+                .collect(Collectors.toList())
+                .contains(classification.toUpperCase())) {
             throw new NotFoundInDb(
                     String.format(NOTFOUND_SELECT_ERROR, classification, "classification"),
                     "classification"
