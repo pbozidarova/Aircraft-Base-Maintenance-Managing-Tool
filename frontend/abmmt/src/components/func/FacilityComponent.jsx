@@ -40,13 +40,18 @@ class FacilityComponent extends Component {
         this.handleInfo = this.handleInfo.bind(this);
 
         this.validateAndSubmit = this.validateAndSubmit.bind(this);    
+        this.reset = this.reset.bind(this)
     }
    
     componentDidMount(){
        this.refreshFacilities();
 
-        this.selectFacility(Utils.emptyObj(FACILITIES_HEADER_DATA));
+        
 
+    }
+
+    reset(){
+        this.selectFacility(Utils.emptyObj(FACILITIES_HEADER_DATA));
     }
 
     refreshFacilities(){
@@ -145,6 +150,8 @@ class FacilityComponent extends Component {
                     feedback={MESSAGES.facilitiesEditInfo}
                     validateAndSubmit={this.validateAndSubmit}
                     refreshData={this.refreshFacilities}
+                    reset={this.reset}
+
                     />
                   }
                 </Paper>

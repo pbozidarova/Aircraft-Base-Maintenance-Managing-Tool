@@ -7,9 +7,10 @@ import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.repository.UserRepository;
 import managing.tool.e_user.service.UserService;
-import managing.tool.authentication.util.JwtUtil;
+import managing.tool.authentication.util.JwtUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
     private final Random random;
-    private final JwtUtil jwtUtil;
+    private final JwtUtils jwtUtil;
 
     @Override
     public UserViewDto findUser(String companyNum) {

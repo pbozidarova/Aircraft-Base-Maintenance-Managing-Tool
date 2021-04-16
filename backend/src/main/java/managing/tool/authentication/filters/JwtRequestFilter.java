@@ -2,7 +2,7 @@ package managing.tool.authentication.filters;
 
 
 import managing.tool.e_user.service.impl.UserDetailsServiceImpl;
-import managing.tool.authentication.util.JwtUtil;
+import managing.tool.authentication.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,10 +21,10 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final UserDetailsServiceImpl userDetailsServiceImpl;
-    private final JwtUtil jwtUtil;
+    private final JwtUtils jwtUtil;
 
     @Autowired
-    public JwtRequestFilter(UserDetailsServiceImpl userDetailsServiceImpl, JwtUtil jwtUtil) {
+    public JwtRequestFilter(UserDetailsServiceImpl userDetailsServiceImpl, JwtUtils jwtUtil) {
         this.userDetailsServiceImpl = userDetailsServiceImpl;
         this.jwtUtil = jwtUtil;
     }

@@ -42,13 +42,16 @@ class NotificationComponent extends Component {
         this.handleAutocompleteChange = this.handleAutocompleteChange.bind(this);
 
         this.validateAndSubmit = this.validateAndSubmit.bind(this);
-        // this.submitUpdate = this.submitUpdate.bind(this)
-        // this.submitCreate = this.submitCreate.bind(this)
+        this.reset = this.reset.bind(this)
     }
     
     componentDidMount(){
        this.refreshNotifications();
 
+        this.reset();
+    }
+
+    reset(){
         this.selectNotification(Utils.emptyObj(NOTIFICATIONS_HEADER_DATA))
     }
    
@@ -155,7 +158,8 @@ class NotificationComponent extends Component {
                         feedback={MESSAGES.notificationsEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
                         refreshData={this.refreshNotifications}
-                        
+                        reset={this.reset}
+
                     />
                   }
                 </Paper>

@@ -36,25 +36,25 @@ public class AircraftCUDControllerTest {
         aircraftRepository.save(aircraftEntity);
     }
 
-    @Test
-    @WithMockUser(value = "spring")
-    void createAircraftTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders
-                .put(REQUEST_MAPPING_AIRCRAFT +"/{registration}/create", AIRCRAFT_REGISTRATION)
-//                .with(csrf())
-        )
-                .andExpect(status().isOk());
-
-    }
-
-    @Test
-    @WithMockUser(value = "spring")
-    void updateAircraft() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders
-                        .put(REQUEST_MAPPING_AIRCRAFT +"/{registration}/update", AIRCRAFT_REGISTRATION)
-//                .with(csrf())
-        )
-                .andExpect(status().isOk());
-
-    }
+//    @Test
+//    @WithMockUser(value = "spring")
+//    void createAircraftTest() throws Exception {
+//        mockMvc.perform(MockMvcRequestBuilders
+//                .put(REQUEST_MAPPING_AIRCRAFT +"/{registration}/create", AIRCRAFT_REGISTRATION)
+////                .with(csrf())
+//        )
+//                .andExpect(status().isOk());
+//
+//    }
+//
+//    @Test
+//    @WithMockUser(value = "spring")
+//    void updateAircraft() throws Exception {
+//        mockMvc.perform(MockMvcRequestBuilders
+//                        .put(REQUEST_MAPPING_AIRCRAFT +"/{registration}/update", AIRCRAFT_REGISTRATION)
+////                .with(csrf())
+//        )
+//                .andExpect(status().isOk());
+//
+//    }
 }

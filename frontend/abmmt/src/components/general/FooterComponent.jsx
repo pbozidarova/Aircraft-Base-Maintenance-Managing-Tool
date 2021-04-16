@@ -13,7 +13,6 @@ class FooterComponent extends Component {
                 <Link color="inherit" onClick={() => Utils.redirectTo(this.props, "/home")}>Aicraft Base Maintenance Management Tool</Link>
               {' '}
               {new Date().getFullYear()}
-              {'.'}
             </Typography>
           );
     }

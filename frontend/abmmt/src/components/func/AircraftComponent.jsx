@@ -38,12 +38,16 @@ class AircraftComponent extends Component {
         this.handleAutocompleteChange = this.handleAutocompleteChange.bind(this)
 
         this.validateAndSubmit = this.validateAndSubmit.bind(this);
+        this.reset = this.reset.bind(this)
     
     }
    
     componentDidMount(){
         this.refreshAircraft();
+        this.reset();
+    }
 
+    reset(){
         this.selectAircraft(Utils.emptyObj(AIRCRAFT_HEADER_DATA))
     }
 
@@ -146,6 +150,8 @@ class AircraftComponent extends Component {
                         feedback={MESSAGES.aircraftEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
                         refreshData={this.refreshAircraft}
+                        reset={this.reset}
+
                     />
                   }
                 </Paper>

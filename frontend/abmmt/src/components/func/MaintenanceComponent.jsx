@@ -40,13 +40,18 @@ class MaintenanceComponent extends Component {
         this.handleChange = this.handleChange.bind(this)
         this.handleAutocompleteChange = this.handleAutocompleteChange.bind(this)
         this.validateAndSubmit = this.validateAndSubmit.bind(this);
+        this.reset = this.reset.bind(this)
     
     }
     
     componentDidMount(){
         this.refreshMaintenance();
+        this.reset();
+    }
 
+    reset(){
         this.selectMaintenance(Utils.emptyObj(MAINTENANCE_HEADER_DATA))
+
     }
 
     refreshMaintenance(){
@@ -147,6 +152,8 @@ class MaintenanceComponent extends Component {
                         feedback={MESSAGES.maintenanceEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
                         refreshData={this.refreshMaintenance}
+                        reset={this.reset}
+
                     />
                   }
                 </Paper>

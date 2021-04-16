@@ -58,10 +58,11 @@ export const styles = ( theme ) => ({
       }),
     },
    buttonGroup: {
-     display: 'flex'
+     display: 'flex',
+     justifyContent:"space-between"
    },
     menuButton: { 
-      marginRight: 0,
+      margin: 15,
       flexGrow: 1,
       // padding: theme.spacing(1),
     },

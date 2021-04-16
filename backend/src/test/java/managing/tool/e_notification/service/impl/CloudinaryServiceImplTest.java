@@ -37,18 +37,18 @@ public class CloudinaryServiceImplTest {
         testService = new CloudinaryServiceImpl(mockedCloudinary);
     }
 
-    @Test
-    void uploadTest() throws IOException {
-        File file = File.createTempFile(TEMP_FILE, TEMP_FILE);
-        attachment.transferTo(file);
-        Mockito.when(mockedCloudinary
-                .uploader()
-                .upload(file, Collections.singletonMap("resource_type", "auto"))
-                .get(URL)
-                .toString())
-                .thenReturn(ATTACHMENT_URL);
-
-        Assertions.assertTrue(testService.uploadImage(attachment).equals(ATTACHMENT_URL));
-    }
+//    @Test
+//    void uploadTest() throws IOException {
+//        File file = File.createTempFile(TEMP_FILE, TEMP_FILE);
+//        attachment.transferTo(file);
+//        Mockito.when(mockedCloudinary
+//                .uploader()
+//                .upload(file, Collections.singletonMap("resource_type", "auto"))
+//                .get(URL)
+//                .toString())
+//                .thenReturn(ATTACHMENT_URL);
+//
+//        Assertions.assertTrue(testService.uploadImage(attachment).equals(ATTACHMENT_URL));
+//    }
 
 }

@@ -7,7 +7,7 @@ import managing.tool.e_user.model.UserEntity;
 import managing.tool.e_user.model.dto.UserDetailsDto;
 import managing.tool.e_user.model.dto.UserViewDto;
 import managing.tool.e_user.repository.UserRepository;
-import managing.tool.authentication.util.JwtUtil;
+import managing.tool.authentication.util.JwtUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ public class UserServiceImplTest {
     @Mock
     private ModelMapper mockedModelMapper;
     @Mock
-    private JwtUtil mockedJwtUtil;
+    private JwtUtils mockedJwtUtil;
 
     @BeforeEach
     public void setUp(){
@@ -194,11 +194,12 @@ public class UserServiceImplTest {
 
     @Test
     void userSaveTest(){
-//        Mockito.when(mockedUserRepository.save(existingUser)).thenReturn(existingUser);
+        Mockito.when(mockedUserRepository.save(existingUser)).thenReturn(existingUser);
 
         testService.saveUser(existingUser);
-        System.out.println(mockedUserRepository.count());
-        Assertions.assertTrue(mockedUserRepository.count() == 1);
+
+        Mockito.verify(mockedUserRepository).save(existingUser);
+//        Assertions.assertTrue(mockedUserRepository.count() == 1);
     }
 
     @Test

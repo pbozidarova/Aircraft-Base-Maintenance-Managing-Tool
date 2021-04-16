@@ -38,7 +38,6 @@ class EditGlobalComponent extends Component {
               taskNum: {},
               status: ['OPENED', 'PROGRESSING', 'CLOSED'],
               classification: ['CLARIFICATION', 'IMPROVEMENT', 'MISTAKE', 'REFUSED'],
-              //TODO!!!!
               authority: ['ADMIN', 'USER'],
               role: ['MECHANIC', 'ENGINEER'],
 
@@ -90,7 +89,9 @@ class EditGlobalComponent extends Component {
   
     render(){
       const { classes } = this.props;
-      const { selected, booleanFields, feedback, editFields, labels, handleChange, handleAutocompleteChange, errors, selectedId, validateAndSubmit, refreshData} = this.props;        
+      const { selected, booleanFields, feedback, 
+        editFields, labels, handleChange, handleAutocompleteChange, 
+        errors, selectedId, validateAndSubmit, refreshData, reset} = this.props;        
       let isError = (key) => errors[key] && errors[key].length > 0
 
       return (
@@ -166,6 +167,7 @@ class EditGlobalComponent extends Component {
            <CreateUpdateBtnGroup
             validateAndSubmit={validateAndSubmit}
             refreshData={refreshData}
+            reset={reset}
             // submitUpdate={submitUpdate}
             // submitCreate={submitCreate}
             classes={classes}

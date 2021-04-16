@@ -44,12 +44,14 @@ class UsersComponent extends Component {
         // this.handleAuthorityRoleChange = this.handleAuthorityRoleChange.bind(this)
         this.handleAutocompleteChange = this.handleAutocompleteChange.bind(this)
         this.validateAndSubmit = this.validateAndSubmit.bind(this);
-
+        this.reset = this.reset.bind(this)
     }
    
     componentDidMount(){
         this.refreshUsers();
-
+        this.reset();
+    }
+    reset(){
         this.selectUser(Utils.emptyObj(USERS_HEADER_DATA));
     }
 
@@ -186,7 +188,8 @@ class UsersComponent extends Component {
                         feedback={MESSAGES.usersEditInfo}
                         validateAndSubmit={this.validateAndSubmit}
                         refreshData={this.refreshUsers}
-                       
+                        reset={this.reset}
+
                     />
                   }
                 </Paper>

@@ -5,7 +5,7 @@ import managing.tool.authentication.models.AuthenticationRequest;
 import managing.tool.authentication.models.AuthenticationResponse;
 import managing.tool.e_user.service.impl.UserDetailsServiceImpl;
 import managing.tool.exception.NotFoundInDb;
-import managing.tool.authentication.util.JwtUtil;
+import managing.tool.authentication.util.JwtUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,7 +21,7 @@ import static managing.tool.constants.GlobalConstants.FRONTEND_URL;
 class AuthenticateController {
 
     private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtTokenUtil;
+    private final JwtUtils jwtTokenUtil;
     private final UserDetailsServiceImpl userDetailsServiceimpl;
 
     @PostMapping(value = "/authenticate")

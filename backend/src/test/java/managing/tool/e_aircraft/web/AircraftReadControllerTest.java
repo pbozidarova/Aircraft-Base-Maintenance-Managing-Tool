@@ -36,6 +36,14 @@ public class AircraftReadControllerTest {
     private static final String REQUEST_MAPPING_AIRCRAFT = "/aircraft";
     private static final String AIRCRAFT_REGISTRATION = "LZ_Reg";
     private static final String AIRCRAFT_MODEL = "LZ_Reg";
+    private static final String OPERATOR = "LZ_Reg";
+    private static final String ICAO_CODE = "LZ_Reg";
+    private static final String TYPE = "LZ_Reg";
+    private static final String REGISTRATION = "LZ_Reg";
+    private static final String SERIAL_NUMBER = "LZ_Reg";
+    private static final String ENGINE_MANUFACTURER = "LZ_Reg";
+    private static final String ENGINE_MODEL_SERIES = "LZ_Reg";
+
     private final String JWT_STRING = "jwt";
 
     @Autowired
@@ -46,22 +54,14 @@ public class AircraftReadControllerTest {
     @BeforeEach
     void setUp(){
         AircraftEntity aircraftEntity = new AircraftEntity();
-//        operatorName;
-//        operatorICAOCode ;
-//        aircraftType ;
-//        aircraftModel ;
-//        aircraftRegistration ;
-//        serialNumber ;
-//        engineManufacturer ;
-//        engineModelSeries ;
-        aircraftEntity.setOperatorName(AIRCRAFT_MODEL)
-                .setOperatorICAOCode(AIRCRAFT_MODEL)
-                .setAircraftType(AIRCRAFT_MODEL)
+        aircraftEntity.setOperatorName(OPERATOR)
+                .setOperatorICAOCode(ICAO_CODE)
+                .setAircraftType(TYPE)
                 .setAircraftModel(AIRCRAFT_MODEL)
                 .setAircraftRegistration(AIRCRAFT_REGISTRATION)
-                .setSerialNumber(AIRCRAFT_MODEL)
-                .setEngineManufacturer(AIRCRAFT_MODEL)
-                .setEngineModelSeries(AIRCRAFT_MODEL);
+                .setSerialNumber(SERIAL_NUMBER)
+                .setEngineManufacturer(ENGINE_MANUFACTURER)
+                .setEngineModelSeries(ENGINE_MODEL_SERIES);
 
         aircraftRepository.save(aircraftEntity);
     }
