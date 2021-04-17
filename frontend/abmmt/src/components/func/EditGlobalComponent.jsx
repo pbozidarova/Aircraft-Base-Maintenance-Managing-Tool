@@ -125,6 +125,7 @@ class EditGlobalComponent extends Component {
                       name={key}
                       label={labels[key] }
                       type={key.includes('Date') && 'date'}
+                      InputLabelProps={{ shrink: true }}
                       defaultValue={selected[key]}
                       // disabled={disabledFields[key]}
                       rows={key =='description' ? 4 : 1}

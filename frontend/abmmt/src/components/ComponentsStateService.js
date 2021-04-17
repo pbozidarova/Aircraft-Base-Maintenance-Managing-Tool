@@ -42,9 +42,9 @@ class ComponentsStateService {
         if(Utils.formIsValid(errors)) {
             BackendService.updateOne(entity, selectedNum, selected)
                 .then((r) => {                        
-                    refreshData()
-                    Utils.successMessage(handleInfo, MESSAGES.successUpdated)
                     
+                    Utils.successMessage(handleInfo, MESSAGES.successUpdated)
+                    setTimeout(refreshData, 3000)
                 }).catch(e => {
                     Utils.errorMessage(e, handleInfo )
                 })
@@ -56,9 +56,8 @@ class ComponentsStateService {
         if(Utils.formIsValid(errors)) {
             BackendService.createOne(entity, selectedNum, selected)
                 .then((response) => {        
-                    console.log(response)                
-                    refreshData()
                     Utils.successMessage(handleInfo, MESSAGES.successCreated)
+                    setTimeout(refreshData, 3000)
                 }
                 ).catch(e => {
                     console.log(e)

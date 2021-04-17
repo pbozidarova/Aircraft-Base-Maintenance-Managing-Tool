@@ -133,8 +133,8 @@ class DataComponentAccordion extends Component{
         const { page, rowsPerPage } = this.state
         return(
             <div>
-            <TableContainer className={classes.tcontainer} >
-            <Table stickyHeader className={classes.table} >
+            <TableContainer >
+            <Table className={classes.table} >
             <TableBody>
                 <TableHead> 
                     <TableRow size="small"  className={classes.head}>
@@ -145,7 +145,7 @@ class DataComponentAccordion extends Component{
                         {tableRows[0] && 
                             Object.keys(tableRows[0])
                                 .map(key => 
-                                    <TableCell size="small"   variant="head" className={classes.tableCell} key={key} > 
+                                    <TableCell size="small"  stickyHeader={true} variant="head" className={classes.head} key={key} > 
                                         {tableHeader[key]} 
                                     </TableCell>)
                         }

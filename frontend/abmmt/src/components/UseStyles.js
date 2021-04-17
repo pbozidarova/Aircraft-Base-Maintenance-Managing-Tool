@@ -16,6 +16,7 @@ export const theme = createMuiTheme({
       contrastText: '#000',
     },
   },
+  
 });
 
 export const drawerWidth = 240;
@@ -26,6 +27,7 @@ export const styles = ( theme ) => ({
   },
   root: {
     minHeight: 300
+    
     // maxWidth: 400,
     // maxHeight: 300,
   },
@@ -121,22 +123,26 @@ export const styles = ( theme ) => ({
       alignItems: 'center',
       justifyContent: 'center',
       height: 100
-      // justify-content: 'center',
-      // height: 50,
-      // width: 100
-      // margin: theme.spacing(2),
     },
     fabChild: {
       flexGrow: 1
     },
    table: {
     width: '100%',
+    fontSize: 100,
+
    },
    tableBody: {
+    width: '100%',
+
     flexGrow: 1,
    },
    head: {
-    backgroundColor: "#fff",
+    // backgroundColor: "#fff",
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.secondary.contrastText,
+    padding: 5 ,
+    textAlign: 'left',
     position: "sticky",
     top: 0,
     zIndex: 10,
