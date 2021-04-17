@@ -32,7 +32,6 @@ public class NotificationREADController {
 
         return ResponseEntity.ok(CollectionModel.of(allNotifications));
     }
-
     
     @GetMapping("/user/{companyNum}")
     public ResponseEntity<CollectionModel<EntityModel<NotificationViewDto>>> findAllIssuesRaisedBy(@PathVariable String companyNum){

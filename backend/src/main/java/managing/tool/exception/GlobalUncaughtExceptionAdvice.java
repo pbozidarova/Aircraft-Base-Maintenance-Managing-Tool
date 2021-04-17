@@ -22,8 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
-//@Aspect
-//@Component
 public class GlobalUncaughtExceptionAdvice extends ResponseEntityExceptionHandler  {
 
     private static Logger LOGGER = LoggerFactory.getLogger(GlobalUncaughtExceptionAdvice.class);

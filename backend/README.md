@@ -83,34 +83,35 @@ Here is a simple diagram of the table relation:
    When the username and password match a user from the database, a JWT is generated and send back as a response and every other request uses it later on for identification.
    In the security configuration only /authenticate URL is enabled for all and for every other request a JWT filter is applied.       
 
-3. Read functionality
+3. Read/write functionality
+   JPA repositories are used for this functionality.    
+   With the help of GET/POST/PUT requests and simple DTO/View models the data reaches the frontend
+   and is written down back in the database.
 
-4. Write functionality
-1. User
-   A user can be an admin or a simple user of this application.
-   An engineer that can create a single task (technical job);
-   a mechanic that performs it.
-2. 
-    
+4. Exception Handling
+   Custom exceptions are thrown when invalid update and create requests are being sent.
+   In the configuration package via ErrorConfiguration custom error attributes are added to the body of the errors.
+   For the unexpected errors a global controller advices is also set. 
 
-### Exception Handling
-    
-### Caching
- The fetching of all tasks, notifications and maintenance is cached. The cach is evicted when update/create is initiated for this entity.
- 
-### Events
-Post creating of maintenance initiates a transaction of less than 400 random tasks, that are going to be performed in this event.
+5. Caching
+   The fetching of all tasks, notifications and maintenance is cached. 
+   The cache is evicted when update/create is initiated for this entity.
+   
+6. AOP
+   Using the annotations @TrackCreation and @TrackUpdating the program tracks how many times a create or update method have been called, checks the count of the successful ones and logs it.
 
-### Scheduling
-At 01:00 on every day-of-month the program prints a list with all overdue notifications.
+7. Events
+   Post creating of maintenance initiates a transaction of less than 400 random tasks, that are going to be performed in this event.
+   This code can be found in the e_maintenance/event package.
+   
+8. Scheduling
+   At 01:00 on every day-of-month the program prints a list with all overdue notifications.
 
-Once a day the program checks the start and end dates of every project and changes accordingly the status to UPCOMING, OPENED or CLOSED.
+   Once a day the program checks the start and end dates of every project and changes accordingly the status to UPCOMING, OPENED or CLOSED.
 
-### AOP
-Using the annotations @TrackCreation and @TrackUpdating the program tracks how many times a create or update method have been called, checks the count of the successful ones and logs it.
-
-### Interceptor
-The method and url of each request are logged. 
+9. Interceptor
+   The method and url of each request are logged.
+   It is created in its own package, but it is registered in the config package.
 
 ### REST API (WEB)
   The program represents a REST API where you can request to read, update and create data. Delete functionality is not implemented due to law restrictions there needs to be a trace for everything done on an aircraft.  
@@ -158,17 +159,6 @@ The method and url of each request are logged.
       UPDATE
       - localhost:3200/tasks/{taskNum}/update       
 
-- Notifications
-        
-      GET
-      - localhost:3200/notifications/all
-      - localhost:3200/notifications/user/{companyNum}
-      - localhost:3200/notifications/maintenance/{maintenanceNum}
-      ADD
-      - localhost:3200/notifications/{notificationNum}/create
-      UPDATE
-      - localhost:3200/notifications/notificationNum/update
-
 - Facilities
 
       GET
@@ -188,3 +178,22 @@ The method and url of each request are logged.
       - localhost:3200/aircraft/{registration}/create
       UPDATE
       - localhost:3200/aircraft/{registration}/update
+
+- Notifications
+
+      GET
+      - localhost:3200/notifications/all
+      - localhost:3200/notifications/user/{companyNum}
+      - localhost:3200/notifications/maintenance/{maintenanceNum}
+      ADD
+      - localhost:3200/notifications/{notificationNum}/create
+      UPDATE
+      - localhost:3200/notifications/notificationNum/update
+
+- Replies
+    
+    GET
+    - localhost:3200/replies/{notificationNum}
+    ADD
+    - localhost:3200/replies/{notificationNum}/create
+ 

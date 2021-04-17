@@ -18,7 +18,6 @@ public class MaintenanceListener {
     @Transactional
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMPLETION)
     public void afterCompletion(MaintenanceEvent maintenanceEvent){
-
         this.maintenanceService.allocateRandomTasksToMaintenance(maintenanceEvent.getMaintenanceNum());
     }
 
