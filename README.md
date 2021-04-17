@@ -8,7 +8,6 @@ The goal of this application is to facilitate the documentation of such a check 
 In short - We have **AIRCRAFT** that need to have **MAINTENANCE** at specific **FACILITY**. 
 This **MAINTENANCE** consists of multiple technical **TASKS** and while performing them different **ISSUES** may occur. 
 
----------
 - Heroku hosted 
     - Frontend: https://abmmt-fe.herokuapp.com/
     - Backend: https://abmmtool.herokuapp.com/
@@ -17,6 +16,7 @@ This **MAINTENANCE** consists of multiple technical **TASKS** and while performi
     - Frontend: http://localhost:3200/
     - Backend: http://localhost:8000/
 
+---------
 ## Technologies and libraries used in the frontend
 - React Application - A JavaScript library for building user interfaces
 - Axios library - Promise based HTTP client for the browser and node.js
@@ -32,7 +32,7 @@ This **MAINTENANCE** consists of multiple technical **TASKS** and while performi
 > More details of the used concepts and their realization can be found in each of the folders README.MD files.
 
 ## Main resources
-- The Softuni courses on <a href="https://softuni.bg/trainings/2612/spring-data-february-2020">Spring Data</a>, <a href="https://softuni.bg/trainings/2844/spring-fundamentals-may-2020">Spring Fundamentals</a> and <a href="https://softuni.bg/trainings/3026/spring-advanced-june-2020">Spring Advanced</a>
-- The JavaBrains <a href="https://youtu.be/X80nJ5T7YpE">tutorial</a> on JWT token 
-- The in28minutes <a href="https://github.com/pbozidarova/Full-Stack-Tutorial-Spring-React">udemy tutorial</a> on developing a full-stack application
-- The dashboard layout has been based on <a href="https://material-ui.com/getting-started/templates/dashboard/">this Materials UI template</a>
+- The Softuni courses on <a href="https://softuni.bg/trainings/2612/spring-data-february-2020">Spring Data</a>, <a href="https://softuni.bg/trainings/2844/spring-fundamentals-may-2020">Spring Fundamentals</a> and <a href="https://softuni.bg/trainings/3026/spring-advanced-june-2020">Spring Advanced.</a>
+- The JavaBrains <a href="https://youtu.be/X80nJ5T7YpE">tutorial</a> on JWT token.
+- The in28minutes <a href="https://github.com/pbozidarova/Full-Stack-Tutorial-Spring-React">udemy tutorial</a> on developing a full-stack application.
+- The dashboard layout has been based on <a href="https://material-ui.com/getting-started/templates/dashboard/">this Materials UI template</a>.
