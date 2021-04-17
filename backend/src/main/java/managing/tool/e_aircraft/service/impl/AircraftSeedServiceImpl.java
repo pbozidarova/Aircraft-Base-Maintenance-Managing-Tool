@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,7 +44,7 @@ public class AircraftSeedServiceImpl implements AircraftSeedService {
             Arrays.stream(dtos)
                     .forEach(aDto -> {
                         AircraftEntity aircraft = this.modelMapper.map(aDto, AircraftEntity.class);
-
+                        aircraft.setCreatedOn(LocalDateTime.now());
                         this.aircraftRepository.save(aircraft);
                     });
         }catch (FileNotFoundException e) {

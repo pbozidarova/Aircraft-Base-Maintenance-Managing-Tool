@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static managing.tool.constants.GlobalConstants.USERS_MOCK_DATA_PATH;
@@ -53,9 +54,9 @@ public class UserSeedServiceImpl implements UserSeedService {
                         roleSet.add(authority);
                         allocateRole(roleSet, uDto.getCompanyNum());
                         user.setRoles(roleSet)
-                            .setCompanyNum(uDto.getCompanyNum());
-//                    user.setFacility(this.facilitySeedService.getRandomFacility());
-                        user.setPassword(passwordEncoder.encode(GlobalConstants.DUMMY_PASS));
+                            .setCompanyNum(uDto.getCompanyNum())
+                            .setPassword(passwordEncoder.encode(GlobalConstants.DUMMY_PASS))
+                            .setCreatedOn(LocalDateTime.now());
 
                         this.userRepository.saveAndFlush(user);
                     });

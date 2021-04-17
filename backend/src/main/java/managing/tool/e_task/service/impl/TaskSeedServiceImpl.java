@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -51,7 +52,7 @@ public class TaskSeedServiceImpl implements TaskSeedService {
 
                         task.setPreparedBy(new HashSet<>());
                         task.getPreparedBy().add(userEntity);
-
+                        task.setCreatedOn(LocalDateTime.now());
 
                         task.setToolingAvailable(this.random.nextBoolean());
                         task.setJobcardsPrepared(this.random.nextBoolean());

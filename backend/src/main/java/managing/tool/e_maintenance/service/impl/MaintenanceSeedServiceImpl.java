@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -69,7 +70,8 @@ public class MaintenanceSeedServiceImpl implements MaintenanceSeedService {
                             .setAircraft(aircraft)
                             .setFacility(facility)
                             .setResponsibleEngineer(engineer)
-                            .setTasks(new HashSet<>(randomTasks));
+                            .setTasks(new HashSet<>(randomTasks))
+                            .setCreatedOn(LocalDateTime.now());
 
                     this.maintenanceRepository.saveAndFlush(maintenance);
                 });

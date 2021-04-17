@@ -51,7 +51,7 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     public String getPassword() {
         return password;
     }

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -47,7 +48,8 @@ public class FacilitySeedServiceImpl implements FacilitySeedService {
                     .forEach(fDto -> {
                         FacilityEntity facility = this.modelMapper.map(fDto, FacilityEntity.class);
                         UserEntity user = this.userService.findByCompanyNum(fDto.getManager());
-                        facility.setManager(user);
+                        facility.setManager(user)
+                                .setCreatedOn(LocalDateTime.now());
                         //TODO Competences
                         this.facilityRepository.save(facility);
                     });
