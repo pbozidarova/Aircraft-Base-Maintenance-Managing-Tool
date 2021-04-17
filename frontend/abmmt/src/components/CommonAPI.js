@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {BACKEND_URL} from '../Constanst.js'
+import {BACKEND_URL} from './Constants.js'
 
 
 class BackendService {

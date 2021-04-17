@@ -1,27 +1,18 @@
 import React, { Component } from 'react'
 import { styles } from '../UseStyles.js'
 import Utils from '../Utils.js'
-import {ICONS_MAPPING, MESSAGES} from '../../Constanst.js'
-
 import MuiAlert from '@material-ui/lab/Alert';
-
 import CreateUpdateBtnGroup from './CreateUpdateBtnGroup'
-
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
-
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import BackendService from '../../api/CommonAPI.js'
+import BackendService from '../CommonAPI.js'
 
 import PropTypes from 'prop-types';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
-import { FETCH_DATA_KEY, GLOBAL_SELECT_FIELDS } from '../../Constanst.js';
+import {MESSAGES, FETCH_DATA_KEY, GLOBAL_SELECT_FIELDS } from '../Constants.js';
 
 
 

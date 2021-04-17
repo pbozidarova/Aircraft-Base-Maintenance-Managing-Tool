@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import BackendService from '../../api/CommonAPI.js'
-import {MAINTENANCE_HEADER_DATA, MAINTENANCE_BOOLEAN_FIELDS, MAINTENANCE_EDIT_FIELDS, MESSAGES} from '../../Constanst.js'
+import {MAINTENANCE_HEADER_DATA, MAINTENANCE_BOOLEAN_FIELDS, MAINTENANCE_EDIT_FIELDS, MESSAGES} from '../Constants.js'
 import Utils from '../Utils.js'
 import ComponentsStateService from '../ComponentsStateService.js'
 import { withRouter } from 'react-router';

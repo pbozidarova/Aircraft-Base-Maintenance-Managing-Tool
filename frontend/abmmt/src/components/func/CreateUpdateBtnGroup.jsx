@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {ButtonGroup, Button} from '@material-ui/core';
-import {ICONS_MAPPING} from '../../Constanst.js'
+import {ICONS_MAPPING} from '../Constants.js'
 import { styles } from '../UseStyles.js'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';

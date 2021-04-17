@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import {ICONS_MAPPING} from '../../Constanst.js'
+import {ICONS_MAPPING, MESSAGES} from '../Constants.js'
 import Utils from '../Utils'
 import { withRouter } from 'react-router';
-import BackendService from '../../api/CommonAPI.js'
-import {MESSAGES} from '../../Constanst.js'
+import BackendService from '../CommonAPI.js'
 
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';

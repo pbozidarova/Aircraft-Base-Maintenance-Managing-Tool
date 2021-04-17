@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {ICONS_MAPPING, REPLIES_HEADER_DATA} from '../../Constanst.js'
+import {ICONS_MAPPING, REPLIES_HEADER_DATA} from '../Constants.js'
 
 
 import TableRow from '@material-ui/core/TableRow';
@@ -10,7 +10,6 @@ import TableHead from '@material-ui/core/TableHead';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
-import Chip from '@material-ui/core/Chip';
 import Collapse from '@material-ui/core/Collapse';
 import TextField from '@material-ui/core/TextField';
 

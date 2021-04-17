@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {USERS_BOOLEAN_FIELDS, USERS_HEADER_DATA, USERS_EDIT_FIELDS, MESSAGES} from '../../Constanst.js'
+import {USERS_BOOLEAN_FIELDS, USERS_HEADER_DATA, USERS_EDIT_FIELDS, MESSAGES} from '../Constants.js'
 import Utils from '../Utils.js'
 import ComponentsStateService from '../ComponentsStateService.js'
 

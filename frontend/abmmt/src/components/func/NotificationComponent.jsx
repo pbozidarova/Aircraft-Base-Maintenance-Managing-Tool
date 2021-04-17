@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import BackendService from '../../api/CommonAPI.js'
-import {NOTIFICATIONS_HEADER_DATA, NOTIFICATIONS_BOOLEAN_FIELDS, NOTIFICATION_EDIT_FIELDS, MESSAGES} from '../../Constanst.js'
+import {NOTIFICATIONS_HEADER_DATA, NOTIFICATIONS_BOOLEAN_FIELDS, NOTIFICATION_EDIT_FIELDS, MESSAGES} from '../Constants.js'
 import Utils from '../Utils.js'
 import ComponentsStateService from '../ComponentsStateService.js'
 

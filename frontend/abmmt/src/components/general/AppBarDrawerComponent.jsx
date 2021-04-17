@@ -21,7 +21,7 @@ import DrawerItemsSecondary from './DrawerItemsSecondary.jsx';
 import { styles } from '../UseStyles.js'
 import { withStyles } from '@material-ui/core/styles';
 import Utils from '../Utils.js';
-import { MESSAGES } from '../../Constanst.js';
+import { MESSAGES } from '../Constants.js';
 
 
 

@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
-import BackendService from '../../api/CommonAPI.js'
-import {AIRCRAFT_HEADER_DATA, AIRCRAFT_BOOLEAN_FIELDS, AIRCRAFT_EDIT_FIELDS, MESSAGES} from '../../Constanst.js'
+import {AIRCRAFT_HEADER_DATA, AIRCRAFT_BOOLEAN_FIELDS, AIRCRAFT_EDIT_FIELDS, MESSAGES} from '../Constants.js'
 import Utils from '../Utils.js'
 import ComponentsStateService from '../ComponentsStateService.js'
 

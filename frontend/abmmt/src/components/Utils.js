@@ -1,4 +1,4 @@
-import {MESSAGES} from '../Constanst.js'
+import {MESSAGES} from './Constants.js'
 
 class Utils {
     redirectTo(props, urlParam, fetchDataFromURL){

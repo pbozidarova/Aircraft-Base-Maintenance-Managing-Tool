@@ -7,7 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import {DASHBOARD_CARDS, ICONS_MAPPING} from '../../Constanst.js'
+import {DASHBOARD_CARDS, ICONS_MAPPING} from '../Constants.js'
 import { withRouter } from 'react-router';
 import clsx from 'clsx';
 import Grid from '@material-ui/core/Grid';

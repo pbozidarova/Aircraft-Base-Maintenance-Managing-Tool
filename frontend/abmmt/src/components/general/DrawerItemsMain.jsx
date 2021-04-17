@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import AuthenticationService from '../AuthenticationService.js'
 import Utils from '../Utils.js'
-import {ICONS_MAPPING} from '../../Constanst.js'
+import {ICONS_MAPPING} from '../Constants.js'
 
 import { withRouter } from 'react-router';
 

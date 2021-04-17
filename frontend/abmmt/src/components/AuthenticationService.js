@@ -1,4 +1,4 @@
-import {BACKEND_URL, SESSION_ATTRIBUTE_NAME} from '../Constanst.js'
+import {BACKEND_URL, SESSION_ATTRIBUTE_NAME} from './Constants.js'
 import axios from 'axios'
 
 class AuthenticationService {

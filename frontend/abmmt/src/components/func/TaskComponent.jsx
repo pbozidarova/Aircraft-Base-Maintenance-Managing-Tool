@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import BackendService from '../../api/CommonAPI.js'
-import {TASKS_HEADER_DATA, TASKS_BOOLEAN_FIELDS, TASK_EDIT_FIELDS, MESSAGES} from '../../Constanst.js'
+import {TASKS_HEADER_DATA, TASKS_BOOLEAN_FIELDS, TASK_EDIT_FIELDS, MESSAGES} from '../Constants.js'
 import Utils from '../Utils.js'
 import ComponentsStateService from '../ComponentsStateService.js'
 import { withRouter } from 'react-router';

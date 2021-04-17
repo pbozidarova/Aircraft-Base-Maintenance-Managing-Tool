@@ -1,6 +1,6 @@
-import BackendService from '../api/CommonAPI.js'
+import BackendService from './CommonAPI.js'
 import Utils from './Utils.js'
-import {MESSAGES} from '../Constanst.js'
+import {MESSAGES} from './Constants.js'
 
 class ComponentsStateService {
 
