@@ -32,7 +32,7 @@ class DashboardComponent extends Component {
             {Object.keys(DASHBOARD_CARDS).map((card, index) => {
                return <Grid key={`grid_${index}`} item xs={12} md={4} lg={4}> 
                 
-                  <Card className={classes.root} key={index}>
+                <Card className={classes.root} key={index}>
                     <CardActionArea onClick={() => Utils.redirectTo( this.props, `/${card}`)}>
                       <CardMedia
                         className={classes.media}

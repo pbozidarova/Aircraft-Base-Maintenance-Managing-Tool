@@ -22,16 +22,17 @@ export const drawerWidth = 240;
 // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 export const styles = ( theme ) => ({
   abmmt: {
-      display: 'flex',
-    },
-    root: {
-      minHeight: 300
-      // maxWidth: 400,
-      // maxHeight: 300,
-    },
-    media: {
-      height: 140,
-    },
+    display: 'flex',
+  },
+  root: {
+    minHeight: 300
+    // maxWidth: 400,
+    // maxHeight: 300,
+  },
+  media: {
+    height: 140,
+  },
+
   
     toolbar: {
       paddingRight: 24, // keep right padding when drawer closed
