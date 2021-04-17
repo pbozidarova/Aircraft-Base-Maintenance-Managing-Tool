@@ -25,6 +25,7 @@ export const styles = ( theme ) => ({
       display: 'flex',
     },
     root: {
+      minHeight: 300
       // maxWidth: 400,
       // maxHeight: 300,
     },
