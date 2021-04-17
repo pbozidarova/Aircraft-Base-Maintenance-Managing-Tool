@@ -112,6 +112,12 @@ Here is a simple diagram of the table relation:
 9. Interceptor
    The method and url of each request are logged.
    It is created in its own package, but it is registered in the config package.
+   
+10. Unit and integration tests
+    The unit tests can be reviewed in the applicable section.
+    
+    A special configuration with a WithMockCustomUser annotation and WithMockCustomUserSecurityContextFactory
+    were implemented in order to satisfy the security implementation and the integration tests.
 
 ### REST API (WEB)
   The program represents a REST API where you can request to read, update and create data. Delete functionality is not implemented due to law restrictions there needs to be a trace for everything done on an aircraft.  
@@ -125,7 +131,7 @@ Here is a simple diagram of the table relation:
           HATEOAS:
           - localhost:3200/tasks/user/{companyNum}
           - localhost:3200/maintenance/user/{companyNum}
-          - localhost:3200/issues/user/{companyNum}
+          - localhost:3200/notifications/user/{companyNum}
       ADD
       - localhost:3200/users/{companyNum}/create
       UPDATE
@@ -138,7 +144,7 @@ Here is a simple diagram of the table relation:
       - localhost:3200/maintenance/{maintenanceNum}
           - HATEOAS:
              localhost:3200/tasks/maintenance/{maintenanceNum}
-             localhost:3200/issues/maintenance/{maintenanceNum}
+             localhost:3200/notifications/maintenance/{maintenanceNum}
        ADD
       - localhost:3200/maintenance/{maintenanceNum}/create
       UPDATE

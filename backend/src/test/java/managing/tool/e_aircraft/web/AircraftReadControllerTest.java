@@ -5,6 +5,7 @@ import managing.tool.config.WithMockCustomUser;
 import managing.tool.e_aircraft.model.AircraftEntity;
 import managing.tool.e_aircraft.model.dto.AircraftViewDto;
 import managing.tool.e_aircraft.repository.AircraftRepository;
+import managing.tool.e_aircraft.service.AircraftSeedService;
 import managing.tool.e_aircraft.service.AircraftService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,47 +24,28 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.io.FileNotFoundException;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
-////@RunWith(SpringRunner.class)
-//@ContextConfiguration(classes= AircraftBaseMaintenanceManagingToolApplication.class)
-//@WebMvcTest(AircraftReadController.class)
-//@ExtendWith(MockitoExtension.class)
 public class AircraftReadControllerTest {
     private static final String REQUEST_MAPPING_AIRCRAFT = "/aircraft";
-    private static final String AIRCRAFT_REGISTRATION = "LZ_Reg";
-    private static final String AIRCRAFT_MODEL = "LZ_Reg";
-    private static final String OPERATOR = "LZ_Reg";
-    private static final String ICAO_CODE = "LZ_Reg";
-    private static final String TYPE = "LZ_Reg";
-    private static final String REGISTRATION = "LZ_Reg";
-    private static final String SERIAL_NUMBER = "LZ_Reg";
-    private static final String ENGINE_MANUFACTURER = "LZ_Reg";
-    private static final String ENGINE_MODEL_SERIES = "LZ_Reg";
-
-    private final String JWT_STRING = "jwt";
 
     @Autowired
-    private AircraftRepository aircraftRepository;
+    private AircraftSeedService aircraftSeedService;
     @Autowired
     private MockMvc mockMvc;
 
     @BeforeEach
     void setUp(){
-        AircraftEntity aircraftEntity = new AircraftEntity();
-        aircraftEntity.setOperatorName(OPERATOR)
-                .setOperatorICAOCode(ICAO_CODE)
-                .setAircraftType(TYPE)
-                .setAircraftModel(AIRCRAFT_MODEL)
-                .setAircraftRegistration(AIRCRAFT_REGISTRATION)
-                .setSerialNumber(SERIAL_NUMBER)
-                .setEngineManufacturer(ENGINE_MANUFACTURER)
-                .setEngineModelSeries(ENGINE_MODEL_SERIES);
-
-        aircraftRepository.save(aircraftEntity);
+        try {
+            aircraftSeedService.seedAircraft();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
