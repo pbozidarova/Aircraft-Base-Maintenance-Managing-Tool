@@ -32,8 +32,6 @@ export const styles = ( theme ) => ({
   media: {
     height: 140,
   },
-
-  
     toolbar: {
       paddingRight: 24, // keep right padding when drawer closed
     },
@@ -136,6 +134,13 @@ export const styles = ( theme ) => ({
    },
    tableBody: {
     flexGrow: 1,
+   },
+   head: {
+    backgroundColor: "#fff",
+    position: "sticky",
+    top: 0,
+    zIndex: 10,
+
    },
     tableCell: {
       padding: 5 ,

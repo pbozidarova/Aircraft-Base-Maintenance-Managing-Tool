@@ -133,11 +133,11 @@ class DataComponentAccordion extends Component{
         const { page, rowsPerPage } = this.state
         return(
             <div>
-            <TableContainer>
-            <Table  className={classes.table} >
+            <TableContainer className={classes.tcontainer} >
+            <Table stickyHeader className={classes.table} >
             <TableBody>
                 <TableHead> 
-                    <TableRow size="small"  className={classes.tableRow}>
+                    <TableRow size="small"  className={classes.head}>
                         
                         {//load an empty cell in the table header only if the parent component is the Notifications component
                         tableHeader.notificationNum && <TableCell  />}
@@ -145,7 +145,7 @@ class DataComponentAccordion extends Component{
                         {tableRows[0] && 
                             Object.keys(tableRows[0])
                                 .map(key => 
-                                    <TableCell size="small" className={classes.tableCell} key={key} > 
+                                    <TableCell size="small"   variant="head" className={classes.tableCell} key={key} > 
                                         {tableHeader[key]} 
                                     </TableCell>)
                         }
