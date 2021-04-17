@@ -46,12 +46,6 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(securityUserDetailsService)
             .passwordEncoder(passwordEncoder);
 
-//        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-//        auth.inMemoryAuthentication()
-////                .passwordEncoder(encoder)
-//                .withUser("spring")
-//                .password(passwordEncoder.encode("secret"))
-//                .roles("USER");
     }
 
     @Override

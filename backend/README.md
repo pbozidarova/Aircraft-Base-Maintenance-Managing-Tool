@@ -61,60 +61,36 @@
    - Classification - after closing the issue, it needs to be classified for statistics reasons;
    - DueDate - when this issue needs to be solved, between 3 and 5 days;
    - Maintenance - during which overhaul the issue has occurred. 
-    
-### Service! The functionality of each entity
+                  
+Here is a simple diagram of the table relation: 
+<a target="_blank" href="https://i.imgur.com/lCbMDlG.png">
+![Diagram](https://i.imgur.com/lCbMDlG.png) 
+</a>
+
+### Service! (The functionality)
+
+1. Initial application run
+   With the initial launch, the mock data from the resource files will fill the tables.
+   Please keep in mind that a part of the prefilled data is randomly generated, mostly for the joined tables but not limited only to them. 
+   Every time when you drop the database and restart the application fairly data will be populated. 
+   For easier reading the code, the seeding services are mostly separated from the rest of the functionality.  
+
+2. Security / Authentication
+   The application is supposed to be an official site with a specific purpose, where you are not free to create your own account. 
+   You need to be provided with one from an admin.                               
+
+   Each user logs in with theirs company number and password with a post request is sent to the /authenticate URL.
+   When the username and password match a user from the database, a JWT is generated and send back as a response and every other request uses it later on for identification.
+   In the security configuration only /authenticate URL is enabled for all and for every other request a JWT filter is applied.       
+
+3. Read functionality
+
+4. Write functionality
 1. User
    A user can be an admin or a simple user of this application.
    An engineer that can create a single task (technical job);
    a mechanic that performs it.
-   
-### REST API
-- User
-       
-        GET
-      - localhost:3200/users/all
-      - localhost:3200/users/{companyNum}
-      - HATEOAS:
-         - localhost:3200/tasks/user/{companyNum}
-         - localhost:3200/maintenance/user/{companyNum}
-         - localhost:3200/issues/user/{companyNum}
-
-        ADD
-      - localhost:3200/users/{companyNum}/create
-        UPDATE
-      - localhost:3200/users/{companyNum}/update
-
-
-- Maintenance
-   
-      - localhost:3200/maintenance/all
-      - localhost:3200/maintenance/{maintenanceNum}
-      - HATEOAS:
-         localhost:3200/tasks/maintenance/{maintenanceNum}
-         localhost:3200/issues/maintenance/{maintenanceNum}
-
-- Tasks
-
-      localhost:3200/tasks/all
-      localhost:3200/tasks/{taskNum}
-      localhost:3200/tasks/user/{companyNum}
-      localhost:3200/tasks/maintenance/{maintenanceNum}
-
-- Notifications
-      
-      localhost:3200/notifications/all
-      localhost:3200/notifications/user/{companyNum}
-      localhost:3200/notifications/maintenance/{maintenanceNum}
-
-- Facilities
-  
-      localhost:3200/facilities/all
-  
-- Aircraft
-      
-      localhost:3200/aircraft/all
-
-### Security
+2. 
     
 
 ### Exception Handling
@@ -135,3 +111,80 @@ Using the annotations @TrackCreation and @TrackUpdating the program tracks how m
 
 ### Interceptor
 The method and url of each request are logged. 
+
+### REST API (WEB)
+  The program represents a REST API where you can request to read, update and create data. Delete functionality is not implemented due to law restrictions there needs to be a trace for everything done on an aircraft.  
+  The create and update endpoints are in a separate files. 
+  Below are listed all endpoints from each of the controllers.
+- User       
+  
+      GET
+      - localhost:3200/users/all
+      - localhost:3200/users/{companyNum}
+          HATEOAS:
+          - localhost:3200/tasks/user/{companyNum}
+          - localhost:3200/maintenance/user/{companyNum}
+          - localhost:3200/issues/user/{companyNum}
+      ADD
+      - localhost:3200/users/{companyNum}/create
+      UPDATE
+      - localhost:3200/users/{companyNum}/update
+
+- Maintenance
+       
+      GET
+      - localhost:3200/maintenance/all
+      - localhost:3200/maintenance/{maintenanceNum}
+          - HATEOAS:
+             localhost:3200/tasks/maintenance/{maintenanceNum}
+             localhost:3200/issues/maintenance/{maintenanceNum}
+       ADD
+      - localhost:3200/maintenance/{maintenanceNum}/create
+      UPDATE
+      - localhost:3200/maintenance/{maintenanceNum}/update
+
+- Tasks
+  
+      GET
+      - localhost:3200/tasks/all
+      - localhost:3200/tasks/{taskNum}
+      - localhost:3200/tasks/user/{companyNum}
+      - localhost:3200/tasks/maintenance/{maintenanceNum}
+          HATEOAS: 
+          - localhost:3200/maintenance/task/{taskNum}
+          - localhost:3200/notifications/task/{taskNum}
+      ADD
+      - localhost:3200/tasks/{taskNum}/create
+      UPDATE
+      - localhost:3200/tasks/{taskNum}/update       
+
+- Notifications
+        
+      GET
+      - localhost:3200/notifications/all
+      - localhost:3200/notifications/user/{companyNum}
+      - localhost:3200/notifications/maintenance/{maintenanceNum}
+      ADD
+      - localhost:3200/notifications/{notificationNum}/create
+      UPDATE
+      - localhost:3200/notifications/notificationNum/update
+
+- Facilities
+
+      GET
+      - localhost:3200/facilities/all
+          HATEOAS: 
+          - localhost:3200/maintenance/facility/{name}
+          - localhost:3200/users/facility/{name}
+      ADD
+      - localhost:3200/facilities/{name}/create
+      UPDATE
+      - localhost:3200/facilities/{name}/update
+
+- Aircraft
+      GET
+      - localhost:3200/aircraft/all
+      ADD
+      - localhost:3200/aircraft/{registration}/create
+      UPDATE
+      - localhost:3200/aircraft/{registration}/update
