@@ -9,13 +9,13 @@ In short - We have **AIRCRAFT** that need to have **MAINTENANCE** at specific **
 This **MAINTENANCE** consists of multiple technical **TASKS** and while performing them different **ISSUES** may occur. 
 
 ---------
-Heroku hosted 
-    Frontend: https://abmmt-fe.herokuapp.com/
-    Backend: https://abmmtool.herokuapp.com/
+- Heroku hosted 
+    - Frontend: https://abmmt-fe.herokuapp.com/
+    - Backend: https://abmmtool.herokuapp.com/
 
-Localy configured ports:
-    Frontend: http://localhost:3200/
-    Backend: http://localhost:8000/
+- Localy configured ports:
+    - Frontend: http://localhost:3200/
+    - Backend: http://localhost:8000/
 
 ## Technologies and libraries used in the frontend
 - React Application - A JavaScript library for building user interfaces
