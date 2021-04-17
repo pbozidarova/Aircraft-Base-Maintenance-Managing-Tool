@@ -16,13 +16,17 @@ import Tooltip from '@material-ui/core/Tooltip';
 class DrawerItemsMain extends Component {
        
     render(){
+        const {select, isSelected} = this.props;
         const isUserLoggedIn = AuthenticationService.isUserLoggedIn();
         return (
             <>
                 {  isUserLoggedIn &&
                 <div>
                     <Tooltip title="Dashboard" placement="right">
-                    <ListItem button  onClick={() => Utils.redirectTo(this.props, "/home") }>
+                    <ListItem 
+                    key="Dashboard" 
+                    selected={isSelected("Dashboard")} 
+                    button onClick={() => {select("Dashboard"); Utils.redirectTo(this.props, "/home") }}>
                         <ListItemIcon>
                             {ICONS_MAPPING.dashboard}
                         </ListItemIcon>
@@ -31,7 +35,10 @@ class DrawerItemsMain extends Component {
                     </Tooltip>
                     
                     <Tooltip title="Maintenance Data" placement="right">
-                    <ListItem button onClick={() => Utils.redirectTo(this.props, "/tasks") }>
+                    <ListItem 
+                    key="mData" 
+                    selected={isSelected("mData")} 
+                    button onClick={() =>  {select("mData");  Utils.redirectTo(this.props, "/tasks") }}>
                         <ListItemIcon>
                              {ICONS_MAPPING.tasks}
                         </ListItemIcon>
@@ -40,7 +47,10 @@ class DrawerItemsMain extends Component {
                     </Tooltip>
                     
                     <Tooltip title="Maintenance Events" placement="right">
-                    <ListItem button onClick={() => Utils.redirectTo(this.props, "/maintenance") }>
+                    <ListItem
+                    key="Events" 
+                    selected={isSelected("Events")} 
+                    button onClick={() =>  {select("Events"); Utils.redirectTo(this.props, "/maintenance")} }>
                         <ListItemIcon>
                             {ICONS_MAPPING.maintenance}
                         </ListItemIcon>
@@ -49,7 +59,10 @@ class DrawerItemsMain extends Component {
                     </Tooltip>
                     
                     <Tooltip title="Notifications" placement="right">
-                    <ListItem button onClick={() => Utils.redirectTo(this.props, "/notifications") }>
+                    <ListItem 
+                    key="Notifications" 
+                    selected={isSelected("Notifications")} 
+                    button onClick={() =>  {select("Notifications"); Utils.redirectTo(this.props, "/notifications")} }>
                         <ListItemIcon>
                             <Badge badgeContent={this.props.openNotifications} color="secondary">
                                 {ICONS_MAPPING.notifications}

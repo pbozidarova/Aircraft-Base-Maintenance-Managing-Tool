@@ -7,4 +7,6 @@ public interface RoleService {
 
     RoleEntity findByName(String role);
     Boolean roleExists(String role);
+    boolean isMechanic();
+
 }

@@ -30,12 +30,15 @@ import { MESSAGES } from '../../Constanst.js';
     constructor(props){
         super(props)
         this.state = {
+            selected: '',
             open : false,
             
         }
         
         this.handleDrawerOpen = this.handleDrawerOpen.bind(this)
-        this.handleDrawerClose = this.handleDrawerClose.bind(this)        
+        this.handleDrawerClose = this.handleDrawerClose.bind(this)    
+        this.select = this.select.bind(this);
+        this.isSelected = this.isSelected.bind(this);    
     }
 
     redirectTo(urlParam){
@@ -49,6 +52,14 @@ import { MESSAGES } from '../../Constanst.js';
     handleDrawerClose = () => {
         this.setState({ open : false })
     };
+
+    select(menuItem) {
+        return this.state.selected = menuItem;
+    }
+
+    isSelected(menuItem) {
+        return this.state.selected === menuItem;
+    }
 
       
     render(){
@@ -101,12 +112,17 @@ import { MESSAGES } from '../../Constanst.js';
                     </div>
                     <Divider />
                     <List>
-                        <DrawerItemsMain openNotifications={openNotifications}/>
+                        <DrawerItemsMain 
+                        openNotifications={openNotifications} 
+                        select={this.select} 
+                        isSelected={this.isSelected}/>
                     </List>
 
                     <Divider />
                     <List>
-                        <DrawerItemsSecondary/>
+                        <DrawerItemsSecondary 
+                        select={this.select}
+                        isSelected={this.isSelected}/>
                     </List>
               
                 </Drawer>

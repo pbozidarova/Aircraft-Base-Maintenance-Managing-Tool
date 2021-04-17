@@ -19,6 +19,7 @@ class DrawerItemsSecondary extends Component {
     }
 
     render(){
+        const {select, isSelected} = this.props;
 
         const isUserLoggedIn = AuthenticationService.isUserLoggedIn();
 
@@ -28,7 +29,10 @@ class DrawerItemsSecondary extends Component {
                 {  isUserLoggedIn &&
                 <div>
                     <Tooltip title="Aircraft" placement="right">
-                    <ListItem button onClick={() => Utils.redirectTo(this.props, "/aircraft") }>
+                    <ListItem 
+                    key="Aircraft" 
+                    selected={isSelected("Aircraft")} 
+                    button onClick={() => {select("Aircraft"); Utils.redirectTo(this.props, "/aircraft")} }>
                         <ListItemIcon>
                             {ICONS_MAPPING.aircraft}
                         </ListItemIcon>
@@ -37,7 +41,10 @@ class DrawerItemsSecondary extends Component {
                     </Tooltip>
 
                     <Tooltip title="Faclities" placement="right">
-                    <ListItem button onClick={() => Utils.redirectTo(this.props, "/facilities") }>
+                    <ListItem 
+                    key="Faclities" 
+                    selected={isSelected("Faclities")} 
+                    button onClick={() =>{select("Faclities"); Utils.redirectTo(this.props, "/facilities") }}>
                         <ListItemIcon>
                             {ICONS_MAPPING.facilities}
                         </ListItemIcon>
@@ -46,7 +53,10 @@ class DrawerItemsSecondary extends Component {
                     </Tooltip>
                         
                     <Tooltip title="Users" placement="right">
-                    <ListItem button onClick={() => Utils.redirectTo(this.props, "/users") }>
+                    <ListItem
+                    key="Users" 
+                    selected={isSelected("Users")} 
+                    button onClick={() => {select("Users"); Utils.redirectTo(this.props, "/users")}}>
                         <ListItemIcon>
                             {ICONS_MAPPING.users}
                         </ListItemIcon>

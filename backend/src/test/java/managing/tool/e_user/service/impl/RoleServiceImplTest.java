@@ -13,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Random;
+
 @ExtendWith(MockitoExtension.class)
 public class RoleServiceImplTest {
 
@@ -20,10 +22,12 @@ public class RoleServiceImplTest {
 
     @Mock
     RoleRepository mockedRoleRepository;
+    @Mock
+    Random mokedRandom;
 
     @BeforeEach
     public void setUp() {
-        testService = new RoleServiceImpl(mockedRoleRepository);
+        testService = new RoleServiceImpl(mockedRoleRepository, mokedRandom);
     }
 
 
