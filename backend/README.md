@@ -172,6 +172,7 @@ Here is a simple diagram of the table relation:
       - localhost:3200/facilities/{name}/update
 
 - Aircraft
+  
       GET
       - localhost:3200/aircraft/all
       ADD
@@ -190,10 +191,11 @@ Here is a simple diagram of the table relation:
       UPDATE
       - localhost:3200/notifications/notificationNum/update
 
-- Replies
-    
-    GET
-    - localhost:3200/replies/{notificationNum}
-    ADD
-    - localhost:3200/replies/{notificationNum}/create
+- Replies 
+
+        GET
+        - localhost:3200/replies/{notificationNum}
+          ADD
+        - localhost:3200/replies/{notificationNum}/create
+
  
