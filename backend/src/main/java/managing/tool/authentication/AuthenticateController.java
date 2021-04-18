@@ -35,7 +35,7 @@ class AuthenticateController {
             );
         }
         catch (BadCredentialsException e) {
-            //TODO Handle Exception
+
             throw new NotFoundInDb("Incorrect username or password", "login");
 //            return ResponseEntity.noContent().build();
         }

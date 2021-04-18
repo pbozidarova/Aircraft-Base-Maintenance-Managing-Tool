@@ -129,8 +129,8 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    @Scheduled(cron = "@daily")
-//    @Scheduled(cron = "*/2 * * * * *") // used for testing
+//    @Scheduled(cron = "@daily")
+    @Scheduled(cron = "*/2 * * * * *") // used for testing
     public void defineOverdueNotifications() {
         StringBuilder notificationsOverdueLog = new StringBuilder();
 

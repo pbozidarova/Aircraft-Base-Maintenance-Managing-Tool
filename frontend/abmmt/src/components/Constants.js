@@ -31,6 +31,7 @@ export const MESSAGES = {
     successLogOut: "Successfully logged out! We are expecting you again soon!",
     successLoaded: "Successfully loaded! ",
     allData: "All data!",
+    allCommunication: "You are reviewing the communication for the selected notification!",
     allTasksRendredInfo: "A list with all the tasks that our highly trained maintenance staff is capable of performing on an aircraft! ",
     allUsersRenderedInfo: "A list with all the employees in our company!",
     allAircraftRenderedInfo: "A list with all the aircraft that we can service!",

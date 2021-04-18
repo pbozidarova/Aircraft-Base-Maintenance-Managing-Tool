@@ -106,7 +106,7 @@ class DataComponentAccordion extends Component{
                     ...this.state, 
                     // open: {[index]:!this.state.open.[index]},
                     fetchedReplies: response.data
-                }, () => {this.handleOpenState(index); Utils.successMessage(this.props.handleInfo, MESSAGES.allData)});
+                }, () => {this.handleOpenState(index); Utils.successMessage(this.props.handleInfo, MESSAGES.allCommunication)});
             }
         ).catch(e => Utils.errorMessage(e, this.props.handleInfo, MESSAGES.allData ));
     }

@@ -16,7 +16,6 @@ class AuthenticationService {
     }
 
     registerSuccessfullLogin(username, token){
-        console.log('registerSuccessfullLogin');
         sessionStorage.setItem(SESSION_ATTRIBUTE_NAME, username)
             
         this.myInterceptor = this.setupAxiosInterceptors( this.createToken(token) )
