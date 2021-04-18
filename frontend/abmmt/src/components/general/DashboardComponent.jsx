@@ -50,12 +50,12 @@ class DashboardComponent extends Component {
                           </Typography>
                       </CardContent>
                     </CardActionArea>
-                    <CardActions>
+                    {/* <CardActions>
                       <Button size="small" color="primary" onClick={() => Utils.redirectTo( this.props, `/${card}`)}> 
                           Visit {DASHBOARD_CARDS[card].title} 
                       </Button>
                       
-                  </CardActions>
+                  </CardActions> */}
                   </Card>
                 </Grid>
             })}

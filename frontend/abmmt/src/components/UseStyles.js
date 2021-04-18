@@ -24,13 +24,10 @@ export const drawerWidth = 240;
 export const styles = ( theme ) => ({
   abmmt: {
     display: 'flex',
+   
   },
-
   root: {
-    minHeight: 300,
-    
-    // maxWidth: 400,
-    // maxHeight: 300,
+    minHeight: 250,
   },
   media: {
     height: 140,
@@ -42,10 +39,11 @@ export const styles = ( theme ) => ({
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'flex-end',
-      padding: '0 8px',
+      padding: '0 6px',
       ...theme.mixins.toolbar,
     },
     appBar: {
+      fontSize: 12,
       zIndex: theme.zIndex.drawer + 1,
       transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
@@ -67,6 +65,13 @@ export const styles = ( theme ) => ({
     menuButton: { 
       margin: 15,
       flexGrow: 1,
+      fontSize: 12
+      // padding: theme.spacing(1),
+    },
+    logoutButton: { 
+      margin: 15,
+      // flexGrow: 1,
+      fontSize: 12
       // padding: theme.spacing(1),
     },
     menuButtonHidden: {
@@ -111,9 +116,10 @@ export const styles = ( theme ) => ({
       display: 'flex',
       overflow: 'auto',
       flexDirection: 'column',
+      fontSize: 12
     },
     fixedHeight: {
-      height: 550,
+      height: 530,
     },
     fixedHeightMin: {
       height: 300,
@@ -130,19 +136,17 @@ export const styles = ( theme ) => ({
     },
    table: {
     width: '100%',
-    fontSize: 100,
-
    },
    tableBody: {
     width: '100%',
-
     flexGrow: 1,
    },
    head: {
     // backgroundColor: "#fff",
+    fontSize: 12,
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.secondary.contrastText,
-    padding: 5 ,
+    // padding: 5 ,
     textAlign: 'left',
     position: "sticky",
     top: 0,
@@ -170,9 +174,10 @@ export const styles = ( theme ) => ({
     },
   },
     tableCell: {
-      padding: 5 ,
+      // padding: 5 ,
       // margin: 0,
-      textAlign: 'left'
+      textAlign: 'left',
+      fontSize: 12
     },
     visuallyHidden: {
       border: 0,
@@ -190,6 +195,7 @@ export const styles = ( theme ) => ({
       '& path': {
           fill: '#eee'
       },
+     
   }
   //   tableRow: {
   //     flexGrow: 1,

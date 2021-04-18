@@ -87,15 +87,21 @@ class EditGlobalComponent extends Component {
 
       return (
           <MuiThemeProvider key={selectedId} > 
-          <this.Alert severity="info"  variant="outlined" >{feedback} </this.Alert>
+          <this.Alert severity="info" className={classes.tableCell}  variant="outlined" > {feedback} </this.Alert>
           
           {Object.keys(GLOBAL_SELECT_FIELDS).map(key => {                                              
+            console.log(this.state[key])
             return (
               this.props.editFields[key] &&
               <Autocomplete
                 id={key}
                 size="small"
                 value={selected[key]}
+                InputProps={{
+                  classes: {
+                    input: classes.tableCell,
+                  },
+                }}
                 onChange={(e, v) => handleAutocompleteChange(e, v, key)}
                 options={Object.values(this.state[key])}
                 renderInput={(params) => (
@@ -106,7 +112,8 @@ class EditGlobalComponent extends Component {
                         variant="outlined"
                         onChange={(e)=> handleChange(e, key)} 
                         error={isError(key)}
-                        helperText={errors[key]}/>
+                        helperText={errors[key]}
+                        />
                   )}
               />
             )    
@@ -121,11 +128,11 @@ class EditGlobalComponent extends Component {
                   <TextField
                       id={key}
                       size="small"
+                      className={classes.tableCell} 
                       margin="normal" variant="outlined"
                       name={key}
                       label={labels[key] }
                       type={key.includes('Date') && 'date'}
-                      InputLabelProps={{ shrink: true }}
                       defaultValue={selected[key]}
                       // disabled={disabledFields[key]}
                       rows={key =='description' ? 4 : 1}
@@ -133,6 +140,12 @@ class EditGlobalComponent extends Component {
                       onChange={handleChange}
                       error={isError(key)}
                       helperText={errors[key]}
+                      InputLabelProps={{ shrink: true }}
+                      InputProps={{
+                        classes: {
+                          input: classes.tableCell,
+                        },
+                      }}
                   /> 
               )    
           })}
@@ -142,7 +155,7 @@ class EditGlobalComponent extends Component {
             {  Object.keys(booleanFields).map(a => {                                              
                 // console.log(selected)
                 return (
-                  <FormControlLabel
+                  <FormControlLabel className={classes.tableCell} 
                       control={
                         <Checkbox
                           checked={selected[a]}
@@ -151,7 +164,8 @@ class EditGlobalComponent extends Component {
                           color="primary"
                         />
                       }
-                      label={booleanFields[a]}
+                      
+                      label={<span className={classes.tableCell}>{booleanFields[a]}</span>}
                     />
                 )    
             })}

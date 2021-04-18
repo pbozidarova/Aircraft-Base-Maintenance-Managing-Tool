@@ -82,13 +82,13 @@ import { MESSAGES } from '../Constants.js';
                         <img src={logo} className="App-logo" alt="logo" />
                     </IconButton>
                     
-                    <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title} > 
+                    <Typography component="h6" variant="h6" color="inherit" noWrap className={classes.title} > 
                         Aicraft Base Maintenance Management Tool
                     </Typography>
 
                     {isUserLoggedIn && <Button 
                         variant="contained" 
-                        // className={classes.menuButton}
+                        className={classes.logoutButton}
                         onClick={  () => {Utils.infoMessage(handleInfo, MESSAGES.successLogOut ); 
                                             this.redirectTo("/logout"); 
                                             AuthenticationService.logout()}}>
