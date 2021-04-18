@@ -3,7 +3,6 @@ import axios from 'axios'
 
 class AuthenticationService {
 
-
     constructor(){
         this.myInterceptor = null;
     }
