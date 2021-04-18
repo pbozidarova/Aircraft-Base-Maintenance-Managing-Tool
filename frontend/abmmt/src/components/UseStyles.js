@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 
 export const theme = createMuiTheme({
@@ -16,7 +16,7 @@ export const theme = createMuiTheme({
       contrastText: '#000',
     },
   },
-  
+
 });
 
 export const drawerWidth = 240;
@@ -25,8 +25,9 @@ export const styles = ( theme ) => ({
   abmmt: {
     display: 'flex',
   },
+
   root: {
-    minHeight: 300
+    minHeight: 300,
     
     // maxWidth: 400,
     // maxHeight: 300,
@@ -146,13 +147,50 @@ export const styles = ( theme ) => ({
     position: "sticky",
     top: 0,
     zIndex: 10,
-
    },
+  activeSortIcon: {
+    color: "white"
+  },
+  inactiveSortIcon: {
+    color: "white"
+  },
+  icon: {
+    root: {
+      color: 'white',
+      "&:hover": {
+        color: 'white',
+      },
+      '&$active': {
+        color: 'white',
+      },
+    },
+    active: {},
+    icon: {
+      color: 'inherit !important'
+    },
+  },
     tableCell: {
       padding: 5 ,
       // margin: 0,
       textAlign: 'left'
     },
+    visuallyHidden: {
+      border: 0,
+      clip: 'rect(0 0 0 0)',
+      height: 1,
+      margin: -1,
+      overflow: 'hidden',
+      padding: 0,
+      position: 'absolute',
+      top: 20,
+      width: 1,
+    },
+    icon: {
+      backgroundColor: "grey[500]",
+      '& path': {
+          fill: '#eee'
+      },
+  }
   //   tableRow: {
   //     flexGrow: 1,
   //     width:100,

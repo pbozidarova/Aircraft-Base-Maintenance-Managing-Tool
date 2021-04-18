@@ -7,7 +7,8 @@ import BackendService from '../CommonAPI.js'
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
-import TableContainer from '@material-ui/core/TableRow';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Table from '@material-ui/core/TableRow';
 import TableBody from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
@@ -44,8 +45,9 @@ class DataComponentAccordion extends Component{
             fetchedReplies: [],
             currentReply: '',
             attachment: '',
-
-        }  
+            orderBy: '',
+            order: '',
+         }  
 
 
         this.isSelected = this.isSelected.bind(this)
@@ -55,6 +57,7 @@ class DataComponentAccordion extends Component{
         this.saveReply = this.saveReply.bind(this)
         this.handleAttachment = this.handleAttachment.bind(this)
         this.handleReplyChange = this.handleReplyChange.bind(this)
+        this.createSortHandler =  this.createSortHandler.bind(this)
     }
  
 
@@ -106,7 +109,44 @@ class DataComponentAccordion extends Component{
                 }, () => {this.handleOpenState(index); Utils.successMessage(this.props.handleInfo, MESSAGES.allData)});
             }
         ).catch(e => Utils.errorMessage(e, this.props.handleInfo, MESSAGES.allData ));
+    }
 
+    createSortHandler(property){
+        const isAsc = this.state.orderBy === property && this.state.order === 'asc';
+        const orderDirection = isAsc ? 'desc' : 'asc'
+        this.setOrder(property, orderDirection);
+        
+    }
+    setOrder(property, orderDirection){
+        this.setState({
+            ...this.state,
+            order: orderDirection,
+            orderBy: property,
+        }, () => console.log(this.state))
+    }
+    getComparator(order, orderBy) {
+        return order === 'desc'
+          ? (a, b) => this.descendingComparator(a, b, orderBy)
+          : (a, b) => -this.descendingComparator(a, b, orderBy);
+      }
+    descendingComparator(a, b, orderBy) {
+        if (b[orderBy] < a[orderBy]) {
+          return -1;
+        }
+        if (b[orderBy] > a[orderBy]) {
+          return 1;
+        }
+        return 0;
+      }
+
+    stableSort(array, comparator) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+        const order = comparator(a[0], b[0]);
+        if (order !== 0) return order;
+        return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
     }
 
     saveReply(index, notificationNum){
@@ -130,7 +170,7 @@ class DataComponentAccordion extends Component{
 
     render(){
         const { classes, selectRow, tableHeader, tableRows } = this.props;
-        const { page, rowsPerPage } = this.state
+        const { page, rowsPerPage, orderBy, order } = this.state
         return(
             <div>
             <TableContainer >
@@ -138,21 +178,41 @@ class DataComponentAccordion extends Component{
             <TableBody>
                 <TableHead> 
                     <TableRow size="small"  className={classes.head}>
-                        
                         {//load an empty cell in the table header only if the parent component is the Notifications component
                         tableHeader.notificationNum && <TableCell  />}
                     
                         {tableRows[0] && 
-                            Object.keys(tableRows[0])
+                            Object.keys(tableHeader)
                                 .map(key => 
-                                    <TableCell size="small"  stickyHeader={true} variant="head" className={classes.head} key={key} > 
-                                        {tableHeader[key]} 
+                                    <TableCell size="small" key={key} > 
+                                        <TableSortLabel
+                                            active={orderBy === key}
+                                            direction={orderBy === key ? order : 'asc'}
+                                            onClick={() => this.createSortHandler(key)}
+                                            classes={{
+                                                root:  classes.icon 
+                                            }}
+                                        >
+                                            <div className={classes.head} >
+                                                {tableHeader[key]} 
+                                            </div>
+                                            {orderBy === key ? (
+                                                <span className={classes.visuallyHidden}>
+                                                {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                                </span>
+                                            ) : null} 
+                                        </TableSortLabel>
+                                        
+                                        
                                     </TableCell>)
                         }
+                         {//load an empty cell in the table header only if the parent component is NOT the Notifications component
+                        !tableHeader.notificationNum && <TableCell  />}
                     </TableRow>
                 </TableHead>
                 
-                {tableRows.length > 0 && tableRows
+                {tableRows.length > 0 && 
+                this.stableSort(tableRows, this.getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((tableRow, index) => {
                     // let rowID = Object.entries(tableRow)[0][1]
