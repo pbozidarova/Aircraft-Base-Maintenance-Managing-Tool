@@ -32,10 +32,7 @@ public class GlobalUncaughtExceptionAdvice extends ResponseEntityExceptionHandle
         Map<String, String> bodyOfResponse = new HashMap<>();
         bodyOfResponse.put("message", "Something is wrong! Please try again later or contact the support!");
 
-        if (ex instanceof FoundInDb ) {
-            throw ex;
-        }
-        if ( ex instanceof NotFoundInDb) {
+        if (ex instanceof FoundInDb || ex instanceof  NotFoundInDb || ex instanceof NotAuthorized ) {
             throw ex;
         }
 
